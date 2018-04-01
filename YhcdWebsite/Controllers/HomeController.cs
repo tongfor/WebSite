@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using YhcdWebsite.Models;
 
 namespace YhcdWebsite.Controllers
@@ -18,7 +19,10 @@ namespace YhcdWebsite.Controllers
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-
+            using (var context = new CdyhcdDBContext())
+            {
+                var articles = context.Article.ToList();
+            }
             return View();
         }
 
