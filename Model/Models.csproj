@@ -9,4 +9,32 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="PocoModels\Config.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>config.ttinclude</DependentUpon>
+    </Compile>
+    <Compile Update="PocoModels\PocoModels.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PocoModels.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PocoModels\Config.ttinclude">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>config.cs</LastGenOutput>
+    </None>
+    <None Update="PocoModels\PocoModels.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PocoModels.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
 </Project>

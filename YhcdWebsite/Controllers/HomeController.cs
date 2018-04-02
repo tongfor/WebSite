@@ -19,10 +19,7 @@ namespace YhcdWebsite.Controllers
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-            using (var context = new CdyhcdDBContext())
-            {
-                var articles = context.Article.ToList();
-            }
+           
             return View();
         }
 
