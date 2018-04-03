@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Models.PocoModels
 {
-    public class DBHelper
+    public class MysqlDBHelper
     {
         //添加到配置文件的<configuration>节点中  
         //   <connectionStrings>  

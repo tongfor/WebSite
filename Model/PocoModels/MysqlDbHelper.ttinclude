@@ -16,7 +16,7 @@
 <#@ import namespace="System.Text.RegularExpressions" #><#+
 
 	#region GetDbTables
-    public class DbHelper
+    public class MysqlDbHelper
     {
 
 		#region 去下划线,转大写

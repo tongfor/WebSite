@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PocoModels\DBHelper.cs" />
+    <Compile Remove="Tools\MysqlDBHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Tools\MysqlDBHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
   </ItemGroup>
@@ -14,10 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="PocoModels\Config.cs">
+    <Compile Update="PocoModels\config.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>config.ttinclude</DependentUpon>
+    </Compile>
+    <Compile Update="PocoModels\dal.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dal.tt</DependentUpon>
     </Compile>
     <Compile Update="PocoModels\PocoModels.cs">
       <DesignTime>True</DesignTime>
@@ -30,6 +44,10 @@
     <None Update="PocoModels\Config.ttinclude">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>config.cs</LastGenOutput>
+    </None>
+    <None Update="PocoModels\dal.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>dal.cs</LastGenOutput>
     </None>
     <None Update="PocoModels\PocoModels.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
