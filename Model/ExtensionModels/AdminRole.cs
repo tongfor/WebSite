@@ -10,7 +10,7 @@
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
-*│　版权所有：成都中科创动科技有限公司　　　　　　　　　　　　　　│
+*│　版权所有：成都盈辉创动科技有限公司　　　　　　　　　　　　　　│
 *└──────────────────────────────────┘
 */
 
@@ -20,7 +20,6 @@ using Models.MetadataModels;
 
 namespace Models
 {
-    [MetadataType(typeof(AdminRoleMetadata))]
     public partial class AdminRole
     {
         public AdminRole()

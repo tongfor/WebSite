@@ -162,6 +162,23 @@
     }
     #endregion
 
+	#region GetFirstUpperStr
+
+	public string GetFirstUpperStr(string s)
+        {
+            if (!string.IsNullOrEmpty(s))
+            {
+                if (s.Length > 1)
+                {
+                    return char.ToUpper(s[0]) + s.Substring(1).ToLower();
+                }
+                return char.ToUpper(s[0]).ToString();
+            }
+            return null;
+        }
+
+	#endregion
+
     #region DbTable
     /// <summary>
     /// 表结构

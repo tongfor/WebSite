@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 using System.Reflection;
 using System.Text;
 
-namespace Models.PocoModels
+namespace DatabaseTool
 {
     public class MysqlDBHelper
     {

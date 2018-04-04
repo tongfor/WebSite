@@ -1,0 +1,43 @@
+﻿<#@ template language="C#" debug="True" hostspecific="True" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+
+<#@ include file="../T4Include/MysqlDbHelper.ttinclude"#>
+<#@ include file="../T4Include/config.ttinclude"#>
+
+/** 
+* IDal.cs
+*
+* 功 能： 数据层接口
+* 类 名： IDAL
+*
+* Ver    变更日期             负责人  变更内容
+* ───────────────────────────────────
+* V0.01  <#=DateTime.Now.ToString()#>   N/A    初版
+*
+*┌──────────────────────────────────┐
+*│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
+*│　版权所有：成都盈辉创动科技有限公司　　　　　　　　　　　　　　│
+*└──────────────────────────────────┘
+*/
+
+using Models;
+
+namespace IDAL
+{
+<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+<# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
+
+	public partial interface I<#=tableName#>Dal : IBaseDAL<<#=tableName#>>
+    {		
+    }
+<#}#>
+}
+
+
+
+

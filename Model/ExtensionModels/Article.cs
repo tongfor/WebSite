@@ -8,7 +8,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
-    [MetadataType(typeof(ArticleMetadata))]
     public partial class Article
     {
         public Article()
@@ -20,7 +19,7 @@ namespace Models
             this.IntroduceImg = "";
             this.IsTop = 0;
             this.IsMarquee = 0;
-            this.AddHTMLUrl = "";
+            this.AddHtmlurl = "";
             this.TitleColor = "";
             this.Sort = 0;
             this.Author = "";

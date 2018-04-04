@@ -7,8 +7,7 @@ namespace Models
     public partial class CdyhcdDBContext : DbContext
     {
         public CdyhcdDBContext(DbContextOptions<CdyhcdDBContext> options) : base(options)
-        {
-        }
+        { }
 
         public virtual DbSet<AdminBug> AdminBug { get; set; }
         public virtual DbSet<AdminButton> AdminButton { get; set; }
@@ -32,7 +31,7 @@ namespace Models
 //            if (!optionsBuilder.IsConfigured)
 //            {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseMySql("Server=localhost;Database=CdyhcdDB;User Id=cdyhcd;Password=123456;");
+//                optionsBuilder.UseMySql("Server=127.0.0.1;Database=CdyhcdDB;User ID=cdyhcd;Password=123456");
 //            }
 //        }
 
@@ -221,9 +220,7 @@ namespace Models
 
                 entity.Property(e => e.Postcode).HasMaxLength(32);
 
-                entity.Property(e => e.Qq)
-                    .HasColumnName("QQ")
-                    .HasMaxLength(32);
+                entity.Property(e => e.Qq).HasMaxLength(32);
 
                 entity.Property(e => e.ThirdToken).HasMaxLength(500);
 
@@ -266,9 +263,7 @@ namespace Models
             {
                 entity.Property(e => e.Id).HasColumnType("int(11)");
 
-                entity.Property(e => e.AddHtmlurl)
-                    .HasColumnName("AddHTMLUrl")
-                    .HasMaxLength(500);
+                entity.Property(e => e.AddHtmlurl).HasMaxLength(500);
 
                 entity.Property(e => e.AddTime).HasColumnType("datetime");
 
@@ -350,17 +345,13 @@ namespace Models
 
                 entity.Property(e => e.HomePage).HasMaxLength(255);
 
-                entity.Property(e => e.Ip)
-                    .HasColumnName("IP")
-                    .HasMaxLength(50);
+                entity.Property(e => e.Ip).HasMaxLength(50);
 
                 entity.Property(e => e.IsChecked).HasColumnType("tinyint(4)");
 
                 entity.Property(e => e.IsDel).HasColumnType("tinyint(4)");
 
-                entity.Property(e => e.Qq)
-                    .HasColumnName("QQ")
-                    .HasMaxLength(32);
+                entity.Property(e => e.Qq).HasMaxLength(32);
 
                 entity.Property(e => e.Title).HasMaxLength(255);
             });
@@ -381,9 +372,7 @@ namespace Models
 
                 entity.Property(e => e.ParName).HasMaxLength(32);
 
-                entity.Property(e => e.ParParentId)
-                    .HasColumnName("ParParentID")
-                    .HasColumnType("int(11)");
+                entity.Property(e => e.ParParentId).HasColumnType("int(11)");
 
                 entity.Property(e => e.ParPath).HasColumnType("text");
 
