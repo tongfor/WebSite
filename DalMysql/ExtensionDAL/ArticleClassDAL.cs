@@ -1,18 +1,16 @@
-﻿using Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DALMySql
 {
     public partial class ArticleClassDAL
     {
         //EF上下文
-        private readonly DbContext _db = new DbContextFactory().GetDbContext();
+        private readonly CdyhcdDBContext _db;
 
         /// <summary>
         /// 文章分类列表

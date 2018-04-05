@@ -27,7 +27,7 @@ namespace DALMySql
     public partial class AdminLoginLogDAL
     {
         //EF上下文
-        private readonly DbContext _db;
+        private readonly CdyhcdDBContext _db;
 
         #region 判断登录：如果30分钟内同一个ip连续最大错误次数次登录失败，那么30分钟后才可以继续登录
 

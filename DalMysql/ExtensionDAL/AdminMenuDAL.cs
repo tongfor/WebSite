@@ -20,6 +20,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using MySql.Data.MySqlClient;
+using MySqlConnector.Logging;
 
 namespace DALMySql
 {
@@ -47,7 +49,7 @@ namespace DALMySql
             querySb.Append(" ur on u.Id=ur.UserId  join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join AdminMenu m");
             querySb.Append(" on rmb.MenuId=m.Id where u.id=?userId order by m.ParentId,m.Sort");
 
-            var userIdParameter = MySql.Data.EntityFrameworkCore.DataAnnotations. new MySqlParameter("?userId", userId);
+            var userIdParameter = new MySqlParameter("?userId", userId);
             var queryResult = _db.Set<AdminUserMenuModel>().FromSql(querySb.ToString(), userIdParameter);
             if (queryResult != null)
             {

@@ -14,19 +14,20 @@
 *└──────────────────────────────────┘
 */
 
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace DALMySql
 {
     public partial class AdminUserDAL
     {
         //EF上下文
-        private readonly DbContext _db = new DbContextFactory().GetDbContext();
+        private readonly CdyhcdDBContext _db;
 
         #region 根据用户名返回模型
 
@@ -75,13 +76,17 @@ namespace DALMySql
         public List<AdminUserView> GetUserIncludeRole(string strWhere)
         {
             List<AdminUserView> userList = new List<AdminUserView>();
-            string strSql = "Select au.*,ul.RoleId as RoleId,ar.RoleName as RoleName from AdminUser as au ";
-            strSql += "left join AdminUserAdminRole as ul on au.id=ul.UserId ";
-            strSql += "left join AdminRole as ar on ul.RoleId=ar.Id ";
-            strSql += "where 1=1 and ";
-            strSql += strWhere;
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Select au.*,ul.RoleId as RoleId,ar.RoleName as RoleName from AdminUser as au ");
+            sb.Append("left join AdminUserAdminRole as ul on au.id=ul.UserId ");
+            sb.Append("left join AdminRole as ar on ul.RoleId=ar.Id ");
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                sb.Append("where 1=1 and ");
+                sb.Append(strWhere);
+            }
             var queryResult =
-                _db.Database.SqlQuery<AdminUserView>(strSql);
+                _db.Set<AdminUserView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
                 userList = queryResult.ToList();
@@ -103,11 +108,16 @@ namespace DALMySql
         public List<UserIncludeGroupView> GetUserIncludeGroup(int groupId, string strWhere)
         {
             List<UserIncludeGroupView> projectEntryList = new List<UserIncludeGroupView>();
-            string strSql = "select au.*,auar.RoleId as RoleId,up.GroupId as GroupId from AdminUser as au ";
-            strSql += " left join AdminUserAdminRole as auar on au.id=auar.UserId ";
-            strSql += " left join UserProjectGropuInfo as up on au.id=up.UserId  and up.GroupId=" + groupId;
-            strSql += " where 1=1 and " + strWhere;
-            var queryResult = _db.Database.SqlQuery<UserIncludeGroupView>(strSql);
+            StringBuilder sb = new StringBuilder();
+            sb.Append("select au.*,auar.RoleId as RoleId,up.GroupId as GroupId from AdminUser as au ");
+            sb.Append(" left join AdminUserAdminRole as auar on au.id=auar.UserId ");
+            sb.AppendFormat(" left join UserProjectGropuInfo as up on au.id=up.UserId  and up.GroupId= {0}", groupId);
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                sb.Append("where 1=1 and ");
+                sb.Append(strWhere);
+            }
+            var queryResult = _db.Set<UserIncludeGroupView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
                 projectEntryList = queryResult.ToList();
@@ -142,24 +152,29 @@ namespace DALMySql
             int beginIndex = (pageIndex - 1) * pageSize + 1;
             int endIndex = pageIndex * pageSize;
             int skipIndex = (pageIndex - 1) * pageSize;
-            string strSql = "select au.*,auar.RoleId as RoleId,up.GroupId as GroupId from AdminUser as au ";
-            strSql += " left join AdminUserAdminRole as auar on au.id=auar.UserId ";
-            strSql += " left join UserProjectGropuInfo as up on au.id=up.UserId and up.GroupId=" + groupId;
-            strSql += " where 1=1 and " + strWhere;
-
-            string strPageSql = string.Empty;
-            strPageSql += "select * from (select row_number() over(order by T.id) as Rownum,T.* from ";
-            strPageSql += " ( " + strSql + ") as T) as TT ";
-            strPageSql += " where  TT.Rownum between " + beginIndex + " and " + endIndex;
-            if (!string.IsNullOrEmpty(orderBy))
+            StringBuilder sb = new StringBuilder();
+            sb.Append("select au.*,auar.RoleId as RoleId,up.GroupId as GroupId from AdminUser as au ");
+            sb.Append(" left join AdminUserAdminRole as auar on au.id=auar.UserId ");
+            sb.AppendFormat(" left join UserProjectGropuInfo as up on au.id=up.UserId and up.GroupId={0}", groupId);
+            if (!string.IsNullOrEmpty(strWhere))
             {
-                strPageSql += " order by " + orderBy;
+                sb.Append("where 1=1 and ");
+                sb.Append(strWhere);
             }
 
-            var queryResult = _db.Database.SqlQuery<UserIncludeGroupView>(strSql);
+            StringBuilder pageSb = new StringBuilder();
+            pageSb.Append("select * from (select row_number() over(order by T.id) as Rownum,T.* from ");
+            pageSb.Append(" ( " + sb + ") as T) as TT ");
+            pageSb.AppendFormat(" where  TT.Rownum between {0} and {1} ", beginIndex, endIndex);
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                pageSb.AppendFormat(" order by {0}", orderBy);
+            }
+
+            var queryResult = _db.Set<UserIncludeGroupView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
-                projectEntryList = _db.Database.SqlQuery<UserIncludeGroupView>(strPageSql).ToList();
+                projectEntryList = _db.Set<UserIncludeGroupView>().FromSql(pageSb.ToString()).ToList();
                 totalCount = queryResult.Count();
             }
             return projectEntryList;

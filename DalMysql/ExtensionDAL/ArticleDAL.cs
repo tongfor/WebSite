@@ -16,11 +16,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace DALMySql
@@ -28,7 +28,7 @@ namespace DALMySql
     public partial class ArticleDAL
     {
         //EF上下文
-        private readonly DbContext _db = new DbContextFactory().GetDbContext();
+        private readonly CdyhcdDBContext _db;
 
 
         #region 获取文章关联文章类别的数据（延时加载）
@@ -41,9 +41,9 @@ namespace DALMySql
         public List<ArticleIncludeClassNameView> GetArticleIncludeClass(Expression<Func<Article, bool>> queryWhere)
         {
             List<ArticleIncludeClassNameView> articleList = new List<ArticleIncludeClassNameView>();
-            DbQuery<ArticleIncludeClassNameView> dbQuery = _db.Set<Article>().Where(queryWhere)
+            var dbQuery = _db.Set<Article>().Where(queryWhere)
                 .Join(_db.Set<ArticleClass>(), aco => aco.ClassId, acl => acl.Id,
-                    (aco, acl) => new ArticleIncludeClassNameView { Article = aco, ArticleClassName = acl.Name }) as DbQuery<ArticleIncludeClassNameView>;
+                    (aco, acl) => new ArticleIncludeClassNameView { Article = aco, ArticleClassName = acl.Name });
             if (dbQuery != null)
             {
                 articleList = dbQuery.ToList();
@@ -83,7 +83,7 @@ namespace DALMySql
                         Content = a.Content,
                         UserName = a.UserName,
                         LookCount = a.LookCount,
-                        AddHTMLUrl = a.AddHTMLUrl,
+                        AddHtmlurl = a.AddHtmlurl,
                         IsTop = a.IsTop,
                         IsMarquee = a.IsMarquee,
                         Introduce = a.Introduce,
@@ -143,10 +143,16 @@ namespace DALMySql
         public List<ArticleView> GetArticleIncludeClass(string strWhere)
         {
             List<ArticleView> articleList = new List<ArticleView>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT aco.*,acl.Name as ArticleClassName from Article as aco");
+            sb.Append("LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id ");
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                sb.Append("where 1=1 and ");
+                sb.Append(strWhere);
+            }
             var queryResult =
-                _db.Database.SqlQuery<ArticleView>(
-                    "SELECT aco.*,acl.Name as ArticleClassName from Article as aco LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id where 1=1 and " +
-                    strWhere);
+                _db.Set<ArticleView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
                 articleList = queryResult.ToList();
@@ -178,16 +184,20 @@ namespace DALMySql
                 pageIndex = 1;
             }
             int skipIndex = (pageIndex - 1) * pageSize;
-            string strsql = string.Empty;
-            strsql +=
-                "SELECT aco.*,acl.Name as ArticleClassName from Article as aco LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id where 1=1 and ";
-            strsql += strWhere;
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT aco.*,acl.Name as ArticleClassName from Article as aco ");
+            sb.Append(" LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id ");
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                sb.Append("where 1=1 and ");
+                sb.Append(strWhere);
+            }            
             if (!string.IsNullOrEmpty(orderBy))
             {
-                strsql += " order by " + orderBy;
+                sb.AppendFormat(" order by {0} ", orderBy);
             }
 
-            var queryResult = _db.Database.SqlQuery<ArticleView>(strsql);
+            var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
                 articleList = queryResult.Skip(skipIndex).Take(pageSize).ToList();
