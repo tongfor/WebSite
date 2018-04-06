@@ -8,7 +8,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2018/4/4 11:52:44   N/A    初版
+* V0.01  2018/4/6 11:50:48   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -21,67 +21,67 @@ using Models;
 namespace IDAL
 {
 
-	public partial interface IAdminBugDal : IBaseDAL<AdminBug>
+	public partial interface IAdminBugDAL : IBaseDAL<AdminBug>
     {		
     }
 
-	public partial interface IAdminButtonDal : IBaseDAL<AdminButton>
+	public partial interface IAdminButtonDAL : IBaseDAL<AdminButton>
     {		
     }
 
-	public partial interface IAdminDepartmentDal : IBaseDAL<AdminDepartment>
+	public partial interface IAdminDepartmentDAL : IBaseDAL<AdminDepartment>
     {		
     }
 
-	public partial interface IAdminLoginLogDal : IBaseDAL<AdminLoginLog>
+	public partial interface IAdminLoginLogDAL : IBaseDAL<AdminLoginLog>
     {		
     }
 
-	public partial interface IAdminMenuDal : IBaseDAL<AdminMenu>
+	public partial interface IAdminMenuDAL : IBaseDAL<AdminMenu>
     {		
     }
 
-	public partial interface IAdminMenuAdminButtonDal : IBaseDAL<AdminMenuAdminButton>
+	public partial interface IAdminMenuAdminButtonDAL : IBaseDAL<AdminMenuAdminButton>
     {		
     }
 
-	public partial interface IAdminOperateLogDal : IBaseDAL<AdminOperateLog>
+	public partial interface IAdminOperateLogDAL : IBaseDAL<AdminOperateLog>
     {		
     }
 
-	public partial interface IAdminRoleDal : IBaseDAL<AdminRole>
+	public partial interface IAdminRoleDAL : IBaseDAL<AdminRole>
     {		
     }
 
-	public partial interface IAdminRoleAdminMenuButtonDal : IBaseDAL<AdminRoleAdminMenuButton>
+	public partial interface IAdminRoleAdminMenuButtonDAL : IBaseDAL<AdminRoleAdminMenuButton>
     {		
     }
 
-	public partial interface IAdminUserDal : IBaseDAL<AdminUser>
+	public partial interface IAdminUserDAL : IBaseDAL<AdminUser>
     {		
     }
 
-	public partial interface IAdminUserAdminDepartmentDal : IBaseDAL<AdminUserAdminDepartment>
+	public partial interface IAdminUserAdminDepartmentDAL : IBaseDAL<AdminUserAdminDepartment>
     {		
     }
 
-	public partial interface IAdminUserAdminRoleDal : IBaseDAL<AdminUserAdminRole>
+	public partial interface IAdminUserAdminRoleDAL : IBaseDAL<AdminUserAdminRole>
     {		
     }
 
-	public partial interface IArticleDal : IBaseDAL<Article>
+	public partial interface IArticleDAL : IBaseDAL<Article>
     {		
     }
 
-	public partial interface IArticleClassDal : IBaseDAL<ArticleClass>
+	public partial interface IArticleClassDAL : IBaseDAL<ArticleClass>
     {		
     }
 
-	public partial interface IBoardDal : IBaseDAL<Board>
+	public partial interface IBoardDAL : IBaseDAL<Board>
     {		
     }
 
-	public partial interface IParameterDal : IBaseDAL<Parameter>
+	public partial interface IParameterDAL : IBaseDAL<Parameter>
     {		
     }
 }

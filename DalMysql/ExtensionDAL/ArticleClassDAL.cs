@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models;
+﻿using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +8,6 @@ namespace DALMySql
 {
     public partial class ArticleClassDAL
     {
-        //EF上下文
-        private readonly CdyhcdDBContext _db;
-
         /// <summary>
         /// 文章分类列表
         /// </summary>
@@ -24,14 +20,13 @@ namespace DALMySql
         /// <param name="isdesc"></param>
         /// <returns></returns>
         public List<ArticleClass> GetArticleClassByPage<TKey>(int pageIndex, int pageSize,
-            Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy,
-            out int totalCount, bool isdesc = false)
+            Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy, out int totalCount, bool isdesc = false)
         {
             if (pageIndex < 1)
             {
                 pageIndex = 1;
             }
-            int skipIndex = (pageIndex - 1)*pageSize;
+            int skipIndex = (pageIndex - 1) * pageSize;
             List<ArticleClass> articleClassList;
             var dbQuery = _db.Set<ArticleClass>().Where(queryWhere);
             totalCount = dbQuery.Count();

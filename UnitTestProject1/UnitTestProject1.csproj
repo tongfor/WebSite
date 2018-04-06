@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DalMysql\DalMysql.csproj" />
+    <ProjectReference Include="..\IDal\IDAL.csproj" />
+    <ProjectReference Include="..\Model\Models.csproj" />
+  </ItemGroup>
+
+</Project>

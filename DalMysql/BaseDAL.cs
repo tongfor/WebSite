@@ -14,11 +14,11 @@
 *└──────────────────────────────────┘
 */
 using IDAL;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -28,11 +28,11 @@ namespace DALMySql
     public class BaseDAL<T> : IBaseDAL<T> where T : class, new()
     {
         //EF上下文
-        private readonly CdyhcdDBContext _db;        
+        protected readonly CdyhcdDBContext _db;        
                 
-        public BaseDAL()
+        public BaseDAL(CdyhcdDBContext db)
         {
-            _db = _db ?? new DbContextFactory().GetDbContext();
+            _db = db;
         }
 
         #region 根据主键获取模型
@@ -119,7 +119,7 @@ namespace DALMySql
         {
             int result;
 
-            DbEntityEntry entry = _db.Entry<T>(model);
+            EntityEntry entry = _db.Entry<T>(model);
             if (proNames.Length > 0)
             {
                 //entry.State = EntityState.Unchanged;

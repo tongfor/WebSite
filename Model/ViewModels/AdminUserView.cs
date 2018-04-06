@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +26,27 @@ namespace Models
     /// <summary>
     /// 用于业务逻辑的AdminUse模型
     /// </summary>
-    public class AdminUserView : AdminUser
+    public class AdminUserView
     {
+        [Key]
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public string UserPwd { get; set; }
+        public string Name { get; set; }
+        public string Mobile { get; set; }
+        public string Qq { get; set; }
+        public string Email { get; set; }
+        public string Postcode { get; set; }
+        public int? MemberLevel { get; set; }
+        public sbyte? IsFromThird { get; set; }
+        public string ThirdUrl { get; set; }
+        public string ThirdToken { get; set; }
+        public string ThirdType { get; set; }
+        public sbyte? IsAble { get; set; }
+        public sbyte? IsChangePwd { get; set; }
+        public DateTime? AddTime { get; set; }
+        public DateTime? EditTime { get; set; }
+
         /// <summary>
         /// 角色ID
         /// </summary>
@@ -48,8 +68,27 @@ namespace Models
     /// <summary>
     /// 用于业务逻辑的包含用户分组信息的AdminUse模型
     /// </summary>
-    public class UserIncludeGroupView : AdminUser
+    public class UserIncludeGroupView
     {
+        [Key]
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public string UserPwd { get; set; }
+        public string Name { get; set; }
+        public string Mobile { get; set; }
+        public string Qq { get; set; }
+        public string Email { get; set; }
+        public string Postcode { get; set; }
+        public int? MemberLevel { get; set; }
+        public sbyte? IsFromThird { get; set; }
+        public string ThirdUrl { get; set; }
+        public string ThirdToken { get; set; }
+        public string ThirdType { get; set; }
+        public sbyte? IsAble { get; set; }
+        public sbyte? IsChangePwd { get; set; }
+        public DateTime? AddTime { get; set; }
+        public DateTime? EditTime { get; set; }
+
         /// <summary>
         /// 角色ID
         /// </summary>

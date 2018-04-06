@@ -5,15 +5,21 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Data.SqlClient" #>
 <#@ import namespace="System.Data" #>
-
+<#@ include file="../T4Include/FileManager.ttinclude"#>
 <#@ include file="../T4Include/MysqlDbHelper.ttinclude"#>
 <#@ include file="../T4Include/config.ttinclude"#>
+<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = Path.GetDirectoryName(Host.TemplateFile)}; #>
 
+<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+<# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
+     <# 
+        manager.StartBlock(tableName + "DAL.cs");
+     #>
 /** 
-* IDal.cs
+* <#=tableName#>DAL.cs
 *
-* 功 能： 数据层接口
-* 类 名： IDAL
+* 功 能： 表<#=tableName#>数据层
+* 类 名： <#=tableName#>
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
@@ -24,20 +30,27 @@
 *│　版权所有：成都盈辉创动科技有限公司　　　　　　　　　　　　　　│
 *└──────────────────────────────────┘
 */
+//----------<#=tableName#>开始----------
 
 using Models;
+using IDAL;
 
-namespace IDAL
+namespace DALMySql
 {
-<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
-<# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
-
-	public partial interface I<#=tableName#>DAL : IBaseDAL<<#=tableName#>>
-    {		
+	public partial class <#=tableName#>DAL : BaseDAL<<#=tableName#>>, I<#=tableName#>DAL
+    {
+		public <#=tableName#>DAL(CdyhcdDBContext db) : base(db)
+        {
+        }
     }
-<#}#>
 }
 
+//----------<#=tableName#>结束----------
 
+    <# manager.EndBlock(); #>
+<#}#>
+<#
+    manager.Process(true);
+#>
 
 

@@ -20,18 +20,55 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
-    public partial class ArticleView : Article
+    public partial class ArticleView
     {
-        public ArticleView()
-        {
-            this.ToPOCO();
-        }
+        [Key]
+        public int Id { get; set; }
+        public int? ClassId { get; set; }
+        public string Title { get; set; }
+        public string TitleColor { get; set; }
+        public string Content { get; set; }
+        public string Introduce { get; set; }
+        public string IntroduceImg { get; set; }
+        public string Author { get; set; }
+        public string Origin { get; set; }
+        public string UserName { get; set; }
+        public int? LookCount { get; set; }
+        public string AddHtmlurl { get; set; }
+        public sbyte? IsTop { get; set; }
+        public sbyte? IsMarquee { get; set; }
+        public int? Sort { get; set; }
+        public DateTime? AddTime { get; set; }
+        public DateTime? EditTime { get; set; }
+        public sbyte? IsDel { get; set; }
 
         /// <summary>
         /// 文章类别名
         /// </summary>
         [DisplayName("文章类别")]
         public string ArticleClassName { get; set; }
+
+        public ArticleView()
+        {
+        }
+
+        public ArticleView(Article article)
+        {
+            this.Id = Id;
+            this.ClassId = this.ClassId;
+            this.Title = this.Title;
+            this.TitleColor = this.TitleColor;
+            this.Content = this.Content;
+            this.UserName = this.UserName;
+            this.LookCount = this.LookCount;
+            this.AddHtmlurl = this.AddHtmlurl;
+            this.IsTop = this.IsTop;
+            this.IsMarquee = this.IsMarquee;
+            this.Introduce = this.Introduce;
+            this.IntroduceImg = this.IntroduceImg;
+            this.AddTime = this.AddTime;
+            this.EditTime = this.EditTime;
+        }       
 
         //[DataType(DataType.Date)]
         //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

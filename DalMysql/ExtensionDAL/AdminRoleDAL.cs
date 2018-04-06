@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models;
 using System.Linq;
+using System.Text;
 
 namespace DALMySql
 {
     public partial class AdminRoleDAL
     {
-        //EF上下文
-        private readonly CdyhcdDBContext _db;
-
         /// <summary>
         /// 根据用户ID查询用户的角色信息
         /// </summary>
@@ -17,13 +15,14 @@ namespace DALMySql
         public AdminRole GetRoleByUserId(int UserId)
         {
             AdminRole AdminRole = new AdminRole();
-            string queryStr = string.Empty;
-            queryStr += string.Format(@"  SELECT * FROM  AdminRole where Id=(SELECT RoleId FROM  AdminUserAdminRole WHERE UserId={0})", UserId);
-            var queryRole = _db.AdminRole.FromSql(queryStr);
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT * FROM  AdminRole where Id=(SELECT RoleId FROM ");
+            sb.Append($"AdminUserAdminRole WHERE UserId={UserId})");
+            var queryRole = _db.AdminRole.FromSql(sb.ToString());
 
             if (queryRole != null)
             {
-                AdminRole = queryRole.ToList().FirstOrDefault();//计算总页数
+                AdminRole = queryRole.FirstOrDefault();
             }
 
             return AdminRole;

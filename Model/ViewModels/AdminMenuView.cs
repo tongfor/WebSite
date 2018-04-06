@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -32,8 +33,14 @@ namespace Models
     /// 用户当前可访问菜单模型
     /// </summary>
     [Serializable]
-    public class AdminUserMenuModel
+    public class AdminUserMenuView
     {
+        /// <summary>
+        /// 虚拟主键
+        /// </summary>
+        [Key]
+        public int Id { get; set; }
+
         /// <summary>
         /// 菜单名
         /// </summary>
@@ -86,14 +93,25 @@ namespace Models
         /// 子菜单
         /// </summary>
         [Display(Name = "子菜单")]
-        public List<AdminUserMenuModel> ChildMenus { get; set; }
+        public List<AdminUserMenuView> ChildMenus { get; set; }
     }
 
     /// <summary>
     /// 用于业务逻辑的AdminRoleAdminMenuButton模型
     /// </summary>
-    public class AdminMenuRoleButtonView : AdminMenu
+    public class AdminMenuRoleButtonView
     {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int? ParentId { get; set; }
+        public string Code { get; set; }
+        public string LinkAddress { get; set; }
+        public string Icon { get; set; }
+        public int? Sort { get; set; }
+        public DateTime? AddTime { get; set; }
+        public DateTime? EditTime { get; set; }
+
         /// <summary>
         /// 角色ID
         /// </summary>

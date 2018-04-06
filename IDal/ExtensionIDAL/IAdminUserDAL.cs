@@ -52,37 +52,24 @@ namespace IDAL
 
         #endregion
 
-        #region 获取用户关联分组的数据（直接执行查询语句）
+        /// <summary>
+        /// 判断用户是否还可以注册
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        bool UserExistedByLoginName(string userName);
 
         /// <summary>
-        /// 获取用户关联分组的数据（直接执行查询语句）
+        /// 获取用户的List
         /// </summary>
-        /// <param name="groupId">组ID</param>
-        /// <param name="strWhere">查询条件(ProjectBase表用pb表示,CreativeActivityProjectShip用ap表示，EntrepreneurshipActivity用ea表示)</param>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="queryWhere"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="totalCount"></param>
+        /// <param name="isdesc"></param>
         /// <returns></returns>
-        List<UserIncludeGroupView> GetUserIncludeGroup(int groupId, string strWhere);
-
-        #endregion
-
-        #region 分页获取用户关联分组的数据并排序（直接执行查询语句）
-
-        /// <summary>
-        /// 获取用户关联分组的数据（直接执行查询语句）
-        /// </summary>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">页大小</param>
-        /// <param name="groupId">组ID</param>
-        /// <param name="strWhere">查询条件(article表用aco表示),必传</param>
-        /// <param name="orderBy">排序(article表用aco表示,ArticleClass表用acl表示)</param>
-        /// <param name="totalCount">总数</param>
-        /// <returns></returns>
-        List<UserIncludeGroupView> GetUserIncludeGroupByPage(int pageIndex, int pageSize, int groupId,
-            string strWhere,
-            string orderBy, out int totalCount);
-
-        #endregion
-
-        bool ExistUserByLoginName(string userName);
         List<AdminUser> GetAdminUserByPage<TKey>(int pageIndex, int pageSize, Expression<Func<AdminUser, bool>> queryWhere, Expression<Func<AdminUser, TKey>> orderBy, out int totalCount, bool isdesc = false);
         
     }

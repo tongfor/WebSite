@@ -27,9 +27,19 @@ namespace DALMySql
 {
     public partial class ArticleDAL
     {
-        //EF上下文
-        private readonly CdyhcdDBContext _db;
-
+        public Article GetArticleById(string id)
+        {
+            var dbQuery = _db.Article.FromSql($"Select * from Article where id = {id}");
+            //_db.Article.FromSql($"Select * from Article where id = {0}", id);
+            if (dbQuery!=null)
+            {
+                return dbQuery.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         #region 获取文章关联文章类别的数据（延时加载）
 
@@ -74,22 +84,8 @@ namespace DALMySql
             int skipIndex = (pageIndex - 1) * pageSize;
             var dbQuery = _db.Set<Article>().Where(queryWhere)
                 .Join(_db.Set<ArticleClass>(), a => a.ClassId, ac => ac.Id,
-                    (a, ac) => new ArticleView()
-                    {
-                        Id = a.Id,
-                        ClassId = a.ClassId,
-                        Title = a.Title,
-                        TitleColor = a.TitleColor,
-                        Content = a.Content,
-                        UserName = a.UserName,
-                        LookCount = a.LookCount,
-                        AddHtmlurl = a.AddHtmlurl,
-                        IsTop = a.IsTop,
-                        IsMarquee = a.IsMarquee,
-                        Introduce = a.Introduce,
-                        IntroduceImg = a.IntroduceImg,
-                        AddTime = a.AddTime,
-                        EditTime = a.EditTime,
+                    (a, ac) => new ArticleView(a)
+                    {                        
                         ArticleClassName = ac.Name
                     });
             var orderQuery = dbQuery;
@@ -144,12 +140,11 @@ namespace DALMySql
         {
             List<ArticleView> articleList = new List<ArticleView>();
             StringBuilder sb = new StringBuilder();
-            sb.Append("SELECT aco.*,acl.Name as ArticleClassName from Article as aco");
-            sb.Append("LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id ");
+            sb.Append($"SELECT aco.*,acl.Name as ArticleClassName from Article as aco");
+            sb.Append(" LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id ");
             if (!string.IsNullOrEmpty(strWhere))
             {
-                sb.Append("where 1=1 and ");
-                sb.Append(strWhere);
+                sb.Append($"where 1=1 and {strWhere}");
             }
             var queryResult =
                 _db.Set<ArticleView>().FromSql(sb.ToString());
@@ -189,8 +184,7 @@ namespace DALMySql
             sb.Append(" LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id ");
             if (!string.IsNullOrEmpty(strWhere))
             {
-                sb.Append("where 1=1 and ");
-                sb.Append(strWhere);
+                sb.Append($"where 1=1 and {strWhere}");
             }            
             if (!string.IsNullOrEmpty(orderBy))
             {

@@ -22,7 +22,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.6" />
-    <PackageReference Include="MySqlConnector" Version="0.38.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
   </ItemGroup>
 
@@ -44,6 +43,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="DALMySql.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DALMySql.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -51,8 +55,9 @@
       <LastGenOutput>config.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="dal.tt">
+    <None Update="DALMySql.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DALMySql.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

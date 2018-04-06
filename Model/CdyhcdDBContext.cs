@@ -6,7 +6,7 @@ namespace Models
 {
     public partial class CdyhcdDBContext : DbContext
     {
-        public CdyhcdDBContext(DbContextOptions<CdyhcdDBContext> options) : base(options)
+        public CdyhcdDBContext(DbContextOptions options) : base(options)
         { }
 
         public virtual DbSet<AdminBug> AdminBug { get; set; }

@@ -10,22 +10,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Idal.cs">
-      <DependentUpon>IDal.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="IDAL.tt">
-      <LastGenOutput>IDal.cs</LastGenOutput>
+      <LastGenOutput>IDAL.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="IDAL.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IDAL.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,96 @@
+﻿<#@ template language="C#" debug="True" hostspecific="True" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ include file="../T4Include/FileManager.ttinclude"#>
+<#@ include file="../T4Include/MysqlDbHelper.ttinclude"#>
+<#@ include file="../T4Include/config.ttinclude"#>
+<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = Path.GetDirectoryName(Host.TemplateFile)}; #>
+
+<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+<# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
+     <# 
+        manager.StartBlock(tableName + "BLL.cs");
+     #>
+/** 
+* <#=tableName#>BLL.cs
+*
+* 功 能： 表<#=tableName#>业务层
+* 类 名： <#=tableName#>
+*
+* Ver    变更日期             负责人  变更内容
+* ───────────────────────────────────
+* V0.01  <#=DateTime.Now.ToString()#>   N/A    初版
+*
+*┌──────────────────────────────────┐
+*│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
+*│　版权所有：成都盈辉创动科技有限公司　　　　　　　　　　　　　　│
+*└──────────────────────────────────┘
+*/
+//----------<#=tableName#>开始----------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using Models;
+using IDAL;
+using DALMySql;
+
+namespace BLL
+{
+	public partial class <#=tableName#>Service : BaseService<<#=tableName#>>
+    {
+        //EF上下文
+        protected readonly CdyhcdDBContext _db;
+
+        #region 构造函数
+
+		public <#=tableName#>Service(CdyhcdDBContext db)
+		{
+            _db = db;
+			SetIBaseDal();
+		}
+
+		#endregion
+		
+        #region 重写IBaseDal获取方法
+
+		public sealed override void SetIBaseDal()
+        {
+            IBaseDal = new DALSession(_db).I<#=tableName#>DAL;
+        }
+
+		#endregion
+
+        #region 根据条件获取模型
+
+		/// <summary>
+        /// 根据条件得到模型
+        /// </summary>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+
+		public <#=tableName#> GetModelBy(Expression<Func<<#=tableName#>, bool>> queryWhere)
+		{
+			<#=tableName#> result = this.GetListBy(queryWhere).FirstOrDefault();
+			return result;
+		}
+
+		#endregion 
+    }
+}
+
+//----------<#=tableName#>结束----------
+
+    <# manager.EndBlock(); #>
+<#}#>
+<#
+    manager.Process(true);
+#>
+
+

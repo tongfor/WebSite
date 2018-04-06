@@ -28,7 +28,7 @@ namespace IDAL
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
-        List<AdminUserMenuModel> GetAdminUserMenu(int userId);
+        List<AdminUserMenuView> GetAdminUserMenu(int userId);
 
         #endregion
 

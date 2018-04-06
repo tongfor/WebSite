@@ -20,8 +20,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using MySql.Data.MySqlClient;
-using MySqlConnector.Logging;
 
 namespace DALMySql
 {
@@ -30,9 +28,6 @@ namespace DALMySql
     /// </summary>
     public partial class AdminMenuDAL
     {
-        //EF上下文
-        private readonly CdyhcdDBContext _db;
-
         #region 获取文章关联文章类别的数据（直接执行查询语句）
 
         /// <summary>
@@ -40,17 +35,23 @@ namespace DALMySql
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
-        public List<AdminUserMenuModel> GetAdminUserMenu(int userId)
+        public List<AdminUserMenuView> GetAdminUserMenu(int userId)
         {
-            List<AdminUserMenuModel> menuList = new List<AdminUserMenuModel>();
-            StringBuilder querySb = new StringBuilder();
-            querySb.Append("select distinct(m.Name) menuname,m.Id menuid,m.Icon icon,u.Id userid,u.UserName UserName,");
-            querySb.Append("m.ParentId menuparentid,m.Sort menusort,m.LinkAddress linkaddress from AdminUser u join AdminUserAdminRole");
-            querySb.Append(" ur on u.Id=ur.UserId  join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join AdminMenu m");
-            querySb.Append(" on rmb.MenuId=m.Id where u.id=?userId order by m.ParentId,m.Sort");
-
-            var userIdParameter = new MySqlParameter("?userId", userId);
-            var queryResult = _db.Set<AdminUserMenuModel>().FromSql(querySb.ToString(), userIdParameter);
+            List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
+            StringBuilder sb = new StringBuilder();
+            //sb.Append("select TT.RowNo as Id,TT.menuname,TT.menuid,TT.icon,");
+            //sb.Append("TT.userid, TT.UserName, TT.menuparentid, TT.menusort,");
+            //sb.Append("TT.linkaddress from (");
+            //EF CORE需要AdminUserMenuViewId列
+            sb.Append("SELECT TT.AdminUserMenuViewId as Id,TT.* from (");
+            sb.Append("select distinct(m.Name) menuname,m.Id menuid,m.Icon icon,u.Id userid,u.UserName UserName,");
+            sb.Append("m.ParentId menuparentid,m.Sort menusort,m.LinkAddress linkaddress,");
+            sb.Append("@RowNo :=@RowNo + 1 AS AdminUserMenuViewId from AdminUser u join AdminUserAdminRole");
+            sb.Append(" ur on u.Id=ur.UserId  join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join AdminMenu m");
+            sb.Append(" on rmb.MenuId=m.Id,(SELECT @RowNo := 0) t ");
+            sb.Append($" where u.id={userId} order by m.ParentId,m.Sort");
+            sb.Append(") as TT");
+            var queryResult = _db.Set<AdminUserMenuView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
                 menuList = queryResult.ToList();
@@ -71,13 +72,16 @@ namespace DALMySql
         public List<AdminMenuRoleButtonView> GetMenuListIncludeRoleAndButton(int ParentMenuId, int roleId)
         {
             List<AdminMenuRoleButtonView> menuList = new List<AdminMenuRoleButtonView>();
-            string strQuery = "select am.*,rmb.RoleId as RoleId,rmb.ButtonId as ButtonId from AdminMenu as am ";
-            strQuery += " left join AdminRoleAdminMenuButton as rmb ";
-            strQuery += " on am.Id=rmb.menuid and rmb.RoleId=" + roleId + " and (rmb.ButtonId=1 or rmb.ButtonId=0) ";
-            strQuery += " where am.ParentId=" + ParentMenuId; ;
-            strQuery += " order by parentid,sort";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("select am.*,am.Id as AdminMenuId,rmb.RoleId as RoleId,");
+            sb.Append("rmb.ButtonId as ButtonId from AdminMenu as am ");
+            sb.Append(" left join AdminRoleAdminMenuButton as rmb ");
+            sb.Append($" on am.Id=rmb.menuid and rmb.RoleId={roleId}");
+            sb.Append(" and (rmb.ButtonId=1 or rmb.ButtonId=0) ");
+            sb.Append($" where am.ParentId={ParentMenuId} ");
+            sb.Append(" order by parentid,sort");
             var queryResult =
-                _db.Set<AdminMenuRoleButtonView>().FromSql(strQuery);
+                _db.Set<AdminMenuRoleButtonView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
                 menuList = queryResult.ToList();

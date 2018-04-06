@@ -5,15 +5,13 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Data.SqlClient" #>
 <#@ import namespace="System.Data" #>
-
 <#@ include file="../T4Include/MysqlDbHelper.ttinclude"#>
 <#@ include file="../T4Include/config.ttinclude"#>
-
 /** 
-* IDal.cs
+* DALSession.cs
 *
-* 功 能： 数据层接口
-* 类 名： IDAL
+* 功 能： 数据工厂
+* 类 名： DALSession
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
@@ -25,17 +23,40 @@
 *└──────────────────────────────────┘
 */
 
+using IDAL;
+using DALMySql;
 using Models;
 
-namespace IDAL
+namespace BLL
 {
-<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+	public class DALSession
+    {
+        //EF上下文
+        protected readonly CdyhcdDBContext _db;
+
+        public DALSession(CdyhcdDBContext db)
+        {
+            _db = db;
+        }
+<#
+int rownumber=1;
+foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase))
+{#>
 <# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
 
-	public partial interface I<#=tableName#>DAL : IBaseDAL<<#=tableName#>>
-    {		
+        #region <#=rownumber.ToString().PadLeft(2,'0')#> 数据接口 I<#=tableName#>DAL
+	    I<#=tableName#>DAL _i<#=tableName#>DAL;
+		public I<#=tableName#>DAL I<#=tableName#>DAL
+		{
+			get { return _i<#=tableName#>DAL ?? (_i<#=tableName#>DAL = new <#=tableName#>DAL(_db)); }
+	        set { _i<#=tableName#>DAL = value; }			
+		}
+        #endregion
+<#
+    rownumber++;
+}
+#>
     }
-<#}#>
 }
 
 

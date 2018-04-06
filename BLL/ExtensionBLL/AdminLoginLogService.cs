@@ -1,8 +1,8 @@
 ﻿/** 
-* AdminLoginLogDAL.cs
+* AdminLoginLogService.cs
 *
-* 功 能： AdminLoginLog数据层扩展实现
-* 类 名： AdminLoginLogDAL
+* 功 能： AdminLoginLog逻辑层
+* 类 名： AdminLoginLogService
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
@@ -15,16 +15,18 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Models;
+using System.Text;
+using System.Threading.Tasks;
+using IDAL;
 
-namespace DALMySql
+namespace BLL
 {
-    /// <summary>
-    /// 账号登录日志DAL
-    /// </summary>
-    public partial class AdminLoginLogDAL
+    public partial class AdminLoginLogService
     {
+        protected IAdminLoginLogDAL IAdminLoginLogDAL = new DALSession().IAdminLoginLogDAL;
+
         #region 判断登录：如果30分钟内同一个ip连续最大错误次数次登录失败，那么30分钟后才可以继续登录
 
         /// <summary>
@@ -36,33 +38,9 @@ namespace DALMySql
         /// <param name="lastLoginTime">输出参数：如果30分钟没有5次的失败登录，那么返回null；如果有，就返回下一次可以登录的时间</param>
         public bool CheckLoginErrorCount(int maxErrorCount, int tyrMinutes, string ip, out DateTime? lastLoginTime)
         {
-            lastLoginTime = null;
-            bool bResult = false;
-            if (maxErrorCount <= 0)
-            {
-                return bResult;
-            }
-            int errorLoginCount = 0;
-            try
-            {
-                DateTime compareDateTime = DateTime.Now.AddMinutes(-tyrMinutes);
-                errorLoginCount =
-                    _db.Set<AdminLoginLog>().Count(f => f.UserIp == ip && (f.IsSuccess == null || f.IsSuccess.Value == 0) && compareDateTime < f.LoginTime.Value);
-                //.Count(f =>f.UserIp == ip && f.IsSuccess.Value == false &&(DateTime.Now - f.LoginTime.Value).TotalDays < (double)tyrMinutes);
-                //.Count(f => f.UserIp == ip && f.IsSuccess == false && EntityFunctions.DiffMinutes(DateTime.Now , f.LoginTime) < tyrMinutes);
-                if (errorLoginCount >= maxErrorCount)
-                {
-                    lastLoginTime =
-                        _db.Set<AdminLoginLog>().Where(f => f.UserIp == ip && (f.IsSuccess == null || f.IsSuccess.Value == 0)).Max(p => p.LoginTime);
-                    bResult = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            return bResult;
+            return IAdminLoginLogDAL.CheckLoginErrorCount(maxErrorCount, tyrMinutes, ip, out lastLoginTime);
         }
+
         #endregion
     }
 }

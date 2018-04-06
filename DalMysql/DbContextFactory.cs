@@ -38,9 +38,8 @@ namespace DALMySql
 
             Configuration = builder.Build();
 
-            DbContextOptions<CdyhcdDBContext> options = new DbContextOptionsBuilder()
-                .UseMySql(Configuration.GetConnectionString("YhcdConnection")).Options
-                as DbContextOptions<CdyhcdDBContext>;
+            DbContextOptions options = new DbContextOptionsBuilder()
+                .UseMySQL(Configuration.GetConnectionString("YhcdConnection")).Options;
 
             CdyhcdDBContext dbContext = new CdyhcdDBContext(options);           
 
