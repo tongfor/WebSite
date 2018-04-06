@@ -6,25 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using YhcdWebSite.Service;
 
 namespace YhcdWebsite.Controllers
 {
-    public class AdminBugsController : Controller
+    public class ArticleController : Controller
     {
         private readonly CdyhcdDBContext _context;
 
-        public AdminBugsController(CdyhcdDBContext context)
+        public ArticleController(CdyhcdDBContext context)
         {
+            BLLSession.Db = context;
             _context = context;
         }
 
-        // GET: AdminBugs
+        // GET: Article
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AdminBug.ToListAsync());
+            return View(await _context.Article.ToListAsync());
         }
 
-        // GET: AdminBugs/Details/5
+        // GET: Article/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +34,38 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var adminBug = await _context.AdminBug
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (adminBug == null)
+            var article = await BLLSession.ArticleService.GetModelAsync(id.Value);
+            if (article == null)
             {
                 return NotFound();
             }
 
-            return View(adminBug);
+            return View(article);
         }
 
-        // GET: AdminBugs/Create
+        // GET: Article/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminBugs/Create
+        // POST: Article/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,UserIp,BugInfo,BugMessage,IsShow,IsSolve,AddTime,EditTime")] AdminBug adminBug)
+        public async Task<IActionResult> Create([Bind("Id,ClassId,Title,TitleColor,Content,Introduce,IntroduceImg,Author,Origin,UserName,LookCount,AddHtmlurl,IsTop,IsMarquee,Sort,AddTime,EditTime,IsDel")] Article article)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(adminBug);
+                _context.Add(article);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(adminBug);
+            return View(article);
         }
 
-        // GET: AdminBugs/Edit/5
+        // GET: Article/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +73,22 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var adminBug = await _context.AdminBug.SingleOrDefaultAsync(m => m.Id == id);
-            if (adminBug == null)
+            var article = await _context.Article.SingleOrDefaultAsync(m => m.Id == id);
+            if (article == null)
             {
                 return NotFound();
             }
-            return View(adminBug);
+            return View(article);
         }
 
-        // POST: AdminBugs/Edit/5
+        // POST: Article/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,UserIp,BugInfo,BugMessage,IsShow,IsSolve,AddTime,EditTime")] AdminBug adminBug)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassId,Title,TitleColor,Content,Introduce,IntroduceImg,Author,Origin,UserName,LookCount,AddHtmlurl,IsTop,IsMarquee,Sort,AddTime,EditTime,IsDel")] Article article)
         {
-            if (id != adminBug.Id)
+            if (id != article.Id)
             {
                 return NotFound();
             }
@@ -96,12 +97,12 @@ namespace YhcdWebsite.Controllers
             {
                 try
                 {
-                    _context.Update(adminBug);
+                    _context.Update(article);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdminBugExists(adminBug.Id))
+                    if (!ArticleExists(article.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +113,10 @@ namespace YhcdWebsite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(adminBug);
+            return View(article);
         }
 
-        // GET: AdminBugs/Delete/5
+        // GET: Article/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +124,30 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var adminBug = await _context.AdminBug
+            var article = await _context.Article
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (adminBug == null)
+            if (article == null)
             {
                 return NotFound();
             }
 
-            return View(adminBug);
+            return View(article);
         }
 
-        // POST: AdminBugs/Delete/5
+        // POST: Article/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var adminBug = await _context.AdminBug.SingleOrDefaultAsync(m => m.Id == id);
-            _context.AdminBug.Remove(adminBug);
+            var article = await _context.Article.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Article.Remove(article);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AdminBugExists(int id)
+        private bool ArticleExists(int id)
         {
-            return _context.AdminBug.Any(e => e.Id == id);
+            return _context.Article.Any(e => e.Id == id);
         }
     }
 }

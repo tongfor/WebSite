@@ -155,8 +155,7 @@ namespace IDAL
         /// <param name="strOrderBy">排序条件字符串，如如Id desc,ParentId asc,其中asc可以省略</param>
         /// <param name="totalCount">数据总数</param>
         /// <returns></returns>
-        List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere,
-            string strOrderBy, out int totalCount);
+        List<T> GetPageListBy(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy, out int totalCount);
 
         #endregion
     }

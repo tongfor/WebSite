@@ -192,9 +192,9 @@ namespace BLL
         /// <param name="totalCount">数据总数</param>
         /// <param name="isDesc">是否降序</param>
         /// <returns></returns>
-        public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy, out int totalCount)
+        public List<T> GetPageListBy(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy, out int totalCount)
         {
-            return IBaseDal.GetPageListBy<TKey>(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
+            return IBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
         }
 
         #endregion 根据条件分页查询数据并输出总行数(多条件排序)

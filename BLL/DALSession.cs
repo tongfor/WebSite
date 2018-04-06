@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2018/4/6 18:09:29   N/A    初版
+* V0.01  2018/4/6 18:41:33   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -15,13 +15,13 @@
 */
 
 using IDAL;
-using DALMySql;
 using Models;
+using DALMySql;
 
 namespace BLL
 {
 	public class DALSession
-    {
+	{
         //EF上下文
         protected readonly CdyhcdDBContext _db;
 
@@ -31,6 +31,7 @@ namespace BLL
         }
 
         #region 01 数据接口 IAdminBugDAL
+
 	    IAdminBugDAL _iAdminBugDAL;
 		public IAdminBugDAL IAdminBugDAL
 		{
@@ -40,6 +41,7 @@ namespace BLL
         #endregion
 
         #region 02 数据接口 IAdminButtonDAL
+
 	    IAdminButtonDAL _iAdminButtonDAL;
 		public IAdminButtonDAL IAdminButtonDAL
 		{
@@ -49,6 +51,7 @@ namespace BLL
         #endregion
 
         #region 03 数据接口 IAdminDepartmentDAL
+
 	    IAdminDepartmentDAL _iAdminDepartmentDAL;
 		public IAdminDepartmentDAL IAdminDepartmentDAL
 		{
@@ -58,6 +61,7 @@ namespace BLL
         #endregion
 
         #region 04 数据接口 IAdminLoginLogDAL
+
 	    IAdminLoginLogDAL _iAdminLoginLogDAL;
 		public IAdminLoginLogDAL IAdminLoginLogDAL
 		{
@@ -67,6 +71,7 @@ namespace BLL
         #endregion
 
         #region 05 数据接口 IAdminMenuDAL
+
 	    IAdminMenuDAL _iAdminMenuDAL;
 		public IAdminMenuDAL IAdminMenuDAL
 		{
@@ -76,6 +81,7 @@ namespace BLL
         #endregion
 
         #region 06 数据接口 IAdminMenuAdminButtonDAL
+
 	    IAdminMenuAdminButtonDAL _iAdminMenuAdminButtonDAL;
 		public IAdminMenuAdminButtonDAL IAdminMenuAdminButtonDAL
 		{
@@ -85,6 +91,7 @@ namespace BLL
         #endregion
 
         #region 07 数据接口 IAdminOperateLogDAL
+
 	    IAdminOperateLogDAL _iAdminOperateLogDAL;
 		public IAdminOperateLogDAL IAdminOperateLogDAL
 		{
@@ -94,6 +101,7 @@ namespace BLL
         #endregion
 
         #region 08 数据接口 IAdminRoleDAL
+
 	    IAdminRoleDAL _iAdminRoleDAL;
 		public IAdminRoleDAL IAdminRoleDAL
 		{
@@ -103,6 +111,7 @@ namespace BLL
         #endregion
 
         #region 09 数据接口 IAdminRoleAdminMenuButtonDAL
+
 	    IAdminRoleAdminMenuButtonDAL _iAdminRoleAdminMenuButtonDAL;
 		public IAdminRoleAdminMenuButtonDAL IAdminRoleAdminMenuButtonDAL
 		{
@@ -112,6 +121,7 @@ namespace BLL
         #endregion
 
         #region 10 数据接口 IAdminUserDAL
+
 	    IAdminUserDAL _iAdminUserDAL;
 		public IAdminUserDAL IAdminUserDAL
 		{
@@ -121,6 +131,7 @@ namespace BLL
         #endregion
 
         #region 11 数据接口 IAdminUserAdminDepartmentDAL
+
 	    IAdminUserAdminDepartmentDAL _iAdminUserAdminDepartmentDAL;
 		public IAdminUserAdminDepartmentDAL IAdminUserAdminDepartmentDAL
 		{
@@ -130,6 +141,7 @@ namespace BLL
         #endregion
 
         #region 12 数据接口 IAdminUserAdminRoleDAL
+
 	    IAdminUserAdminRoleDAL _iAdminUserAdminRoleDAL;
 		public IAdminUserAdminRoleDAL IAdminUserAdminRoleDAL
 		{
@@ -139,6 +151,7 @@ namespace BLL
         #endregion
 
         #region 13 数据接口 IArticleDAL
+
 	    IArticleDAL _iArticleDAL;
 		public IArticleDAL IArticleDAL
 		{
@@ -148,6 +161,7 @@ namespace BLL
         #endregion
 
         #region 14 数据接口 IArticleClassDAL
+
 	    IArticleClassDAL _iArticleClassDAL;
 		public IArticleClassDAL IArticleClassDAL
 		{
@@ -157,6 +171,7 @@ namespace BLL
         #endregion
 
         #region 15 数据接口 IBoardDAL
+
 	    IBoardDAL _iBoardDAL;
 		public IBoardDAL IBoardDAL
 		{
@@ -166,6 +181,7 @@ namespace BLL
         #endregion
 
         #region 16 数据接口 IParameterDAL
+
 	    IParameterDAL _iParameterDAL;
 		public IParameterDAL IParameterDAL
 		{

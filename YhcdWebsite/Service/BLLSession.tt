@@ -5,13 +5,13 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Data.SqlClient" #>
 <#@ import namespace="System.Data" #>
-<#@ include file="../T4Include/MysqlDbHelper.ttinclude"#>
-<#@ include file="../T4Include/config.ttinclude"#>
-/** 
-* DALSession.cs
+<#@ include file="../../T4Include/MysqlDbHelper.ttinclude"#>
+<#@ include file="../../T4Include/config.ttinclude"#>
+ /** 
+* BLLSession.cs
 *
-* 功 能： 数据工厂
-* 类 名： DALSession
+* 功 能： 逻辑层工厂
+* 类 名： BLLSession
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
@@ -23,34 +23,28 @@
 *└──────────────────────────────────┘
 */
 
-using IDAL;
+using BLL;
 using Models;
-using DALMySql;
 
-namespace BLL
+namespace YhcdWebSite.Service
 {
-	public class DALSession
+	public static class BLLSession
 	{
         //EF上下文
-        protected readonly CdyhcdDBContext _db;
-
-        public DALSession(CdyhcdDBContext db)
-        {
-            _db = db;
-        }
+        public static CdyhcdDBContext Db { get; set; }
 <#
 int rownumber=1;
 foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase))
 {#>
 <# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
 
-        #region <#=rownumber.ToString().PadLeft(2,'0')#> 数据接口 I<#=tableName#>DAL
+        #region <#=rownumber.ToString().PadLeft(2,'0')#> 逻辑层缓存 I<#=tableName#>Service
 
-	    I<#=tableName#>DAL _i<#=tableName#>DAL;
-		public I<#=tableName#>DAL I<#=tableName#>DAL
+	    static <#=tableName#>Service _<#=MysqlDbHelper.ToFirstLower(tableName)#>Service;
+		public static <#=tableName#>Service <#=tableName#>Service
 		{
-			get { return _i<#=tableName#>DAL ?? (_i<#=tableName#>DAL = new <#=tableName#>DAL(_db)); }
-	        set { _i<#=tableName#>DAL = value; }			
+			get { return _<#=MysqlDbHelper.ToFirstLower(tableName)#>Service ?? (_<#=MysqlDbHelper.ToFirstLower(tableName)#>Service = new <#=tableName#>Service(Db)); }
+	        set { _<#=MysqlDbHelper.ToFirstLower(tableName)#>Service = value; }			
 		}
         #endregion
 <#

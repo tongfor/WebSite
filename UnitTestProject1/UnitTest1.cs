@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace UnitTestProject1
 {
@@ -29,6 +30,7 @@ namespace UnitTestProject1
             //var um2 = menuDal.GetMenuListIncludeRoleAndButton(0, 1);
 
             var r1 = roleDal.GetRoleByUserId(1);
+            var a1 = dal.GetPageListByAsync(1, 3, f => f.ClassId == 2, " LookCount desc, AddTime desc");
 
             //var u1 = userDal.GetModelByUserName("admin");
             //var u2 = userDal.GetModelByUserNameAndPwd("super", "9CE853EB7EE8E362E1D121EB4DF2DC91");

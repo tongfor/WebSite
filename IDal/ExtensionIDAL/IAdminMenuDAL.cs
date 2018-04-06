@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Models;
 
 namespace IDAL
@@ -30,6 +31,13 @@ namespace IDAL
         /// <returns></returns>
         List<AdminUserMenuView> GetAdminUserMenu(int userId);
 
+        /// <summary>
+        /// 异步根据用户ID获取当前用户能够查询的菜单List（直接执行查询语句）
+        /// </summary>
+        /// <param name="userId">用户ID</param>
+        /// <returns></returns>
+        Task<List<AdminUserMenuView>> GetAdminUserMenuAsync(int userId);
+
         #endregion
 
         #region 根据用户组获取关联按钮的菜单数据（直接执行查询语句）
@@ -41,6 +49,15 @@ namespace IDAL
         /// <param name="roleId"></param>
         /// <returns></returns>
         List<AdminMenuRoleButtonView> GetMenuListIncludeRoleAndButton(int ParentMenuId, int roleId);
+
+        /// <summary>
+        /// 异步根据用户组获取关联按钮的菜单数据（直接执行查询语句）
+        /// </summary>
+        /// <param name="ParentMenuId"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        Task<List<AdminMenuRoleButtonView>> GetMenuListIncludeRoleAndButtonAsync(int ParentMenuId, int roleId);
+
         #endregion
     }
 }

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -27,19 +28,21 @@ namespace DALMySql
 {
     public partial class ArticleDAL
     {
-        public Article GetArticleById(string id)
-        {
-            var dbQuery = _db.Article.FromSql($"Select * from Article where id = {id}");
-            //_db.Article.FromSql($"Select * from Article where id = {0}", id);
-            if (dbQuery!=null)
-            {
-                return dbQuery.FirstOrDefault();
-            }
-            else
-            {
-                return null;
-            }
-        }
+        #region annotation
+        //public Article GetArticleById(string id)
+        //{
+        //    var dbQuery = _db.Article.FromSql($"Select * from Article where id = {id}");
+        //    //_db.Article.FromSql($"Select * from Article where id = {0}", id);
+        //    if (dbQuery!=null)
+        //    {
+        //        return dbQuery.FirstOrDefault();
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+        #endregion annotation
 
         #region 获取文章关联文章类别的数据（延时加载）
 
@@ -57,6 +60,24 @@ namespace DALMySql
             if (dbQuery != null)
             {
                 articleList = dbQuery.ToList();
+            }
+            return articleList;
+        }
+
+        /// <summary>
+        /// 异步获取文章关联文章类别的数据（延时加载）
+        /// </summary>
+        /// <param name="queryWhere">对Article的查询lamdba表达式</param>
+        /// <returns></returns>
+        public async Task<List<ArticleIncludeClassNameView>> GetArticleIncludeClassAsync(Expression<Func<Article, bool>> queryWhere)
+        {
+            List<ArticleIncludeClassNameView> articleList = new List<ArticleIncludeClassNameView>();
+            var dbQuery = _db.Set<Article>().Where(queryWhere)
+                .Join(_db.Set<ArticleClass>(), aco => aco.ClassId, acl => acl.Id,
+                    (aco, acl) => new ArticleIncludeClassNameView { Article = aco, ArticleClassName = acl.Name });
+            if (dbQuery != null)
+            {
+                articleList = await dbQuery.ToListAsync();
             }
             return articleList;
         }
@@ -85,7 +106,7 @@ namespace DALMySql
             var dbQuery = _db.Set<Article>().Where(queryWhere)
                 .Join(_db.Set<ArticleClass>(), a => a.ClassId, ac => ac.Id,
                     (a, ac) => new ArticleView(a)
-                    {                        
+                    {
                         ArticleClassName = ac.Name
                     });
             var orderQuery = dbQuery;
@@ -125,6 +146,25 @@ namespace DALMySql
             articleViewList = articleViewList.Skip(skipIndex).Take(pageSize).ToList();
             totalCount = dbQuery.Count();
             return articleViewList;
+        }       
+
+        /// <summary>
+        /// 异步分页获取文章关联文章类别的数据并排序（延时加载）
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">对Article的查询lamdba表达式</param>
+        /// <param name="strOrderBy">排序lamdba表达式</param>
+        /// <param name="totalCount">总数</param>
+        /// <returns></returns>
+        public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, Expression<Func<Article, bool>> queryWhere, string strOrderBy)
+        {
+            var result = new PageData<ArticleView>
+            {
+                DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, queryWhere, strOrderBy, out int totalCount),
+                TotalCount = totalCount
+            };
+            return result;
         }
 
         #endregion
@@ -155,6 +195,30 @@ namespace DALMySql
             return articleList;
         }
 
+        /// <summary>
+        /// 异步获取文章关联文章类别的数据（直接执行查询语句）
+        /// </summary>
+        /// <param name="strWhere">查询条件(Article表用aco表示)</param>
+        /// <returns></returns>
+        public async Task<List<ArticleView>> GetArticleIncludeClassAsync(string strWhere)
+        {
+            List<ArticleView> articleList = new List<ArticleView>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"SELECT aco.*,acl.Name as ArticleClassName from Article as aco");
+            sb.Append(" LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id ");
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                sb.Append($"where 1=1 and {strWhere}");
+            }
+            var queryResult =
+                _db.Set<ArticleView>().FromSql(sb.ToString());
+            if (queryResult != null)
+            {
+                articleList = await queryResult.ToListAsync();
+            }
+            return articleList;
+        }
+
         #endregion
 
         #region 分页获取文章关联文章类别的数据并排序（直接执行查询语句）
@@ -168,8 +232,7 @@ namespace DALMySql
         /// <param name="orderBy">排序(Article表用aco表示,ArticleClass表用acl表示)</param>
         /// <param name="totalCount">总数</param>
         /// <returns></returns>
-        public List<ArticleView> GetOrderArticleIncludeClassByPage(int pageIndex, int pageSize, string strWhere,
-            string orderBy, out int totalCount)
+        public List<ArticleView> GetOrderArticleIncludeClassByPage(int pageIndex, int pageSize, string strWhere, string orderBy, out int totalCount)
         {
 
             List<ArticleView> articleList = new List<ArticleView>();
@@ -185,7 +248,7 @@ namespace DALMySql
             if (!string.IsNullOrEmpty(strWhere))
             {
                 sb.Append($"where 1=1 and {strWhere}");
-            }            
+            }
             if (!string.IsNullOrEmpty(orderBy))
             {
                 sb.AppendFormat(" order by {0} ", orderBy);
@@ -200,6 +263,53 @@ namespace DALMySql
             return articleList;
         }
 
+        /// <summary>
+        /// 异步获取文章关联文章类别的数据（直接执行查询语句）
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="strWhere">查询条件(Article表用aco表示),必传</param>
+        /// <param name="orderBy">排序(Article表用aco表示,ArticleClass表用acl表示)</param>
+        /// <param name="totalCount">总数</param>
+        /// <returns></returns>
+        public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, string strWhere, string orderBy)
+        {
+            var result = new PageData<ArticleView>
+            {
+                DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, strWhere, orderBy, out int totalCount),
+                TotalCount = totalCount
+            };
+            return result;
+        }
+
         #endregion
+
+        #region 点击量累加
+
+        /// <summary>
+        /// 根据文章ID点击量累加
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int AccumulationClickCount(int id)
+        {
+            string strSql = $"update Article set LookCount = LookCount + 1 where {id}";
+            int resultCount = _db.Database.ExecuteSqlCommand(strSql);
+            return resultCount;
+        }
+
+        /// <summary>
+        /// 异步根据文章ID点击量累加
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<int> AccumulationClickCountAsync(int id)
+        {
+            string strSql = $"update Article set LookCount = LookCount + 1 where {id}";
+            int resultCount = await _db.Database.ExecuteSqlCommandAsync(strSql);
+            return resultCount;
+        }
+
+        #endregion 点击量累加
     }
 }

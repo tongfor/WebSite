@@ -25,9 +25,9 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="DALSession.cs">
-      <DependentUpon>DALSession.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>DALSession.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -37,8 +37,8 @@
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="DALSession.tt">
-      <LastGenOutput>DALSession.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DALSession.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

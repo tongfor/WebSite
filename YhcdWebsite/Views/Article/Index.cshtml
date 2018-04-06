@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Models.Article>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClassId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TitleColor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Content)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Introduce)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IntroduceImg)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Author)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Origin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LookCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddHtmlurl)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsTop)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsMarquee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sort)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EditTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsDel)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleColor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Introduce)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntroduceImg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Origin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LookCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddHtmlurl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsTop)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsMarquee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sort)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EditTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDel)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

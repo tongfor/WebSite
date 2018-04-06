@@ -33,6 +33,8 @@
             return firstUpperFile;
         }
 
+         #endregion
+
         // 将字符串设置成首字母大写
         public static string ToFirstUpper(string field)
         {
@@ -45,8 +47,19 @@
             }
             return result;
         }
-
-        #endregion
+       
+        // 将字符串设置成首字母小写
+        public static string ToFirstLower(string field)
+        {
+            string first = field.Substring(0, 1).ToLowerInvariant();
+            string result = first;
+            if (field.Length > 1)
+            {
+                string after = field.Substring(1);
+                result = first + after;
+            }
+            return result;
+        }
 
         #region 生成简单的sql语句
         public static string GetInsertSql(string connectionString, string database, string tableName)

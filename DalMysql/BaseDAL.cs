@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace DALMySql
 {
@@ -37,9 +38,25 @@ namespace DALMySql
 
         #region 根据主键获取模型
 
+        /// <summary>
+        /// 根据主键获取模型
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public T GetModel(int id)
         {
             return _db.Set<T>().Find(id);
+        }
+
+        /// <summary>
+        /// 异步根据主键获取模型
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<T> GetModelAsync(int id)
+        {
+            var model = await _db.Set<T>().FindAsync(id);
+            return model;
         }
 
         #endregion 根据主键获取模型
@@ -61,6 +78,21 @@ namespace DALMySql
             return result;
         }
 
+        /// <summary>
+        /// 异步添加数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <returns></returns>
+        public async Task<int> AddAsync(T model)
+        {
+            int result;
+
+            _db.Set<T>().Add(model);
+
+            result = await _db.SaveChangesAsync();
+            return result;
+        }
+
         #endregion
 
         #region 根据ID删除数据
@@ -78,6 +110,22 @@ namespace DALMySql
             _db.Set<T>().Remove(model);
 
             result = _db.SaveChanges();
+            return result;
+        }
+
+        /// <summary>
+        /// 异步根据ID删除数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <returns></returns>
+        public async Task<int> DelAsync(T model)
+        {
+            int result;
+
+            _db.Set<T>().Attach(model);
+            _db.Set<T>().Remove(model);
+
+            result = await _db.SaveChangesAsync();
             return result;
         }
 
@@ -102,6 +150,26 @@ namespace DALMySql
             });
 
             result = _db.SaveChanges();
+            return result;
+        }
+
+        /// <summary>
+        /// 根据条件删除数据
+        /// </summary>
+        /// <param name="delWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+        public async Task<int> DelByAsync(Expression<Func<T, bool>> delWhere)
+        {
+            int result;
+
+            List<T> delList = _db.Set<T>().Where(delWhere).ToList();
+            delList.ForEach(d =>
+            {
+                _db.Set<T>().Attach(d);
+                _db.Set<T>().Remove(d);
+            });
+
+            result = await _db.SaveChangesAsync();
             return result;
         }
 
@@ -134,6 +202,34 @@ namespace DALMySql
             }
 
             result = _db.SaveChanges();
+            return result;
+        }
+
+        /// <summary>
+        /// 异步修改数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <param name="proNames">要修改的字段</param>
+        /// <returns></returns>
+        public async Task<int> ModifyAsync(T model, params string[] proNames)
+        {
+            int result;
+
+            EntityEntry entry = _db.Entry<T>(model);
+            if (proNames.Length > 0)
+            {
+                //entry.State = EntityState.Unchanged;
+                foreach (string proName in proNames)
+                {
+                    entry.Property(proName).IsModified = true;
+                }
+            }
+            else//未指明则全部修改
+            {
+                entry.State = EntityState.Modified;
+            }
+
+            result = await _db.SaveChangesAsync();
             return result;
         }
 
@@ -191,6 +287,56 @@ namespace DALMySql
             return result;
         }
 
+        /// <summary>
+        /// 批量修改数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <param name="modifyWhere">条件Lambda表达式</param>
+        /// <param name="proNames">要修改的字段</param>
+        /// <returns></returns>
+        /// 
+        public async Task<int> ModifyByAsync(T model, Expression<Func<T, bool>> modifyWhere, params string[] proNames)
+        {
+            int result;
+
+            List<T> modifyList = _db.Set<T>().Where(modifyWhere).ToList();
+            modifyList.ForEach(m =>
+            {
+                Modify(model, proNames);
+            });
+            result = await _db.SaveChangesAsync();
+
+            #region 反射实现
+            //Type t = typeof(T);
+            //List<PropertyInfo> proInfos = t.GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
+            //Dictionary<string, PropertyInfo> dicPros = new Dictionary<string, PropertyInfo>();
+
+            //proInfos.ForEach(p =>
+            //{
+            //    if (proNames.Contains(p.Name))
+            //    {
+            //        dicPros.Add(p.Name, p);
+            //    }
+            //});
+
+            //foreach (string proName in proNames)
+            //{
+            //    if (dicPros.Keys.Contains(proName))
+            //    {
+            //        PropertyInfo proInfo = dicPros[proName];
+            //        object newValue = dicPros[proName].GetValue(model, null);
+            //        foreach (T modify in modifyList)
+            //        {
+            //            proInfo.SetValue(modify, newValue, null);
+            //        }
+            //    }
+            //}
+            //return _db.SaveChanges();
+            #endregion 反射实现
+
+            return result;
+        }
+
         #endregion
 
         #region 根据条件查询数据
@@ -203,6 +349,17 @@ namespace DALMySql
         public List<T> GetListBy(Expression<Func<T, bool>> queryWhere)
         {
             var results = _db.Set<T>().Where(queryWhere).ToList();
+            return results;
+        }
+
+        /// <summary>
+        /// 异步根据条件查询数据
+        /// </summary>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetListByAsync(Expression<Func<T, bool>> queryWhere)
+        {
+            var results = await _db.Set<T>().Where(queryWhere).ToListAsync();
             return results;
         }
 
@@ -229,6 +386,29 @@ namespace DALMySql
             else
             {
                 var results = _db.Set<T>().Where(queryWhere).OrderBy(orderBy).ToList();
+                return results;
+            }
+        }
+
+        /// <summary>
+        /// 异步根据条件查询数据
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="orderBy">排序Lambda表达式</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        /// 
+        public async Task<List<T>> GetOrderListByAsync<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
+        {
+            if (isDesc)
+            {
+                var results = await _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).ToListAsync();
+                return results;
+            }
+            else
+            {
+                var results = await _db.Set<T>().Where(queryWhere).OrderBy(orderBy).ToListAsync();
                 return results;
             }
         }
@@ -267,12 +447,42 @@ namespace DALMySql
             }
         }
 
+        /// <summary>
+        /// 异步根据条件分页查询数据并排序
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        ///  <param name="pageIndex">页码</param>
+        /// <param name="pagesize">页大小</param>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="orderBy">排序Lambda表达式</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        /// 
+        public async Task<List<T>> GetPageListByAsync<TKey>(int pageIndex, int pagesize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
+        {
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pagesize;
+            if (isDesc)
+            {
+                var results = await _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
+                return results;
+            }
+            else
+            {
+                var results = await _db.Set<T>().Where(queryWhere).OrderBy(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
+                return results;
+            }
+        }
+
         #endregion
 
         #region 根据条件分页查询数据并输出总行数
 
         /// <summary>
-        /// 根据条件分页查询数据并并输出总行数
+        /// 根据条件分页查询数据并输出总行数
         /// </summary> 
         /// <typeparam name="TKey">排序字段类型</typeparam>
         ///  <param name="pageIndex">页码</param>
@@ -296,12 +506,37 @@ namespace DALMySql
             return results;
         }
 
+        /// <summary>
+        /// 根据条件分页查询数据并并输出总行数
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        ///  <param name="pageIndex">页码</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="orderBy">排序Lambda表达式</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        public async Task<PageData<T>> GetPageDataAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
+        {
+            var results = new PageData<T>
+            {
+                DataList = GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, out int totalCount, isDesc),
+                TotalCount = totalCount
+            };
+            return results;
+        }
+        private async Task<int> GetTotal(int totalCount, Expression<Func<T, bool>> queryWhere)
+        {
+            int result = await _db.Set<T>().CountAsync(queryWhere);
+            return result;
+        }
+
         #endregion
 
         #region 根据条件分页查询数据并输出总行数(多条件排序)
 
         /// <summary>
-        /// 根据条件分页查询数据并并输出总行数
+        /// 根据条件分页查询数据，多条件排序，并输出总行数
         /// </summary> 
         /// <typeparam name="TKey">排序字段类型</typeparam>
         ///  <param name="pageIndex">页码</param>
@@ -310,8 +545,7 @@ namespace DALMySql
         /// <param name="strOrderBy">排序条件字符串，如如Id desc,ParentId asc,其中asc可以省略</param>
         /// <param name="totalCount">数据总数</param>
         /// <returns></returns>
-        public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere,
-            string strOrderBy, out int totalCount)
+        public List<T> GetPageListBy(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy, out int totalCount)
         {
             if (pageIndex < 1)
             {
@@ -354,6 +588,26 @@ namespace DALMySql
             }
             var results = orderResult.Skip(skipIndex).Take(pageSize).ToList();
             totalCount = queryResult.Count();
+            return results;
+        }
+
+        /// <summary>
+        /// 根据条件分页查询数据，多条件排序，并输出总行数
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        ///  <param name="pageIndex">页码</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="strOrderBy">排序条件字符串，如如Id desc,ParentId asc,其中asc可以省略</param>
+        /// <param name="totalCount">数据总数</param>
+        /// <returns></returns>
+        public async Task<PageData<T>> GetPageListByAsync(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy)
+        {
+            var results = new PageData<T>
+            {
+                DataList = GetPageListBy(pageIndex, pageSize, queryWhere, strOrderBy, out int totalCount),
+                TotalCount = totalCount
+            };
             return results;
         }
 
