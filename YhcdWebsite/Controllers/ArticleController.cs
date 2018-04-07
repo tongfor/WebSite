@@ -34,7 +34,7 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var article = await BLLSession.ArticleService.GetModelAsync(id.Value);
+            var article = BLLSession.ArticleService.GetModel(id.Value);
             if (article == null)
             {
                 return NotFound();

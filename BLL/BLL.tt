@@ -13,10 +13,10 @@
 <#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
 <# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
      <# 
-        manager.StartBlock(tableName + "BLL.cs");
+        manager.StartBlock(tableName + "Service.cs");
      #>
 /** 
-* <#=tableName#>BLL.cs
+* <#=tableName#>Service.cs
 *
 * 功 能： 表<#=tableName#>业务层
 * 类 名： <#=tableName#>

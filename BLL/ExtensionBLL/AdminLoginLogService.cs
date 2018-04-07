@@ -19,13 +19,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DALMySql;
 using IDAL;
+using Models;
 
 namespace BLL
 {
     public partial class AdminLoginLogService
     {
-        protected IAdminLoginLogDAL IAdminLoginLogDAL = new DALSession().IAdminLoginLogDAL;
+        protected IAdminLoginLogDAL IAdminLoginLogDAL;
 
         #region 判断登录：如果30分钟内同一个ip连续最大错误次数次登录失败，那么30分钟后才可以继续登录
 
@@ -39,6 +41,19 @@ namespace BLL
         public bool CheckLoginErrorCount(int maxErrorCount, int tyrMinutes, string ip, out DateTime? lastLoginTime)
         {
             return IAdminLoginLogDAL.CheckLoginErrorCount(maxErrorCount, tyrMinutes, ip, out lastLoginTime);
+        }
+
+        /// <summary>
+        /// 异步判断登录：如果30分钟内同一个ip连续最大错误次数次登录失败，那么30分钟后才可以继续登录
+        /// </summary>
+        /// <param name="maxErrorCount">最大错误次数,如果小于等于0则不判断</param>
+        /// <param name="tryMinutes">多少分钟后可重新登录</param>
+        /// <param name="ip">用户ip</param>
+        /// <returns>元组，</returns>
+        public async Task<Tuple<bool, DateTime>> CheckLoginErrorCountAsync(int maxErrorCount, int tryMinutes, string ip)
+        {
+            Tuple<bool, DateTime> result = await IAdminLoginLogDAL.CheckLoginErrorCountAsync(maxErrorCount, tryMinutes, ip);
+            return result;
         }
 
         #endregion
