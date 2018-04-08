@@ -15,6 +15,7 @@
 *└──────────────────────────────────┘
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -143,6 +144,120 @@ namespace DALMySql
                 menuList = await queryResult.ToListAsync();
             }
             return menuList;
+        }
+
+        #endregion
+
+        #region 删除数据(使用事务，包括关联数据)
+
+        /// <summary>
+        ///  删除数据(使用事务，包括关联数据)
+        /// </summary>
+        /// <param name="id">ID</param>
+        public void DelIncludeRelatedData(int id)
+        {
+            using (var tran = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    string strsql = $"delete from AdminMenu where id = {id}";
+                    string relatedStrSql = $"delete form AdminRoleAdminMenuButton where MenuId = {id}";
+                    _db.AdminRoleAdminMenuButton.FromSql(relatedStrSql);
+                    _db.AdminMenu.FromSql(strsql);
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    throw new Exception("删除数据异常，在" + ex.StackTrace.ToString() + "。错误信息：" + ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        ///  异步删除数据(使用事务，包括关联数据)
+        /// </summary>
+        /// <param name="id">ID</param>
+        public async void DelIncludeRelatedDataAsync(int id)
+        {
+            await Task.Run(() =>
+            {
+                using (var tran = _db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        string strsql = $"delete from AdminMenu where id = {id}";
+                        string relatedStrSql = $"delete form AdminRoleAdminMenuButton where MenuId = {id}";
+
+                        _db.AdminRoleAdminMenuButton.FromSql(relatedStrSql);
+                        _db.AdminMenu.FromSql(strsql);
+
+                        tran.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        tran.Rollback();
+                        throw new Exception("异步删除数据异常，在" + ex.StackTrace.ToString() + "。错误信息：" + ex.Message);
+                    }
+                }
+            });
+        }
+
+        #endregion 删除数据(包括关联数据)
+
+        #region 批量删除数据(使用事务，包括关联数据)
+
+        /// <summary>
+        ///  批量删除数据(使用事务，包括关联数据)
+        /// </summary>
+        /// <param name="ids">ID列表</param>
+        public void DelIncludeRelatedData(List<int> ids)
+        {
+            using (var tran = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    string strIds = string.Join(',', ids);
+                    string strsql = $"delete from AdminMenu where id in ({strIds})";
+                    string relatedStrSql = $"delete form AdminRoleAdminMenuButton where MenuId in ({strIds})";
+                    _db.AdminRoleAdminMenuButton.FromSql(relatedStrSql);
+                    _db.AdminMenu.FromSql(strsql);
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    throw new Exception("批量删除数据异常，在" + ex.StackTrace.ToString() + "。错误信息：" + ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        ///  异步批量删除数据(使用事务，包括关联数据)
+        /// </summary>
+        /// <param name="ids">ID列表</param>
+        public async void DelIncludeRelatedDataAsync(List<int> ids)
+        {
+            await Task.Run(() =>
+            {
+                using (var tran = _db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        string strIds = string.Join(',', ids);
+                        string strsql = $"delete from AdminMenu where id in ({strIds})";
+                        string relatedStrSql = $"delete form AdminRoleAdminMenuButton where MenuId in ({strIds})";
+                        _db.AdminRoleAdminMenuButton.FromSql(relatedStrSql);
+                        _db.AdminMenu.FromSql(strsql);
+                        tran.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        tran.Rollback();
+                        throw new Exception("异步批量删除数据异常，在" + ex.StackTrace.ToString() + "。错误信息：" + ex.Message);
+                    }
+                }
+            });            
         }
 
         #endregion

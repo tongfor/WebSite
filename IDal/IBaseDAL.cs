@@ -82,7 +82,15 @@ namespace IDAL
         /// <param name="model">模型</param>
         /// <param name="proNames">要修改的字段</param>
         /// <returns></returns>
-        int Modify(T model, params string[] proNames);        
+        int Modify(T model, params string[] proNames);
+
+        /// <summary>
+        /// 异步修改数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <param name="proNames">要修改的字段</param>
+        /// <returns></returns>
+        Task<int> ModifyAsync(T model, params string[] proNames);
 
         #endregion
 

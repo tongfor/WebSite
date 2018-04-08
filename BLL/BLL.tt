@@ -47,6 +47,8 @@ namespace BLL
     {
         //EF上下文
         protected readonly CdyhcdDBContext _db;
+        //操作DAL
+        protected I<#=tableName#>DAL <#=MysqlDbHelper.ToFirstLower(tableName)#>DAL;
 
         #region 构造函数
 
@@ -62,7 +64,7 @@ namespace BLL
 
 		public sealed override void SetIBaseDal()
         {
-            IBaseDal = new DALSession(_db).I<#=tableName#>DAL;
+            IBaseDal = <#=MysqlDbHelper.ToFirstLower(tableName)#>DAL = new DALSession(_db).I<#=tableName#>DAL;
         }
 
 		#endregion

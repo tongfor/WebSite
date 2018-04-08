@@ -17,8 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Common;
 using IDAL;
+using Models;
 
 namespace BLL
 {
@@ -48,6 +50,17 @@ namespace BLL
         {
             return IBaseDal.Add(model);
         }
+
+        /// <summary>
+        /// 异步添加数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <returns></returns>
+        public async  Task<int> AddAsync(T model)
+        {
+            return await IBaseDal.AddAsync(model);
+        }
+
         #endregion
 
         #region 根据ID删除数据
@@ -61,6 +74,17 @@ namespace BLL
         {
             return IBaseDal.Del(model);
         }
+
+        /// <summary>
+        /// 异步根据ID删除数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <returns></returns>
+        public async Task<int> DelAsync(T model)
+        {
+            return await IBaseDal.DelAsync(model);
+        }
+
         #endregion
 
         #region 根据条件删除数据
@@ -73,6 +97,16 @@ namespace BLL
         public int DelBy(Expression<Func<T, bool>> delWhere)
         {
             return IBaseDal.DelBy(delWhere);
+        }
+
+        /// <summary>
+        /// 异步根据条件删除数据
+        /// </summary>
+        /// <param name="delWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+        public async Task<int> DelByAsync(Expression<Func<T, bool>> delWhere)
+        {
+            return await IBaseDal.DelByAsync(delWhere);
         }
 
         #endregion        
@@ -89,6 +123,18 @@ namespace BLL
         {
             return IBaseDal.Modify(model, proNames);
         }
+
+        /// <summary>
+        /// 异步修改数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <param name="proNames">要修改的字段</param>
+        /// <returns></returns>
+        public async Task<int> ModifyAsync(T model, params string[] proNames)
+        {
+            return await IBaseDal.ModifyAsync(model, proNames);
+        }
+
         #endregion
 
         #region 批量修改数据
@@ -105,8 +151,20 @@ namespace BLL
             return IBaseDal.ModifyBy(model, modifyWhere, proNames);
         }
 
+        /// <summary>
+        /// 异步批量修改数据
+        /// </summary>
+        /// <param name="model">模型</param>
+        /// <param name="modifyWhere">条件Lambda表达式</param>
+        /// <param name="proNames">要修改的字段</param>
+        /// <returns></returns>
+        public async Task<int> ModifyByAsync(T model, Expression<Func<T, bool>> modifyWhere, params string[] proNames)
+        {
+            return await IBaseDal.ModifyByAsync(model, modifyWhere, proNames);
+        }
+
         #endregion
-        
+
         #region 根据条件查询数据
 
         /// <summary>
@@ -117,6 +175,16 @@ namespace BLL
         public List<T> GetListBy(Expression<Func<T, bool>> queryWhere)
         {
             return IBaseDal.GetListBy(queryWhere);
+        }
+
+        /// <summary>
+        /// 异步根据条件查询数据
+        /// </summary>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetListByAsync(Expression<Func<T, bool>> queryWhere)
+        {
+            return await IBaseDal.GetListByAsync(queryWhere);
         }
 
         #endregion
@@ -136,6 +204,19 @@ namespace BLL
             return IBaseDal.GetOrderListBy(queryWhere, orderBy, isDesc);
         }
 
+        /// <summary>
+        /// 异步根据条件查询数据
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="orderBy">排序Lambda表达式</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetOrderListByAsync<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
+        {
+            return await IBaseDal.GetOrderListByAsync(queryWhere, orderBy, isDesc);
+        }
+
         #endregion
 
         #region 根据条件分页查询数据并排序
@@ -150,10 +231,24 @@ namespace BLL
         /// <param name="orderBy">排序Lambda表达式</param>
         /// <param name="isDesc">是否降序</param>
         /// <returns></returns>
-        public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere,
-            Expression<Func<T, TKey>> orderBy, bool isDesc = false)
+        public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
             return IBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, isDesc);
+        }
+
+        /// <summary>
+        /// 异步根据条件分页查询数据并排序
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        ///  <param name="pageIndex">页码</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="orderBy">排序Lambda表达式</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetPageListByAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
+        {
+            return await IBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
         #endregion
@@ -171,10 +266,25 @@ namespace BLL
         /// <param name="totalCount">数据总数</param>
         /// <param name="isDesc">是否降序</param>
         /// <returns></returns>
-        public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere,
-            Expression<Func<T, TKey>> orderBy, out int totalCount, bool isDesc = false)
+        public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, out int totalCount, bool isDesc = false)
         {
             return IBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isDesc);
+        }
+
+        /// <summary>
+        /// 异步根据条件分页查询数据并并输出总行数
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        ///  <param name="pageIndex">页码</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="orderBy">排序Lambda表达式</param>
+        /// <param name="totalCount">数据总数</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        public async Task<PageData<T>> GetPageDataAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
+        {
+            return await IBaseDal.GetPageDataAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
         #endregion
@@ -195,6 +305,22 @@ namespace BLL
         public List<T> GetPageListBy(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy, out int totalCount)
         {
             return IBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
+        }
+
+        /// <summary>
+        /// 异步根据条件分页查询数据并并输出总行数
+        /// </summary> 
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        ///  <param name="pageIndex">页码</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <param name="strOrderBy">排序条件字符串，如如Id desc,ParentId asc,其中asc可以省略</param>
+        /// <param name="totalCount">数据总数</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        public async Task<PageData<T>> GetPageListByAsync(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy)
+        {
+            return await IBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, strOrderBy);
         }
 
         #endregion 根据条件分页查询数据并输出总行数(多条件排序)

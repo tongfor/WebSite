@@ -29,10 +29,6 @@ namespace BLL
     /// </summary>
     public partial class AdminMenuService
     {
-        protected IAdminMenuDAL AdminMenuDAL;
-
-        protected IAdminRoleAdminMenuButtonDAL AdminRoleAdminMenuButtonDAL;
-
         #region 获取文章关联文章类别的数据（直接执行查询语句）
 
         /// <summary>
@@ -43,7 +39,7 @@ namespace BLL
         public List<AdminUserMenuView> GetAdminUserMenu(int userId)
         {
             List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
-            menuList = AdminMenuDAL.GetAdminUserMenu(userId);
+            menuList = adminMenuDAL.GetAdminUserMenu(userId);
             return menuList;
         }
 
@@ -55,7 +51,7 @@ namespace BLL
         public async Task<List<AdminUserMenuView>> GetAdminUserMenuAsync(int userId)
         {
             List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
-            menuList = await AdminMenuDAL.GetAdminUserMenuAsync(userId);
+            menuList = await adminMenuDAL.GetAdminUserMenuAsync(userId);
             return menuList;
         }
 
@@ -117,7 +113,7 @@ namespace BLL
         /// </summary>
         public string GetMenuTreeJsonByRoleId(int menuId, int roleId)
         {
-            List<AdminMenuRoleButtonView> modelList = AdminMenuDAL.GetMenuListIncludeRoleAndButton(menuId, roleId);
+            List<AdminMenuRoleButtonView> modelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(menuId, roleId);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
@@ -132,7 +128,7 @@ namespace BLL
                 {
                     jsonResult.Append(",\"checked\":\"" + true + "\"");
                 }
-                List<AdminMenuRoleButtonView> cModelList = AdminMenuDAL.GetMenuListIncludeRoleAndButton(amrb.Id, roleId);
+                List<AdminMenuRoleButtonView> cModelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(amrb.Id, roleId);
                 if (cModelList.Count > 0) //根节点下有子节点
                 {
                     jsonResult.Append(",");
@@ -156,7 +152,7 @@ namespace BLL
         /// </summary>
         public async Task<string> GetMenuTreeJsonByRoleIdAsync(int menuId, int roleId)
         {
-            List<AdminMenuRoleButtonView> modelList = AdminMenuDAL.GetMenuListIncludeRoleAndButton(menuId, roleId);
+            List<AdminMenuRoleButtonView> modelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(menuId, roleId);
             StringBuilder jsonResult = new StringBuilder();
 
             await Task.Run(() =>
@@ -173,7 +169,7 @@ namespace BLL
                     {
                         jsonResult.Append(",\"checked\":\"" + true + "\"");
                     }
-                    List<AdminMenuRoleButtonView> cModelList = AdminMenuDAL.GetMenuListIncludeRoleAndButton(amrb.Id, roleId);
+                    List<AdminMenuRoleButtonView> cModelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(amrb.Id, roleId);
                     if (cModelList.Count > 0) //根节点下有子节点
                     {
                         jsonResult.Append(",");
@@ -277,9 +273,9 @@ namespace BLL
             List<AdminMenu> menuList = new List<AdminMenu>();
             int totalCount = 0;
 
-            var roleList = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title) ? AdminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, out totalCount, true)
+            var roleList = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title) ? adminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, out totalCount, true)
               :
-              AdminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);          
+              adminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);          
             
             return roleList.ToPagedList(request.PageIndex, request.PageSize, totalCount);
         }
@@ -293,28 +289,24 @@ namespace BLL
         {
             request = request ?? new BaseRequest();
             List<AdminMenu> menuList = new List<AdminMenu>();
-            int totalCount = 0;
             PageData<AdminMenu> pageData = new PageData<AdminMenu>();
 
-            if (!string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title))
-            {
-                pageData = AdminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, true);
-            }
-            else
-            {
+            pageData = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title)
+                ? await adminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, true)
+                : pageData = await adminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => true, o => o.Id, true);
 
-            }
-            var roleList = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title) ? AdminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, out totalCount, true)
-              :
-              AdminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
-
-            return roleList.ToPagedList(request.PageIndex, request.PageSize, totalCount);
+            return pageData.DataList.ToPagedList(request.PageIndex, request.PageSize, pageData.TotalCount);
         }
 
         #endregion
 
         #region 得到所有菜单List并排序
 
+        /// <summary>
+        /// 得到所有菜单List并排序
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
         public List<AdminMenu> GetAllMenuOrderList(int parentId = -1)
         {
             List<AdminMenu> menuList = new List<AdminMenu>();
@@ -324,30 +316,69 @@ namespace BLL
             return menuList;
         }
 
+        /// <summary>
+        /// 异步得到所有菜单List并排序
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        public async Task<List<AdminMenu>> GetAllMenuOrderListAsync(int parentId = -1)
+        {
+            List<AdminMenu> adminMenus;
+            if (parentId < 0)
+            {
+                adminMenus = await GetListByAsync(f => true);
+            }
+            else
+            {
+                adminMenus  = await GetListByAsync(f => f.ParentId == parentId);
+            }            
+            return adminMenus.OrderBy(o => o.ParentId).ThenBy(o => o.Sort).ToList();
+        }
+
         #endregion
 
-        #region 删除数据(包括关联数据)
+        #region 删除数据(使用事务，包括关联数据)
+
         /// <summary>
-        ///  删除数据(包括关联数据)
+        ///  删除数据(使用事务，包括关联数据)
         /// </summary>
         /// <param name="id">ID</param>
         public void DelIncludeRelatedData(int id)
         {
-            DelBy(f => f.Id == id);
-            AdminRoleAdminMenuButtonDAL.DelBy(f => id == f.MenuId.Value);
+            DelIncludeRelatedData(id);
         }
-        #endregion
 
-        #region 批量删除数据(包括关联数据)
         /// <summary>
-        ///  批量删除数据(包括关联数据)
+        ///  异步删除数据(使用事务，包括关联数据)
+        /// </summary>
+        /// <param name="id">ID</param>
+        public async void DelIncludeRelatedDataAsync(int id)
+        {
+            await Task.Run(() => { DelIncludeRelatedDataAsync(id); });
+        }
+
+        #endregion 删除数据(包括关联数据)
+
+        #region 批量删除数据(使用事务，包括关联数据)
+
+        /// <summary>
+        ///  批量删除数据(使用事务，包括关联数据)
         /// </summary>
         /// <param name="ids">ID列表</param>
         public void DelIncludeRelatedData(List<int> ids)
         {
-            DelBy(f => ids.Contains(f.Id));
-            AdminRoleAdminMenuButtonDAL.DelBy(f => ids.Contains(f.MenuId.Value));
+            DelIncludeRelatedData(ids);
         }
+
+        /// <summary>
+        ///  异步批量删除数据(使用事务，包括关联数据)
+        /// </summary>
+        /// <param name="ids">ID列表</param>
+        public async void DelIncludeRelatedDataAsync(List<int> ids)
+        {
+            await Task.Run(() => { DelIncludeRelatedDataAsync(ids); });
+        }
+
         #endregion
     }
 }

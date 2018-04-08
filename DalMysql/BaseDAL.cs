@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace DALMySql
 {
-    public class BaseDAL<T> : IBaseDAL<T>, IBaseDAL<T> where T : class, new()
+    public class BaseDAL<T> : IBaseDAL<T> where T : class, new()
     {
         //EF上下文
         protected readonly CdyhcdDBContext _db;        

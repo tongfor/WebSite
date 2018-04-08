@@ -43,10 +43,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="DALMySql.cs">
+    <Compile Update="DALMysql.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>DALMySql.tt</DependentUpon>
+      <DependentUpon>DALMysql.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -55,9 +55,9 @@
       <LastGenOutput>config.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="DALMySql.tt">
+    <None Update="DALMysql.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DALMySql.cs</LastGenOutput>
+      <LastGenOutput>DALMysql.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

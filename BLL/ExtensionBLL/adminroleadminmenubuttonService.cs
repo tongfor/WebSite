@@ -30,11 +30,8 @@ namespace BLL
     /// </summary>
     public partial class AdminRoleAdminMenuButtonService
     {
-        protected IAdminMenuDAL AdminMenuDAL = new DALSession().IAdminMenuDAL;
-
-        protected IAdminRoleAdminMenuButtonDAL AdminRoleAdminMenuButtonDAL = new DALSession().IAdminRoleAdminMenuButtonDAL;
-
         #region 更新用户菜单权限
+
         /// <summary>
         /// 更新用户菜单权限
         /// </summary>
@@ -42,7 +39,7 @@ namespace BLL
         /// <param name="selectedMenuIds">选择的菜单ID清单</param>
         public void ModifyUserRoleMenuButton(int roleId, string selectedMenuIds)
         {
-            List<AdminRoleAdminMenuButton> oldSelectedList = AdminRoleAdminMenuButtonDAL.GetListBy(f => f.RoleId == roleId);
+            List<AdminRoleAdminMenuButton> oldSelectedList = adminRoleAdminMenuButtonDAL.GetListBy(f => f.RoleId == roleId);
             List<int> newSelectedMenuIdList = selectedMenuIds.Split(',').Select(s => int.Parse(s)).ToList();
             AdminRoleAdminMenuButton newModel = new AdminRoleAdminMenuButton();
             newModel.RoleId = roleId;
@@ -53,9 +50,9 @@ namespace BLL
                 if (oldSelected == null)
                 {
                     newModel.MenuId = sMenuId;
-                    var menuModel = AdminMenuDAL.GetListBy(f => f.Id == sMenuId).FirstOrDefault();
+                    var menuModel = new AdminMenuService(_db).GetModelBy(f => f.Id == sMenuId);
                     newModel.ButtonId = menuModel != null && menuModel.ParentId == 0 ? 0 : 1;
-                    int addint = AdminRoleAdminMenuButtonDAL.Add(newModel);
+                    int addint = adminRoleAdminMenuButtonDAL.Add(newModel);
                 }
                 else
                 {
@@ -67,10 +64,24 @@ namespace BLL
             List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList.Where(f => !newSelectedMenuIdList.Contains(f.MenuId.Value)).ToList();
             foreach(var delModel in needDelSelectedList)
             {
-                int delint = AdminRoleAdminMenuButtonDAL.Del(delModel);
+                int delint = adminRoleAdminMenuButtonDAL.Del(delModel);
             }
+        }
+
+        /// <summary>
+        /// 异步更新用户菜单权限
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="selectedMenuIds">选择的菜单ID清单</param>
+        public async void ModifyUserRoleMenuButtonAsync(int roleId, string selectedMenuIds)
+        {
+            await Task.Run(() =>
+            {
+                ModifyUserRoleMenuButton(roleId, selectedMenuIds);
+            });      
         }
 
         #endregion
     }
+
 }

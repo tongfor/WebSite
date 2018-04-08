@@ -22,5 +22,37 @@ namespace IDAL
         /// <param name="UserId">用户ID</param>
         /// <returns></returns>
         Task<AdminRole> GetRoleByUserIdAsync(int UserId);
+
+        #region 删除数据(包括关联数据)
+
+        /// <summary>
+        ///  删除数据(包括关联数据)
+        /// </summary>
+        /// <param name="id">ID</param>
+        void DelIncludeRelatedData(int id);
+
+        /// <summary>
+        ///  异步删除数据(包括关联数据)
+        /// </summary>
+        /// <param name="id">ID</param>
+        void DelIncludeRelatedDataAsync(int id);
+
+        #endregion
+
+        #region 批量删除数据(包括关联数据)
+
+        /// <summary>
+        ///  批量删除数据(包括关联数据)
+        /// </summary>
+        /// <param name="ids">ID列表</param>
+        void DelIncludeRelatedData(List<int> ids);
+
+        /// <summary>
+        ///  异步批量删除数据(包括关联数据)
+        /// </summary>
+        /// <param name="ids">ID列表</param>
+        void DelIncludeRelatedDataAsync(List<int> ids);
+
+        #endregion
     }
 }

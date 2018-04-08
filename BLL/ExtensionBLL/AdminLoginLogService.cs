@@ -27,8 +27,6 @@ namespace BLL
 {
     public partial class AdminLoginLogService
     {
-        protected IAdminLoginLogDAL IAdminLoginLogDAL;
-
         #region 判断登录：如果30分钟内同一个ip连续最大错误次数次登录失败，那么30分钟后才可以继续登录
 
         /// <summary>
@@ -40,7 +38,7 @@ namespace BLL
         /// <param name="lastLoginTime">输出参数：如果30分钟没有5次的失败登录，那么返回null；如果有，就返回下一次可以登录的时间</param>
         public bool CheckLoginErrorCount(int maxErrorCount, int tyrMinutes, string ip, out DateTime? lastLoginTime)
         {
-            return IAdminLoginLogDAL.CheckLoginErrorCount(maxErrorCount, tyrMinutes, ip, out lastLoginTime);
+            return adminLoginLogDAL.CheckLoginErrorCount(maxErrorCount, tyrMinutes, ip, out lastLoginTime);
         }
 
         /// <summary>
@@ -52,7 +50,7 @@ namespace BLL
         /// <returns>元组，</returns>
         public async Task<Tuple<bool, DateTime>> CheckLoginErrorCountAsync(int maxErrorCount, int tryMinutes, string ip)
         {
-            Tuple<bool, DateTime> result = await IAdminLoginLogDAL.CheckLoginErrorCountAsync(maxErrorCount, tryMinutes, ip);
+            Tuple<bool, DateTime> result = await adminLoginLogDAL.CheckLoginErrorCountAsync(maxErrorCount, tryMinutes, ip);
             return result;
         }
 
