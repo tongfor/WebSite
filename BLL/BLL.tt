@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using Models;
 using IDAL;
 using DALMySql;
@@ -76,12 +77,23 @@ namespace BLL
         /// </summary>
         /// <param name="queryWhere">条件Lambda表达式</param>
         /// <returns></returns>
-
 		public <#=tableName#> GetModelBy(Expression<Func<<#=tableName#>, bool>> queryWhere)
 		{
 			<#=tableName#> result = this.GetListBy(queryWhere).FirstOrDefault();
 			return result;
 		}
+
+		/// <summary>
+        /// 异步根据条件得到模型
+        /// </summary>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+		 public async Task<<#=tableName#>> GetModelByAsync(Expression<Func<ArticleClass, bool>> queryWhere)
+        {
+            var modelList = await this.GetListByAsync(queryWhere);
+            <#=tableName#> result = modelList.FirstOrDefault();
+            return result;
+        }
 
 		#endregion 
     }

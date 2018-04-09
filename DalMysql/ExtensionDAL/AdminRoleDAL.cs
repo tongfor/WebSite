@@ -84,7 +84,7 @@ namespace DALMySql
         /// <param name="id">ID</param>
         public async void DelIncludeRelatedDataAsync(int id)
         {
-            using (var tran = await _db.Database.BeginTransactionAsync();)
+            using (var tran = await _db.Database.BeginTransactionAsync())
             {
                 try
                 {

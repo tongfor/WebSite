@@ -26,6 +26,19 @@ namespace Models
 {
     public class AdminRoleView : AdminRole
     {
+        public AdminRoleView()
+        {
+        }
+
+        public AdminRoleView(AdminRole role)
+        {
+            this.Id = role.Id;
+            this.RoleName = role.RoleName;
+            this.Description = role.Description;
+            this.AddTime = role.AddTime;
+            this.EditTime = role.EditTime;
+        }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("修改时间")]

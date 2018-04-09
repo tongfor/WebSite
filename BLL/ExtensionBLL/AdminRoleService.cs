@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Html;
 using IDAL;
@@ -26,8 +27,7 @@ using Models;
 namespace BLL
 {
     public partial class AdminRoleService
-    {
-        protected IAdminRoleDAL AdminRoleDAL = new DALSession().IAdminRoleDAL;
+    {        
         protected IAdminUserAdminRoleDAL AdminUserAdminRoleDAL = new DALSession().IAdminUserAdminRoleDAL;
         protected IAdminRoleAdminMenuButtonDAL AdminRoleAdminMenuButtonDAL = new DALSession().IAdminRoleAdminMenuButtonDAL;
 
@@ -38,13 +38,22 @@ namespace BLL
         /// <param name="id">ID</param>
         public void DelIncludeRelatedData(int id)
         {
-            DelBy(f => f.Id == id);
-            AdminUserAdminRoleDAL.DelBy(f => id == f.RoleId.Value);
-            AdminRoleAdminMenuButtonDAL.DelBy(f => id == f.RoleId.Value);
+            adminRoleDAL.DelIncludeRelatedData(id);
         }
+
+        /// <summary>
+        ///  异步删除数据(包括关联数据)
+        /// </summary>
+        /// <param name="id">ID</param>
+        public async void DelIncludeRelatedDataAsync(int id)
+        {
+            await Task.Run(() => { adminRoleDAL.DelIncludeRelatedData(id); });
+        }
+
         #endregion
 
         #region 批量删除数据(包括关联数据)
+
         /// <summary>
         ///  批量删除数据(包括关联数据)
         /// </summary>
@@ -55,29 +64,55 @@ namespace BLL
             AdminUserAdminRoleDAL.DelBy(f => ids.Contains(f.RoleId.Value));
             AdminRoleAdminMenuButtonDAL.DelBy(f => ids.Contains(f.RoleId.Value));
         }
+
+        /// <summary>
+        ///  异步批量删除数据(包括关联数据)
+        /// </summary>
+        /// <param name="ids">ID列表</param>
+        public async void DelIncludeRelatedDataAsync(List<int> ids)
+        {
+            await Task.Run(() => { adminRoleDAL.DelIncludeRelatedDataAsync(ids); });
+        }
+
         #endregion
 
         #region 根据请求条件获取IPageList格式数据
+
+        /// <summary>
+        /// 根据请求条件获取IPageList格式数据
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public IEnumerable<AdminRoleView> GetAdminRoleList(RoleRequest request = null)
         {
             request = request ?? new RoleRequest();
             List<AdminRoleView> roleViewList = new List<AdminRoleView>();
             int totalCount = 0;
 
-            var roleList = !string.IsNullOrEmpty(request.RoleName) && Utils.IsSafeSqlString(request.RoleName) ? AdminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.RoleName.Contains(request.RoleName), o => o.Id, out totalCount, true)
+            var roleList = !string.IsNullOrEmpty(request.RoleName) && Utils.IsSafeSqlString(request.RoleName) ? adminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.RoleName.Contains(request.RoleName), o => o.Id, out totalCount, true)
               :
-              AdminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
-            roleViewList = roleList.Select(
-                            s =>
-                                new AdminRoleView
-                                {
-                                    Id = s.Id,
-                                    RoleName = s.RoleName,
-                                    Description = s.Description,
-                                    AddTime = s.AddTime,
-                                    EditTime = s.EditTime
-                                })
-                        .ToList();
+              adminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
+            roleViewList = roleList.Select(s => new AdminRoleView(s)).ToList();
+
+            //return roleViewList.OrderByDescending(u => u.Id).ToPagedList(request.PageIndex, request.PageSize, totalCount);
+            return roleViewList.ToPagedList(request.PageIndex, request.PageSize, totalCount);
+        }
+
+        /// <summary>
+        /// 异步根据请求条件获取IPageList格式数据
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<AdminRoleView>> GetAdminRoleListAsync(RoleRequest request = null)
+        {
+            request = request ?? new RoleRequest();
+            List<AdminRoleView> roleViewList = new List<AdminRoleView>();
+            int totalCount = 0;
+
+            var roleList = !string.IsNullOrEmpty(request.RoleName) && Utils.IsSafeSqlString(request.RoleName)
+                ? await adminRoleDAL.GetPageListByAsync(request.PageIndex, request.PageSize, f => f.RoleName.Contains(request.RoleName), o => o.Id, true)
+                : adminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
+            roleViewList = roleList.Select(s => new AdminRoleView(s)).ToList();
 
             //return roleViewList.OrderByDescending(u => u.Id).ToPagedList(request.PageIndex, request.PageSize, totalCount);
             return roleViewList.ToPagedList(request.PageIndex, request.PageSize, totalCount);
@@ -85,15 +120,24 @@ namespace BLL
 
         #endregion
 
-                /// <summary>
+        /// <summary>
         /// 根据用户ID查询用户的角色信息
         /// </summary>
         /// <param name="UserId">用户ID</param>
         /// <returns></returns>
         public AdminRole GetRoleByUserId(int UserId)
         {
-           return  AdminRoleDAL.GetRoleByUserId(UserId);
+           return  adminRoleDAL.GetRoleByUserId(UserId);
         }
 
+        /// <summary>
+        /// 异步根据用户ID查询用户的角色信息
+        /// </summary>
+        /// <param name="UserId">用户ID</param>
+        /// <returns></returns>
+        public async  Task<AdminRole> GetRoleByUserIdAsync(int UserId)
+        {
+            return await adminRoleDAL.GetRoleByUserIdAsync(UserId);
+        }
     }
 }

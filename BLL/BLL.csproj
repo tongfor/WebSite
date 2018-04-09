@@ -20,9 +20,9 @@
 
   <ItemGroup>
     <Compile Update="BLL.cs">
-      <DependentUpon>BLL.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>BLL.tt</DependentUpon>
     </Compile>
     <Compile Update="DALSession.cs">
       <DesignTime>True</DesignTime>

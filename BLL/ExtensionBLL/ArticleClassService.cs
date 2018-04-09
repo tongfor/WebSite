@@ -16,15 +16,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using IDAL;
 using Models;
 using System.Linq.Expressions;
-using System.Reflection;
 using Common;
-using Common.Html;
+using System.Threading.Tasks;
 
 namespace BLL
 {
@@ -33,8 +29,6 @@ namespace BLL
     /// </summary>
     public partial class ArticleClassService
     {
-        protected IArticleClassDAL ArticleClassDAL = new DALSession().IArticleClassDAL;
-
         #region 添加文章类别
 
         /// <summary>
@@ -59,6 +53,31 @@ namespace BLL
                 }
             }
             return IBaseDal.Add(model);
+        }
+
+        /// <summary>
+        /// 异步添加文章类别
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<int> AddArticleClassAsync(ArticleClass model)
+        {
+            
+                if (model.ParentId == 0)
+                {
+                    model.Tier = 1;
+                    model.Path = "0";
+                }
+                else
+                {
+                    ArticleClass parentModel = await GetModelBy(f => f.Id == model.ParentId);
+                    if (parentModel != null)
+                    {
+                        model.Tier = parentModel.Tier + 1;
+                        model.Path = parentModel.Path + "," + model.ParentId;
+                    }
+                }
+                return IBaseDal.Add(model);
         }
 
         #endregion 添加文章类别

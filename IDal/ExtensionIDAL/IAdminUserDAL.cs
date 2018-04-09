@@ -84,14 +84,14 @@ namespace IDAL
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        bool UserExistedByLoginName(string userName);
+        bool UserCanRegister(string userName);
 
         /// <summary>
         /// 异步判断用户是否还可以注册
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        Task<bool> UserExistedByLoginNameAsync(string userName);
+        Task<bool> UserCanRegisterAsync(string userName);
 
         /// <summary>
         /// 获取用户的List

@@ -67,7 +67,10 @@ namespace DALMySql
         /// <returns>元组，</returns>
         public async Task<Tuple<bool, DateTime>> CheckLoginErrorCountAsync(int maxErrorCount, int tryMinutes, string ip)
         {
-            Tuple<bool, DateTime> result = new Tuple<bool, DateTime>(CheckLoginErrorCount(maxErrorCount, tryMinutes, ip, out DateTime? lastLoginTime), lastLoginTime.Value);
+            Tuple<bool, DateTime> result = null;
+            await Task.Run(() => {
+                result = new Tuple<bool, DateTime>(CheckLoginErrorCount(maxErrorCount, tryMinutes, ip, out DateTime? lastLoginTime), lastLoginTime.Value);
+            });
             return result;
         }
 

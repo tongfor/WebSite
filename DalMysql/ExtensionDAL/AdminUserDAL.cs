@@ -165,8 +165,8 @@ namespace DALMySql
         /// 判断用户是否还可以注册
         /// </summary>
         /// <param name="userName"></param>
-        /// <returns></returns>
-        public bool UserExistedByLoginName(string userName)
+        /// <returns>能注册返回True</returns>
+        public bool UserCanRegister(string userName)
         {
             var resultCount = _db.Set<AdminUser>().Count(a => a.UserName == userName);
             return resultCount == 0;
@@ -176,8 +176,8 @@ namespace DALMySql
         /// 异步判断用户是否还可以注册
         /// </summary>
         /// <param name="userName"></param>
-        /// <returns></returns>
-        public async Task<bool> UserExistedByLoginNameAsync(string userName)
+        /// <returns>能注册返回True</returns>
+        public async Task<bool> UserCanRegisterAsync(string userName)
         {
             var resultCount = await _db.Set<AdminUser>().CountAsync(a => a.UserName == userName);
             return resultCount == 0;
@@ -230,11 +230,12 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<PageData<AdminUser>> GetAdminUserByPageAsync<TKey>(int pageIndex, int pageSize, Expression<Func<AdminUser, bool>> queryWhere, Expression<Func<AdminUser, TKey>> orderBy, bool isdesc = false)
         {
-            var result = new PageData<AdminUser>
+            var result = new PageData<AdminUser>();
+            await Task.Run(() =>
             {
-                DataList = GetAdminUserByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out int totalCount, isdesc),
-                TotalCount = totalCount
-            };
+                result.DataList = GetAdminUserByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out int totalCount, isdesc);
+                result.TotalCount = totalCount;
+            });
             return result;
         }
     }

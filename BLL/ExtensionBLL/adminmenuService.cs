@@ -293,7 +293,7 @@ namespace BLL
 
             pageData = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title)
                 ? await adminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, true)
-                : pageData = await adminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => true, o => o.Id, true);
+                : await adminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => true, o => o.Id, true);
 
             return pageData.DataList.ToPagedList(request.PageIndex, request.PageSize, pageData.TotalCount);
         }

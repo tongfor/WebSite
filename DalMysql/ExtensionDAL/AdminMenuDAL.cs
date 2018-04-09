@@ -30,7 +30,7 @@ namespace DALMySql
     /// </summary>
     public partial class AdminMenuDAL
     {
-        #region 获取文章关联文章类别的数据（直接执行查询语句）
+        #region 获取用户关联用户菜单的数据（直接执行查询语句）
 
         /// <summary>
         /// 根据用户ID获取当前用户能够查询的菜单List（直接执行查询语句）
