@@ -15,6 +15,7 @@
 */
 
 using BLL;
+using DALMySql;
 using Models;
 
 namespace YhcdWebSite.Service
@@ -22,11 +23,11 @@ namespace YhcdWebSite.Service
 	public static class BLLSession
 	{
         //EF上下文
-        public static CdyhcdDBContext Db { get; set; }
+        public static readonly CdyhcdDBContext Db = new DbContextFactory().GetDbContext();
 
         #region 01 逻辑层缓存 IAdminBugService
 
-	    static AdminBugService _adminBugService;
+        static AdminBugService _adminBugService;
 		public static AdminBugService AdminBugService
 		{
 			get { return _adminBugService ?? (_adminBugService = new AdminBugService(Db)); }

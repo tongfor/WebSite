@@ -47,14 +47,18 @@ namespace DALMySql
         /// <param name="orderBy"></param>
         /// <param name="totalCount"></param>
         /// <param name="isdesc"></param>
-        /// <returns></returns>
+        /// <returns>PageData类型，包括DataList和Total</returns>
         public async Task<PageData<ArticleClass>> GetArticleClassByPageAsync<TKey>(int pageIndex, int pageSize,Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy, bool isdesc = false)
         {
-            var result = new PageData<ArticleClass>
+            PageData<ArticleClass> result = null;
+            await Task.Run(() =>
             {
-                DataList = GetArticleClassByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out int totalCount, isdesc),
-                TotalCount = totalCount
-            };
+                result = new PageData<ArticleClass>
+                {
+                    DataList = GetArticleClassByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out int totalCount, isdesc),
+                    TotalCount = totalCount
+                };
+            });            
             return result;
         }
     }

@@ -37,6 +37,12 @@ namespace BLL
             return IBaseDal.GetModel(id);
         }
 
+        public async Task<T> GetModelAsync(int id)
+        {
+            var result = await IBaseDal.GetModelAsync(id);
+            return result;
+        }
+
         #endregion 根据主键获取模型
 
         #region 添加数据

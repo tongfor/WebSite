@@ -62,22 +62,23 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> AddArticleClassAsync(ArticleClass model)
         {
-            
-                if (model.ParentId == 0)
+
+            if (model.ParentId == 0)
+            {
+                model.Tier = 1;
+                model.Path = "0";
+            }
+            else
+            {
+                ArticleClass parentModel = await GetModelByAsync(f => f.Id == model.ParentId);
+                if (parentModel != null)
                 {
-                    model.Tier = 1;
-                    model.Path = "0";
+                    model.Tier = parentModel.Tier + 1;
+                    model.Path = parentModel.Path + "," + model.ParentId;
                 }
-                else
-                {
-                    ArticleClass parentModel = await GetModelBy(f => f.Id == model.ParentId);
-                    if (parentModel != null)
-                    {
-                        model.Tier = parentModel.Tier + 1;
-                        model.Path = parentModel.Path + "," + model.ParentId;
-                    }
-                }
-                return IBaseDal.Add(model);
+            }
+            var result = await IBaseDal.AddAsync(model);
+            return result;
         }
 
         #endregion 添加文章类别
@@ -108,6 +109,31 @@ namespace BLL
             return IBaseDal.Modify(model);
         }
 
+        /// <summary>
+        /// 异步修改文章类别
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<int> ModifyArticleClassAsync(ArticleClass model)
+        {
+            if (model.ParentId == 0)
+            {
+                model.Tier = 1;
+                model.Path = "0";
+            }
+            else
+            {
+                ArticleClass parentModel = await GetModelByAsync(f => f.Id == model.ParentId);
+                if (parentModel != null)
+                {
+                    model.Tier = parentModel.Tier + 1;
+                    model.Path = parentModel.Path + "," + model.ParentId;
+                }
+            }
+            var result = await IBaseDal.ModifyAsync(model);
+            return result;
+        }
+
         #endregion 编辑文章类别
 
         #region 得到频道清单
@@ -118,7 +144,17 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleClass> GetChannelList()
         {
-            List<ArticleClass> result = ArticleClassDAL.GetOrderListBy(f => f.ParentId == 0, o => o.Sort);
+            List<ArticleClass> result = articleClassDAL.GetOrderListBy(f => f.ParentId == 0, o => o.Sort);
+            return result;
+        }
+
+        /// <summary>
+        /// 异步得到频道清单,即父ID为0的文章类别
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ArticleClass>> GetChannelListAsync()
+        {
+            List<ArticleClass> result = await articleClassDAL.GetOrderListByAsync(f => f.ParentId == 0, o => o.Sort);
             return result;
         }
 
@@ -132,7 +168,7 @@ namespace BLL
         public List<ArticleClassTreeView> GetAllArticleClassTree(int classid)
         {
             List<ArticleClassTreeView> resultList = new List<ArticleClassTreeView>();
-            List<ArticleClass> modelList = ArticleClassDAL.GetListBy(f => f.ParentId == classid);
+            List<ArticleClass> modelList = articleClassDAL.GetListBy(f => f.ParentId == classid);
 
             foreach (ArticleClass ac in modelList)
             {
@@ -140,6 +176,26 @@ namespace BLL
                 treeModel.id = ac.Id;
                 treeModel.text = ac.Name;
                 treeModel.chileren = GetAllArticleClassTree(ac.Id);
+                resultList.Add(treeModel);
+            }
+
+            return resultList;
+        }
+
+        /// <summary>
+        /// 异步查询所有文章类别树
+        /// </summary>
+        public async Task<List<ArticleClassTreeView>> GetAllArticleClassTreeAsync(int classid)
+        {
+            List<ArticleClassTreeView> resultList = new List<ArticleClassTreeView>();
+            List<ArticleClass> modelList = await articleClassDAL.GetListByAsync(f => f.ParentId == classid);
+
+            foreach (ArticleClass ac in modelList)
+            {
+                ArticleClassTreeView treeModel = new ArticleClassTreeView();
+                treeModel.id = ac.Id;
+                treeModel.text = ac.Name;
+                treeModel.chileren = await GetAllArticleClassTreeAsync(ac.Id);
                 resultList.Add(treeModel);
             }
 
@@ -155,18 +211,49 @@ namespace BLL
         /// </summary>
         public string GetAllArticleClassTreeJson(int classid)
         {
-            List<ArticleClass> modelList = ArticleClassDAL.GetListBy(f => f.ParentId == classid);
+            List<ArticleClass> modelList = articleClassDAL.GetListBy(f => f.ParentId == classid);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
             foreach (ArticleClass ac in modelList)
             {
                 jsonResult.Append("{\"id\":\"" + ac.Id + "\",\"text\":\"" + ac.Name + "\"");
-                List<ArticleClass> cModelList = ArticleClassDAL.GetListBy(f => f.ParentId == ac.Id);
+                List<ArticleClass> cModelList = articleClassDAL.GetListBy(f => f.ParentId == ac.Id);
                 if (cModelList.Count > 0) //根节点下有子节点
                 {
                     jsonResult.Append(",");
                     jsonResult.Append("\"children\":" + GetAllArticleClassTreeJson(ac.Id));
+                    jsonResult.Append("},");
+                }
+                else //根节点下没有子节点
+                {
+                    jsonResult.Append("},");
+                }
+            }
+            string tmpstr = jsonResult.ToString().TrimEnd(',');//去掉最后多余的逗号
+            jsonResult.Clear().Append(tmpstr);
+            jsonResult.Append("]");
+
+            return jsonResult.ToString();
+        }
+
+        /// <summary>
+        /// 异步查询所有文章类别树并返回JSON
+        /// </summary>
+        public async Task<string> GetAllArticleClassTreeJsonAsync(int classid)
+        {
+            List<ArticleClass> modelList = await articleClassDAL.GetListByAsync(f => f.ParentId == classid);
+            StringBuilder jsonResult = new StringBuilder();
+
+            jsonResult.Append("[");
+            foreach (ArticleClass ac in modelList)
+            {
+                jsonResult.Append("{\"id\":\"" + ac.Id + "\",\"text\":\"" + ac.Name + "\"");
+                List<ArticleClass> cModelList = await articleClassDAL.GetListByAsync(f => f.ParentId == ac.Id);
+                if (cModelList.Count > 0) //根节点下有子节点
+                {
+                    jsonResult.Append(",");
+                    jsonResult.Append("\"children\":" + await GetAllArticleClassTreeJsonAsync(ac.Id));
                     jsonResult.Append("},");
                 }
                 else //根节点下没有子节点
@@ -196,7 +283,24 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleClass> GetArticleClassByPage<TKey>(int pageIndex, int pageSize, Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy, out int totalCount, bool isdesc = false)
         {
-            return ArticleClassDAL.GetArticleClassByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isdesc);
+            return articleClassDAL.GetArticleClassByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isdesc);
+        }
+
+        /// <summary>
+        /// 异步分页查询文章类别
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="queryWhere"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="totalCount"></param>
+        /// <param name="isdesc"></param>
+        /// <returns>PageData类型数据，包含DataList和TotalCount</returns>
+        public async Task<PageData<ArticleClass>> GetArticleClassByPageAsync<TKey>(int pageIndex, int pageSize, Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy, bool isdesc = false)
+        {
+            var result = await articleClassDAL.GetArticleClassByPageAsync<TKey>(pageIndex, pageSize, queryWhere, orderBy, isdesc);
+            return result;
         }
 
         /// <summary>
@@ -219,6 +323,27 @@ namespace BLL
             }
             actClassList = GetArticleClassByPage<int>(request.PageIndex, request.PageSize, queryWhere, p => p.Id, out totalCount, false);
             return actClassList.ToPagedList(request.PageIndex, request.PageSize, totalCount);
+        }
+
+        /// <summary>
+        /// 异步得到分好页的文章类别清单
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>PageData类型数据，包含DataList和TotalCount</returns>
+        public async Task<IEnumerable<ArticleClass>> GetPagedArticleClassListAsync(BaseRequest request)
+        {
+            Expression<Func<ArticleClass, bool>> queryWhere = null;
+            if (!string.IsNullOrEmpty(request.Title))
+            {
+                queryWhere = a => a.Name.Contains(request.Title);
+            }
+            else
+            {
+                queryWhere = a => true;
+            }
+            var articleClassList = await GetArticleClassByPageAsync<int>(request.PageIndex, request.PageSize, queryWhere, p => p.Id, false);
+            var resultList = articleClassList.DataList;
+            return resultList.ToPagedList(request.PageIndex, request.PageSize, articleClassList.TotalCount);
         }
 
         /// <summary>
@@ -248,7 +373,37 @@ namespace BLL
                 request.OrderBy = "Id desc";
             }
 
-            actClassList = GetPageListBy<int>(request.PageIndex, request.PageSize, queryWhere, request.OrderBy, out totalCount);
+            actClassList = GetPageListBy(request.PageIndex, request.PageSize, queryWhere,request.OrderBy, out totalCount);
+            return actClassList;
+        }
+
+        /// <summary>
+        /// 异步得到分好页的文章类别清单,并返回文章总数
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="totalCount"></param>
+        /// <returns>PageData类型数据，包含DataList和TotalCount</returns>
+        public async Task<PageData<ArticleClass>> GetPagedArticleClassListAsync(ArticleClassRequest request)
+        {
+            Expression<Func<ArticleClass, bool>> queryWhere = null;
+            if (!string.IsNullOrEmpty(request.Title))
+            {
+                queryWhere = f => f.Name.Contains(request.Title);
+            }
+            else
+            {
+                queryWhere = f => true;
+            }
+            if (request.ParentId != null)
+            {
+                queryWhere = queryWhere.AndAlso(f => f.ParentId == request.ParentId);
+            }
+            if (string.IsNullOrEmpty(request.OrderBy) || !CanOrdered(request.OrderBy))
+            {
+                request.OrderBy = "Id desc";
+            }
+
+            var actClassList = await GetPageListByAsync(request.PageIndex, request.PageSize, queryWhere, request.OrderBy);
             return actClassList;
         }
     }

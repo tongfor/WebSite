@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace YhcdWebsite.Controllers
     public class ArticleController : Controller
     {
         private readonly CdyhcdDBContext _context;
+        private readonly ArticleService articleService;
 
         public ArticleController(CdyhcdDBContext context)
         {
-            BLLSession.Db = context;
+            //BLLSession.Db = context;
+            articleService = new ArticleService(context);
             _context = context;
         }
 
@@ -34,7 +37,9 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var article = BLLSession.ArticleService.GetModel(id.Value);
+            var article =await articleService.GetModelAsync(id.Value);            
+            var a2 = articleService.GetOrderArticleIncludeClassByPageAsync(1, 3, "", "");
+            var a3 = articleService.GetPageDataAsync(1, 3, f => true, o => o.Id);
             if (article == null)
             {
                 return NotFound();

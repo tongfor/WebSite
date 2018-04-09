@@ -88,7 +88,7 @@ namespace BLL
         /// </summary>
         /// <param name="queryWhere">条件Lambda表达式</param>
         /// <returns></returns>
-		 public async Task<<#=tableName#>> GetModelByAsync(Expression<Func<ArticleClass, bool>> queryWhere)
+		 public async Task<<#=tableName#>> GetModelByAsync(Expression<Func<<#=tableName#>, bool>> queryWhere)
         {
             var modelList = await this.GetListByAsync(queryWhere);
             <#=tableName#> result = modelList.FirstOrDefault();

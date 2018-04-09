@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using BLL;
+using YhcdWebSite.Service;
 
 namespace UnitTestProject1
 {
@@ -17,7 +19,9 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            //var db = new DbContextFactory().GetDbContext();
+            var db = new DbContextFactory().GetDbContext();
+            var bll = BLLSession.ArticleService;
+            BLLSession.Db = db;
             //var dal = new ArticleDAL(db);
             //var menuDal = new AdminMenuDAL(db);
             //var userDal = new AdminUserDAL(db);
@@ -32,6 +36,12 @@ namespace UnitTestProject1
 
             //var r1 = roleDal.GetRoleByUserId(1);
             //var a1 = dal.GetPageListByAsync(1, 3, f => f.ClassId == 2, " LookCount desc, AddTime desc");
+
+            var a1 = bll.GetModelAsync(1);            
+            int totalCount;
+            var a4 = bll.GetOrderArticleIncludeClassByPage(1, 3, "", "", out totalCount);
+            var a2 = bll.GetOrderArticleIncludeClassByPageAsync(1, 3, "", "");
+            var a3 = bll.GetPageDataAsync(1, 3, f => true, o => o.Id);
 
             List<int> l1 = new List<int>() { 1, 2 ,3};
             string sl1 = l1.ToString();

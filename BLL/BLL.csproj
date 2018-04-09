@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ExtensionBLL\**" />
-    <EmbeddedResource Remove="ExtensionBLL\**" />
-    <None Remove="ExtensionBLL\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DalMysql\DalMysql.csproj" />
     <ProjectReference Include="..\DatabaseTool\DatabaseTool.csproj" />

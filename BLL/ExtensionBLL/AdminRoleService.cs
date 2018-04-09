@@ -14,23 +14,16 @@
 *└──────────────────────────────────┘
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Common;
-using Common.Html;
-using IDAL;
 using Models;
 
 namespace BLL
 {
     public partial class AdminRoleService
-    {        
-        protected IAdminUserAdminRoleDAL AdminUserAdminRoleDAL = new DALSession().IAdminUserAdminRoleDAL;
-        protected IAdminRoleAdminMenuButtonDAL AdminRoleAdminMenuButtonDAL = new DALSession().IAdminRoleAdminMenuButtonDAL;
-
+    { 
         #region 删除数据(包括关联数据)
         /// <summary>
         ///  删除数据(包括关联数据)
@@ -60,9 +53,7 @@ namespace BLL
         /// <param name="ids">ID列表</param>
         public void DelIncludeRelatedData(List<int> ids)
         {
-            DelBy(f => ids.Contains(f.Id));
-            AdminUserAdminRoleDAL.DelBy(f => ids.Contains(f.RoleId.Value));
-            AdminRoleAdminMenuButtonDAL.DelBy(f => ids.Contains(f.RoleId.Value));
+            adminRoleDAL.DelIncludeRelatedData(ids);
         }
 
         /// <summary>

@@ -16,13 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Common;
-using Common.Config;
-using Common.Html;
 using IDAL;
 using Models;
 
@@ -30,8 +25,6 @@ namespace BLL
 {
     public partial class BoardService
     {
-        protected IBoardDAL BoardDAL = new DALSession().IBoardDAL;
-
         #region 根据请求条件获取IPageList格式数据
         public IEnumerable<Board> GetBoardList(BoardRequest request = null)
         {
@@ -65,7 +58,7 @@ namespace BLL
             {
                 request.OrderBy = "AddTime desc";
             }
-            var boards = GetPageListBy<Board>(request.PageIndex, request.PageSize, queryWhere, request.OrderBy, out totalCount);
+            var boards = GetPageListBy(request.PageIndex, request.PageSize, queryWhere, request.OrderBy, out totalCount);
 
             return boards;
         }
@@ -81,7 +74,7 @@ namespace BLL
             {
                 limitDateTime = board.AddTime.Value.AddHours(-limitHours);
             }
-            var boardList = GetListBy(f => f.IP == board.IP && f.AddTime >= limitDateTime);
+            var boardList = GetListBy(f => f.Ip == board.Ip && f.AddTime >= limitDateTime);
             return boardList.Count >= limitCount ? 0 : Add(board);
         }
 

@@ -11,6 +11,5 @@ namespace BLL
 {
    public partial class ParameterService
     {
-       protected IParameterDAL IParameterListDAL = new DALSession().IParameterDAL;
     }
 }

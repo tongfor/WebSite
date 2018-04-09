@@ -23,8 +23,6 @@ namespace IDAL
 {
     public partial interface IArticleDAL : IBaseDAL<Article>
     {
-        Task<Article> GetModelAsync(int id);
-
         #region 获取文章关联文章类别的数据（延时加载）
 
         /// <summary>
@@ -113,6 +111,24 @@ namespace IDAL
         Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, string strWhere, string orderBy);
 
         #endregion
+
+        #region 根据ID获取文章关联文章类别的数据（延时加载）
+
+        /// <summary>
+        /// 根据ID获取文章关联文章类别的数据（延时加载）
+        /// </summary>
+        /// <param name="queryWhere"></param>
+        /// <returns></returns>
+        ArticleView GetArticleViewBy(Expression<Func<Article, bool>> queryWhere);
+
+        /// <summary>
+        /// 异步根据ID获取文章关联文章类别的数据（延时加载）
+        /// </summary>
+        /// <param name="queryWhere"></param>
+        /// <returns></returns>
+        Task<ArticleView> GetArticleViewByAsync(Expression<Func<Article, bool>> queryWhere);
+
+        #endregion 根据ID获取文章关联文章类别的数据（延时加载）
 
         #region 点击量累加
 

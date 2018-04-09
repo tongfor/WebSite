@@ -159,11 +159,15 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, Expression<Func<Article, bool>> queryWhere, string strOrderBy)
         {
-            var result = new PageData<ArticleView>
+            PageData<ArticleView> result = null;
+            await Task.Run(() =>
             {
-                DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, queryWhere, strOrderBy, out int totalCount),
-                TotalCount = totalCount
-            };
+                result = new PageData<ArticleView>
+                {
+                    DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, queryWhere, strOrderBy, out int totalCount),
+                    TotalCount = totalCount
+                };
+            });            
             return result;
         }
 
@@ -271,18 +275,76 @@ namespace DALMySql
         /// <param name="strWhere">查询条件(Article表用aco表示),必传</param>
         /// <param name="orderBy">排序(Article表用aco表示,ArticleClass表用acl表示)</param>
         /// <param name="totalCount">总数</param>
-        /// <returns></returns>
+        /// <returns>PageData类型，包括DataList和TotalCount</returns>
         public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, string strWhere, string orderBy)
         {
-            var result = new PageData<ArticleView>
+            PageData<ArticleView> result = null;
+            await Task.Run(() =>
             {
-                DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, strWhere, orderBy, out int totalCount),
-                TotalCount = totalCount
-            };
+                result = new PageData<ArticleView>
+                {
+                    DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, strWhere, orderBy, out int totalCount),
+                    TotalCount = totalCount
+                };
+            });
             return result;
         }
 
         #endregion
+
+        #region 根据ID获取文章关联文章类别的数据（延时加载）
+
+        /// <summary>
+        /// 根据ID获取文章关联文章类别的数据（延时加载）
+        /// </summary>
+        /// <param name="queryWhere"></param>
+        /// <returns></returns>
+        public ArticleView GetArticleViewBy(Expression<Func<Article, bool>> queryWhere)
+        {
+            var dbQuery = _db.Set<Article>().Where(queryWhere)
+                .Join(_db.Set<ArticleClass>(), a => a.ClassId, ac => ac.Id,
+                    (a, ac) => new ArticleView(a)
+                    {
+                        ArticleClassName = ac.Name
+                    });
+            ArticleView av;
+            try
+            {
+                av = dbQuery.AsNoTracking().SingleOrDefault();
+            }
+            catch
+            {
+                av = null;
+            }
+            return av;
+        }
+
+        /// <summary>
+        /// 异步根据ID获取文章关联文章类别的数据（延时加载）
+        /// </summary>
+        /// <param name="queryWhere"></param>
+        /// <returns></returns>
+        public async Task<ArticleView> GetArticleViewByAsync(Expression<Func<Article, bool>> queryWhere)
+        {
+            var dbQuery = _db.Set<Article>().Where(queryWhere)
+                .Join(_db.Set<ArticleClass>(), a => a.ClassId, ac => ac.Id,
+                    (a, ac) => new ArticleView(a)
+                    {
+                        ArticleClassName = ac.Name
+                    });
+            ArticleView av;
+            try
+            {
+                av = await dbQuery.AsNoTracking().SingleOrDefaultAsync();
+            }
+            catch
+            {
+                av = null;
+            }
+            return av;
+        }
+
+        #endregion 根据ID获取文章关联文章类别的数据（延时加载）
 
         #region 点击量累加
 

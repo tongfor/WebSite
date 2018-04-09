@@ -25,9 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj" />
     <ProjectReference Include="..\DalMysql\DalMysql.csproj" />
     <ProjectReference Include="..\IDal\IDAL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
+    <ProjectReference Include="..\YhcdWebsite\YhcdWebsite.csproj" />
   </ItemGroup>
 
 </Project>
