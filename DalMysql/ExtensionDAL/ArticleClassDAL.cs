@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,15 +51,18 @@ namespace DALMySql
         /// <returns>PageData类型，包括DataList和Total</returns>
         public async Task<PageData<ArticleClass>> GetArticleClassByPageAsync<TKey>(int pageIndex, int pageSize,Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy, bool isdesc = false)
         {
-            PageData<ArticleClass> result = null;
-            await Task.Run(() =>
+            PageData<ArticleClass> result = new PageData<ArticleClass>();
+            if (pageIndex < 1)
             {
-                result = new PageData<ArticleClass>
-                {
-                    DataList = GetArticleClassByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out int totalCount, isdesc),
-                    TotalCount = totalCount
-                };
-            });            
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pageSize;
+            var dbQuery = _db.Set<ArticleClass>().Where(queryWhere);
+            
+            result.DataList = isdesc
+                ? await dbQuery.OrderByDescending(orderBy).Skip(skipIndex).Take(pageSize).ToListAsync()
+                : await dbQuery.OrderBy(orderBy).Skip(skipIndex).Take(pageSize).ToListAsync();
+            result.TotalCount = dbQuery.Count();
             return result;
         }
     }

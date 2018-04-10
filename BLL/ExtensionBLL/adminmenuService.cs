@@ -345,16 +345,16 @@ namespace BLL
         /// <param name="id">ID</param>
         public void DelIncludeRelatedData(int id)
         {
-            DelIncludeRelatedData(id);
+            adminMenuDAL.DelIncludeRelatedData(id);
         }
 
         /// <summary>
         ///  异步删除数据(使用事务，包括关联数据)
         /// </summary>
         /// <param name="id">ID</param>
-        public async void DelIncludeRelatedDataAsync(int id)
+        public async Task DelIncludeRelatedDataAsync(int id)
         {
-            await Task.Run(() => { DelIncludeRelatedDataAsync(id); });
+            await adminMenuDAL.DelIncludeRelatedDataAsync(id);
         }
 
         #endregion 删除数据(包括关联数据)
@@ -367,16 +367,16 @@ namespace BLL
         /// <param name="ids">ID列表</param>
         public void DelIncludeRelatedData(List<int> ids)
         {
-            DelIncludeRelatedData(ids);
+            adminMenuDAL.DelIncludeRelatedData(ids);
         }
 
         /// <summary>
         ///  异步批量删除数据(使用事务，包括关联数据)
         /// </summary>
         /// <param name="ids">ID列表</param>
-        public async void DelIncludeRelatedDataAsync(List<int> ids)
+        public async Task DelIncludeRelatedDataAsync(List<int> ids)
         {
-            await Task.Run(() => { DelIncludeRelatedDataAsync(ids); });
+            await adminMenuDAL.DelIncludeRelatedDataAsync(ids);
         }
 
         #endregion

@@ -159,15 +159,53 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, Expression<Func<Article, bool>> queryWhere, string strOrderBy)
         {
-            PageData<ArticleView> result = null;
-            await Task.Run(() =>
+            if (pageIndex < 1)
             {
-                result = new PageData<ArticleView>
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pageSize;
+            var dbQuery = _db.Set<Article>().Where(queryWhere)
+                .Join(_db.Set<ArticleClass>(), a => a.ClassId, ac => ac.Id,
+                    (a, ac) => new ArticleView(a)
+                    {
+                        ArticleClassName = ac.Name
+                    });
+            var orderQuery = dbQuery;
+            Type type = typeof(ArticleView);
+            string[] orderByArray = strOrderBy.Split(',');
+            foreach (string s in orderByArray)
+            {
+                string[] orderBy = s.TrimStart().TrimEnd().Split(' ');
+                //排序属性名
+                string orderProperty = orderBy[0];
+                //正序或反序，正序可省略
+                string order = orderBy.Length > 1 ? orderBy[1] : "asc";
+                PropertyInfo property = type.GetProperty(orderProperty); //获取指定名称的属性
+                if (property == null)
                 {
-                    DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, queryWhere, strOrderBy, out int totalCount),
-                    TotalCount = totalCount
-                };
-            });            
+                    continue;
+                }
+                var parameter = Expression.Parameter(type, "o");
+                var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+                var orderByExp = Expression.Lambda(propertyAccess, parameter);
+                if (order.Equals("desc", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    MethodCallExpression resultExp = Expression.Call(typeof(Queryable), "OrderByDescending",
+                        new Type[] { typeof(ArticleView), property.PropertyType }, orderQuery.Expression,
+                        Expression.Quote(orderByExp));
+                    orderQuery = orderQuery.Provider.CreateQuery<ArticleView>(resultExp);
+                }
+                else
+                {
+                    MethodCallExpression resultExp = Expression.Call(typeof(Queryable), "OrderBy",
+                        new Type[] { typeof(ArticleView), property.PropertyType }, orderQuery.Expression,
+                        Expression.Quote(orderByExp));
+                    orderQuery = orderQuery.Provider.CreateQuery<ArticleView>(resultExp);
+                }
+            }
+            PageData<ArticleView> result = new PageData<ArticleView>();
+            result.DataList = await dbQuery.Skip(skipIndex).Take(pageSize).ToListAsync();
+            result.TotalCount = await dbQuery.CountAsync();
             return result;
         }
 
@@ -238,7 +276,6 @@ namespace DALMySql
         /// <returns></returns>
         public List<ArticleView> GetOrderArticleIncludeClassByPage(int pageIndex, int pageSize, string strWhere, string orderBy, out int totalCount)
         {
-
             List<ArticleView> articleList = new List<ArticleView>();
             totalCount = 0;
             if (pageIndex < 1)
@@ -279,14 +316,30 @@ namespace DALMySql
         public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, string strWhere, string orderBy)
         {
             PageData<ArticleView> result = null;
-            await Task.Run(() =>
+            
+            if (pageIndex < 1)
             {
-                result = new PageData<ArticleView>
-                {
-                    DataList = GetOrderArticleIncludeClassByPage(pageIndex, pageSize, strWhere, orderBy, out int totalCount),
-                    TotalCount = totalCount
-                };
-            });
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pageSize;
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT aco.*,acl.Name as ArticleClassName from Article as aco ");
+            sb.Append(" LEFT JOIN ArticleClass as acl on aco.ClassId=acl.id ");
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                sb.Append($"where 1=1 and {strWhere}");
+            }
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                sb.AppendFormat(" order by {0} ", orderBy);
+            }
+
+            var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString());
+            result = new PageData<ArticleView>
+            {
+                DataList = await queryResult.Skip(skipIndex).Take(pageSize).ToListAsync(),
+                TotalCount = await queryResult.CountAsync()
+            };
             return result;
         }
 
@@ -310,7 +363,7 @@ namespace DALMySql
             ArticleView av;
             try
             {
-                av = dbQuery.AsNoTracking().SingleOrDefault();
+                av = dbQuery.AsNoTracking().FirstOrDefault();
             }
             catch
             {
@@ -335,7 +388,7 @@ namespace DALMySql
             ArticleView av;
             try
             {
-                av = await dbQuery.AsNoTracking().SingleOrDefaultAsync();
+                av = await dbQuery.AsNoTracking().FirstOrDefaultAsync();
             }
             catch
             {

@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace DALMySql
@@ -67,11 +68,24 @@ namespace DALMySql
         /// <returns>元组，</returns>
         public async Task<Tuple<bool, DateTime>> CheckLoginErrorCountAsync(int maxErrorCount, int tryMinutes, string ip)
         {
-            Tuple<bool, DateTime> result = null;
-            await Task.Run(() => {
-                result = new Tuple<bool, DateTime>(CheckLoginErrorCount(maxErrorCount, tryMinutes, ip, out DateTime? lastLoginTime), lastLoginTime.Value);
-            });
-            return result;
+            DateTime lastLoginTime = DateTime.Now;
+            bool bResult = false;
+            if (maxErrorCount <= 0)
+            {
+                return new Tuple<bool, DateTime>(bResult, DateTime.Now);
+            }
+            int errorLoginCount = 0;
+            DateTime compareDateTime = DateTime.Now.AddMinutes(-tryMinutes);
+            errorLoginCount = await
+                _db.Set<AdminLoginLog>().CountAsync(f => f.UserIp == ip && (f.IsSuccess == null || f.IsSuccess.Value == 0) && compareDateTime < f.LoginTime.Value);
+            if (errorLoginCount >= maxErrorCount)
+            {
+                lastLoginTime = await _db.Set<AdminLoginLog>()
+                    .Where(f => f.UserIp == ip && (f.IsSuccess == null || f.IsSuccess.Value == 0))
+                    .MaxAsync(p => p.LoginTime.Value);
+                bResult = true;
+            }
+            return new Tuple<bool, DateTime>(bResult, lastLoginTime);
         }
 
         #endregion

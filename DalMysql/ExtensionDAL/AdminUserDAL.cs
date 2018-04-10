@@ -231,11 +231,23 @@ namespace DALMySql
         public async Task<PageData<AdminUser>> GetAdminUserByPageAsync<TKey>(int pageIndex, int pageSize, Expression<Func<AdminUser, bool>> queryWhere, Expression<Func<AdminUser, TKey>> orderBy, bool isdesc = false)
         {
             var result = new PageData<AdminUser>();
-            await Task.Run(() =>
+            if (pageIndex < 1)
             {
-                result.DataList = GetAdminUserByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out int totalCount, isdesc);
-                result.TotalCount = totalCount;
-            });
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pageSize;
+            if (isdesc)
+            {
+                var dbQuery = _db.Set<AdminUser>().Where(queryWhere).OrderByDescending(orderBy);
+                result.DataList = await dbQuery.Skip(skipIndex).Take(pageSize).ToListAsync();
+                result.TotalCount= await dbQuery.CountAsync();
+            }
+            else
+            {
+                var dbQuery = _db.Set<AdminUser>().Where(queryWhere).OrderBy(orderBy);
+                result.DataList =await dbQuery.Skip(skipIndex).Take(pageSize).ToListAsync(); 
+                result.TotalCount = await dbQuery.CountAsync();
+            }
             return result;
         }
     }

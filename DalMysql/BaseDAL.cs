@@ -544,16 +544,11 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<PageData<T>> GetPageDataAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            var results = new PageData<T>
+            var result = new PageData<T>
             {
                 DataList = await GetPageListByAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc),
                 TotalCount = await GetTotalAsync(queryWhere)
             };
-            return results;
-        }
-        private async Task<int> GetTotal(int totalCount, Expression<Func<T, bool>> queryWhere)
-        {
-            int result = await _db.Set<T>().CountAsync(queryWhere);
             return result;
         }
 
@@ -629,12 +624,51 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<PageData<T>> GetPageListByAsync(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy)
         {
-            var results = new PageData<T>
+            if (pageIndex < 1)
             {
-                DataList = GetPageListBy(pageIndex, pageSize, queryWhere, strOrderBy, out int totalCount),
-                TotalCount = totalCount
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pageSize;
+            var queryResult = _db.Set<T>().Where(queryWhere);
+            var orderResult = queryResult;
+            Type type = typeof(T);
+            string[] orderByArray = strOrderBy.Split(',');
+            foreach (string s in orderByArray)
+            {
+                string[] orderBy = s.TrimStart().TrimEnd().Split(' ');
+                //排序属性名
+                string orderProperty = orderBy[0];
+                //正序或反序，正序可省略
+                string order = orderBy.Length > 1 ? orderBy[1] : "asc";
+                PropertyInfo property = type.GetProperty(orderProperty); //获取指定名称的属性
+                if (property == null)
+                {
+                    continue;
+                }
+                var parameter = Expression.Parameter(type, "o");
+                var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+                var orderByExp = Expression.Lambda(propertyAccess, parameter);
+                if (order.Equals("desc", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    MethodCallExpression resultExp = Expression.Call(typeof(Queryable), "OrderByDescending",
+                        new Type[] { typeof(T), property.PropertyType }, orderResult.Expression,
+                        Expression.Quote(orderByExp));
+                    orderResult = orderResult.Provider.CreateQuery<T>(resultExp);
+                }
+                else
+                {
+                    MethodCallExpression resultExp = Expression.Call(typeof(Queryable), "OrderBy",
+                        new Type[] { typeof(T), property.PropertyType }, orderResult.Expression,
+                        Expression.Quote(orderByExp));
+                    orderResult = orderResult.Provider.CreateQuery<T>(resultExp);
+                }
+            }
+            PageData<T> result = new PageData<T>
+            {
+                DataList = await orderResult.Skip(skipIndex).Take(pageSize).ToListAsync(),
+                TotalCount = await queryResult.CountAsync()
             };
-            return results;
+            return result;
         }
 
         #endregion 根据条件分页查询数据并输出总行数(多条件排序)

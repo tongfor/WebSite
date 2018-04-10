@@ -20,7 +20,10 @@ namespace UnitTestProject1
         public void TestMethod1()
         {
             var db = new DbContextFactory().GetDbContext();
-            var bll = BLLSession.ArticleService;
+            //var bll = new ArticleService(db);
+            //var bll = new AdminUserService(db);
+            var bll = new AdminMenuService(db);
+
             //var dal = new ArticleDAL(db);
             //var menuDal = new AdminMenuDAL(db);
             //var userDal = new AdminUserDAL(db);
@@ -38,11 +41,29 @@ namespace UnitTestProject1
 
             //var b1 = db.Set<PageData<Article>>().FromSql("select * from Article as DataList;Select count(1) as TotalCount from Article as TotalCount;");
 
-            var a1 = bll.GetModelAsync(1);            
-            int totalCount;
-            var a4 = bll.GetOrderArticleIncludeClassByPage(1, 3, "", "", out totalCount);
-            var a2 = bll.GetOrderArticleIncludeClassByPageAsync(1, 3, "", "");
-            var a3 = bll.GetPageDataAsync(1, 3, f => true, o => o.Id);
+            //var a1 = bll.GetModelAsync(1);            
+            //int totalCount;
+            //var a4 = bll.GetOrderArticleIncludeClassByPage(1, 3, "", "", out totalCount);
+            //var a2 = bll.GetOrderArticleIncludeClassByPageAsync(1, 3, "", "");
+            //var a3 = bll.GetPageDataAsync(1, 3, f => true, o => o.Id);
+            //var a5 = bll.GetArticleIncludeClassAsync("");
+            //var a6 = bll.GetArticleViewNearIdAsync(2);
+            //var a7 = bll.GetOrderArticleIncludeClassByPageAsync(1, 3, "", "Id desc");
+            //var a8 = bll.GetPageListByAsync(1, 3, f => true, "");
+
+            //var au1 = bll.GetPageDataAsync(1, 4, f => true, o => o.Id);
+            //var au2 = bll.GetAdminUserByPageAsync(1, 4, f => true, o => o.Id);
+            //var au3 = bll.UserCanRegisterAsync("admin");
+            //UserRequest userRequest = new UserRequest()
+            //{
+            //    UserName = "admin",
+            //    RoleId = 1
+            //};
+            //var au4 = bll.GetUserByRequestAsync(null);
+
+            //var d1 = bll.DelIncludeRelatedDataAsync(3);
+            var am1 = bll.GetAdminUserMenuTreeAsync(new List<AdminUserMenuView>(), 11);
+
 
             List<int> l1 = new List<int>() { 1, 2 ,3};
             string sl1 = l1.ToString();

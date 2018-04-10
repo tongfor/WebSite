@@ -72,7 +72,7 @@ namespace IDAL
         ///  异步删除数据(使用事务，包括关联数据)
         /// </summary>
         /// <param name="id">ID</param>
-       void DelIncludeRelatedDataAsync(int id);
+       Task DelIncludeRelatedDataAsync(int id);
 
         #endregion 删除数据(包括关联数据)
 
@@ -88,7 +88,7 @@ namespace IDAL
         ///  异步批量删除数据(使用事务，包括关联数据)
         /// </summary>
         /// <param name="ids">ID列表</param>
-        void DelIncludeRelatedDataAsync(List<int> ids);
+        Task DelIncludeRelatedDataAsync(List<int> ids);
 
         #endregion
     }

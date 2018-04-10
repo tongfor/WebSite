@@ -171,6 +171,32 @@ namespace BLL
 
         #endregion
 
+        #region 获取总数
+
+        /// <summary>
+        /// 获取总数
+        /// </summary>
+        /// <param name="queryWhere">查询条件</param>
+        /// <returns></returns>
+        public int GetTotal(Expression<Func<T, bool>> queryWhere)
+        {
+            var result = IBaseDal.GetTotal(queryWhere);
+            return result;
+        }
+
+        /// <summary>
+        /// 异步获取总数
+        /// </summary>
+        /// <param name="queryWhere">查询条件</param>
+        /// <returns></returns>
+        public async Task<int> GetTotalAsync(Expression<Func<T, bool>> queryWhere)
+        {
+            var result = await IBaseDal.GetTotalAsync(queryWhere);
+            return result;
+        }
+
+        #endregion 获取总数
+
         #region 根据条件查询数据
 
         /// <summary>

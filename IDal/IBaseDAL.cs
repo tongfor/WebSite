@@ -109,6 +109,24 @@ namespace IDAL
 
         #endregion
 
+        #region 获取总数
+
+        /// <summary>
+        /// 获取总数
+        /// </summary>
+        /// <param name="queryWhere">查询条件</param>
+        /// <returns></returns>
+        int GetTotal(Expression<Func<T, bool>> queryWhere);
+
+        /// <summary>
+        /// 异步获取总数
+        /// </summary>
+        /// <param name="queryWhere">查询条件</param>
+        /// <returns></returns>
+        Task<int> GetTotalAsync(Expression<Func<T, bool>> queryWhere);
+
+        #endregion 获取总数
+
         #region 根据条件查询数据
 
         /// <summary>

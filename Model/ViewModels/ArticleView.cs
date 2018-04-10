@@ -54,20 +54,20 @@ namespace Models
 
         public ArticleView(Article article)
         {
-            this.Id = Id;
-            this.ClassId = this.ClassId;
-            this.Title = this.Title;
-            this.TitleColor = this.TitleColor;
-            this.Content = this.Content;
-            this.UserName = this.UserName;
-            this.LookCount = this.LookCount;
-            this.AddHtmlurl = this.AddHtmlurl;
-            this.IsTop = this.IsTop;
-            this.IsMarquee = this.IsMarquee;
-            this.Introduce = this.Introduce;
-            this.IntroduceImg = this.IntroduceImg;
-            this.AddTime = this.AddTime;
-            this.EditTime = this.EditTime;
+            this.Id = article.Id;
+            this.ClassId = article.ClassId;
+            this.Title = article.Title;
+            this.TitleColor = article.TitleColor;
+            this.Content = article.Content;
+            this.UserName = article.UserName;
+            this.LookCount = article.LookCount;
+            this.AddHtmlurl = article.AddHtmlurl;
+            this.IsTop = article.IsTop;
+            this.IsMarquee = article.IsMarquee;
+            this.Introduce = article.Introduce;
+            this.IntroduceImg = article.IntroduceImg;
+            this.AddTime = article.AddTime;
+            this.EditTime = article.EditTime;
         }       
 
         //[DataType(DataType.Date)]
