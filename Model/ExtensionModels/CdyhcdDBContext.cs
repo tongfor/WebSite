@@ -10,5 +10,7 @@ namespace Models
         public virtual DbSet<AdminUserMenuView> AdminUserMenuView { get; set; }
         public virtual DbSet<AdminUserView> AdminUserView { get; set; }
         public virtual DbSet<AdminMenuRoleButtonView> AdminMenuRoleButtonView { get; set; }
+
+        public virtual DbSet<PageData<Article>> ArticlePageData { get; set; }
     }
 }

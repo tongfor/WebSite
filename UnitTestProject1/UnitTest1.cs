@@ -21,7 +21,6 @@ namespace UnitTestProject1
         {
             var db = new DbContextFactory().GetDbContext();
             var bll = BLLSession.ArticleService;
-            BLLSession.Db = db;
             //var dal = new ArticleDAL(db);
             //var menuDal = new AdminMenuDAL(db);
             //var userDal = new AdminUserDAL(db);
@@ -36,6 +35,8 @@ namespace UnitTestProject1
 
             //var r1 = roleDal.GetRoleByUserId(1);
             //var a1 = dal.GetPageListByAsync(1, 3, f => f.ClassId == 2, " LookCount desc, AddTime desc");
+
+            //var b1 = db.Set<PageData<Article>>().FromSql("select * from Article as DataList;Select count(1) as TotalCount from Article as TotalCount;");
 
             var a1 = bll.GetModelAsync(1);            
             int totalCount;
