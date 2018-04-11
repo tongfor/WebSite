@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using IDAL;
 using Models;
 using Common;
@@ -90,17 +91,14 @@ namespace BLL
         {
             List<AdminUserMenuView> menuTreeList = new List<AdminUserMenuView>();
             List<AdminUserMenuView> exceptedMenuList = menuList.ToList();
-            await Task.Run(() =>
+            foreach (var menu in menuList.Where(f => f.MenuParentId == parentId))
             {
-                foreach (var menu in menuList.Where(f => f.MenuParentId == parentId))
-                {
-                    exceptedMenuList.Remove(menu);
-                    menu.ChildMenus = menu.MenuParentId == 0
-                        ? exceptedMenuList.Where(p => p.MenuParentId == menu.MenuId).OrderBy(o => o.MenuSort).ToList()
-                        : GetAdminUserMenuTree(exceptedMenuList, menu.MenuId);
-                    menuTreeList.Add(menu);
-                }
-            });
+                exceptedMenuList.Remove(menu);
+                menu.ChildMenus = menu.MenuParentId == 0
+                    ? exceptedMenuList.Where(p => p.MenuParentId == menu.MenuId).OrderBy(o => o.MenuSort).ToList()
+                    : await GetAdminUserMenuTreeAsync(exceptedMenuList, menu.MenuId);
+                menuTreeList.Add(menu);                
+            }
             return menuTreeList;
         }
 
@@ -152,39 +150,36 @@ namespace BLL
         /// </summary>
         public async Task<string> GetMenuTreeJsonByRoleIdAsync(int menuId, int roleId)
         {
-            List<AdminMenuRoleButtonView> modelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(menuId, roleId);
+            List<AdminMenuRoleButtonView> modelList = await adminMenuDAL.GetMenuListIncludeRoleAndButtonAsync(menuId, roleId);
             StringBuilder jsonResult = new StringBuilder();
 
-            await Task.Run(() =>
+            jsonResult.Append("[");
+            foreach (AdminMenuRoleButtonView amrb in modelList)
             {
-                jsonResult.Append("[");
-                foreach (AdminMenuRoleButtonView amrb in modelList)
+                jsonResult.Append("{\"id\":\"" + amrb.Id + "\",\"text\":\"" + amrb.Name + "\"");
+                //AdminRoleAdminMenuButton aab =
+                //    AdminRoleAdminMenuButtonDAL.GetListBy(
+                //        f => f.RoleId == roleId && f.MenuId == amrb.Id && f.ButtonId == 1).FirstOrDefault();
+                //if (aab != null)
+                if (amrb.RoleId != null)
                 {
-                    jsonResult.Append("{\"id\":\"" + amrb.Id + "\",\"text\":\"" + amrb.Name + "\"");
-                    //AdminRoleAdminMenuButton aab =
-                    //    AdminRoleAdminMenuButtonDAL.GetListBy(
-                    //        f => f.RoleId == roleId && f.MenuId == amrb.Id && f.ButtonId == 1).FirstOrDefault();
-                    //if (aab != null)
-                    if (amrb.RoleId != null)
-                    {
-                        jsonResult.Append(",\"checked\":\"" + true + "\"");
-                    }
-                    List<AdminMenuRoleButtonView> cModelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(amrb.Id, roleId);
-                    if (cModelList.Count > 0) //根节点下有子节点
-                    {
-                        jsonResult.Append(",");
-                        jsonResult.Append("\"children\":" + GetMenuTreeJsonByRoleId(amrb.Id, roleId));
-                        jsonResult.Append("},");
-                    }
-                    else //根节点下没有子节点
-                    {
-                        jsonResult.Append("},");
-                    }
+                    jsonResult.Append(",\"checked\":\"" + true + "\"");
                 }
-                string tmpstr = jsonResult.ToString().TrimEnd(',');//去掉最后多余的逗号
-                jsonResult.Clear().Append(tmpstr);
-                jsonResult.Append("]");
-            });
+                List<AdminMenuRoleButtonView> cModelList = await adminMenuDAL.GetMenuListIncludeRoleAndButtonAsync(amrb.Id, roleId);
+                if (cModelList.Count > 0) //根节点下有子节点
+                {
+                    jsonResult.Append(",");
+                    jsonResult.Append("\"children\":" + await GetMenuTreeJsonByRoleIdAsync(amrb.Id, roleId));
+                    jsonResult.Append("},");
+                }
+                else //根节点下没有子节点
+                {
+                    jsonResult.Append("},");
+                }
+            }
+            string tmpstr = jsonResult.ToString().TrimEnd(',');//去掉最后多余的逗号
+            jsonResult.Clear().Append(tmpstr);
+            jsonResult.Append("]");
 
             return jsonResult.ToString();
         }
@@ -229,31 +224,28 @@ namespace BLL
         /// </summary>
         public async Task<string> GetAllMenuTreeJsonAsync(int parentId)
         {
-            List<AdminMenu> menuList = GetAllMenuOrderList(parentId);
+            List<AdminMenu> menuList = await GetAllMenuOrderListAsync(parentId);
             StringBuilder jsonResult = new StringBuilder();
 
-            await Task.Run(() =>
+            jsonResult.Append("[");
+            foreach (AdminMenu am in menuList)
             {
-                jsonResult.Append("[");
-                foreach (AdminMenu am in menuList)
+                jsonResult.Append("{\"id\":\"" + am.Id + "\",\"text\":\"" + am.Name + "\"");
+                List<AdminMenu> cModelList = await GetAllMenuOrderListAsync(am.Id);
+                if (cModelList.Count > 0) //根节点下有子节点
                 {
-                    jsonResult.Append("{\"id\":\"" + am.Id + "\",\"text\":\"" + am.Name + "\"");
-                    List<AdminMenu> cModelList = GetAllMenuOrderList(am.Id);
-                    if (cModelList.Count > 0) //根节点下有子节点
-                    {
-                        jsonResult.Append(",");
-                        jsonResult.Append("\"children\":" + GetAllMenuTreeJson(am.Id));
-                        jsonResult.Append("},");
-                    }
-                    else //根节点下没有子节点
-                    {
-                        jsonResult.Append("},");
-                    }
+                    jsonResult.Append(",");
+                    jsonResult.Append("\"children\":" + await GetAllMenuTreeJsonAsync(am.Id));
+                    jsonResult.Append("},");
                 }
-                string tmpstr = jsonResult.ToString().TrimEnd(',');//去掉最后多余的逗号
-                jsonResult.Clear().Append(tmpstr);
-                jsonResult.Append("]");
-            });
+                else //根节点下没有子节点
+                {
+                    jsonResult.Append("},");
+                }
+            }
+            string tmpstr = jsonResult.ToString().TrimEnd(',');//去掉最后多余的逗号
+            jsonResult.Clear().Append(tmpstr);
+            jsonResult.Append("]");
 
             return jsonResult.ToString();
         }

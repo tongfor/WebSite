@@ -160,12 +160,6 @@ namespace DALMySql
             {
                 try
                 {
-                    //string strsql = $"delete from AdminMenu where id = {id}";
-                    //string relatedStrSql = $"delete form AdminRoleAdminMenuButton where MenuId = {id}";                   
-
-                    //_db.AdminRoleAdminMenuButton.(relatedStrSql);
-                    //_db.AdminMenu.FromSql(strsql);
-
                     StringBuilder sb = new StringBuilder();
                     sb.Append($"delete from AdminRoleAdminMenuButton where MenuId = {id};");
                     sb.Append($"delete from AdminMenuAdminButton where MenuId = {id};");
@@ -176,8 +170,8 @@ namespace DALMySql
                     //new AdminRoleAdminMenuButtonDAL(_db).DelBy(f => f.MenuId == id);
                     //new AdminMenuAdminButtonDAL(_db).DelBy(f => f.MenuId == id);
                     //DelBy(f => f.Id == id);
+                    //_db.SaveChanges();
 
-                    _db.SaveChanges();
                     tran.Commit();
                 }
                 catch (Exception ex)
@@ -208,8 +202,7 @@ namespace DALMySql
                     //await new AdminRoleAdminMenuButtonDAL(_db).DelByAsync(f => f.MenuId == id);
                     //await new AdminMenuAdminButtonDAL(_db).DelByAsync(f => f.MenuId == id);
                     //await DelByAsync(f => f.Id == id);
-
-                    await _db.SaveChangesAsync();
+                    //_db.SaveChangesAsync();
 
                     tran.Commit();
                 }
@@ -238,12 +231,11 @@ namespace DALMySql
                     string strIds = string.Join(',', ids);
                     StringBuilder sb = new StringBuilder();
 
-                    sb.Append($"delete form AdminRoleAdminMenuButton where MenuId in ({strIds})");
-                    sb.Append($"delete form AdminMenuAdminButton where MenuId in ({strIds})");
-                    sb.Append($"delete from AdminMenu where id in ({strIds})");
+                    sb.Append($"delete from AdminRoleAdminMenuButton where MenuId in ({strIds});");
+                    sb.Append($"delete from AdminMenuAdminButton where MenuId in ({strIds});");
+                    sb.Append($"delete from AdminMenu where id in ({strIds});");
 
                     _db.Database.ExecuteSqlCommand(sb.ToString());
-                    _db.SaveChanges();
                     tran.Commit();
                 }
                 catch (Exception ex)
@@ -267,12 +259,11 @@ namespace DALMySql
                     string strIds = string.Join(',', ids);
                     StringBuilder sb = new StringBuilder();
 
-                    sb.Append($"delete form AdminRoleAdminMenuButton where MenuId in ({strIds})");
-                    sb.Append($"delete form AdminMenuAdminButton where MenuId in ({strIds})");
-                    sb.Append($"delete from AdminMenu where id in ({strIds})");
+                    sb.Append($"delete from AdminRoleAdminMenuButton where MenuId in ({strIds});");
+                    sb.Append($"delete from AdminMenuAdminButton where MenuId in ({strIds});");
+                    sb.Append($"delete from AdminMenu where id in ({strIds});");
 
                     await _db.Database.ExecuteSqlCommandAsync(sb.ToString());
-                    await _db.SaveChangesAsync();
                     tran.Commit();
                 }
                 catch (Exception ex)

@@ -62,8 +62,14 @@ namespace UnitTestProject1
             //var au4 = bll.GetUserByRequestAsync(null);
 
             //var d1 = bll.DelIncludeRelatedDataAsync(3);
-            var am1 = bll.GetAdminUserMenuTreeAsync(new List<AdminUserMenuView>(), 11);
-
+            var menuList = bll.GetAdminUserMenu(1);
+            var am1 = bll.GetAdminUserMenuTreeAsync(menuList, 0);
+            var am2 = bll.GetMenuTreeJsonByRoleIdAsync(1, 1);
+            var am3 = bll.GetAllMenuTreeJsonAsync(0);
+            var am4 = bll.GetAdminMenuListAsync(null);
+            var am5 = bll.GetAllMenuOrderListAsync();
+            var am6 = bll.DelIncludeRelatedDataAsync(3);
+            var am7 = bll.DelIncludeRelatedDataAsync(new List<int>() { 1, 3 });
 
             List<int> l1 = new List<int>() { 1, 2 ,3};
             string sl1 = l1.ToString();
