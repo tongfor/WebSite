@@ -5,9 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DALSession.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="DALSession.tt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DalMysql\DalMysql.csproj" />
     <ProjectReference Include="..\DatabaseTool\DatabaseTool.csproj" />
+    <ProjectReference Include="..\IBLL\IBLL.csproj" />
     <ProjectReference Include="..\IDal\IDAL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
   </ItemGroup>
@@ -18,21 +27,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BLL.tt</DependentUpon>
     </Compile>
-    <Compile Update="DALSession.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DALSession.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="BLL.tt">
       <LastGenOutput>BLL.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-    <None Update="DALSession.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DALSession.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

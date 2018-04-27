@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2018/4/9 23:03:57   N/A    初版
+* V0.01  2018/4/27 15:47:24   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -24,34 +24,27 @@ using System.Threading.Tasks;
 using Models;
 using IDAL;
 using DALMySql;
+using IBLL;
+using RepositoryPattern;
 
 namespace BLL
 {
-	public partial class AdminMenuAdminButtonService : BaseService<AdminMenuAdminButton>
+	public partial class AdminMenuAdminButtonService : BaseService<AdminMenuAdminButton>, IAdminMenuAdminButtonService 
     {
         //EF上下文
-        protected readonly CdyhcdDBContext _db;
+        protected readonly CdyhcdDBContext MyDBContext;
         //操作DAL
-        protected IAdminMenuAdminButtonDAL adminMenuAdminButtonDAL;
+        protected IAdminMenuAdminButtonDAL MyIAdminMenuAdminButtonDAL;
 
         #region 构造函数
 
-		public AdminMenuAdminButtonService(CdyhcdDBContext db)
+		public AdminMenuAdminButtonService(CdyhcdDBContext db, IAdminMenuAdminButtonDAL adminMenuAdminButtonDAl) : base(adminMenuAdminButtonDAl)
 		{
-            _db = db;
-			SetIBaseDal();
+            MyDBContext = db;
+            MyIAdminMenuAdminButtonDAL = adminMenuAdminButtonDAl;
 		}
 
-		#endregion
-		
-        #region 重写IBaseDal获取方法
-
-		public sealed override void SetIBaseDal()
-        {
-            IBaseDal = adminMenuAdminButtonDAL = new DALSession(_db).IAdminMenuAdminButtonDAL;
-        }
-
-		#endregion
+		#endregion        
 
         #region 根据条件获取模型
 

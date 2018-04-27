@@ -41,34 +41,27 @@ using System.Threading.Tasks;
 using Models;
 using IDAL;
 using DALMySql;
+using IBLL;
+using RepositoryPattern;
 
 namespace BLL
 {
-	public partial class <#=tableName#>Service : BaseService<<#=tableName#>>
+	public partial class <#=tableName#>Service : BaseService<<#=tableName#>>, I<#=tableName#>Service 
     {
         //EF上下文
-        protected readonly CdyhcdDBContext _db;
+        protected readonly CdyhcdDBContext MyDBContext;
         //操作DAL
-        protected I<#=tableName#>DAL <#=MysqlDbHelper.ToFirstLower(tableName)#>DAL;
+        protected I<#=tableName#>DAL MyI<#=tableName#>DAL;
 
         #region 构造函数
 
-		public <#=tableName#>Service(CdyhcdDBContext db)
+		public <#=tableName#>Service(CdyhcdDBContext db, I<#=tableName#>DAL <#=MysqlDbHelper.ToFirstLower(tableName)#>DAl) : base(<#=MysqlDbHelper.ToFirstLower(tableName)#>DAl)
 		{
-            _db = db;
-			SetIBaseDal();
+            MyDBContext = db;
+            MyI<#=tableName#>DAL = <#=MysqlDbHelper.ToFirstLower(tableName)#>DAl;
 		}
 
-		#endregion
-		
-        #region 重写IBaseDal获取方法
-
-		public sealed override void SetIBaseDal()
-        {
-            IBaseDal = <#=MysqlDbHelper.ToFirstLower(tableName)#>DAL = new DALSession(_db).I<#=tableName#>DAL;
-        }
-
-		#endregion
+		#endregion        
 
         #region 根据条件获取模型
 

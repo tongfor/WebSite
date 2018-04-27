@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BLL;
+using IBLL;
+using IDAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Models;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using RepositoryPattern;
+using Setting;
 
-namespace YhcdWebSite
+namespace YhcdWebsite
 {
     public class Startup
     {
@@ -23,8 +23,11 @@ namespace YhcdWebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CdyhcdDBContext>(options => options.UseMySQL(Configuration.GetConnectionString("YhcdConnection")));
-            services.AddMvc();
+            services.AddScoped<IOnDatabaseConfiguring, EntityFrameWorkConfigure>();
+
+            services.UseYhcdSetting(Configuration);
+
+            services.AddMvc().AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; }); ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

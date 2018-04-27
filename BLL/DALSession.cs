@@ -17,6 +17,7 @@
 using IDAL;
 using Models;
 using DALMySql;
+using RepositoryPattern;
 
 namespace BLL
 {

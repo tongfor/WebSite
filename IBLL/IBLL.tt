@@ -1,0 +1,77 @@
+﻿<#@ template language="C#" debug="True" hostspecific="True" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ include file="../T4Include/FileManager.ttinclude"#>
+<#@ include file="../T4Include/MysqlDbHelper.ttinclude"#>
+<#@ include file="../T4Include/config.ttinclude"#>
+<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = Path.GetDirectoryName(Host.TemplateFile)}; #>
+
+<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+<# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
+     <# 
+        manager.StartBlock("I" + tableName + "Service.cs");
+     #>
+/** 
+* I<#=tableName#>Service.cs
+*
+* 功 能： 表<#=tableName#>业务层接口
+* 类 名： I<#=tableName#>
+*
+* Ver    变更日期             负责人  变更内容
+* ───────────────────────────────────
+* V0.01  <#=DateTime.Now.ToString()#>   N/A    初版
+*
+*┌──────────────────────────────────┐
+*│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
+*│　版权所有：成都盈辉创动科技有限公司　　　　　　　　　　　　　　│
+*└──────────────────────────────────┘
+*/
+//----------<#=tableName#>开始----------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Models;
+using IDAL;
+using DALMySql;
+
+namespace IBLL
+{
+	public partial interface I<#=tableName#>Service : IBaseService<<#=tableName#>>
+    {
+        #region 根据条件获取模型
+
+		/// <summary>
+        /// 根据条件得到模型
+        /// </summary>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+		<#=tableName#> GetModelBy(Expression<Func<<#=tableName#>, bool>> queryWhere);
+
+		/// <summary>
+        /// 异步根据条件得到模型
+        /// </summary>
+        /// <param name="queryWhere">条件Lambda表达式</param>
+        /// <returns></returns>
+		Task<<#=tableName#>> GetModelByAsync(Expression<Func<<#=tableName#>, bool>> queryWhere);
+
+		#endregion 
+    }
+}
+
+//----------<#=tableName#>结束----------
+
+    <# manager.EndBlock(); #>
+<#}#>
+<#
+    manager.Process(true);
+#>
+
+

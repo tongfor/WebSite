@@ -5,6 +5,16 @@
     <UserSecretsId>aspnet-WebAdmin-101DF220-69AF-4B96-B5C9-F712D812DE88</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\BaseController.cs" />
+    <Compile Remove="OperaterContext.cs" />
+    <Compile Remove="Services\BLLSession.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Services\BLLSession.tt" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
@@ -19,24 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BLL\BLL.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\IBLL\IBLL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Services\BLLSession.cs">
-      <DependentUpon>BLLSession.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Services\BLLSession.tt">
-      <LastGenOutput>BLLSession.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
+    <ProjectReference Include="..\Setting\Setting.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\BLLSession.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Service\BLLSession.tt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
@@ -21,26 +29,18 @@
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\IBLL\IBLL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Service\BLLSession.cs">
-      <DependentUpon>BLLSession.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Service\BLLSession.tt">
-      <LastGenOutput>BLLSession.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
+    <ProjectReference Include="..\RepositoryPattern\RepositoryPattern.csproj" />
+    <ProjectReference Include="..\Setting\Setting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Service\" />
   </ItemGroup>
 
 </Project>

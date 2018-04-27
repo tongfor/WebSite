@@ -17,8 +17,14 @@ namespace WebAdmin
             BuildWebHost(args).Run();
         }
 
+        private static IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("hosting.json", optional: true)
+                .Build();
+
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseConfiguration(config)
                 .UseStartup<Startup>()
                 .Build();
     }

@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using IBLL;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using YhcdWebSite.Service;
+using RepositoryPattern;
 
 namespace YhcdWebsite.Controllers
 {
     public class ArticleController : Controller
     {
-        private readonly CdyhcdDBContext _context;
-        private readonly ArticleService articleService;
+        private readonly IArticleService _articleService;
 
-        public ArticleController(CdyhcdDBContext context)
+        public ArticleController(IArticleService articleService, CdyhcdDBContext context)
         {
-            //BLLSession.Db = context;
-            articleService = new ArticleService(context);
-            _context = context;
+            _articleService = articleService;
         }
 
         // GET: Article
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Article.ToListAsync());
+            return View(await _articleService.GetListByAsync(f=>true));
         }
 
         // GET: Article/Details/5
@@ -37,9 +32,9 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var article =await articleService.GetModelAsync(id.Value);            
-            var a2 = articleService.GetOrderArticleIncludeClassByPageAsync(1, 3, "", "");
-            var a3 = articleService.GetPageDataAsync(1, 3, f => true, o => o.Id);
+            var article =await _articleService.GetModelAsync(id.Value);            
+            var a2 = _articleService.GetOrderArticleIncludeClassByPageAsync(1, 3, "", "");
+            var a3 = _articleService.GetPageDataAsync(1, 3, f => true, o => o.Id);
             if (article == null)
             {
                 return NotFound();
@@ -63,8 +58,7 @@ namespace YhcdWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(article);
-                await _context.SaveChangesAsync();
+                await _articleService.AddAsync(article);
                 return RedirectToAction(nameof(Index));
             }
             return View(article);
@@ -78,7 +72,7 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Article.SingleOrDefaultAsync(m => m.Id == id);
+            var article = await _articleService.GetModelAsync(id.Value);
             if (article == null)
             {
                 return NotFound();
@@ -102,8 +96,9 @@ namespace YhcdWebsite.Controllers
             {
                 try
                 {
-                    _context.Update(article);
-                    await _context.SaveChangesAsync();
+                    //_context.Update(article);
+                    //await _context.SaveChangesAsync();
+                    await _articleService.ModifyAsync(article);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,8 +124,9 @@ namespace YhcdWebsite.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Article
-                .SingleOrDefaultAsync(m => m.Id == id);
+            //var article = await _context.Article
+            //    .SingleOrDefaultAsync(m => m.Id == id);
+            var article = await _articleService.GetModelAsync(id.Value);
             if (article == null)
             {
                 return NotFound();
@@ -144,15 +140,16 @@ namespace YhcdWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var article = await _context.Article.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Article.Remove(article);
-            await _context.SaveChangesAsync();
+            //var article = await _context.Article.SingleOrDefaultAsync(m => m.Id == id);
+            //_context.Article.Remove(article);
+            //await _context.SaveChangesAsync();
+            await _articleService.DelByAsync(f => f.Id == id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ArticleExists(int id)
         {
-            return _context.Article.Any(e => e.Id == id);
+            return _articleService.GetModel(id) == null;
         }
     }
 }

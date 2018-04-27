@@ -17,6 +17,7 @@
 using BLL;
 using DALMySql;
 using Models;
+using RepositoryPattern;
 
 namespace YhcdWebSite.Service
 {

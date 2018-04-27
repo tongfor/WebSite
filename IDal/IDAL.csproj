@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IDbContextFactory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DatabaseTool\DatabaseTool.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
   </ItemGroup>

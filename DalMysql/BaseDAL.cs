@@ -14,6 +14,7 @@
 *└──────────────────────────────────┘
 */
 using IDAL;
+using RepositoryPattern;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Models;

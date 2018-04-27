@@ -18,6 +18,7 @@ using IDAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Models;
+using RepositoryPattern;
 using System.IO;
 
 namespace DALMySql

@@ -2,6 +2,7 @@
 
 using IDAL;
 using Models;
+using RepositoryPattern;
 /** 
 * AdminRoleAdminMenuButtonService.cs
 *
@@ -30,6 +31,19 @@ namespace BLL
     /// </summary>
     public partial class AdminRoleAdminMenuButtonService
     {
+        protected IAdminMenuDAL MyIAdminMenuDAL;
+
+        #region 构造函数
+
+        public AdminRoleAdminMenuButtonService(CdyhcdDBContext db, IAdminRoleAdminMenuButtonDAL adminRoleAdminMenuButtonDAl, IAdminMenuDAL adminMenuDAL) : base(adminRoleAdminMenuButtonDAl)
+        {
+            MyDBContext = db;
+            MyIAdminRoleAdminMenuButtonDAL = adminRoleAdminMenuButtonDAl;
+            MyIAdminMenuDAL = adminMenuDAL;
+        }
+
+        #endregion
+
         #region 更新用户菜单权限
 
         /// <summary>
@@ -39,7 +53,7 @@ namespace BLL
         /// <param name="selectedMenuIds">选择的菜单ID清单</param>
         public void ModifyUserRoleMenuButton(int roleId, string selectedMenuIds)
         {
-            List<AdminRoleAdminMenuButton> oldSelectedList = adminRoleAdminMenuButtonDAL.GetListBy(f => f.RoleId == roleId);
+            List<AdminRoleAdminMenuButton> oldSelectedList = MyIAdminRoleAdminMenuButtonDAL.GetListBy(f => f.RoleId == roleId);
             List<int> newSelectedMenuIdList = selectedMenuIds.Split(',').Select(s => int.Parse(s)).ToList();
             AdminRoleAdminMenuButton newModel = new AdminRoleAdminMenuButton();
             newModel.RoleId = roleId;
@@ -50,9 +64,9 @@ namespace BLL
                 if (oldSelected == null)
                 {
                     newModel.MenuId = sMenuId;
-                    var menuModel = new AdminMenuService(_db).GetModelBy(f => f.Id == sMenuId);
+                    var menuModel = MyIAdminMenuDAL.GetModel(sMenuId);
                     newModel.ButtonId = menuModel != null && menuModel.ParentId == 0 ? 0 : 1;
-                    int addint = adminRoleAdminMenuButtonDAL.Add(newModel);
+                    int addint = MyIAdminRoleAdminMenuButtonDAL.Add(newModel);
                 }
                 else
                 {
@@ -64,7 +78,7 @@ namespace BLL
             List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList.Where(f => !newSelectedMenuIdList.Contains(f.MenuId.Value)).ToList();
             foreach(var delModel in needDelSelectedList)
             {
-                int delint = adminRoleAdminMenuButtonDAL.Del(delModel);
+                int delint = MyIAdminRoleAdminMenuButtonDAL.Del(delModel);
             }
         }
 

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DbContextFactory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="appsettings.Development.json" />
     <None Remove="appsettings.json" />
   </ItemGroup>
@@ -29,6 +33,7 @@
     <ProjectReference Include="..\DatabaseTool\DatabaseTool.csproj" />
     <ProjectReference Include="..\IDal\IDAL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
+    <ProjectReference Include="..\RepositoryPattern\RepositoryPattern.csproj" />
   </ItemGroup>
 
   <ItemGroup>

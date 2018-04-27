@@ -38,7 +38,7 @@ namespace BLL
         /// <returns></returns>
         public AdminUser GetUserByName(string userName)
         {
-            var adminUserInfo = adminUserDAL.GetModelByUserName(userName);
+            var adminUserInfo = MyIAdminUserDAL.GetModelByUserName(userName);
             return adminUserInfo;
         }
 
@@ -49,7 +49,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<AdminUser> GetUserByNameAsync(string userName)
         {
-            var adminUserInfo = await adminUserDAL.GetModelByUserNameAsync(userName);
+            var adminUserInfo = await MyIAdminUserDAL.GetModelByUserNameAsync(userName);
             return adminUserInfo;
         }
 
@@ -67,7 +67,7 @@ namespace BLL
         {
             AdminUser adminUserInfo = null;
             string passwordMd5 = password.MD5Encrypt();
-            adminUserInfo = adminUserDAL.GetModelByUserNameAndPwd(userName, passwordMd5);
+            adminUserInfo = MyIAdminUserDAL.GetModelByUserNameAndPwd(userName, passwordMd5);
             return adminUserInfo;
         }
 
@@ -81,7 +81,7 @@ namespace BLL
         {
             AdminUser adminUserInfo = null;
             string passwordMd5 = password.MD5Encrypt();
-            adminUserInfo = await adminUserDAL.GetModelByUserNameAndPwdAsync(userName, passwordMd5);
+            adminUserInfo = await MyIAdminUserDAL.GetModelByUserNameAndPwdAsync(userName, passwordMd5);
             return adminUserInfo;
         }
 
@@ -102,7 +102,7 @@ namespace BLL
             if (request.RoleId > 0)
             {
                 var strWhere = string.Format("Roleid={0}", request.RoleId);
-                users = adminUserDAL.GetUserIncludeRole(strWhere).ToList();
+                users = MyIAdminUserDAL.GetUserIncludeRole(strWhere).ToList();
             }
 
             return users.OrderByDescending(u => u.Id).ToPagedList(request.PageIndex, request.PageSize); ;
@@ -121,7 +121,7 @@ namespace BLL
             if (request.RoleId > 0)
             {
                 var strWhere = string.Format("Roleid={0}", request.RoleId);
-                users = await adminUserDAL.GetUserIncludeRoleAsync(strWhere);
+                users = await MyIAdminUserDAL.GetUserIncludeRoleAsync(strWhere);
             }
 
             return users.OrderByDescending(u => u.Id).ToPagedList(request.PageIndex, request.PageSize); ;
@@ -136,7 +136,7 @@ namespace BLL
         /// <returns>能注册true</returns>
         public bool UserCanRegister(string userName)
         {
-            return adminUserDAL.UserCanRegister(userName);
+            return MyIAdminUserDAL.UserCanRegister(userName);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace BLL
         /// <returns>能注册true</returns>
         public async Task<bool> UserCanRegisterAsync(string userName)
         {
-            return await adminUserDAL.UserCanRegisterAsync(userName);
+            return await MyIAdminUserDAL.UserCanRegisterAsync(userName);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace BLL
         /// <returns></returns>
         public List<AdminUser> GetAdminUserByPage<TKey>(int pageIndex, int pageSize, Expression<Func<AdminUser, bool>> queryWhere, Expression<Func<AdminUser, TKey>> orderBy, out int totalCount, bool isdesc = false)
         {
-            return adminUserDAL.GetAdminUserByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out  totalCount, isdesc);
+            return MyIAdminUserDAL.GetAdminUserByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out  totalCount, isdesc);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace BLL
         public async Task<PageData<AdminUser>> GetAdminUserByPageAsync<TKey>(int pageIndex, int pageSize, Expression<Func<AdminUser, bool>> queryWhere, Expression<Func<AdminUser, TKey>> orderBy, bool isdesc = false)
         {
             var pageData = new PageData<AdminUser>();
-            pageData = await adminUserDAL.GetAdminUserByPageAsync<TKey>(pageIndex, pageSize, queryWhere, orderBy, isdesc);
+            pageData = await MyIAdminUserDAL.GetAdminUserByPageAsync<TKey>(pageIndex, pageSize, queryWhere, orderBy, isdesc);
             return pageData;
         }
 

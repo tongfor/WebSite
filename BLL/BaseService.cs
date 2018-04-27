@@ -21,25 +21,31 @@ using System.Threading.Tasks;
 using Common;
 using IDAL;
 using Models;
+using IBLL;
 
 namespace BLL
 {
-    public abstract class BaseService<T> where T : class, new()
+    public abstract class BaseService<T> : IBaseService<T> where T : class, new()
     {
-        protected IBaseDAL<T> IBaseDal;
+        protected IBaseDAL<T> MyIBaseDal;
 
-        public abstract void SetIBaseDal();
+        protected BaseService(IBaseDAL<T> baseDal)
+        {
+            MyIBaseDal = baseDal;
+        }
+
+        //public abstract void SetIBaseDal();
 
         #region 根据主键获取模型
 
         public T GetModel(int id)
         {
-            return IBaseDal.GetModel(id);
+            return MyIBaseDal.GetModel(id);
         }
 
         public async Task<T> GetModelAsync(int id)
         {
-            var result = await IBaseDal.GetModelAsync(id);
+            var result = await MyIBaseDal.GetModelAsync(id);
             return result;
         }
 
@@ -54,7 +60,7 @@ namespace BLL
         /// <returns></returns>
         public int Add(T model)
         {
-            return IBaseDal.Add(model);
+            return MyIBaseDal.Add(model);
         }
 
         /// <summary>
@@ -64,7 +70,7 @@ namespace BLL
         /// <returns></returns>
         public async  Task<int> AddAsync(T model)
         {
-            return await IBaseDal.AddAsync(model);
+            return await MyIBaseDal.AddAsync(model);
         }
 
         #endregion
@@ -78,7 +84,7 @@ namespace BLL
         /// <returns></returns>
         public int Del(T model)
         {
-            return IBaseDal.Del(model);
+            return MyIBaseDal.Del(model);
         }
 
         /// <summary>
@@ -88,7 +94,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> DelAsync(T model)
         {
-            return await IBaseDal.DelAsync(model);
+            return await MyIBaseDal.DelAsync(model);
         }
 
         #endregion
@@ -102,7 +108,7 @@ namespace BLL
         /// <returns></returns>
         public int DelBy(Expression<Func<T, bool>> delWhere)
         {
-            return IBaseDal.DelBy(delWhere);
+            return MyIBaseDal.DelBy(delWhere);
         }
 
         /// <summary>
@@ -112,7 +118,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> DelByAsync(Expression<Func<T, bool>> delWhere)
         {
-            return await IBaseDal.DelByAsync(delWhere);
+            return await MyIBaseDal.DelByAsync(delWhere);
         }
 
         #endregion        
@@ -127,7 +133,7 @@ namespace BLL
         /// <returns></returns>
         public int Modify(T model, params string[] proNames)
         {
-            return IBaseDal.Modify(model, proNames);
+            return MyIBaseDal.Modify(model, proNames);
         }
 
         /// <summary>
@@ -138,7 +144,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> ModifyAsync(T model, params string[] proNames)
         {
-            return await IBaseDal.ModifyAsync(model, proNames);
+            return await MyIBaseDal.ModifyAsync(model, proNames);
         }
 
         #endregion
@@ -154,7 +160,7 @@ namespace BLL
         /// <returns></returns>
         public int ModifyBy(T model, Expression<Func<T, bool>> modifyWhere, params string[] proNames)
         {
-            return IBaseDal.ModifyBy(model, modifyWhere, proNames);
+            return MyIBaseDal.ModifyBy(model, modifyWhere, proNames);
         }
 
         /// <summary>
@@ -166,7 +172,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> ModifyByAsync(T model, Expression<Func<T, bool>> modifyWhere, params string[] proNames)
         {
-            return await IBaseDal.ModifyByAsync(model, modifyWhere, proNames);
+            return await MyIBaseDal.ModifyByAsync(model, modifyWhere, proNames);
         }
 
         #endregion
@@ -180,7 +186,7 @@ namespace BLL
         /// <returns></returns>
         public int GetTotal(Expression<Func<T, bool>> queryWhere)
         {
-            var result = IBaseDal.GetTotal(queryWhere);
+            var result = MyIBaseDal.GetTotal(queryWhere);
             return result;
         }
 
@@ -191,7 +197,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> GetTotalAsync(Expression<Func<T, bool>> queryWhere)
         {
-            var result = await IBaseDal.GetTotalAsync(queryWhere);
+            var result = await MyIBaseDal.GetTotalAsync(queryWhere);
             return result;
         }
 
@@ -206,7 +212,7 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetListBy(Expression<Func<T, bool>> queryWhere)
         {
-            return IBaseDal.GetListBy(queryWhere);
+            return MyIBaseDal.GetListBy(queryWhere);
         }
 
         /// <summary>
@@ -216,7 +222,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<T>> GetListByAsync(Expression<Func<T, bool>> queryWhere)
         {
-            return await IBaseDal.GetListByAsync(queryWhere);
+            return await MyIBaseDal.GetListByAsync(queryWhere);
         }
 
         #endregion
@@ -233,7 +239,7 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetOrderListBy<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            return IBaseDal.GetOrderListBy(queryWhere, orderBy, isDesc);
+            return MyIBaseDal.GetOrderListBy(queryWhere, orderBy, isDesc);
         }
 
         /// <summary>
@@ -246,7 +252,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<T>> GetOrderListByAsync<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            return await IBaseDal.GetOrderListByAsync(queryWhere, orderBy, isDesc);
+            return await MyIBaseDal.GetOrderListByAsync(queryWhere, orderBy, isDesc);
         }
 
         #endregion
@@ -265,7 +271,7 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            return IBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, isDesc);
+            return MyIBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
         /// <summary>
@@ -280,7 +286,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<T>> GetPageListByAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            return await IBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
+            return await MyIBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
         #endregion
@@ -300,7 +306,7 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, out int totalCount, bool isDesc = false)
         {
-            return IBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isDesc);
+            return MyIBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isDesc);
         }
 
         /// <summary>
@@ -316,7 +322,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<PageData<T>> GetPageDataAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            return await IBaseDal.GetPageDataAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
+            return await MyIBaseDal.GetPageDataAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
         #endregion
@@ -336,7 +342,7 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetPageListBy(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy, out int totalCount)
         {
-            return IBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
+            return MyIBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
         }
 
         /// <summary>
@@ -352,7 +358,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<PageData<T>> GetPageListByAsync(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy)
         {
-            return await IBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, strOrderBy);
+            return await MyIBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, strOrderBy);
         }
 
         #endregion 根据条件分页查询数据并输出总行数(多条件排序)
@@ -389,5 +395,10 @@ namespace BLL
         }
 
         #endregion 排序语句是否可以正常排序
+
+        public virtual void Dispose()
+        {
+            //DbContext.Dispose();
+        }
     }
 }

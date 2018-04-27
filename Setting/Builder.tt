@@ -1,0 +1,71 @@
+﻿<#@ template language="C#" debug="True" hostspecific="True" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ include file="../T4Include/MysqlDbHelper.ttinclude"#>
+<#@ include file="../T4Include/config.ttinclude"#>
+/** 
+* Builder.cs
+*
+* 功 能： 网站运行设置
+* 类 名： Builder
+*
+* Ver    变更日期             负责人  变更内容
+* ───────────────────────────────────
+* V0.01  2018/4/27 15:47:24   N/A    初版
+*
+*┌──────────────────────────────────┐
+*│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
+*│　版权所有：成都盈辉创动科技有限公司　　　　　　　　　　　　　　│
+*└──────────────────────────────────┘
+*/
+
+using BLL;
+using IBLL;
+using IDAL;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using RepositoryPattern;
+
+namespace Setting
+{
+    public static class Builder
+    {
+        public static void UseYhcdSetting(this IServiceCollection services, IConfiguration configuration)
+        {
+            #region inject DB Setting
+
+            services.AddDbContext<CdyhcdDBContext>();
+
+            services.Configure<DatabaseOption>(configuration.GetSection("Database"));
+
+            #endregion
+
+            #region inject DAL Setting
+
+<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+<# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
+            services.TryAddTransient<I<#=tableName#>DAL, DALMySql.<#=tableName#>DAL>();
+<#}#>
+
+            #endregion
+
+            #region inject BLL Setting
+
+<#foreach(var table in MysqlDbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+<# string tableName = MysqlDbHelper.ToSplitFirstUpper(table.TableName); #>
+            services.TryAddTransient<I<#=tableName#>Service, <#=tableName#>Service>();
+<#}#>
+
+            #endregion
+        }
+    }
+}
+
+
+
+

@@ -52,7 +52,7 @@ namespace BLL
                     model.Path = parentModel.Path + "," + model.ParentId;
                 }
             }
-            return IBaseDal.Add(model);
+            return MyIBaseDal.Add(model);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace BLL
                     model.Path = parentModel.Path + "," + model.ParentId;
                 }
             }
-            var result = await IBaseDal.AddAsync(model);
+            var result = await MyIBaseDal.AddAsync(model);
             return result;
         }
 
@@ -106,7 +106,7 @@ namespace BLL
                     model.Path = parentModel.Path + "," + model.ParentId;
                 }
             }
-            return IBaseDal.Modify(model);
+            return MyIBaseDal.Modify(model);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace BLL
                     model.Path = parentModel.Path + "," + model.ParentId;
                 }
             }
-            var result = await IBaseDal.ModifyAsync(model);
+            var result = await MyIBaseDal.ModifyAsync(model);
             return result;
         }
 
@@ -144,7 +144,7 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleClass> GetChannelList()
         {
-            List<ArticleClass> result = articleClassDAL.GetOrderListBy(f => f.ParentId == 0, o => o.Sort);
+            List<ArticleClass> result = MyIArticleClassDAL.GetOrderListBy(f => f.ParentId == 0, o => o.Sort);
             return result;
         }
 
@@ -154,7 +154,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<ArticleClass>> GetChannelListAsync()
         {
-            List<ArticleClass> result = await articleClassDAL.GetOrderListByAsync(f => f.ParentId == 0, o => o.Sort);
+            List<ArticleClass> result = await MyIArticleClassDAL.GetOrderListByAsync(f => f.ParentId == 0, o => o.Sort);
             return result;
         }
 
@@ -168,7 +168,7 @@ namespace BLL
         public List<ArticleClassTreeView> GetAllArticleClassTree(int classid)
         {
             List<ArticleClassTreeView> resultList = new List<ArticleClassTreeView>();
-            List<ArticleClass> modelList = articleClassDAL.GetListBy(f => f.ParentId == classid);
+            List<ArticleClass> modelList = MyIArticleClassDAL.GetListBy(f => f.ParentId == classid);
 
             foreach (ArticleClass ac in modelList)
             {
@@ -188,7 +188,7 @@ namespace BLL
         public async Task<List<ArticleClassTreeView>> GetAllArticleClassTreeAsync(int classid)
         {
             List<ArticleClassTreeView> resultList = new List<ArticleClassTreeView>();
-            List<ArticleClass> modelList = await articleClassDAL.GetListByAsync(f => f.ParentId == classid);
+            List<ArticleClass> modelList = await MyIArticleClassDAL.GetListByAsync(f => f.ParentId == classid);
 
             foreach (ArticleClass ac in modelList)
             {
@@ -211,14 +211,14 @@ namespace BLL
         /// </summary>
         public string GetAllArticleClassTreeJson(int classid)
         {
-            List<ArticleClass> modelList = articleClassDAL.GetListBy(f => f.ParentId == classid);
+            List<ArticleClass> modelList = MyIArticleClassDAL.GetListBy(f => f.ParentId == classid);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
             foreach (ArticleClass ac in modelList)
             {
                 jsonResult.Append("{\"id\":\"" + ac.Id + "\",\"text\":\"" + ac.Name + "\"");
-                List<ArticleClass> cModelList = articleClassDAL.GetListBy(f => f.ParentId == ac.Id);
+                List<ArticleClass> cModelList = MyIArticleClassDAL.GetListBy(f => f.ParentId == ac.Id);
                 if (cModelList.Count > 0) //根节点下有子节点
                 {
                     jsonResult.Append(",");
@@ -242,14 +242,14 @@ namespace BLL
         /// </summary>
         public async Task<string> GetAllArticleClassTreeJsonAsync(int classid)
         {
-            List<ArticleClass> modelList = await articleClassDAL.GetListByAsync(f => f.ParentId == classid);
+            List<ArticleClass> modelList = await MyIArticleClassDAL.GetListByAsync(f => f.ParentId == classid);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
             foreach (ArticleClass ac in modelList)
             {
                 jsonResult.Append("{\"id\":\"" + ac.Id + "\",\"text\":\"" + ac.Name + "\"");
-                List<ArticleClass> cModelList = await articleClassDAL.GetListByAsync(f => f.ParentId == ac.Id);
+                List<ArticleClass> cModelList = await MyIArticleClassDAL.GetListByAsync(f => f.ParentId == ac.Id);
                 if (cModelList.Count > 0) //根节点下有子节点
                 {
                     jsonResult.Append(",");
@@ -283,7 +283,7 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleClass> GetArticleClassByPage<TKey>(int pageIndex, int pageSize, Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy, out int totalCount, bool isdesc = false)
         {
-            return articleClassDAL.GetArticleClassByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isdesc);
+            return MyIArticleClassDAL.GetArticleClassByPage<TKey>(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isdesc);
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace BLL
         /// <returns>PageData类型数据，包含DataList和TotalCount</returns>
         public async Task<PageData<ArticleClass>> GetArticleClassByPageAsync<TKey>(int pageIndex, int pageSize, Expression<Func<ArticleClass, bool>> queryWhere, Expression<Func<ArticleClass, TKey>> orderBy, bool isdesc = false)
         {
-            var result = await articleClassDAL.GetArticleClassByPageAsync<TKey>(pageIndex, pageSize, queryWhere, orderBy, isdesc);
+            var result = await MyIArticleClassDAL.GetArticleClassByPageAsync<TKey>(pageIndex, pageSize, queryWhere, orderBy, isdesc);
             return result;
         }
 

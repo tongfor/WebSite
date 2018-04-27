@@ -48,7 +48,7 @@ namespace WebAdmin.Controllers
         protected AdminOperateLog OperateLog = new AdminOperateLog();  //操作日志对象
 
         #region UI层与Service之间操作的上下文
-        protected OperaterContext oc = OperaterContext.CurrentContext;
+        //protected OperaterContext oc = OperaterContext.CurrentContext;
         #endregion
 
         #region 把ajax值封闭成json格式返回

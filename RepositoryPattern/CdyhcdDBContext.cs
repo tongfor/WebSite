@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Models;
 
-namespace Models
+namespace RepositoryPattern
 {
     public partial class CdyhcdDBContext : DbContext
     {
@@ -26,14 +27,19 @@ namespace Models
         public virtual DbSet<Board> Board { get; set; }
         public virtual DbSet<Parameter> Parameter { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseMySql("Server=127.0.0.1;Database=CdyhcdDB;User ID=cdyhcd;Password=123456");
-//            }
-//        }
+        public virtual DbSet<ArticleView> ArticleView { get; set; }
+        public virtual DbSet<AdminUserMenuView> AdminUserMenuView { get; set; }
+        public virtual DbSet<AdminUserView> AdminUserView { get; set; }
+        public virtual DbSet<AdminMenuRoleButtonView> AdminMenuRoleButtonView { get; set; }
+
+        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //        {
+        //            if (!optionsBuilder.IsConfigured)
+        //            {
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+        //                optionsBuilder.UseMySql("Server=127.0.0.1;Database=CdyhcdDB;User ID=cdyhcd;Password=123456");
+        //            }
+        //        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

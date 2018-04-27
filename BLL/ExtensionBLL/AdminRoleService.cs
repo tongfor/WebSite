@@ -31,7 +31,7 @@ namespace BLL
         /// <param name="id">ID</param>
         public void DelIncludeRelatedData(int id)
         {
-            adminRoleDAL.DelIncludeRelatedData(id);
+            MyIAdminRoleDAL.DelIncludeRelatedData(id);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace BLL
         /// <param name="id">ID</param>
         public async void DelIncludeRelatedDataAsync(int id)
         {
-            await Task.Run(() => { adminRoleDAL.DelIncludeRelatedData(id); });
+            await Task.Run(() => { MyIAdminRoleDAL.DelIncludeRelatedData(id); });
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace BLL
         /// <param name="ids">ID列表</param>
         public void DelIncludeRelatedData(List<int> ids)
         {
-            adminRoleDAL.DelIncludeRelatedData(ids);
+            MyIAdminRoleDAL.DelIncludeRelatedData(ids);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace BLL
         /// <param name="ids">ID列表</param>
         public async void DelIncludeRelatedDataAsync(List<int> ids)
         {
-            await Task.Run(() => { adminRoleDAL.DelIncludeRelatedDataAsync(ids); });
+            await Task.Run(() => { MyIAdminRoleDAL.DelIncludeRelatedDataAsync(ids); });
         }
 
         #endregion
@@ -80,9 +80,9 @@ namespace BLL
             List<AdminRoleView> roleViewList = new List<AdminRoleView>();
             int totalCount = 0;
 
-            var roleList = !string.IsNullOrEmpty(request.RoleName) && Utils.IsSafeSqlString(request.RoleName) ? adminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.RoleName.Contains(request.RoleName), o => o.Id, out totalCount, true)
+            var roleList = !string.IsNullOrEmpty(request.RoleName) && Utils.IsSafeSqlString(request.RoleName) ? MyIAdminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.RoleName.Contains(request.RoleName), o => o.Id, out totalCount, true)
               :
-              adminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
+              MyIAdminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
             roleViewList = roleList.Select(s => new AdminRoleView(s)).ToList();
 
             //return roleViewList.OrderByDescending(u => u.Id).ToPagedList(request.PageIndex, request.PageSize, totalCount);
@@ -101,8 +101,8 @@ namespace BLL
             int totalCount = 0;
 
             var roleList = !string.IsNullOrEmpty(request.RoleName) && Utils.IsSafeSqlString(request.RoleName)
-                ? await adminRoleDAL.GetPageListByAsync(request.PageIndex, request.PageSize, f => f.RoleName.Contains(request.RoleName), o => o.Id, true)
-                : adminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
+                ? await MyIAdminRoleDAL.GetPageListByAsync(request.PageIndex, request.PageSize, f => f.RoleName.Contains(request.RoleName), o => o.Id, true)
+                : MyIAdminRoleDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);
             roleViewList = roleList.Select(s => new AdminRoleView(s)).ToList();
 
             //return roleViewList.OrderByDescending(u => u.Id).ToPagedList(request.PageIndex, request.PageSize, totalCount);
@@ -118,7 +118,7 @@ namespace BLL
         /// <returns></returns>
         public AdminRole GetRoleByUserId(int UserId)
         {
-           return  adminRoleDAL.GetRoleByUserId(UserId);
+           return  MyIAdminRoleDAL.GetRoleByUserId(UserId);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace BLL
         /// <returns></returns>
         public async  Task<AdminRole> GetRoleByUserIdAsync(int UserId)
         {
-            return await adminRoleDAL.GetRoleByUserIdAsync(UserId);
+            return await MyIAdminRoleDAL.GetRoleByUserIdAsync(UserId);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleIncludeClassNameView> GetArticleIncludeClass(Expression<Func<Article, bool>> queryWhere)
         {
-            return articleDAL.GetArticleIncludeClass(queryWhere);
+            return MyIArticleDAL.GetArticleIncludeClass(queryWhere);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<ArticleIncludeClassNameView>> GetArticleIncludeClassAsync(Expression<Func<Article, bool>> queryWhere)
         {
-            var result = await articleDAL.GetArticleIncludeClassAsync(queryWhere);
+            var result = await MyIArticleDAL.GetArticleIncludeClassAsync(queryWhere);
             return result;
         }
 
@@ -60,7 +60,7 @@ namespace BLL
         /// <returns></returns>
         public ArticleView GetArticleViewBy(Expression<Func<Article, bool>> queryWhere)
         {
-            return articleDAL.GetArticleViewBy(queryWhere);
+            return MyIArticleDAL.GetArticleViewBy(queryWhere);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<ArticleView> GetArticleViewByAsync(Expression<Func<Article, bool>> queryWhere)
         {
-            var result = await articleDAL.GetArticleViewByAsync(queryWhere);
+            var result = await MyIArticleDAL.GetArticleViewByAsync(queryWhere);
             return result;
         }
 
@@ -133,7 +133,7 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleView> GetOrderArticleIncludeClassByPage(int pageIndex, int pageSize, Expression<Func<Article, bool>> queryWhere, string strOrderBy, out int totalCount)
         {
-            return articleDAL.GetOrderArticleIncludeClassByPage(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
+            return MyIArticleDAL.GetOrderArticleIncludeClassByPage(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace BLL
         /// <returns>PageData类型，包括DataList和Total</returns>
         public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, Expression<Func<Article, bool>> queryWhere, string strOrderBy)
         {
-            var result = await articleDAL.GetOrderArticleIncludeClassByPageAsync(pageIndex, pageSize, queryWhere, strOrderBy);
+            var result = await MyIArticleDAL.GetOrderArticleIncludeClassByPageAsync(pageIndex, pageSize, queryWhere, strOrderBy);
             return result;
         }
 
@@ -162,7 +162,7 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleView> GetArticleIncludeClass(string strWhere)
         {
-            return articleDAL.GetArticleIncludeClass(strWhere);
+            return MyIArticleDAL.GetArticleIncludeClass(strWhere);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<ArticleView>> GetArticleIncludeClassAsync(string strWhere)
         {
-            var result = await articleDAL.GetArticleIncludeClassAsync(strWhere);
+            var result = await MyIArticleDAL.GetArticleIncludeClassAsync(strWhere);
             return result;
         }
 
@@ -191,7 +191,7 @@ namespace BLL
         /// <returns></returns>
         public List<ArticleView> GetOrderArticleIncludeClassByPage(int pageIndex, int pageSize, string strWhere, string orderBy, out int totalCount)
         {
-            return articleDAL.GetOrderArticleIncludeClassByPage(pageIndex, pageSize, strWhere, orderBy, out totalCount);
+            return MyIArticleDAL.GetOrderArticleIncludeClassByPage(pageIndex, pageSize, strWhere, orderBy, out totalCount);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace BLL
         /// <returns>PageData类型，包括DataList和Total</returns>
         public async Task<PageData<ArticleView>> GetOrderArticleIncludeClassByPageAsync(int pageIndex, int pageSize, string strWhere, string orderBy)
         {
-            var result = await articleDAL.GetOrderArticleIncludeClassByPageAsync(pageIndex, pageSize, strWhere, orderBy);
+            var result = await MyIArticleDAL.GetOrderArticleIncludeClassByPageAsync(pageIndex, pageSize, strWhere, orderBy);
             return result;
         }
 

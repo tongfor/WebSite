@@ -40,7 +40,7 @@ namespace BLL
         public List<AdminUserMenuView> GetAdminUserMenu(int userId)
         {
             List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
-            menuList = adminMenuDAL.GetAdminUserMenu(userId);
+            menuList = MyIAdminMenuDAL.GetAdminUserMenu(userId);
             return menuList;
         }
 
@@ -52,7 +52,7 @@ namespace BLL
         public async Task<List<AdminUserMenuView>> GetAdminUserMenuAsync(int userId)
         {
             List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
-            menuList = await adminMenuDAL.GetAdminUserMenuAsync(userId);
+            menuList = await MyIAdminMenuDAL.GetAdminUserMenuAsync(userId);
             return menuList;
         }
 
@@ -111,7 +111,7 @@ namespace BLL
         /// </summary>
         public string GetMenuTreeJsonByRoleId(int menuId, int roleId)
         {
-            List<AdminMenuRoleButtonView> modelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(menuId, roleId);
+            List<AdminMenuRoleButtonView> modelList = MyIAdminMenuDAL.GetMenuListIncludeRoleAndButton(menuId, roleId);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
@@ -126,7 +126,7 @@ namespace BLL
                 {
                     jsonResult.Append(",\"checked\":\"" + true + "\"");
                 }
-                List<AdminMenuRoleButtonView> cModelList = adminMenuDAL.GetMenuListIncludeRoleAndButton(amrb.Id, roleId);
+                List<AdminMenuRoleButtonView> cModelList = MyIAdminMenuDAL.GetMenuListIncludeRoleAndButton(amrb.Id, roleId);
                 if (cModelList.Count > 0) //根节点下有子节点
                 {
                     jsonResult.Append(",");
@@ -150,7 +150,7 @@ namespace BLL
         /// </summary>
         public async Task<string> GetMenuTreeJsonByRoleIdAsync(int menuId, int roleId)
         {
-            List<AdminMenuRoleButtonView> modelList = await adminMenuDAL.GetMenuListIncludeRoleAndButtonAsync(menuId, roleId);
+            List<AdminMenuRoleButtonView> modelList = await MyIAdminMenuDAL.GetMenuListIncludeRoleAndButtonAsync(menuId, roleId);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
@@ -165,7 +165,7 @@ namespace BLL
                 {
                     jsonResult.Append(",\"checked\":\"" + true + "\"");
                 }
-                List<AdminMenuRoleButtonView> cModelList = await adminMenuDAL.GetMenuListIncludeRoleAndButtonAsync(amrb.Id, roleId);
+                List<AdminMenuRoleButtonView> cModelList = await MyIAdminMenuDAL.GetMenuListIncludeRoleAndButtonAsync(amrb.Id, roleId);
                 if (cModelList.Count > 0) //根节点下有子节点
                 {
                     jsonResult.Append(",");
@@ -265,9 +265,9 @@ namespace BLL
             List<AdminMenu> menuList = new List<AdminMenu>();
             int totalCount = 0;
 
-            var roleList = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title) ? adminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, out totalCount, true)
+            var roleList = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title) ? MyIAdminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, out totalCount, true)
               :
-              adminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);          
+              MyIAdminMenuDAL.GetPageListBy(request.PageIndex, request.PageSize, f => true, o => o.Id, out totalCount, true);          
             
             return roleList.ToPagedList(request.PageIndex, request.PageSize, totalCount);
         }
@@ -284,8 +284,8 @@ namespace BLL
             PageData<AdminMenu> pageData = new PageData<AdminMenu>();
 
             pageData = !string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title)
-                ? await adminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, true)
-                : await adminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => true, o => o.Id, true);
+                ? await MyIAdminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => f.Name.Contains(request.Title), o => o.Id, true)
+                : await MyIAdminMenuDAL.GetPageDataAsync(request.PageIndex, request.PageSize, f => true, o => o.Id, true);
 
             return pageData.DataList.ToPagedList(request.PageIndex, request.PageSize, pageData.TotalCount);
         }
@@ -337,7 +337,7 @@ namespace BLL
         /// <param name="id">ID</param>
         public void DelIncludeRelatedData(int id)
         {
-            adminMenuDAL.DelIncludeRelatedData(id);
+            MyIAdminMenuDAL.DelIncludeRelatedData(id);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace BLL
         /// <param name="id">ID</param>
         public async Task DelIncludeRelatedDataAsync(int id)
         {
-            await adminMenuDAL.DelIncludeRelatedDataAsync(id);
+            await MyIAdminMenuDAL.DelIncludeRelatedDataAsync(id);
         }
 
         #endregion 删除数据(包括关联数据)
@@ -359,7 +359,7 @@ namespace BLL
         /// <param name="ids">ID列表</param>
         public void DelIncludeRelatedData(List<int> ids)
         {
-            adminMenuDAL.DelIncludeRelatedData(ids);
+            MyIAdminMenuDAL.DelIncludeRelatedData(ids);
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace BLL
         /// <param name="ids">ID列表</param>
         public async Task DelIncludeRelatedDataAsync(List<int> ids)
         {
-            await adminMenuDAL.DelIncludeRelatedDataAsync(ids);
+            await MyIAdminMenuDAL.DelIncludeRelatedDataAsync(ids);
         }
 
         #endregion

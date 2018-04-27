@@ -15,13 +15,7 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using DALMySql;
-using IDAL;
-using Models;
 
 namespace BLL
 {
@@ -38,7 +32,7 @@ namespace BLL
         /// <param name="lastLoginTime">输出参数：如果30分钟没有5次的失败登录，那么返回null；如果有，就返回下一次可以登录的时间</param>
         public bool CheckLoginErrorCount(int maxErrorCount, int tyrMinutes, string ip, out DateTime? lastLoginTime)
         {
-            return adminLoginLogDAL.CheckLoginErrorCount(maxErrorCount, tyrMinutes, ip, out lastLoginTime);
+            return MyIAdminLoginLogDAL.CheckLoginErrorCount(maxErrorCount, tyrMinutes, ip, out lastLoginTime);
         }
 
         /// <summary>
@@ -50,7 +44,7 @@ namespace BLL
         /// <returns>元组，</returns>
         public async Task<Tuple<bool, DateTime>> CheckLoginErrorCountAsync(int maxErrorCount, int tryMinutes, string ip)
         {
-            Tuple<bool, DateTime> result = await adminLoginLogDAL.CheckLoginErrorCountAsync(maxErrorCount, tryMinutes, ip);
+            Tuple<bool, DateTime> result = await MyIAdminLoginLogDAL.CheckLoginErrorCountAsync(maxErrorCount, tryMinutes, ip);
             return result;
         }
 
