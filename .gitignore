@@ -261,4 +261,6 @@ __pycache__/
 *.pyc
 
 #My Ignore
-UnitTestProject1
+/UnitTestProject1
+/WebApplication1
+/WebAdmin1

@@ -2,41 +2,87 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <UserSecretsId>aspnet-WebAdmin-101DF220-69AF-4B96-B5C9-F712D812DE88</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\BaseController.cs" />
-    <Compile Remove="OperaterContext.cs" />
-    <Compile Remove="Services\BLLSession.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Services\BLLSession.tt" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.2" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\font-awesome\.gitignore" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\img\icon-flag.pdf" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\js\backbone.min.js" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\js\bootstrap-222.min.js" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\js\index\index.js" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\js\jquery-1.7.1.min.js" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\js\prettify.min.js" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\js\underscore.min.js" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\font-awesome-ie7.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\font-awesome.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\font-site.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\mixins.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\site.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\accordion.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\alerts.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\bootstrap.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\breadcrumbs.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\button-groups.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\buttons.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\carousel.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\close.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\code.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\component-animations.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\dropdowns.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\forms.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\grid.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\hero-unit.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\labels-badges.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\layouts.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\media.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\mixins.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\modals.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\navbar.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\navs.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\pager.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\pagination.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\popovers.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\progress-bars.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\reset.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\responsive-1200px-min.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\responsive-767px-max.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\responsive-768px-979px.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\responsive-navbar.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\responsive-utilities.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\responsive.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\scaffolding.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\sprites.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\tables.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\thumbnails.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\tooltip.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\type.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\utilities.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\variables.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\twbs-222\wells.less" />
+    <None Include="wwwroot\lib\font-awesome\docs\assets\less\variables.less" />
+    <None Include="wwwroot\lib\font-awesome\less\font-awesome-ie7.less" />
+    <None Include="wwwroot\lib\font-awesome\less\font-awesome.less" />
+    <None Include="wwwroot\lib\font-awesome\README.md" />
+    <None Include="wwwroot\lib\font-awesome\sass\font-awesome.sass" />
+    <None Include="wwwroot\lib\font-awesome\sass\font-awesome.scss" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\IBLL\IBLL.csproj" />
+    <ProjectReference Include="..\IDal\IDAL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
     <ProjectReference Include="..\Setting\Setting.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

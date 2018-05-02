@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EntityFrameWorkConfigure.cs" />
     <Compile Remove="Service\BLLSession.cs" />
   </ItemGroup>
 

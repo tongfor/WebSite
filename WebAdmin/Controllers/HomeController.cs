@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IBLL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        public HomeController(IAdminOperateLogService operateLogService) : base(operateLogService)
+        {
+        }
+
         public IActionResult Index()
         {
             return View();

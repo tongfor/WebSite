@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Config;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebAdmin.Data;
-using WebAdmin.Models;
-using WebAdmin.Services;
 using Microsoft.Extensions.Logging;
+using RepositoryPattern;
+using Setting;
 
 namespace WebAdmin
 {
@@ -27,18 +25,16 @@ namespace WebAdmin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.Configure<SiteConfig>(Configuration.GetSection("SiteConfig"));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddScoped<IOnDatabaseConfiguring, EntityFrameWorkConfigure>();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.UseYhcdSetting(Configuration);
+            services.UseAdminSetting(Configuration);
 
-            services.AddMvc().AddControllersAsServices().AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; }); ;
             services.AddSession();
+            services.AddMvc()
+                .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; }); ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +47,6 @@ namespace WebAdmin
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -60,14 +55,13 @@ namespace WebAdmin
 
             app.UseStaticFiles();
             app.UseSession();
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

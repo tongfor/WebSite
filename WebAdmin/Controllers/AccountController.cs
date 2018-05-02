@@ -1,39 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Common;
+using Common.AspNetCore.Extensions;
+using Common.Atrributes;
+using Common.Config;
+using Common.ValidateCode;
+using IBLL;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Models;
+using Setting.Mvc.Authorize;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using WebAdmin.Models;
-using WebAdmin.Models.AccountViewModels;
-using WebAdmin.Services;
 
 namespace WebAdmin.Controllers
 {
-    [Authorize]
-    [Route("[controller]/[action]")]
-    public class AccountController : Controller
+    [AllowAnonymous]
+    public class AccountController : BaseController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
+        /// <summary>
+        /// 默认记住账号天数
+        /// </summary>
+        private const int DefaultRemberDays = 7;
+        /// <summary>
+        /// 同一IP允许登录失败最大限制
+        /// </summary>
+        private const int MaxLoginErrorCount = 5;
+        /// <summary>
+        /// 同一IP登录失败超过最大限制后，多长时间能重新登录
+        /// </summary>
+        private const int LoginErrorTryMinutes = 30;
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
-            ILogger<AccountController> logger)
+        private readonly IAdminUserService _adminUserService;
+        private readonly IAdminLoginLogService _loginLogService;
+        private readonly IAdminRoleService _adminRoleService;        
+
+        public AccountController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminUserService adminUserService, IAdminRoleService adminRoleService,
+            IAdminLoginLogService adminLoginLog, ILogger<AccountController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, options)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _emailSender = emailSender;
+            _adminUserService = adminUserService;
+            _adminRoleService = adminRoleService;
+            _loginLogService = adminLoginLog;
             _logger = logger;
         }
 
@@ -41,424 +52,315 @@ namespace WebAdmin.Controllers
         public string ErrorMessage { get; set; }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
+            await HttpContext.SignOutAsync(DefaultAuthorizeAttribute.DefaultAuthenticationScheme);
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
+        // POST: Account/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                return View(model);
+            }
+            try
+            {
+                if (!IsValidVerifyCode(model.VerifyCode))
                 {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    ModelState.AddModelError("error", "验证码错误");
+                    return View();
                 }
-                if (result.RequiresTwoFactor)
+                DateTime? lastLoginErrorDatetime = null;
+                string userIp = HttpContext.Connection.RemoteIpAddress.ToString();
+                var loginCheck = await _loginLogService.CheckLoginErrorCountAsync(MaxLoginErrorCount, LoginErrorTryMinutes, userIp);
+                if (loginCheck.Item1)
                 {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                    //$"尝试登录次数超过最大限制，请{LoginErrorTryMinutes}后重试！"
+                    ModelState.AddModelError("error", string.Format("尝试登录次数超过最大限制，请{0}后重试！", LoginErrorTryMinutes));
+                    lastLoginErrorDatetime = loginCheck.Item2;
                 }
-                if (result.IsLockedOut)
+                AjaxMsgModel amm = new AjaxMsgModel();
+
+                amm = await LoginIn(model.UserName, model.Password, model.VerifyCode, model.RememberMe, DefaultRemberDays);
+                if (amm != null && amm.Status == AjaxStatus.IsSuccess)
                 {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
+                    _logger.LogInformation($"用户{model.UserName}于{DateTime.Now}在IP:{userIp}上登录.");
+                    return Redirect(!string.IsNullOrEmpty(returnUrl) ? returnUrl : amm.ReturnUrl);
+                }
+                if (amm.Msg == null && amm.Msg.Length <= 0)
+                {
+                    ModelState.AddModelError("error", "账号密码错误，请重新登录！");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
+                    ModelState.AddModelError("error", amm.Msg);
                 }
-            }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
-        {
-            // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load two-factor authentication user.");
-            }
-
-            var model = new LoginWith2faViewModel { RememberMe = rememberMe };
-            ViewData["ReturnUrl"] = returnUrl;
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginWith2fa(LoginWith2faViewModel model, bool rememberMe, string returnUrl = null)
-        {
-            if (!ModelState.IsValid)
-            {
                 return View(model);
             }
-
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
+            catch (Exception ex)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var authenticatorCode = model.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
-
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, model.RememberMachine);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
-                return RedirectToLocal(returnUrl);
-            }
-            else if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-                return RedirectToAction(nameof(Lockout));
-            }
-            else
-            {
-                _logger.LogWarning("Invalid authenticator code entered for user with ID {UserId}.", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
-                return View();
-            }
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginWithRecoveryCode(string returnUrl = null)
-        {
-            // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load two-factor authentication user.");
-            }
-
-            ViewData["ReturnUrl"] = returnUrl;
-
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginWithRecoveryCode(LoginWithRecoveryCodeViewModel model, string returnUrl = null)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load two-factor authentication user.");
-            }
-
-            var recoveryCode = model.RecoveryCode.Replace(" ", string.Empty);
-
-            var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User with ID {UserId} logged in with a recovery code.", user.Id);
-                return RedirectToLocal(returnUrl);
-            }
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-                return RedirectToAction(nameof(Lockout));
-            }
-            else
-            {
-                _logger.LogWarning("Invalid recovery code entered for user with ID {UserId}", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
-                return View();
-            }
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Lockout()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                ViewBag.ErrMsg = ex.Message;
+                Bug = new AdminBug
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "登录功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
+                };
+                MyIAdminBugService.Add(Bug);
+                return View("Error");
+            }
+        }
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+        /// <summary>
+        /// 修改密码页面
+        /// </summary>
+        public IActionResult ModifyPwd()
+        {
+            return View();
+        }
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="collection"></param>
+        [HttpPost]
+        public async Task<IActionResult> ModifyPwd(ModifyPwdViewModel viewModel)
+        {
+            var currentUser = HttpContext.User;
+
+            try
+            {
+                var modifyModel = await _adminUserService.GetUserByNameAndPasswordAsync(currentUser.Identity.Name, viewModel.OldPassword);
+                if (modifyModel == null)
+                {
+                    this.ModelState.AddModelError(viewModel.OldPassword, "原密码不正确！");
+                    return View(viewModel);
                 }
-                AddErrors(result);
+                modifyModel.UserPwd = viewModel.NewPassword.MD5Encrypt();
+                OperateLog = new AdminOperateLog
+                {
+                    UserName = currentUser.Identity.Name,
+                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    OperateInfo = string.Format($"用户{0}修改密码", currentUser.Identity.Name),
+                    IsSuccess = 1,
+                    OperateTime = DateTime.Now
+                };
+                MyIOperateLogService.Add(OperateLog);
+                await _adminUserService.ModifyAsync(modifyModel, "UserPwd");
+            }
+            catch (BusinessException ex)
+            {
+                this.ModelState.AddModelError(ex.Name, ex.Message);
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "修改密码错误" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
+                };
+                MyIAdminBugService.Add(Bug);
+                return View(viewModel);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            await Logout();
+            return this.RefreshParent("密码修改成功，将退出重新登录！");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            var currentUser = HttpContext.User;
+            await HttpContext.SignOutAsync(DefaultAuthorizeAttribute.DefaultAuthenticationScheme);
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            OperateLog = new AdminOperateLog
+            {
+                UserName = currentUser.Identity.Name,
+                UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                OperateInfo = string.Format($"User {0} logged out", currentUser.Identity.Name),
+                IsSuccess = 1,
+                OperateTime = DateTime.Now
+            };
+            MyIOperateLogService.Add(OperateLog);
+            return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// 生成验证码
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<IActionResult> VerifyImage()
+        {
+            try
+            {
+                var validateCodeType = new ValidateCode_Style10();
+                string code = "6666";
+                byte[] bytes = null;
+                await Task.Run(() =>
+                {
+                    bytes = validateCodeType.CreateImage(out code);
+                    CurrentAdminVerificationCode = code;
+                });
+                return File(bytes, @"image/jpeg");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = "验证码生成异常";
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "验证码生成异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
+                };
+                MyIAdminBugService.Add(Bug);
+                return View("Error");
+            }
+        }
+
+        /// <summary>
+        /// 验证码确认
+        /// </summary>
+        /// <param name="verifycode"></param>
+        /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        [AjaxRequest]
+        public async Task<IActionResult> VerifyCodeValidate(string verifycode)
         {
-            // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(properties, provider);
+            bool isValid = false;
+            await Task<bool>.Run(() =>
+            {
+                isValid = string.Equals(CurrentAdminVerificationCode,
+                    verifycode, StringComparison.CurrentCultureIgnoreCase);
+            });
+
+            return isValid
+                 ? PackagingAjaxMsg(AjaxStatus.IsSuccess, "输入正确！")
+                 : PackagingAjaxMsg(AjaxStatus.Err, "输入错误！");
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
-        {
-            if (remoteError != null)
-            {
-                ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToAction(nameof(Login));
-            }
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return RedirectToAction(nameof(Login));
-            }
+        #region noaction        
 
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded)
+        #region 实现登录功能
+
+        /// <summary>
+        ///  实现登录功能
+        /// </summary>
+        /// <param name="strLoginName"></param>
+        /// <param name="strLoginPwd"></param>
+        /// <param name="verificationCode"></param>
+        /// <param name="isSaveLogin">是否记住用户名</param>
+        /// <param name="saveDays">记住用户名时间天数，小于0为不记住，0为永久记住</param>
+        /// <returns></returns>
+        [NonAction]
+        public async Task<AjaxMsgModel> LoginIn(string strLoginName, string strLoginPwd, string verificationCode = "", bool isSaveLogin = false, int saveDays = -1)
+        {
+            AjaxMsgModel amm = new AjaxMsgModel();
+            AdminLoginLog loginLogModel = new AdminLoginLog
             {
-                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                return RedirectToLocal(returnUrl);
+                UserName = strLoginName,
+                UserIp = HttpContext.GetUserIp(),
+                City = "未知",//Oc.Request.Params["city"] ?? "未知",
+                LoginTime = DateTime.Now
+            };
+            if (!IsValidVerifyCode(verificationCode))
+            {
+                amm.Msg = "验证验错误！";
+                amm.Status = AjaxStatus.LoginFail;
+                return amm;
             }
-            if (result.IsLockedOut)
+            AdminUser adminUser = _adminUserService.GetUserByNameAndPassword(strLoginName, strLoginPwd);
+            if (adminUser == null)
             {
-                return RedirectToAction(nameof(Lockout));
+                amm.Msg = "错误的用户名或密码！";
+                amm.Status = AjaxStatus.LoginFail;
+                loginLogModel.IsSuccess = 0;
+                _loginLogService.Add(loginLogModel);
             }
             else
             {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
-            }
-        }
+                AdminRole tempRole = _adminRoleService.GetRoleByUserId(adminUser.Id);
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginViewModel model, string returnUrl = null)
-        {
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await _signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
+                if (tempRole == null)
                 {
-                    throw new ApplicationException("Error loading external login information during confirmation.");
+                    amm.Msg = "用户不具备角色,请联系管理员设置角色之后重试！";
+                    amm.Status = AjaxStatus.LoginFail;
+                    loginLogModel.IsSuccess = 0;
+                    _loginLogService.Add(loginLogModel);
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded)
+                else
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
-                    if (result.Succeeded)
+                    if (SiteConfigSettings.AllowAdminRoles.Contains(tempRole.Id.ToString()))
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return RedirectToLocal(returnUrl);
+                        var claimIdentity = new ClaimsIdentity("Cookie");
+                        claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, adminUser.Id.ToString()));
+                        claimIdentity.AddClaim(new Claim(ClaimTypes.Name, adminUser.UserName));
+                        if (!string.IsNullOrEmpty(adminUser.Email))
+                        {
+                            claimIdentity.AddClaim(new Claim(ClaimTypes.Email, adminUser.Email));
+                        }
+                        if (!string.IsNullOrEmpty(adminUser.Mobile))
+                        {
+                            claimIdentity.AddClaim(new Claim(ClaimTypes.MobilePhone, adminUser.Mobile));
+                        }
+                        if (!string.IsNullOrEmpty(tempRole.RoleName))
+                        {
+                            claimIdentity.AddClaim(new Claim(ClaimTypes.Role, tempRole.RoleName));
+                        }                        
+                        var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
+                        var authenticationProp = new AuthenticationProperties()
+                        {
+                            IsPersistent = true
+                        };
+                        if (isSaveLogin && saveDays >= 0)
+                        {
+                            authenticationProp.ExpiresUtc = DateTime.UtcNow.AddDays(saveDays);
+                        }                        
+                        await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties());
+                       
+
+                        amm.Msg = "登录成功！";
+                        amm.Status = AjaxStatus.IsSuccess;
+                        amm.ReturnUrl = "~/Article/Index";
+                        loginLogModel.IsSuccess = 1;
+                        _loginLogService.Add(loginLogModel);
+                    }
+                    else
+                    {
+                        amm.Msg = "用户不具备访问权限！";
+                        amm.Status = AjaxStatus.LoginFail;
+                        loginLogModel.IsSuccess = 0;
+                        _loginLogService.Add(loginLogModel);
                     }
                 }
-                AddErrors(result);
-            }
+            }           
 
-            ViewData["ReturnUrl"] = returnUrl;
-            return View(nameof(ExternalLogin), model);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
-            }
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
-                }
-
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                return RedirectToAction(nameof(ForgotPasswordConfirmation));
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
-        {
-            if (code == null)
-            {
-                throw new ApplicationException("A code must be supplied for password reset.");
-            }
-            var model = new ResetPasswordViewModel { Code = code };
-            return View(model);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(ResetPasswordConfirmation));
-            }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction(nameof(ResetPasswordConfirmation));
-            }
-            AddErrors(result);
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPasswordConfirmation()
-        {
-            return View();
-        }
-
-
-        [HttpGet]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
-
-        #region Helpers
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
+            return amm;
         }
 
         #endregion
+
+        /// <summary>
+        /// 查证验证码是否正确
+        /// </summary>
+        /// <param name="verifycode"></param>
+        /// <returns></returns>
+        public bool IsValidVerifyCode(string verifycode)
+        {
+            return !string.IsNullOrEmpty(verifycode) && verifycode.Equals(CurrentAdminVerificationCode, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        #endregion noaction
     }
 }

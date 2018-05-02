@@ -14,13 +14,15 @@
 *└──────────────────────────────────┘
 */
 
-using BLL;
-using IBLL;
-using IDAL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using BLL;
+using IBLL;
+using IDAL;
 using RepositoryPattern;
+using Setting.Mvc.Authorize;
 
 namespace Setting
 {
@@ -77,6 +79,15 @@ namespace Setting
             services.TryAddTransient<IParameterService, ParameterService>();
 
             #endregion
+        }
+
+        public static void UseAdminSetting(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(DefaultAuthorizeAttribute.DefaultAuthenticationScheme)
+            .AddCookie(DefaultAuthorizeAttribute.DefaultAuthenticationScheme, o =>
+            {
+                o.LoginPath = new PathString("/Account/Login");
+            });
         }
     }
 }
