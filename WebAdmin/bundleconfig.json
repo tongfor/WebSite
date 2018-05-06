@@ -11,7 +11,7 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js",
+      "wwwroot/js/site.js"
     ],
     // Optionally specify minification options
     "minify": {
@@ -20,6 +20,36 @@
     },
     // Optionally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/lib/fancybox/source/jquery.fancybox.min.css",
+    "inputFiles": [
+      "wwwroot/lib/fancybox/source/jquery.fancybox.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/chosen-bootstrap/chosen/chosen.min.css",
+    "inputFiles": [
+      "wwwroot/lib/chosen-bootstrap/chosen/chosen.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery-thickbox/jquery.thickbox.min.css",
+    "inputFiles": [
+      "wwwroot/lib/jquery-thickbox/jquery.thickbox.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/data-tables/DT_bootstrap.min.css",
+    "inputFiles": [
+      "wwwroot/lib/data-tables/DT_bootstrap.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/admin.main.min.css",
+    "inputFiles": [
+      "wwwroot/css/admin.main.css"
+    ]
   },
   {
     "outputFileName": "wwwroot/js/login.min.js",
@@ -38,7 +68,35 @@
     "inputFiles": [
       "wwwroot/js/jquery.*.js",
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/uniform/jquery.uniform.js",
+      "wwwroot/lib/data-tables/jquery.dataTables.js",
+      "wwwroot/lib/data-tables/DT_bootstrap.js",
+      "wwwroot/lib/jquery-thickbox/jquery.thickbox.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/breakpoints/breakpoints.min.js",
+    "inputFiles": [
+      "wwwroot/lib/breakpoints/breakpoints.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/excanvas.min.js",
+    "inputFiles": [
+      "wwwroot/js/excanvas.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/respond.min.js",
+    "inputFiles": [
+      "wwwroot/js/respond.min.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/admin.main.min.js",
+    "inputFiles": [
+      "wwwroot/js/admin.main.js"
     ]
   }
 ]

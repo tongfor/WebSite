@@ -1,4 +1,5 @@
 ﻿using IBLL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : BaseController
     {
         public HomeController(IAdminOperateLogService operateLogService) : base(operateLogService)

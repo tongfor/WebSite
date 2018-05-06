@@ -77,7 +77,7 @@ namespace WebAdmin.Controllers
                     return View();
                 }
                 DateTime? lastLoginErrorDatetime = null;
-                string userIp = HttpContext.Connection.RemoteIpAddress.ToString();
+                string userIp = HttpContext.GetUserIp();
                 var loginCheck = await _loginLogService.CheckLoginErrorCountAsync(MaxLoginErrorCount, LoginErrorTryMinutes, userIp);
                 if (loginCheck.Item1)
                 {
@@ -109,7 +109,7 @@ namespace WebAdmin.Controllers
                 ViewBag.ErrMsg = ex.Message;
                 Bug = new AdminBug
                 {
-                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    UserIp = HttpContext.GetUserIp(),
                     IsShow = 1,
                     IsSolve = 0,
                     BugInfo = "登录功能异常" + ex.Message,
@@ -149,7 +149,7 @@ namespace WebAdmin.Controllers
                 OperateLog = new AdminOperateLog
                 {
                     UserName = currentUser.Identity.Name,
-                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    UserIp = HttpContext.GetUserIp(),
                     OperateInfo = string.Format($"用户{0}修改密码", currentUser.Identity.Name),
                     IsSuccess = 1,
                     OperateTime = DateTime.Now
@@ -162,7 +162,7 @@ namespace WebAdmin.Controllers
                 this.ModelState.AddModelError(ex.Name, ex.Message);
                 Bug = new AdminBug
                 {
-                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    UserIp = HttpContext.GetUserIp(),
                     IsShow = 1,
                     IsSolve = 0,
                     BugInfo = "修改密码错误" + ex.Message,
@@ -186,7 +186,7 @@ namespace WebAdmin.Controllers
             OperateLog = new AdminOperateLog
             {
                 UserName = currentUser.Identity.Name,
-                UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                UserIp = HttpContext.GetUserIp(),
                 OperateInfo = string.Format($"User {0} logged out", currentUser.Identity.Name),
                 IsSuccess = 1,
                 OperateTime = DateTime.Now
@@ -218,7 +218,7 @@ namespace WebAdmin.Controllers
                 ViewBag.ErrMsg = "验证码生成异常";
                 Bug = new AdminBug
                 {
-                    UserIp = HttpContext.Connection.RemoteIpAddress.ToString(),
+                    UserIp = HttpContext.GetUserIp(),
                     IsShow = 1,
                     IsSolve = 0,
                     BugInfo = "验证码生成异常" + ex.Message,

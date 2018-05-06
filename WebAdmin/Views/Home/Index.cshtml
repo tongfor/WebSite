@@ -105,4 +105,12 @@
     </div>
 </div>
 
-<div><a asp-controller="Account" asp-action="Logout">退出登录</a></div>
+<div>
+    <form name="form_logout" method="post" asp-area="" asp-controller="Account" asp-action="Logout">
+        <a id="logout" href="javascript:if(confirm('确实退出系统吗?'))form_logout.submit()"><i class="icon-signout"></i> 退出系统</a>
+    </form>
+    @if (User!=null)
+    {
+    <div>dfsdfsdfs</div>
+    }
+</div>

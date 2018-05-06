@@ -1,53 +1,141 @@
-﻿<!DOCTYPE html>
+﻿@using Common
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
 <html>
+<!--<![endif]-->
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebAdmin</title>
-
+    <title>@ViewData["Title"] - 盈辉创动</title>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/metro.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="~/css/style.css" />
+        <link rel="stylesheet" href="~/css/style_responsive.css" />
+        <link rel="stylesheet" href="~/css/style_default.css" />
+        <link rel="stylesheet" href="~/lib/uniform/css/uniform.default.css" />
+        <link rel="stylesheet" href="~/lib/fancybox/source/jquery.fancybox.css" />
+        <link rel="stylesheet" href="~/lib/chosen-bootstrap/chosen/chosen.css" />
+        <link rel="stylesheet" href="~/lib/data-tables/DT_bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui-1.10.1.custom.css" />
+        <link rel="stylesheet" href="~/lib/jquery-thickbox/jquery.thickbox.css" />
+        <link rel="stylesheet" href="~/css/admin.main.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/metro.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/style_responsive.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/style_default.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/uniform/css/uniform.default.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/fancybox/source/jquery.fancybox.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/chosen-bootstrap/chosen/chosen.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/data-tables/DT_bootstrap.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui-1.10.1.custom.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/jquery-thickbox/jquery.thickbox.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/admin.main.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    @RenderSection("PageSpecificStyleSheetIncludes", required: false)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">WebAdmin</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - WebAdmin</p>
-        </footer>
+    <!-- BEGIN HEADER -->
+    <div class="header navbar navbar-inverse navbar-fixed-top">
+        <!-- BEGIN TOP NAVIGATION BAR -->
+        @Html.Partial("_Header")
+        <!-- END TOP NAVIGATION BAR -->
     </div>
-
+    <!-- END HEADER -->
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container row-fluid">
+        <!-- BEGIN SIDEBAR -->
+        @Html.Partial("_Menu")
+        <!-- END SIDEBAR -->
+        <!-- BEGIN PAGE -->
+        <div class="page-content">
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <div id="portlet-config" class="modal hide">
+                <div class="modal-header">
+                    <button data-dismiss="modal" class="close" type="button"></button>
+                    <h3>portlet Settings</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Here will be a configuration form</p>
+                </div>
+            </div>
+            <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <!-- BEGIN PAGE CONTAINER-->
+            <div class="container-fluid">
+                <!-- BEGIN PAGE HEADER-->
+                <div class="row-fluid">
+                    <div class="span12" id="navigation">
+                        <!-- BEGIN STYLE CUSTOMIZER -->
+                        @Html.Partial("_Theme")
+                        <!-- END BEGIN STYLE CUSTOMIZER -->
+                        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                        <h3 class="page-title">
+                            <span>标题</span>　<small>介绍</small>
+                        </h3>
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="icon-home"></i>
+                                <span>首页</span>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li>
+                                <span>菜单组</span>
+                                <i class="icon-angle-right"></i>
+                            </li>
+                            <li><span>菜单</span></li>
+                        </ul>
+                        <!-- END PAGE TITLE & BREADCRUMB-->
+                    </div>
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                @RenderBody()
+                <!-- END PAGE CONTENT-->
+            </div>
+            <!-- END PAGE CONTAINER-->
+        </div>
+        <!-- END PAGE -->
+    </div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    @Html.Partial("_Footer")
+    <!-- END FOOTER -->
+    <!-- BEGIN JAVASCRIPTS -->
+    <script type="text/javascript">
+        var staticFileRoot = "/";
+    </script>
+    <!-- Load javascripts at bottom, this will reduce page load time -->
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/breakpoints/breakpoints.js"></script>
+        <script src="~/js/jquery.blockui.js"></script>
+        <script src="~/js/jquery.cookie.js"></script>
+        <!-- ie8 fixes -->
+        <!--[if lt IE 9]>
+    <script src="~/js/excanvas.js"></script>
+    <script src="~/js/respond.js"></script>
+    <![endif]-->
+        <script src="~/lib/uniform/jquery.uniform.js"></script>
+        <script src="~/lib/uniform/jquery.uniform.min.js"></script>
+        <script src="~/lib/data-tables/jquery.dataTables.js"></script>
+        <script src="~/lib/data-tables/DT_bootstrap.js"></script>
+        <script src="~/lib/jquery-thickbox/jquery.thickbox.js"></script>
+        <script src="~/lib/jquery-ui/jquery-ui-1.10.1.custom.min.js"></script>
+        <script src="~/js/jquery.numeric.js"></script>
+        <script src="~/js/admin.main.js"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
@@ -63,9 +151,23 @@
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
+        <script src="~/lib/breakpoints/breakpoints.min.js" asp-append-version="true"></script>
+        <!-- ie8 fixes -->
+        <!--[if lt IE 9]>
+    <script src="~/js/excanvas.min.js" asp-append-version="true"></script>
+    <script src="~/js/respond.min.js" asp-append-version="true"></script>
+    <![endif]-->
+        <script src="~/lib/jquery-ui/jquery-ui-1.10.1.custom.min.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.plugin.min.js" asp-append-version="true"></script>
+        <script src="~/js/admin.main.min.js" asp-append-version="true"></script>
+        <script src="~/js/app.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
+    </environment>    
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+        });
+    </script>
+    @RenderSection("PageSpecificJavascriptIncludes", required: false)
 </body>
 </html>
