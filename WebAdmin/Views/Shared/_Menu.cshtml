@@ -1,19 +1,17 @@
 ﻿@using System.Collections
-@using WebAdmin.Models
-@{
-    var adminMenuConfig = Model_UserInfo.GetAdminUserMenuTree(OperaterContext.CurrentContext.CurrentAdminUser.Id);
-}
+@using Models
+@model List<AdminUserMenuView>
 <div class="page-sidebar nav-collapse collapse">
-	<!-- BEGIN SIDEBAR MENU -->        	
-	<ul>
-	    <li id="li-sidebar-title">
-	        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-	        <div class="sidebar-toggler hidden-phone">
-	            <h3 style="margin-left: -160px; line-height: 23px; color: #666;">功能菜单</h3>
-	        </div>
-	        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-	    </li>
-        @foreach (var menu in adminMenuConfig)
+    <!-- BEGIN SIDEBAR MENU -->
+    <ul>
+        <li id="li-sidebar-title">
+            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            <div class="sidebar-toggler hidden-phone">
+                <h3 style="margin-left: -160px; line-height: 23px; color: #666;">功能菜单</h3>
+            </div>
+            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+        </li>
+        @foreach (var menu in Model)
         {
             var childmenus = menu.ChildMenus;
             var hasSub = childmenus.Count > 0;
@@ -28,7 +26,7 @@
                     <i class="@menu.Icon"></i>
                     <span class="title">@menu.MenuName</span>
                     @if (hasSub)
-                {
+                    {
                         <span class='arrow'></span>
                     }
                 </a>
@@ -36,13 +34,13 @@
                 {
                     <ul class="sub">
                         @foreach (var childmenu in childmenus)
-                    {
+                        {
                             <li><a href="@childmenu.LinkAddress" title="@childmenu.MenuName">@childmenu.MenuName</a></li>
                         }
                     </ul>
                 }
             </li>
         }
-	</ul>
-	<!-- END SIDEBAR MENU -->
+    </ul>
+    <!-- END SIDEBAR MENU -->
 </div>

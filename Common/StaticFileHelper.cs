@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Common
 {
@@ -19,7 +14,7 @@ namespace Common
         /// </summary>
         /// <returns></returns>
         private static string staticServiceUri = null;
-        public static string GetStaticServiceUri()
+        public static string GetStaticServiceUri(HttpContext httpContext)
         {
             //var uri = ServiceHelper.GetStaticServiceUri();
             //if (HttpContext.Current.Request.Url.Scheme == "https")
@@ -28,7 +23,7 @@ namespace Common
 
             //使用本地图片，而不做资源分离，暂时取本地地址：
             if (staticServiceUri == null)
-                staticServiceUri = "http://" + HttpContext.Current.Request.Url.Authority;
+                staticServiceUri = "http://" + httpContext.Request.Host;
 
             return staticServiceUri;
         }
@@ -39,7 +34,7 @@ namespace Common
         /// <param name="helper"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string StaticFile(this UrlHelper helper, string path)
+        public static string StaticFile(this UrlHelper helper, string path, HttpContext httpContext)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -49,19 +44,19 @@ namespace Common
             if (path.StartsWith("~"))
                 return helper.Content(path);
             else
-                return GetStaticServiceUri() + path;
+                return GetStaticServiceUri(httpContext) + path;
         }
 
-        public static string JsCssFile(this UrlHelper helper, string path)
-        {
-            //var jsAndCssFileEdition = ConfigHelper.GetConfigString("JsAndCssFileEdition");
-            //if (string.IsNullOrEmpty(jsAndCssFileEdition))
-            //    jsAndCssFileEdition = Guid.NewGuid().ToString();
+        //public static string JsCssFile(this UrlHelper helper, string path)
+        //{
+        //    var jsAndCssFileEdition = ConfigHelper.GetConfigString("JsAndCssFileEdition");
+        //    if (string.IsNullOrEmpty(jsAndCssFileEdition))
+        //        jsAndCssFileEdition = Guid.NewGuid().ToString();
 
-            //path += string.Format("?v={0}", jsAndCssFileEdition);
+        //    path += string.Format("?v={0}", jsAndCssFileEdition);
 
-            //return helper.StaticFile(path);
-        }
+        //    return helper.StaticFile(path);
+        //}
 
         /// <summary>
         /// 得到图片文件，以及缩略图
@@ -70,17 +65,17 @@ namespace Common
         /// <param name="path"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static string ImageFile(this UrlHelper helper, string path, string size = null)
+        public static string ImageFile(this UrlHelper helper, string path, HttpContext httpContext, string size = null)
         {
             if (string.IsNullOrEmpty(path))
-                return helper.StaticFile(@"/images/no_picture.jpg");
+                return helper.StaticFile(@"/images/no_picture.jpg", httpContext);
 
             if (size == null)
-                return helper.StaticFile(path);
+                return helper.StaticFile(path, httpContext);
 
             var ext = path.Substring(path.LastIndexOf('.'));
             var head = path.Substring(0, path.LastIndexOf('.'));
-            var url = string.Format("{0}{1}_{2}{3}", GetStaticServiceUri(), head, size, ext);
+            var url = string.Format("{0}{1}_{2}{3}", GetStaticServiceUri(httpContext), head, size, ext);
             return url;
         }
 
@@ -113,9 +108,9 @@ namespace Common
         /// </summary>
         /// <param name="helper"></param>
         /// <returns></returns>
-        public static string StaticFile(this UrlHelper helper)
+        public static string StaticFile(this UrlHelper helper, HttpContext httpContext)
         {
-            return GetStaticServiceUri();
+            return GetStaticServiceUri(httpContext);
         }
     }
 }

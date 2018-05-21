@@ -25,6 +25,8 @@ using IBLL;
 using Setting.Constant;
 using Common.Config;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebAdmin.Controllers
 {
@@ -34,19 +36,22 @@ namespace WebAdmin.Controllers
     [Authorize]
     public class BaseController : Controller
     {
-        protected IAdminOperateLogService MyIOperateLogService;
+        protected IAdminOperateLogService MyIOperateLogService;        
+        protected IAdminBugService MyIAdminBugService;
+        protected IAdminMenuService MyIAdminMenuService;
         protected AdminOperateLog OperateLog = new AdminOperateLog();  //操作日志对象
-        protected IAdminBugService MyIAdminBugService;  //BUG记录对象
-        protected AdminBug Bug = new AdminBug();
+        protected AdminBug Bug = new AdminBug(); //BUG记录对象
         protected Microsoft.Extensions.Logging.ILogger _logger;
 
         public SiteConfig SiteConfigSettings;//站点设置
 
-        public BaseController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService,IOptions<SiteConfig> options)
+        public BaseController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options)
         {
             MyIOperateLogService = operateLogService;
             MyIAdminBugService = adminBugService;
+            MyIAdminMenuService = adminMenuService;
             SiteConfigSettings = options.Value;
+            CreateLeftMenu();
         }
 
         public BaseController(IAdminOperateLogService operateLogService)
@@ -210,5 +215,33 @@ namespace WebAdmin.Controllers
         #endregion
 
         #endregion session操作
+       
+        #region 获取文章关联文章类别的数据(Ajax)
+
+        /// <summary>
+        /// 获取文章关联文章类别的数据(Ajax)
+        /// </summary>
+        /// <param name="userId">用户ID</param>
+        /// <returns></returns>
+        public List<AdminUserMenuView> GetAdminUserMenuTree(int userId)
+        {
+            List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
+            List<AdminUserMenuView> menuTreeList = new List<AdminUserMenuView>();
+            menuList = MyIAdminMenuService.GetAdminUserMenu(userId);
+            menuTreeList = MyIAdminMenuService.GetAdminUserMenuTree(menuList, 0);
+            return menuTreeList;
+        }
+
+        #endregion
+
+        #region 分部视图
+
+        public PartialViewResult CreateLeftMenu()
+        {
+            var model = GetAdminUserMenuTree(int.Parse(User.Claims.ToList().FirstOrDefault().Value));
+            return PartialView("Menu", model);
+        }
+
+        #endregion 分部视图
     }
 }

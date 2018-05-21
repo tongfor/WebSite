@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Models;
 using Setting.Mvc.Authorize;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAdmin.Models;
@@ -40,7 +41,7 @@ namespace WebAdmin.Controllers
         private readonly IAdminRoleService _adminRoleService;        
 
         public AccountController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminUserService adminUserService, IAdminRoleService adminRoleService,
-            IAdminLoginLogService adminLoginLog, ILogger<AccountController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, options)
+            IAdminLoginLogService adminLoginLog, IAdminMenuService adminMenuService, ILogger<AccountController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
         {
             _adminUserService = adminUserService;
             _adminRoleService = adminRoleService;
@@ -303,7 +304,7 @@ namespace WebAdmin.Controllers
                 {
                     if (SiteConfigSettings.AllowAdminRoles.Contains(tempRole.Id.ToString()))
                     {
-                        var claimIdentity = new ClaimsIdentity("Cookie");
+                        var claimIdentity = new ClaimsIdentity("Cookie");                        
                         claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, adminUser.Id.ToString()));
                         claimIdentity.AddClaim(new Claim(ClaimTypes.Name, adminUser.UserName));
                         if (!string.IsNullOrEmpty(adminUser.Email))
@@ -348,6 +349,7 @@ namespace WebAdmin.Controllers
 
             return amm;
         }
+       
 
         #endregion
 
