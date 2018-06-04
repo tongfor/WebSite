@@ -5,7 +5,7 @@
  * Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
 */
 
-var tb_pathToImage = "/content/images/loadingAnimation.gif";
+var tb_pathToImage = "/images/loadingAnimation.gif";
 
 if ("undefined" != typeof staticFileRoot)
     tb_pathToImage = staticFileRoot + tb_pathToImage;

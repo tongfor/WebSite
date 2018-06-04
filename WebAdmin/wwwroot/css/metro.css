@@ -301,26 +301,34 @@ Dropdowns
   margin-bottom: 2px;
 }
 
-.dropdown-menu li > a {
-  padding: 6px 0 6px 13px;
-  color: #333;
-  text-decoration: none;
-  display: block;
-  clear: both;
-  font-weight: normal;
-  line-height: 18px;
-  white-space: nowrap;
+.dropdown-menu li button{
+    border:none;
+    background-color:white;
 }
 
-.dropdown-menu li > a:hover, 
-.dropdown-menu .active > a, 
-.dropdown-menu .active > a:hover {
-  text-decoration: none;
-  background-image: none;
-  background-color: #eee;
-  color: #333;
-  filter:none;
+.dropdown-menu li > a, .dropdown-menu li > button {
+    padding: 6px 0 6px 13px;
+    color: #333;
+    text-decoration: none;
+    display: block;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    white-space: nowrap;
 }
+
+    .dropdown-menu li > a:hover,
+    .dropdown-menu .active > a,
+    .dropdown-menu .active > a:hover,
+    .dropdown-menu li > button:hover,
+    .dropdown-menu .active > button,
+    .dropdown-menu .active > button:hover {
+        text-decoration: none;
+        background-image: none;
+        background-color: #eee;
+        color: #333;
+        filter: none;
+    }
 
 .dropdown.open .dropdown-toggle {
   color: #08c;

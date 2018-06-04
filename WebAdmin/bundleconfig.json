@@ -67,6 +67,7 @@
     "outputFileName": "wwwroot/js/jquery.plugin.min.js",
     "inputFiles": [
       "wwwroot/js/jquery.*.js",
+      "wwwroot/js/jquery-*.js",
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "wwwroot/lib/uniform/jquery.uniform.js",

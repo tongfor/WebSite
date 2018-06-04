@@ -9,15 +9,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
-using System.Web.Routing;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Common.Html
 {
     internal class PagerBuilder
     {
-
         private readonly HtmlHelper _html;
         private readonly AjaxHelper _ajax;
         private readonly string _actionName;

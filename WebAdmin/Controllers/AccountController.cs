@@ -13,7 +13,6 @@ using Microsoft.Extensions.Options;
 using Models;
 using Setting.Mvc.Authorize;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAdmin.Models;
@@ -50,7 +49,7 @@ namespace WebAdmin.Controllers
         }
 
         [TempData]
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; }       
 
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -173,8 +172,8 @@ namespace WebAdmin.Controllers
                 return View(viewModel);
             }
 
-            await Logout();
-            return this.RefreshParent("密码修改成功，将退出重新登录！");
+            return await Logout();
+            //return this.RefreshParent("密码修改成功，将退出重新登录！");
         }
 
         [HttpPost]
@@ -193,7 +192,8 @@ namespace WebAdmin.Controllers
                 OperateTime = DateTime.Now
             };
             MyIOperateLogService.Add(OperateLog);
-            return RedirectToAction("Login");
+            //return PageReturn("密码修改成功，将退出重新登录！", "/Account/Login");
+            return RedirectToAction("Login", "Account");
         }
 
         /// <summary>
@@ -363,6 +363,6 @@ namespace WebAdmin.Controllers
             return !string.IsNullOrEmpty(verifycode) && verifycode.Equals(CurrentAdminVerificationCode, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        #endregion noaction
+        #endregion noaction       
     }
 }

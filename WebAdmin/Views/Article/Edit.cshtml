@@ -1,0 +1,233 @@
+﻿@using Common
+@model Models.ArticleView
+
+@{
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section PageSpecificStyleSheetIncludes{
+    <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
+}
+@section PageSpecificJavascriptIncludes{
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="~/lib/uploadPreview/uploadPreview.min.js"></script>
+    <script type="text/javascript" src="~/lib/kindeditor-4.1.7/kindeditor-all-min.js"></script>
+    <script type="text/javascript" src="~/lib/kindeditor-4.1.7/lang/zh_CN.js"></script>
+    <script type="text/javascript">
+
+        $(function() {
+            //首页图片上传绑定
+            new uploadPreview({
+                UpBtn: "imgFile",
+                DivShow: "imgdiv",
+                ImgShow: "imgShow",
+                callback: function() {
+                    var formData = new FormData();
+                    var name = $("#imgFile").val();
+                    $("#imgShow").css({ "width": "60px", "height": "40px" });
+                    formData.append("imgFile", $("#imgFile")[0].files[0]);
+                    formData.append("name", name);
+                    $.ajax({
+                        url: "/UploadJson.ashx",
+                        type: 'POST',
+                        data: formData,
+                        dataType:"json",
+                        // 告诉jQuery不要去处理发送的数据
+                        processData: false,
+                        // 告诉jQuery不要去设置Content-Type请求头
+                        contentType: false,
+                        beforeSend: function() {
+                            $("#imguploading").show();
+                        },
+                        success: function(response, status) {
+                            $("#imguploading").hide();
+                            $("#imgShow").show();
+                            if ("undefined" != typeof staticFileRoot && status && response.error === 0) {
+                                $("#IntroduceImg").val(response.url.replace(staticFileRoot, ""));
+                            }
+                        },
+                        error: function(responseStr) {
+                            console.log("error");
+                        }
+                    });
+                }
+            });
+
+            articlePidBind(0);
+
+            $("#AddTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
+            $("#EditTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
+            $(".ClassId .validatebox-readonly").removeAttr("readonly");
+
+            if (@ViewBag.ClassId != null && @ViewBag.ClassId > 0) {
+                $('#ClassId').combotree('setValue', @ViewBag.ClassId);
+            }
+        });
+
+        //绑定文章类别(类别号)
+        function articlePidBind(classid) {
+            $('#ClassId')
+                .combotree({
+                    url: "../../ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
+                    onlyLeafCheck: true,
+                    checkbox: false,
+                    disabled: false,
+                    readonly: false,
+                    required: true,
+                    loadFilter: function(data) {
+                        return data;
+                    },
+                    //选择树节点触发事件
+                    onSelect: function(node) {
+                        //返回树对象
+                        var tree = $(this).tree;
+                        //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+                        var isLeaf = tree('isLeaf', node.target);
+                        if (!isLeaf) {
+                            alert("有下级目录时请选择下级目录!");
+                            //清除选中
+                            $('#ClassId').combotree('clear');
+                        }
+                    }
+                });
+        }
+
+        KindEditor.ready(function(K) {
+            var editor1 = K.create('#Content',
+            {
+                pasteType: 1,
+                resizeType: 1,
+                allowFileManager: true,
+                uploadJson: '/UploadJson.ashx',
+                fileManagerJson: '/FileManagerJson.ashx'
+            });
+        });
+
+
+    </script>
+}
+@section MainContent{
+    <div class="tabbable tabbable-custom">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Title)：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Title, new { @class = "m-wrap large", style = "width:120px;" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Title)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.Introduce)：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Introduce, new { @class = "m-wrap large", style = "width:120px;" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Introduce)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.IntroduceImg)：</label>
+                            <div class="controls">
+                                <div>
+                                    <table>
+                                        <tr>
+                                            <td>@Html.TextBoxFor(m => m.IntroduceImg, new { @class = "m -wrap large", value = "", @readonly = "readonly", style = "width:320px;" })<input type="file" id="imgFile" name="imgFile" style="width:180px;" /><span id="imguploading" class="hide">上传中，请稍候!</span></td>
+                                            <td>
+                                                <div id="imgdiv">
+                                                    @if (string.IsNullOrEmpty(Model.IntroduceImg))
+                                                    {
+                                                        <img id="imgShow" width="60" height="40" alt="缩略图" class="hide" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img id="imgShow" width="60" height="40" style="width:60px;height:40px;" alt="缩略图" src="@Model.IntroduceImg" />
+                                                    }
+                                                </div>
+                                            </td>
+
+                                            <td></td>
+
+                                        </tr>
+                                        @*<tr>
+                                                <td colspan="3"><div id="fileQueue" class="pull-left"></div></td>
+                                            </tr>*@
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
+                            <div class="controls ClassId">
+                                <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
+                                    <option value="请选择所属类别" selected="selected"></option>
+                                </select>
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.Author)：</label>
+                            <div class="controls">
+                                <table style="width:100%">
+                                    <tr>
+                                        <td width="40%">@Html.TextBoxFor(m => m.Author, new { type = "input", style = "width:160px;" })</td>
+                                        <td width="10%">@Html.DisplayNameFor(m => m.Origin)：</td>
+                                        <td>@Html.TextBoxFor(m => m.Origin, new { type = "input", style = "width:160px;" })</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">杂项：</label>
+                            <div class="controls">
+                                <table>
+                                    <tr>
+                                        <td>@Html.DisplayNameFor(m => m.IsTop)：</td>
+                                        <td>@Html.TextBoxFor(m => m.IsTop, new { type = "number", min = "0", value = "0", style = "width:40px;" })</td>
+                                        <td>@Html.DisplayNameFor(m => m.IsMarquee)：</td>
+                                        <td>@Html.TextBoxFor(m => m.IsMarquee, new { type = "number", min = "0", value = "0", style = "width:40px;" })</td>
+                                        <td><label class="control-label">@Html.DisplayNameFor(m => m.LookCount)：</label></td>
+                                        <td>@Html.TextBoxFor(m => m.LookCount, new { type = "number", min = "0", value = "0", style = "width:80px;" })</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Content)：</label>
+                            <div class="controls">
+                                @Html.TextAreaFor(m => m.Content, new { style = "width: 100%; height:280px" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Content)@Html.ValidationSummary(false)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.AddTime)：</label>
+                            <div class="controls">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td width="40%">
+                                            @if (Model.AddTime != null)
+                                            {
+                                                @Html.TextBox("AddTime", Model.AddTime.Value.ToString("yyyy-MM-dd HH:mm:ss"), new { type = "input", style = "width:160px;" })
+                                            }
+                                        </td>
+                                        <td width="10%">@Html.DisplayNameFor(m => m.EditTime)：</td>
+                                        <td>
+                                            @if (Model.EditTime != null)
+                                            {
+                                                @Html.TextBox("EditTime", Model.EditTime.Value.ToString("yyyy-MM-dd HH:mm:ss"), new { type = "input", style = "width:160px;" })
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

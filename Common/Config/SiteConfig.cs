@@ -12,6 +12,10 @@ namespace Common.Config
         #region 属性
 
         /// <summary>
+        /// 网站前台访问域
+        /// </summary>
+        public string DefaultDomainName { get; set; }
+        /// <summary>
         /// 前台用户注册默认的角色
         /// </summary>
         public string AllowDefaultRegRoles { get; set; }

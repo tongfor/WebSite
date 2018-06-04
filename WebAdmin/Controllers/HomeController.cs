@@ -1,21 +1,35 @@
-﻿using IBLL;
+﻿using Common.Config;
+using IBLL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Security.Claims;
 using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : BaseController
     {
-        public HomeController(IAdminOperateLogService operateLogService) : base(operateLogService)
+        private readonly IAdminUserService _adminUserService;
+        private readonly IAdminLoginLogService _loginLogService;
+        private readonly IAdminRoleService _adminRoleService;
+
+        public HomeController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminUserService adminUserService, IAdminRoleService adminRoleService,
+            IAdminLoginLogService adminLoginLog, IAdminMenuService adminMenuService, ILogger<AccountController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
         {
+            _adminUserService = adminUserService;
+            _adminRoleService = adminRoleService;
+            _loginLogService = adminLoginLog;
+            _logger = logger;            
         }
 
         public IActionResult Index()
         {
+            CreateLeftMenu();
             return View();
         }
 
@@ -34,8 +48,9 @@ namespace WebAdmin.Controllers
         }
 
         public IActionResult Error()
-        {
+        {            
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+            
+        }       
     }
 }

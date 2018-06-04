@@ -673,5 +673,125 @@ namespace DALMySql
         }
 
         #endregion 根据条件分页查询数据并输出总行数(多条件排序)
+
+        /// <summary>
+        /// 直接SQL查询
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="db"></param>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static IList<T1> SqlQuery<T1>(DbContext db, string sql, params object[] parameters)
+            where T1 : new()
+        {
+            //注意：不要对GetDbConnection获取到的conn进行using或者调用Dispose，否则DbContext后续不能再进行使用了，会抛异常
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Parameters.AddRange(parameters);
+                    var propts = typeof(T1).GetProperties();
+                    var rtnList = new List<T1>();
+                    T1 model;
+                    object val;
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            model = new T1();
+                            foreach (var l in propts)
+                            {
+                                try
+                                {
+                                    val = reader[l.Name];
+                                    if (val == DBNull.Value)
+                                    {
+                                        l.SetValue(model, null);
+                                    }
+                                    else
+                                    {
+                                        l.SetValue(model, Convert.ChangeType(val, l.PropertyType));
+                                    }
+                                }
+                                catch
+                                {
+
+                                }
+                            }
+                            rtnList.Add(model);
+                        }
+                    }
+                    return rtnList;
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        /// <summary>
+        /// 异步SQL查询
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="db"></param>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static async Task<IList<T1>> SqlQueryAsync<T1>(DbContext db, string sql, params object[] parameters)
+            where T1 : new()
+        {
+            //注意：不要对GetDbConnection获取到的conn进行using或者调用Dispose，否则DbContext后续不能再进行使用了，会抛异常
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Parameters.AddRange(parameters);
+                    var propts = typeof(T1).GetProperties();
+                    var rtnList = new List<T1>();
+                    T1 model;
+                    object val;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            model = new T1();
+                            foreach (var l in propts)
+                            {
+                                try
+                                {
+                                    val = reader[l.Name];
+                                    if (val == DBNull.Value)
+                                    {
+                                        l.SetValue(model, null);
+                                    }
+                                    else
+                                    {
+                                        l.SetValue(model, Convert.ChangeType(val, l.PropertyType));
+                                    }
+                                }
+                                catch
+                                {
+
+                                }
+                            }
+                            rtnList.Add(model);
+                        }
+                    }
+                    return rtnList;
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

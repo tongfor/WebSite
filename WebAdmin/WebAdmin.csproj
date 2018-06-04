@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\bootstrap-datepicker\**" />
+    <Content Remove="wwwroot\lib\bootstrap-datepicker\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootstrap-datepicker\**" />
+    <None Remove="wwwroot\lib\bootstrap-datepicker\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\jquery-migrate-1.2.1.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -15,6 +26,62 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\bootstrap-datetimepicker.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\bootstrap-datetimepicker.min.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ar.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.az.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.bg.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.bn.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ca.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.cs.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.da.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.de.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ee.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.el.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.es.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.fi.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.fr.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.he.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hr.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hu.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hy.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.id.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.is.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.it.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ja.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ka.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ko.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.lt.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.lv.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ms.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.nb.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.nl.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.no.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pl.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pt-BR.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pt.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ro.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.rs-latin.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.rs.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ru.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sk.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sl.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sv.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sw.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.th.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.tr.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ua.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.uk.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-TW.js" />
+    <None Include="wwwroot\lib\bootstrap-datetimepicker\less\datetimepicker.less" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
     <None Include="wwwroot\lib\font-awesome\.gitignore" />
     <None Include="wwwroot\lib\font-awesome\docs\assets\img\icon-flag.pdf" />
     <None Include="wwwroot\lib\font-awesome\docs\assets\js\backbone.min.js" />
@@ -75,6 +142,8 @@
     <None Include="wwwroot\lib\font-awesome\README.md" />
     <None Include="wwwroot\lib\font-awesome\sass\font-awesome.sass" />
     <None Include="wwwroot\lib\font-awesome\sass\font-awesome.scss" />
+    <None Include="wwwroot\lib\uploadPreview\uploadPreview.js" />
+    <None Include="wwwroot\lib\uploadPreview\uploadPreview.min.js" />
   </ItemGroup>
 
   <ItemGroup>

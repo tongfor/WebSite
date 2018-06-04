@@ -1,6 +1,9 @@
 ﻿@using System.Collections
 @using Models
-@model List<AdminUserMenuView>
+@*@model List<AdminUserMenuView>*@
+@{ 
+    var MenuTree = ViewBag.MenuTree;
+}
 <div class="page-sidebar nav-collapse collapse">
     <!-- BEGIN SIDEBAR MENU -->
     <ul>
@@ -11,7 +14,7 @@
             </div>
             <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
         </li>
-        @foreach (var menu in Model)
+        @foreach (var menu in MenuTree)
         {
             var childmenus = menu.ChildMenus;
             var hasSub = childmenus.Count > 0;

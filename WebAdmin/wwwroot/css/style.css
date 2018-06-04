@@ -3806,7 +3806,7 @@ Login page
 
 .login .content .input-icon .m-wrap {  
   margin: 0px !important;
-  height:34px;
+  /*height:34px;*/
 }
 
 .login .content .forget-form {

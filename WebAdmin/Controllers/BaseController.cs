@@ -51,7 +51,6 @@ namespace WebAdmin.Controllers
             MyIAdminBugService = adminBugService;
             MyIAdminMenuService = adminMenuService;
             SiteConfigSettings = options.Value;
-            CreateLeftMenu();
         }
 
         public BaseController(IAdminOperateLogService operateLogService)
@@ -238,8 +237,12 @@ namespace WebAdmin.Controllers
 
         public PartialViewResult CreateLeftMenu()
         {
-            var model = GetAdminUserMenuTree(int.Parse(User.Claims.ToList().FirstOrDefault().Value));
-            return PartialView("Menu", model);
+            //if (User == null || User.Claims == null || User.Claims.Count() <= 0)
+            //{
+            //    RedirectToAction("Login", "Account");
+            //}
+            ViewBag.MenuTree = GetAdminUserMenuTree(int.Parse(User.Claims.ToList().FirstOrDefault().Value));
+            return PartialView("Menu");
         }
 
         #endregion 分部视图

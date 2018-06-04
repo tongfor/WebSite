@@ -41,19 +41,15 @@ namespace DALMySql
         {
             List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
             StringBuilder sb = new StringBuilder();
-            //sb.Append("select TT.RowNo as Id,TT.menuname,TT.menuid,TT.icon,");
-            //sb.Append("TT.userid, TT.UserName, TT.menuparentid, TT.menusort,");
-            //sb.Append("TT.linkaddress from (");
-            //EF CORE需要AdminUserMenuViewId列
-            sb.Append("SELECT TT.AdminUserMenuViewId as Id,TT.* from (");
-            sb.Append("select distinct(m.Name) menuname,m.Id menuid,m.Icon icon,u.Id userid,u.UserName UserName,");
-            sb.Append("m.ParentId menuparentid,m.Sort menusort,m.LinkAddress linkaddress,");
-            sb.Append("@RowNo :=@RowNo + 1 AS AdminUserMenuViewId from AdminUser u join AdminUserAdminRole");
-            sb.Append(" ur on u.Id=ur.UserId  join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join AdminMenu m");
-            sb.Append(" on rmb.MenuId=m.Id,(SELECT @RowNo := 0) t ");
+            sb.Append("select distinct(m.Name) menuname, m.Id as Id, m.Id menuid,m.Icon icon,u.Id ");
+            sb.Append("userid,u.UserName UserName,m.ParentId menuparentid,m.Sort ");
+            sb.Append("menusort,m.LinkAddress linkaddress from AdminUser u join ");
+            sb.Append("AdminUserAdminRole ur on u.Id=ur.UserId  ");
+            sb.Append("join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join ");
+            sb.Append("AdminMenu m on rmb.MenuId=m.Id ");
             sb.Append($" where u.id={userId} order by m.ParentId,m.Sort");
-            sb.Append(") as TT");
-            var queryResult = _db.Set<AdminUserMenuView>().FromSql(sb.ToString());
+            
+            var queryResult = SqlQuery<AdminUserMenuView>(_db, sb.ToString());
             if (queryResult != null)
             {
                 menuList = queryResult.ToList();
@@ -70,22 +66,18 @@ namespace DALMySql
         {
             List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
             StringBuilder sb = new StringBuilder();
-            //sb.Append("select TT.RowNo as Id,TT.menuname,TT.menuid,TT.icon,");
-            //sb.Append("TT.userid, TT.UserName, TT.menuparentid, TT.menusort,");
-            //sb.Append("TT.linkaddress from (");
-            //EF CORE需要AdminUserMenuViewId列
-            sb.Append("SELECT TT.AdminUserMenuViewId as Id,TT.* from (");
-            sb.Append("select distinct(m.Name) menuname,m.Id menuid,m.Icon icon,u.Id userid,u.UserName UserName,");
-            sb.Append("m.ParentId menuparentid,m.Sort menusort,m.LinkAddress linkaddress,");
-            sb.Append("@RowNo :=@RowNo + 1 AS AdminUserMenuViewId from AdminUser u join AdminUserAdminRole");
-            sb.Append(" ur on u.Id=ur.UserId  join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join AdminMenu m");
-            sb.Append(" on rmb.MenuId=m.Id,(SELECT @RowNo := 0) t ");
+            sb.Append("select distinct(m.Name) menuname, m.Id as Id, m.Id menuid,m.Icon icon,u.Id ");
+            sb.Append("userid,u.UserName UserName,m.ParentId menuparentid,m.Sort ");
+            sb.Append("menusort,m.LinkAddress linkaddress from AdminUser u join ");
+            sb.Append("AdminUserAdminRole ur on u.Id=ur.UserId  ");
+            sb.Append("join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join ");
+            sb.Append("AdminMenu m on rmb.MenuId=m.Id ");
             sb.Append($" where u.id={userId} order by m.ParentId,m.Sort");
-            sb.Append(") as TT");
-            var queryResult = _db.Set<AdminUserMenuView>().FromSql(sb.ToString());
+
+            var queryResult = await SqlQueryAsync<AdminUserMenuView>(_db, sb.ToString());
             if (queryResult != null)
             {
-                menuList = await queryResult.ToListAsync();
+                menuList = queryResult.ToList();
             }
             return menuList;
         }
@@ -275,5 +267,6 @@ namespace DALMySql
         }
 
         #endregion
+               
     }
 }
