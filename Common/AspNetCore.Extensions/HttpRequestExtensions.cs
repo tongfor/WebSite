@@ -22,5 +22,19 @@ namespace Microsoft.AspNetCore.Http
                 .Append(request.QueryString)
                 .ToString();
         }
+
+        /// <summary>
+        /// 获取完整主机Url
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string GetHostUri(this HttpRequest request)
+        {
+            return new StringBuilder()
+                .Append(request.Scheme)
+                .Append("://")
+                .Append(request.Host)               
+                .ToString();
+        }
     }
 }

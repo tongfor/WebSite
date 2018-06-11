@@ -32,7 +32,7 @@
                     formData.append("imgFile", $("#imgFile")[0].files[0]);
                     formData.append("name", name);
                     $.ajax({
-                        url: "/UploadJson.ashx",
+                        url: "/Upload/FileSave",
                         type: 'POST',
                         data: formData,
                         dataType:"json",
@@ -102,7 +102,7 @@
                 pasteType: 1,
                 resizeType: 1,
                 allowFileManager: true,
-                uploadJson: '/UploadJson.ashx',
+                uploadJson: '/Upload/FileSave',
                 fileManagerJson: '/FileManagerJson.ashx'
             });
         });

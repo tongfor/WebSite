@@ -30,11 +30,11 @@ namespace Common.Config
         /// <summary>
         /// 后台文件上传大小
         /// </summary>
-        public string DefualtUploadFileMaxSize { get; set; }
+        public string DefaultUploadFileMaxSize { get; set; }
         /// <summary>
         /// 商业计划书文件上传大小
         /// </summary>
-        public string DefualtBusinessPlanUploadFileMaxSize { get; set; }
+        public string DefaultBusinessPlanUploadFileMaxSize { get; set; }
         /// <summary>
         /// 后台允许图片文件后缀
         /// </summary>
