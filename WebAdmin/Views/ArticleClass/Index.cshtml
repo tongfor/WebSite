@@ -1,0 +1,106 @@
+﻿@using Models
+
+@model PagedList<ArticleClass>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row-fluid">
+    <div class="span4">
+        <div>
+            <a class="btn blue thickbox" title='添加分类' href="@Url.Action("Create")?TB_iframe=true&height=500&width=450"><i class="icon-plus icon-white"></i> 新增</a>
+        </div>
+    </div>
+    <div class="span8">
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "search" }))
+        {
+            <div class="dataTables_filter">
+                <label>
+                    <button type="submit" class="btn">搜索 <i class="icon-search"></i></button>
+                </label>
+                <label>
+                    <span>文章分类名称：</span>
+                    @Html.TextBox("Title", "", new { @class = "m-wrap small" })
+                </label>
+            </div>
+        }
+    </div>
+</div>
+
+@using (Html.BeginForm("Delete", "ArticleClass", FormMethod.Post, new { id = "mainForm" }))
+{
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th style="width: 8px;">
+                    <input type="checkbox" id="checkall" class="group-checkable" />
+                </th>
+                <th>
+                    分类名称
+                </th>
+                <th>
+                    主Id
+                </th>
+                <th>
+                    父Id
+                </th>
+                <th>
+                    层级
+                </th>
+                <th>
+                    路径
+                </th>
+                <th>
+                    排序
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkboxes" name='ids' value='@m.Id' />
+                    </td>
+                    <td>
+                        @m.Name
+                    </td>
+                    <td>
+                        @m.Id
+                    </td>
+                    <td>
+                        @m.ParentId
+                    </td>
+                    <td>
+                        @m.Tier
+                    </td>
+                    <td>
+                        @m.Path
+                    </td>
+                    <td>
+                        @m.Sort
+                    </td>
+                    <td style="text-align:center">
+                        <a class="btn mini purple thickbox" title='编辑分类' href="@Url.Action("Edit", new { id = m.Id })?TB_iframe=true&height=500&width=450">
+                            <i class="icon-edit"></i>
+                            编辑
+                        </a>
+                        <a class="btn mini purple" id="delSingle" title='删除此分类' href="javascript:if(confirm('如果该分类存在子类将一并删除。\n确定删除吗?'))location='@Url.Action("Delete", new { id = m.Id })'">
+                            <i class="icon-edit"></i>
+                            删除
+                        </a>
+                        <input type="hidden" value="@m.Id" name="Id" id="Id" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+    <div class="dataTables_paginate paging_bootstrap pagination">
+        @await Component.InvokeAsync("Pagination")
+    </div>
+

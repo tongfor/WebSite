@@ -36,6 +36,7 @@ namespace WebAdmin.Controllers
                 }
                 IEnumerable<ArticleClass> articleClassList = await _articleClassService.GetPagedArticleClassListAsync(request);
 
+                CreateLeftMenu();
                 return View(articleClassList as PagedList<ArticleClass>);
             }
             catch (Exception ex)
@@ -71,20 +72,18 @@ namespace WebAdmin.Controllers
 
         // POST: Activity/Create
         [HttpPost]
-        public async Task<IActionResult> Create(FormCollection collection)
+        public async Task<IActionResult> Create(ArticleClass articleClass)
         {
             try
             {
-                var model = new ArticleClass();
-                await TryUpdateModelAsync<ArticleClass>(model);
-
-                if (collection["ParentId"].Equals("父级分类"))
+                if ("父级分类".Equals(articleClass.ParentId))
                 {
-                    model.ParentId = 0;
+                    articleClass.ParentId = 0;
                 }
-                await _articleClassService.AddArticleClassAsync(model);
+                await _articleClassService.AddArticleClassAsync(articleClass);
 
-                return this.RefreshParent();
+                //return this.RefreshParent();
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -140,11 +139,11 @@ namespace WebAdmin.Controllers
 
         // POST: AdminUser/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(int? id, FormCollection collection)
+        public async Task<IActionResult> Edit(ArticleClass articleClass)
         {
             try
             {
-                if (id == null)
+                if (articleClass == null || articleClass.Id <= 0)
                 {
                     OperateLog.OperateInfo = "编辑文章类别功能异常";
                     OperateLog.IsSuccess = 0;
@@ -152,7 +151,7 @@ namespace WebAdmin.Controllers
                     MyIOperateLogService.Add(OperateLog);
                 }
 
-                ArticleClass model = _articleClassService.GetModelBy(f => f.Id == id);
+                ArticleClass model = _articleClassService.GetModelBy(f => f.Id == articleClass.Id);
                 await TryUpdateModelAsync<ArticleClass>(model);
                 await _articleClassService.ModifyArticleClassAsync(model);
 

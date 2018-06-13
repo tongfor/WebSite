@@ -1,0 +1,101 @@
+﻿@using Common
+@model Models.ArticleClass
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+
+@section PageSpecificStyleSheetIncludes{
+    <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
+}
+
+@section PageSpecificJavascriptIncludes{
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            articleClassIdBind(0);
+            $(".ParentId .validatebox-readonly").removeAttr("readonly");
+
+            if ( @ViewBag.ParentId !=null && @ViewBag.ParentId >0)
+            {
+                $('#ParentId').combotree('setValue', @ViewBag.ParentId);
+            }
+        });
+
+        //绑定文章类别(类别号)
+        function articleClassIdBind(classid) {
+            $('#ParentId').combotree({
+                url: "/ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
+                onlyLeafCheck: true,
+                checkbox: false,
+                disabled: false,
+                readonly: false,
+                required:true,
+                loadFilter: function (data)
+                {
+                    return data;
+                }
+                ////选择树节点触发事件
+                //onSelect: function (node) {
+                //    //返回树对象
+                //    var tree = $(this).tree;
+                //    //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+                //    var isLeaf = tree('isLeaf', node.target);
+                //    if (!isLeaf) {
+                //        alert("有下级目录时请选择下级目录!");
+                //        //清除选中
+                //        $('#ClassId').combotree('clear');
+                //    }
+                //}
+            });
+        }
+    </script>
+}
+
+@section MainContent{
+
+    <div class="control-group">
+        <div class="tabbable tabbable-custom">
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
+                    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+                        <div class="row-fluid">
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="control-group">
+                                <label class="control-label"><span class="required">*</span>文章类别名称：</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "m-wrap large", style = "width:120px;" })
+                                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Name)</span>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label"><span class="required">*</span>父类别：</label>
+                                <div class="controls">
+                                    <select id="ParentId" name="ParentId" class="easyui-combotree" style="width: 220px;">
+                                        <option value="0" selected="selected" title="根目录">根目录</option>
+                                    </select>
+                                    <span class="help-inline">@Html.ValidationMessageFor(m => m.ParentId)</span>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label"><span class="required">*</span>排序：</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.Sort, new { @class = "m-wrap large", type = "number", min = "0", value = "0", style = "width:120px;" })
+                                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Sort)</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+
+

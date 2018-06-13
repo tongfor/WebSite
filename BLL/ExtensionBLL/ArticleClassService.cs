@@ -78,6 +78,11 @@ namespace BLL
                 }
             }
             var result = await MyIBaseDal.AddAsync(model);
+            if (model.ParentId == 0)
+            {
+                model.Path = "0," + model.Id;
+                result = await MyIBaseDal.ModifyAsync(model);
+            }
             return result;
         }
 
