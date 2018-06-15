@@ -124,7 +124,7 @@ namespace BLL
             if (model.ParentId == 0)
             {
                 model.Tier = 1;
-                model.Path = "0";
+                model.Path = "0," + model.Id;
             }
             else
             {
@@ -132,7 +132,7 @@ namespace BLL
                 if (parentModel != null)
                 {
                     model.Tier = parentModel.Tier + 1;
-                    model.Path = parentModel.Path + "," + model.ParentId;
+                    model.Path = parentModel.Path + "," + model.Id;
                 }
             }
             var result = await MyIBaseDal.ModifyAsync(model);

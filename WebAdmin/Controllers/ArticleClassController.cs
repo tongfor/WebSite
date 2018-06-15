@@ -83,7 +83,7 @@ namespace WebAdmin.Controllers
                 await _articleClassService.AddArticleClassAsync(articleClass);
 
                 //return this.RefreshParent();
-                return RedirectToAction("Index");
+                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "添加成功！", null);
             }
             catch (Exception ex)
             {
@@ -149,13 +149,16 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递类别ID";
                     MyIOperateLogService.Add(OperateLog);
+
+                    return PackagingAjaxMsg(AjaxStatus.Err, "未传递参数！", null);
                 }
 
                 ArticleClass model = _articleClassService.GetModelBy(f => f.Id == articleClass.Id);
                 await TryUpdateModelAsync<ArticleClass>(model);
                 await _articleClassService.ModifyArticleClassAsync(model);
 
-                return this.RefreshParent();
+                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "修改成功！", null);
+                //return this.RefreshParent();
             }
             catch (Exception ex)
             {

@@ -3,13 +3,37 @@
         window.top.tb_remove();
     });
 
-    var mainForm = $("#submit").parent().parent();
-    mainForm.submit(function () {
-        if (mainForm.valid()) {
-            $("#submitloading").show();
-        } else {
-            $(".validation-summary-errors").hide(8000);
-        }
+    //var mainForm = $("#submit").parent().parent();
+    //mainForm.submit(function () {
+    //    if (mainForm.valid()) {
+    //        $("#submitloading").show();
+    //    } else {
+    //        $(".validation-summary-errors").hide(8000);
+    //    }
+    //});
+
+    $("#mainForm").submit(function () {
+        $.ajax({
+            url: $(this).attr("action"),
+            data: $(this).serialize(),
+            type: "POST",
+            beforeSend: function () {               
+                $("#submitloading").show();
+            },
+            success: function (result, status) {
+                if (result && "success" === status && 0 == result.status) {
+                    alert(result.msg);
+                    window.top.location.reload();
+                    window.top.tb_remove();   
+                }
+            },
+            error(xhr, status, error) {
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            }
+        });
+        return false;
     });
 
     //$("input[type='text']").blur(function () { $(this).removeClass("highlight"); }).focus(function () { $(this).addClass("highlight"); });

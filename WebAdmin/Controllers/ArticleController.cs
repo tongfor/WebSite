@@ -110,8 +110,9 @@ namespace WebAdmin.Controllers
                 ViewBag.ClassId = 0;                
 
                 await _articleService.AddAsync(model);
-                
-                return this.RefreshParent();
+
+                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "添加成功！", null);
+                //return this.RefreshParent();
             }
             catch (Exception ex)
             {
@@ -186,7 +187,8 @@ namespace WebAdmin.Controllers
 
                 await _articleService.ModifyAsync(modifyModel);
 
-                return this.RefreshParent();
+                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "修改成功！", null);
+                //return this.RefreshParent();
             }
             catch (Exception ex)
             {

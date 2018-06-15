@@ -1,4 +1,5 @@
-﻿@using Common
+﻿@using Microsoft.AspNetCore.Http;
+
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
@@ -111,7 +112,7 @@
     <!-- END FOOTER -->
     <!-- BEGIN JAVASCRIPTS -->
     <script type="text/javascript">
-        var staticFileRoot = "/";
+        var staticFileRoot = "@Context.Request.GetHostUri()" + "/";
     </script>
     <!-- Load javascripts at bottom, this will reduce page load time -->
     <environment include="Development">
@@ -122,9 +123,9 @@
         <script src="~/js/jquery.cookie.js"></script>
         <!-- ie8 fixes -->
         <!--[if lt IE 9]>
-    <script src="~/js/excanvas.js"></script>
-    <script src="~/js/respond.js"></script>
-    <![endif]-->
+        <script src="~/js/excanvas.js"></script>
+        <script src="~/js/respond.js"></script>
+        <![endif]-->
         <script src="~/lib/uniform/jquery.uniform.js"></script>
         <script src="~/lib/uniform/jquery.uniform.min.js"></script>
         <script src="~/lib/data-tables/jquery.dataTables.js"></script>

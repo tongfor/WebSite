@@ -38,19 +38,17 @@
                 loadFilter: function (data)
                 {
                     return data;
+                },
+                //选择树节点触发事件
+                onSelect: function (node) {
+                    //返回树对象
+                    var tree = $(this).tree;
+                    if (node.id == @Model.Id) {                       
+                        alert("不能选择自己为父目录!"); 
+                        //清除选中
+                        $('#ParentId').combotree('clear');
+                    }
                 }
-                ////选择树节点触发事件
-                //onSelect: function (node) {
-                //    //返回树对象
-                //    var tree = $(this).tree;
-                //    //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
-                //    var isLeaf = tree('isLeaf', node.target);
-                //    if (!isLeaf) {
-                //        alert("有下级目录时请选择下级目录!");
-                //        //清除选中
-                //        $('#ClassId').combotree('clear');
-                //    }
-                //}
             });
         }
     </script>
@@ -77,12 +75,11 @@
                                 <label class="control-label"><span class="required">*</span>父类别：</label>
                                 <div class="controls">
                                     <select id="ParentId" name="ParentId" class="easyui-combotree" style="width: 220px;">
-                                        <option value="0" selected="selected" title="根目录">根目录</option>
+                                        <option value="根目录" selected="selected" title="根目录"></option>
                                     </select>
                                     <span class="help-inline">@Html.ValidationMessageFor(m => m.ParentId)</span>
                                 </div>
                             </div>
-
                             <div class="control-group">
                                 <label class="control-label"><span class="required">*</span>排序：</label>
                                 <div class="controls">
