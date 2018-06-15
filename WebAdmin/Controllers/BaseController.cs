@@ -27,6 +27,7 @@ using Common.Config;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebAdmin.Controllers
 {
@@ -36,9 +37,9 @@ namespace WebAdmin.Controllers
     [Authorize]
     public class BaseController : Controller
     {
-        protected IAdminOperateLogService MyIOperateLogService;        
-        protected IAdminBugService MyIAdminBugService;
-        protected IAdminMenuService MyIAdminMenuService;
+        protected IAdminOperateLogService MyOperateLogService;        
+        protected IAdminBugService MyAdminBugService;
+        protected IAdminMenuService MyAdminMenuService;
         protected AdminOperateLog OperateLog = new AdminOperateLog();  //操作日志对象
         protected AdminBug Bug = new AdminBug(); //BUG记录对象
         protected Microsoft.Extensions.Logging.ILogger _logger;
@@ -47,15 +48,15 @@ namespace WebAdmin.Controllers
 
         public BaseController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options)
         {
-            MyIOperateLogService = operateLogService;
-            MyIAdminBugService = adminBugService;
-            MyIAdminMenuService = adminMenuService;
+            MyOperateLogService = operateLogService;
+            MyAdminBugService = adminBugService;
+            MyAdminMenuService = adminMenuService;
             SiteConfigSettings = options.Value;
         }
 
         public BaseController(IAdminOperateLogService operateLogService)
         {
-            MyIOperateLogService = operateLogService;
+            MyOperateLogService = operateLogService;
         }
 
         #region 把ajax值封闭成json格式返回
@@ -222,12 +223,12 @@ namespace WebAdmin.Controllers
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
-        public List<AdminUserMenuView> GetAdminUserMenuTree(int userId)
+        public async Task<List<AdminUserMenuView>> GetAdminUserMenuTreeAsync(int userId)
         {
             List<AdminUserMenuView> menuList = new List<AdminUserMenuView>();
             List<AdminUserMenuView> menuTreeList = new List<AdminUserMenuView>();
-            menuList = MyIAdminMenuService.GetAdminUserMenu(userId);
-            menuTreeList = MyIAdminMenuService.GetAdminUserMenuTree(menuList, 0);
+            menuList = await MyAdminMenuService.GetAdminUserMenuAsync(userId);
+            menuTreeList = await MyAdminMenuService.GetAdminUserMenuTreeAsync(menuList, 0);
             return menuTreeList;
         }
 
@@ -235,13 +236,13 @@ namespace WebAdmin.Controllers
 
         #region 分部视图
 
-        public PartialViewResult CreateLeftMenu()
+        public async Task<PartialViewResult> CreateLeftMenuAsync()
         {
             //if (User == null || User.Claims == null || User.Claims.Count() <= 0)
             //{
             //    RedirectToAction("Login", "Account");
             //}
-            ViewBag.MenuTree = GetAdminUserMenuTree(int.Parse(User.Claims.ToList().FirstOrDefault().Value));
+            ViewBag.MenuTree = await GetAdminUserMenuTreeAsync(int.Parse(User.Claims.ToList().FirstOrDefault().Value));
             return PartialView("Menu");
         }
 

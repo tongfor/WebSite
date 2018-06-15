@@ -1,0 +1,120 @@
+﻿@model Models.AdminMenu
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section PageSpecificStyleSheetIncludes{
+    <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
+}
+
+@section PageSpecificJavascriptIncludes{
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            menuParentIdBind(0);
+            $(".ParentId .validatebox-readonly").removeAttr("readonly");
+            $('#ParentId').combotree('setValue', 0);
+
+            if ( @ViewBag.ParentId !=null && @ViewBag.ParentId >0)
+            {
+                $('#ParentId').combotree('setValue', @ViewBag.ParentId);
+                $('#Code').removeAttr("readonly");
+                $('#LinkAddress').removeAttr("readonly");
+            }
+        });
+
+        //绑定父菜单
+        function menuParentIdBind(parentId) {
+            $('#ParentId').combotree({
+                url: "/Menu/GetAllMenuTreeJson?parentId=" + parentId,
+                checkbox: false,
+                disabled: false,
+                readonly: false,
+                required:true,
+                loadFilter: function (data)
+                {
+                    return data;
+                },
+                //选择树节点触发事件
+                onSelect: function (node) {
+                    //返回树对象
+                    //var tree = $(this).tree;
+                    ////选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+                    //var isLeaf = tree('isLeaf', node.target);
+                    //if (!isLeaf) {
+                    //    $('#Code').attr("readonly","readonly");
+                    //    $('#LinkAddress').attr("readonly","readonly");
+                    //}
+                    //else{
+                    //    $('#Code').removeAttr("readonly");
+                    //    $('#LinkAddress').removeAttr("readonly");
+                    //}
+                }
+            });
+        }
+    </script>
+}
+@section MainContent{
+    <div class="tabbable tabbable-custom">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>菜单名称：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Name, new { @class = "m-wrap large" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Name)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>父菜单：</label>
+                            <div class="controls ParentId">
+                                <select id="ParentId" name="ParentId" class="easyui-combotree" style="width: 220px;"></select>
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.ParentId)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">标识码：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Code, new { @class = "m-wrap large" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Code)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">链接地址：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.LinkAddress, new { @class = "m-wrap large", })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.LinkAddress)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">图标样式：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Icon, new { @class = "m-wrap large" })<a href="~/lib\font-awesome\docs\index.html" target="_blank">样式列表</a>
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Icon)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">排序：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Sort, new { type = "number", min = "0", value = "0", style = "width:80px;" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">添加时间：</label>
+                            <div class="controls">
+                                @Html.DisplayFor(m => m.AddTime)
+                            </div>
+                        </div>
+                        <span class="help-inline" style="width:300px;">@Html.ValidationSummary(false)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

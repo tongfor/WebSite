@@ -115,7 +115,7 @@ namespace WebAdmin.Controllers
                     BugInfo = "登录功能异常" + ex.Message,
                     BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
                 };
-                MyIAdminBugService.Add(Bug);
+                MyAdminBugService.Add(Bug);
                 return View("Error");
             }
         }
@@ -154,7 +154,7 @@ namespace WebAdmin.Controllers
                     IsSuccess = 1,
                     OperateTime = DateTime.Now
                 };
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 await _adminUserService.ModifyAsync(modifyModel, "UserPwd");
             }
             catch (BusinessException ex)
@@ -168,7 +168,7 @@ namespace WebAdmin.Controllers
                     BugInfo = "修改密码错误" + ex.Message,
                     BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
                 };
-                MyIAdminBugService.Add(Bug);
+                MyAdminBugService.Add(Bug);
                 return View(viewModel);
             }
 
@@ -191,7 +191,7 @@ namespace WebAdmin.Controllers
                 IsSuccess = 1,
                 OperateTime = DateTime.Now
             };
-            MyIOperateLogService.Add(OperateLog);
+            MyOperateLogService.Add(OperateLog);
             //return PageReturn("密码修改成功，将退出重新登录！", "/Account/Login");
             return RedirectToAction("Login", "Account");
         }
@@ -225,7 +225,7 @@ namespace WebAdmin.Controllers
                     BugInfo = "验证码生成异常" + ex.Message,
                     BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
                 };
-                MyIAdminBugService.Add(Bug);
+                MyAdminBugService.Add(Bug);
                 return View("Error");
             }
         }

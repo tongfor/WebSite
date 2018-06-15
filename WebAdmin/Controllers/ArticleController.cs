@@ -40,7 +40,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "文章列表页面异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未正确传递文章参数";
-                    MyIOperateLogService.Add(OperateLog);
+                    MyOperateLogService.Add(OperateLog);
                     return View("Error");
                 }
 
@@ -52,7 +52,7 @@ namespace WebAdmin.Controllers
                 }
                 IEnumerable<ArticleView> articleList = await _articleService.GetArticleListBySqlAsync(request);
 
-                CreateLeftMenu();
+                await CreateLeftMenuAsync();
                 ViewBag.DomainName = SiteConfigSettings.DefaultDomainName;
                 return View(articleList as PagedList<ArticleView>);
             }
@@ -62,7 +62,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "文章列表页面异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -83,7 +83,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "新增文章页面异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -120,7 +120,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "新增文章功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -136,7 +136,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "编辑文章页面异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
-                    MyIOperateLogService.Add(OperateLog);
+                    MyOperateLogService.Add(OperateLog);
                     return View("Error");
                 }
                 ArticleView model = new ArticleView(await  _articleService.GetModelAsync(id.Value));
@@ -150,7 +150,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "编辑文章页面异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -167,7 +167,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "编辑文章功能异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
-                    MyIOperateLogService.Add(OperateLog);
+                    MyOperateLogService.Add(OperateLog);
                     return View("Error");
                 }
                 if (article.ClassId == null || article.ClassId <= 0)
@@ -196,7 +196,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "编辑文章功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -212,7 +212,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "删除文章功能异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
-                    MyIOperateLogService.Add(OperateLog);
+                    MyOperateLogService.Add(OperateLog);
                     return View("Error");
                 }
                 await _articleService.DelByAsync(f => f.Id == id.Value);
@@ -224,7 +224,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "删除文章功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -244,7 +244,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "批量删除文章功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }

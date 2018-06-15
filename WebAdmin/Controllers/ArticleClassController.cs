@@ -36,7 +36,7 @@ namespace WebAdmin.Controllers
                 }
                 IEnumerable<ArticleClass> articleClassList = await _articleClassService.GetPagedArticleClassListAsync(request);
 
-                CreateLeftMenu();
+                await CreateLeftMenuAsync();
                 return View(articleClassList as PagedList<ArticleClass>);
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "文章类别列表页面异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -65,7 +65,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "创建文章类别页面异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -91,7 +91,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "创建文章类别功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -107,7 +107,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "编辑文章类别页面异常";
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = "未传递类别ID";
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
             try
@@ -119,7 +119,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "编辑文章类别页面异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未找到文章类别";
-                    MyIOperateLogService.Add(OperateLog);
+                    MyOperateLogService.Add(OperateLog);
                     return View("Error");
                 }
                 ArticleClass entActivity = model.ToPOCO();
@@ -132,7 +132,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "编辑文章类别页面异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -148,7 +148,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "编辑文章类别功能异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递类别ID";
-                    MyIOperateLogService.Add(OperateLog);
+                    MyOperateLogService.Add(OperateLog);
 
                     return PackagingAjaxMsg(AjaxStatus.Err, "未传递参数！", null);
                 }
@@ -166,7 +166,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "编辑文章类别功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -183,7 +183,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "删除文章类别功能异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递类别ID";
-                    MyIOperateLogService.Add(OperateLog);
+                    MyOperateLogService.Add(OperateLog);
                 }
                 //查询要删除的单个
                 ArticleClass act = await _articleClassService.GetModelAsync(id.Value);//根据Id查询单个
@@ -213,7 +213,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "删除文章类别功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -239,7 +239,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "AJAX获取文章类别功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }
@@ -264,7 +264,7 @@ namespace WebAdmin.Controllers
                 OperateLog.OperateInfo = "获取文章类别Json功能异常-" + ex.Message;
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyIOperateLogService.Add(OperateLog);
+                MyOperateLogService.Add(OperateLog);
                 return View("Error");
             }
         }

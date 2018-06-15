@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
@@ -27,9 +28,9 @@ namespace WebAdmin.Controllers
             _logger = logger;            
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            CreateLeftMenu();
+            await CreateLeftMenuAsync();
             return View();
         }
 

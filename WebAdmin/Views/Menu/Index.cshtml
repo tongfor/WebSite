@@ -1,0 +1,125 @@
+﻿@using Models
+
+@model PagedList<AdminMenu>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section PageSpecificStyleSheetIncludes{
+
+}
+@section PageSpecificJavascriptIncludes{
+
+}
+<div class="row-fluid">
+    <div class="span4">
+        <div>
+            <a class="btn red" id="delete" href="javascript:;"><i class="icon-trash icon-white"></i> 删除</a>
+            <a class="btn blue thickbox" title='添加新菜单' href="@Url.Action("Create")?TB_iframe=true&height=500&width=500"><i class="icon-plus icon-white"></i> 新增</a>
+        </div>
+    </div>
+    <div class="span8">
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "search" }))
+        {
+            <div class="dataTables_filter">
+                <label>
+                    <button type="submit" class="btn">搜索 <i class="icon-search"></i></button>
+                </label>
+                <label>
+                    <span>菜单名称：</span>
+                    @Html.TextBox("Title", "", new { @class = "m-wrap small" })
+                </label>
+            </div>
+        }
+    </div>
+</div>
+
+@using (Html.BeginForm("Delete", "Menu", FormMethod.Post, new { id = "mainForm" }))
+{
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th style="width: 8px;">
+                    <input type="checkbox" id="checkall" class="group-checkable" />
+                </th>
+                <th>
+                    菜单ID
+                </th>
+                <th>
+                    菜单名称
+                </th>
+                <th>
+                    父菜单ID
+                </th>
+                <th>
+                    标识码
+                </th>
+                <th>
+                    链接地址
+                </th>
+                <th>
+                    图标样式
+                </th>
+                <th>
+                    排序
+                </th>
+                <th>
+                    添加时间
+                </th>
+                <th style="text-align:center">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkboxes" name='ids' value='@m.Id' />
+                    </td>
+                    <td>
+                        @m.Id
+                    </td>
+                    <td>
+                        @m.Name
+                    </td>
+                    <td>
+                        @m.ParentId
+                    </td>
+                    <td>
+                        @m.Code
+                    </td>
+                    <td>
+                        @m.LinkAddress
+                    </td>
+                    <td>
+                        @m.Icon
+                    </td>
+                    <td>
+                        @m.Sort
+                    </td>
+                    <td>
+                        @m.AddTime
+                    </td>
+                    <td style="text-align: center">
+                        <a class="btn mini purple thickbox" title='编辑此菜单' href="@Url.Action("Edit", new {id = m.Id})?TB_iframe=true&height=500&width=500">
+                            <i class="icon-edit"></i>
+                            编辑
+                        </a>
+                        <a class="btn mini purple" id="delSingle" title='删除此菜单' href="javascript:if(confirm('确实要删除该菜单吗?'))location='@Url.Action("Delete", new {id = m.Id})'">
+                            <i class="icon-edit"></i>
+                            删除
+                        </a>
+                        <input type="hidden" value="@m.Id" name="Id" id="Id" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+    <div class="dataTables_paginate paging_bootstrap pagination">
+        @await Component.InvokeAsync("Pagination")
+    </div>
