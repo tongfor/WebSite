@@ -148,7 +148,7 @@ namespace DALMySql
             sb.Append("on ud.DepartmentId = ad.Id");
             if (!string.IsNullOrEmpty(strWhere))
             {
-                sb.Append($"where 1=1 and {strWhere}");
+                sb.Append($" where 1=1 and {strWhere}");
             }
             var queryResult =
                 _db.Set<AdminUserView>().FromSql(sb.ToString());
@@ -250,5 +250,53 @@ namespace DALMySql
             }
             return result;
         }
+
+        #region 重设用户密码（直接执行查询语句）
+
+        /// <summary>
+        /// 重设用户密码（直接执行查询语句）
+        /// </summary>
+        /// <param name="id">用户ID</param>
+        /// <param name="encryptedPwd">密码密文</param>
+        /// <returns></returns>
+        public int ModifyPwd(int id, string encryptedPwd)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"update AdminUser set UserPwd ='{encryptedPwd}'");
+            if (id > 0)
+            {
+                sb.Append($" where  id={id}");
+            }
+            else
+            {
+                return 0;
+            }
+            var queryResult = _db.Database.ExecuteSqlCommand(sb.ToString());
+            return queryResult;
+        }
+
+        /// <summary>
+        /// 异步重设用户密码（直接执行查询语句）
+        /// </summary>
+        /// <param name="id">用户ID</param>
+        /// <param name="encryptedPwd">密码密文</param>
+        /// <returns></returns>
+        public async Task<int> ModifyPwdAsync(int id, string encryptedPwd)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"update AdminUser set UserPwd ='{encryptedPwd}'");
+            if (id > 0)
+            {
+                sb.Append($" where  id={id}");
+            }
+            else
+            {
+                return 0;
+            }
+            var queryResult = await _db.Database.ExecuteSqlCommandAsync(sb.ToString());
+            return queryResult;
+        }
+
+        #endregion
     }
 }

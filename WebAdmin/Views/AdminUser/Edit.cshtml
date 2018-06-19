@@ -1,0 +1,70 @@
+﻿@using System.Configuration
+@model Models.AdminUser
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section MainContent{
+    <div class="tabbable tabbable-custom">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>登录名：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "m-wrap large", style = "width:120px;" })
+                                @Html.HiddenFor(m => m.UserPwd)
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.UserName)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>真实姓名：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Name, new { @class = "m-wrap large", style = "width:120px;" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Name)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>行动电话：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "m-wrap large", style = "width:120px;" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Mobile)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>联系QQ：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Qq, new { @class = "m-wrap large", style = "width:120px;" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Qq)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>邮箱：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "m-wrap large", style = "width:120px;" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">邮编：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Postcode, new { @class = "m-wrap large", style = "width:120px;" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Postcode)</span>
+                            </div>
+                        </div>
+                        @if (ViewBag.IsEdit == false)
+                        {
+                            <div>
+                                <br />
+                                <span class="required">默认密码：@ViewBag.DefaultPwd</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

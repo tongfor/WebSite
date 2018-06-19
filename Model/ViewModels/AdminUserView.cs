@@ -15,11 +15,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models
 {
@@ -28,13 +24,46 @@ namespace Models
     /// </summary>
     public class AdminUserView
     {
+        public AdminUserView()
+        {
+
+        }
+
+        public AdminUserView(AdminUser adminUser)
+        {
+            Id = adminUser.Id;
+            UserName = adminUser.UserName;
+            UserPwd = adminUser.UserPwd;
+            Name = adminUser.Name;
+            Mobile = adminUser.Mobile;
+            Qq = adminUser.Qq;
+            Email = adminUser.Email;
+            Postcode = adminUser.Postcode;
+            MemberLevel = adminUser.MemberLevel;
+            IsFromThird = adminUser.IsFromThird;
+            ThirdUrl = adminUser.ThirdUrl;
+            ThirdToken = adminUser.ThirdToken;
+            ThirdType = adminUser.ThirdType;
+            IsAble = adminUser.IsAble;
+            IsChangePwd = adminUser.IsChangePwd;
+            AddTime = adminUser.AddTime;
+            EditTime = adminUser.EditTime;
+        }
+
         [Key]
         public int Id { get; set; }
+        [Required]
         public string UserName { get; set; }
+        [Required, StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
         public string UserPwd { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Mobile { get; set; }
         public string Qq { get; set; }
+        [EmailAddress, Display(Name = "Email")]
         public string Email { get; set; }
         public string Postcode { get; set; }
         public int? MemberLevel { get; set; }
@@ -63,6 +92,30 @@ namespace Models
         /// 部门名称
         /// </summary>
         public string DepartmentName { get; set; }
+
+        public AdminUser ToOriginal(AdminUserView adminUserView)
+        {
+            return new AdminUser()
+            {
+                Id = adminUserView.Id,
+                UserName = adminUserView.UserName,
+                UserPwd = adminUserView.UserPwd,
+                Name = adminUserView.Name,
+                Mobile = adminUserView.Mobile,
+                Qq = adminUserView.Qq,
+                Email = adminUserView.Email,
+                Postcode = adminUserView.Postcode,
+                MemberLevel = adminUserView.MemberLevel,
+                IsFromThird = adminUserView.IsFromThird,
+                ThirdUrl = adminUserView.ThirdUrl,
+                ThirdToken = adminUserView.ThirdToken,
+                ThirdType = adminUserView.ThirdType,
+                IsAble = adminUserView.IsAble,
+                IsChangePwd = adminUserView.IsChangePwd,
+                AddTime = adminUserView.AddTime,
+                EditTime = adminUserView.EditTime
+            };          
+        }
     }
 
     /// <summary>

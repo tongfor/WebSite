@@ -1,0 +1,34 @@
+﻿@using Common;
+@model Models.AdminUserAdminRole
+
+@{
+    ViewBag.Title = "SetRole";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+@section MainContent{
+    <div class="tabbable tabbable-custom">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+                    <div class="row-fluid">
+
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>用户名：</label>
+                            <div class="controls">
+                                @ViewBag.thisUserName @Html.HiddenFor(m=>m.UserId)
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">角色：</label>
+                            <div class="controls">
+                                @Html.DropDownList("RoleId", "请选择")
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

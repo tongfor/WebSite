@@ -1,0 +1,75 @@
+﻿@using Common
+
+@model RoleMenuViewModel
+
+@{
+    ViewBag.Title = "EditRoleMenu";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section PageSpecificStyleSheetIncludes{
+    <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
+}
+@section PageSpecificJavascriptIncludes{
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+
+        $(function() {            
+            menuTreeBind(0, @ViewBag.RoleId);
+            $(".MenuTree .validatebox-readonly").removeAttr("readonly");
+        });
+
+        //绑定文章类别(类别号)
+        function menuTreeBind(menuId, roleId) {
+            $('#MenuTree')
+                .tree({
+                    url: "/Menu/GetAdminUserMenuTreeJson?menuId=" + menuId + "&roleId=" + roleId,
+                    onlyLeafCheck: true,
+                    checkbox: true,
+                    disabled: false,
+                    readonly: false,
+                    loadFilter: function(data) {
+                        return data;
+                    },
+                    onCheck: function(node, checked) {
+                        //返回已勾选集合
+                        var nodes = $("#MenuTree").tree('getChecked');
+                        var checkeds = "";
+                        $.each(nodes,
+                            function(index, e) {
+                                checkeds += e.id + ",";
+                                //把父节点加入
+                                var parentNode = $("#MenuTree").tree('getParent', e.target);
+                                var checkedLIst = checkeds.split(',');
+                                var haveParent = false;
+                                for (var i = 0; i < checkedLIst.length; i++) {
+                                    if (checkedLIst[i] === parentNode.id) { //如果数组中某个元素和你想要测试的元素对象element相等，则证明数组中包含这个元素，返回true
+                                        haveParent = true;
+                                        return;
+                                    }
+                                }
+                                if (!haveParent) {
+                                    checkeds += parentNode.id + ",";
+                                }
+                            });
+                        if (checkeds.substring(checkeds.length - 1, checkeds.length) === ",") {
+                            checkeds = checkeds.substring(0, checkeds.length - 1);
+                        }
+                        $('#CheckedMenuIds').val(checkeds);
+                    }
+                });
+        }
+    </script>
+}
+@section MainContent{
+    <span id="MenuTree" name="MenuTree" class="easyui-tree" style="width: 220px;">
+    </span>
+    @Html.HiddenFor(m=>m.RoleId)
+    @Html.HiddenFor(m=>m.CheckedMenuIds)
+}
+
+
+
+

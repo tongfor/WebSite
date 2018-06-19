@@ -138,5 +138,25 @@ namespace IBLL
         /// <param name="request"></param>
         /// <returns></returns>
         Task<List<AdminUser>> GetAdminUserListAsync(AdminUserRequest request);
+
+        #region 重设用户密码（直接执行查询语句）
+
+        /// <summary>
+        /// 重设用户密码（直接执行查询语句）
+        /// </summary>
+        /// <param name="id">用户ID</param>
+        /// <param name="encryptedPwd">密码密文</param>
+        /// <returns></returns>
+        int ModifyPwd(int id, string encryptedPwd);
+
+        /// <summary>
+        /// 异步重设用户密码（直接执行查询语句）
+        /// </summary>
+        /// <param name="id">用户ID</param>
+        /// <param name="encryptedPwd">密码密文</param>
+        /// <returns></returns>
+        Task<int> ModifyPwdAsync(int id, string encryptedPwd);
+
+        #endregion
     }
 }

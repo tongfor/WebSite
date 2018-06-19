@@ -1,0 +1,69 @@
+﻿@using Models
+
+@model PagedList<Models.AdminUserView>
+
+@{
+    Layout = "~/Views/Shared/_Layout.List.cshtml";
+}
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th>
+                序号
+            </th>
+            <th>
+                登录名
+            </th>
+            <th>
+                姓名
+            </th>
+            <th>
+                启用
+            </th>
+            <th>
+                改密
+            </th>
+            <th>
+                添加时间
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int eax = 1;
+            int modelNo = 0;
+        }
+        @foreach (var m in Model)
+        {
+            modelNo = Model.CurrentPageIndex - 1 + eax;
+            <tr>
+                <td>
+                    @modelNo
+                </td>
+                <td>
+                    @m.UserName
+                </td>
+                <td>
+                    @m.Name
+                </td>
+                <td>
+                    @(m.IsAble == null ? Html.CheckBox("IsAble", false, new { disabled = true }) : Html.CheckBox("IsAble", true, new { disabled = true }))
+
+                </td>
+                <td>
+                    @(m.IsChangePwd == null ? Html.CheckBox("IfChangePwd", false, new { disabled = true }) : Html.CheckBox("IfChangePwd", true, new { disabled = true }))
+
+                </td>
+                <td>
+                    @m.AddTime
+                </td>
+            </tr>
+            eax++;
+        }
+    </tbody>
+</table>
+
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @await Component.InvokeAsync("Pagination")
+</div>
+

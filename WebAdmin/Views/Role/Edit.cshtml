@@ -1,0 +1,39 @@
+﻿@model Models.AdminRole
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section PageSpecificStyleSheetIncludes{
+}
+
+@section PageSpecificJavascriptIncludes{
+}
+@section MainContent{
+    <div class="tabbable tabbable-custom">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>角色名称：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.RoleName, new { @class = "m-wrap large" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.RoleName)</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">角色介绍：</label>
+                            <div class="controls">
+                                @Html.TextAreaFor(m => m.Description, new { @class = "m-wrap large" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Description)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

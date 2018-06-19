@@ -41,7 +41,7 @@ namespace Models
         //public int PageSize { get; set; } = 1;
         private int _pageSize;
         /// <summary>
-        /// 每页显示条数
+        /// 每页显示条数，默认15条
         /// </summary>
         public int PageSize
         {

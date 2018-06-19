@@ -118,5 +118,25 @@ namespace IDAL
         /// <param name="isdesc"></param>
         /// <returns></returns>
         Task<PageData<AdminUser>> GetAdminUserByPageAsync<TKey>(int pageIndex, int pageSize, Expression<Func<AdminUser, bool>> queryWhere, Expression<Func<AdminUser, TKey>> orderBy, bool isdesc = false);
+
+        #region 重设用户密码（直接执行查询语句）
+
+        /// <summary>
+        /// 重设用户密码（直接执行查询语句）
+        /// </summary>
+        /// <param name="id">用户ID</param>
+        /// <param name="encryptedPwd">密码密文</param>
+        /// <returns></returns>
+        int ModifyPwd(int id, string encryptedPwd);
+
+        /// <summary>
+        /// 异步重设用户密码（直接执行查询语句）
+        /// </summary>
+        /// <param name="id">用户ID</param>
+        /// <param name="encryptedPwd">密码密文</param>
+        /// <returns></returns>
+        Task<int> ModifyPwdAsync(int id, string encryptedPwd);
+
+        #endregion
     }
 }
