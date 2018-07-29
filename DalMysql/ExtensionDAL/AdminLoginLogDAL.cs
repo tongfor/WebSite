@@ -15,7 +15,9 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -86,6 +88,116 @@ namespace DALMySql
                 bResult = true;
             }
             return new Tuple<bool, DateTime>(bResult, lastLoginTime);
+        }
+
+        #endregion
+
+        #region 获取后台list数据
+
+        /// <summary>
+        /// 获取后台list数据
+        /// </summary>
+        /// <typeparam name="TKey">排序字段</typeparam>
+        /// <param name="pageIndex">索引页</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="totalCount">总页数</param>
+        /// <param name="isdesc">升降序</param>
+        /// <returns></returns>
+        public List<AdminLoginLog> GetListForLoginLogAdmin<TKey>(int pageIndex, int pageSize, Expression<Func<AdminLoginLog, bool>> queryWhere, Expression<Func<AdminLoginLog, TKey>> orderBy, out int totalCount, bool isdesc = false)
+        {
+
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pageSize;
+            List<AdminLoginLog> adminLoginLogList = new List<AdminLoginLog>();
+            if (isdesc)
+            {
+                if (queryWhere != null)
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().Where(queryWhere).OrderByDescending(orderBy);
+                    totalCount = dbQuery.Count();
+                    adminLoginLogList = dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToList();
+                }
+                else
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().OrderByDescending(orderBy);
+                    totalCount = dbQuery.Count();
+                    adminLoginLogList = dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToList();
+                }
+            }
+            else
+            {
+                if (queryWhere != null)
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().Where(queryWhere).OrderBy(orderBy);
+                    totalCount = dbQuery.Count();
+                    adminLoginLogList = dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToList();
+                }
+                else
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().OrderBy(orderBy);
+                    totalCount = dbQuery.Count();
+                    adminLoginLogList = dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToList();
+                }
+
+            }
+            return adminLoginLogList;
+        }
+
+        /// <summary>
+        /// 异步获取后台list数据
+        /// </summary>
+        /// <typeparam name="TKey">排序字段</typeparam>
+        /// <param name="pageIndex">索引页</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="totalCount">总页数</param>
+        /// <param name="isdesc">升降序</param>
+        /// <returns></returns>
+        public async Task<PageData<AdminLoginLog>> GetListForLoginLogAdminAsync<TKey>(int pageIndex, int pageSize, Expression<Func<AdminLoginLog, bool>> queryWhere, Expression<Func<AdminLoginLog, TKey>> orderBy, bool isdesc = false)
+        {
+            PageData<AdminLoginLog> result = new PageData<AdminLoginLog>();
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            int skipIndex = (pageIndex - 1) * pageSize;
+            if (isdesc)
+            {
+                if (queryWhere != null)
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().Where(queryWhere).OrderByDescending(orderBy);
+                    result.TotalCount = await dbQuery.CountAsync();
+                    result.DataList = await dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToListAsync();
+                }
+                else
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().OrderByDescending(orderBy);
+                    result.TotalCount = await dbQuery.CountAsync();
+                    result.DataList = await dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToListAsync();
+                }
+            }
+            else
+            {
+                if (queryWhere != null)
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().Where(queryWhere).OrderBy(orderBy);
+                    result.TotalCount = await dbQuery.CountAsync();
+                    result.DataList = await dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToListAsync();
+                }
+                else
+                {
+                    var dbQuery = _db.Set<AdminLoginLog>().OrderBy(orderBy);
+                    result.TotalCount = await dbQuery.CountAsync();
+                    result.DataList = await dbQuery.Skip(skipIndex).Take(pageSize).AsNoTracking().ToListAsync();
+                }
+            }
+            return result;
         }
 
         #endregion

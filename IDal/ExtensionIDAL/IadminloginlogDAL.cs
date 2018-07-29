@@ -14,7 +14,10 @@
 *└──────────────────────────────────┘
 */
 
+using Models;
 using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace IDAL
@@ -41,5 +44,36 @@ namespace IDAL
         /// <param name="ip">用户ip</param>
         /// <returns>元组，</returns>
         Task<Tuple<bool, DateTime>> CheckLoginErrorCountAsync(int maxErrorCount, int tryMinutes, string ip);
+
+        #region 获取后台list数据
+
+        /// <summary>
+        /// 获取后台list数据
+        /// </summary>
+        /// <typeparam name="TKey">排序字段</typeparam>
+        /// <param name="pageIndex">索引页</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="totalCount">总页数</param>
+        /// <param name="isdesc">升降序</param>
+        /// <returns></returns>
+        List<AdminLoginLog> GetListForLoginLogAdmin<TKey>(int pageIndex, int pageSize, Expression<Func<AdminLoginLog, bool>> queryWhere, Expression<Func<AdminLoginLog, TKey>> orderBy, out int totalCount, bool isdesc = false);
+
+        /// <summary>
+        /// 异步获取后台list数据
+        /// </summary>
+        /// <typeparam name="TKey">排序字段</typeparam>
+        /// <param name="pageIndex">索引页</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="totalCount">总页数</param>
+        /// <param name="isdesc">升降序</param>
+        /// <returns></returns>
+        Task<PageData<AdminLoginLog>> GetListForLoginLogAdminAsync<TKey>(int pageIndex, 
+            int pageSize, Expression<Func<AdminLoginLog, bool>> queryWhere, Expression<Func<AdminLoginLog, TKey>> orderBy, bool isdesc = false);
+
+        #endregion
     }
 }

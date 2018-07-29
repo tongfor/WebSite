@@ -14,7 +14,11 @@
 *└──────────────────────────────────┘
 */
 
+using IDAL;
+using Models;
 using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BLL
@@ -46,6 +50,82 @@ namespace BLL
         {
             Tuple<bool, DateTime> result = await MyIAdminLoginLogDAL.CheckLoginErrorCountAsync(maxErrorCount, tryMinutes, ip);
             return result;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 获取后台list数据
+        /// </summary>
+        /// <typeparam name="TKey">排序字段</typeparam>
+        /// <param name="pageIndex">索引页</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="totalCount">总页数</param>
+        /// <param name="isdesc">升降序</param>
+        /// <returns></returns>
+        public List<AdminLoginLog> GetOrderLoginLogViewByPage<TKey>(int pageIndex, int pageSize, Expression<Func<AdminLoginLog, bool>> queryWhere, Expression<Func<AdminLoginLog, TKey>> orderBy, out int totalCount, bool isdesc = false)
+        {
+            return MyIAdminLoginLogDAL.GetListForLoginLogAdmin(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isdesc);
+        }
+
+        /// <summary>
+        /// 异步获取后台list数据
+        /// </summary>
+        /// <typeparam name="TKey">排序字段</typeparam>
+        /// <param name="pageIndex">索引页</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="queryWhere">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="totalCount">总页数</param>
+        /// <param name="isdesc">升降序</param>
+        /// <returns></returns>
+        public async Task<PageData<AdminLoginLog>> GetOrderLoginLogViewByPageAsync<TKey>(int pageIndex, int pageSize, Expression<Func<AdminLoginLog, bool>> queryWhere, Expression<Func<AdminLoginLog, TKey>> orderBy, bool isdesc = false)
+        {
+            return await MyIAdminLoginLogDAL.GetListForLoginLogAdminAsync(pageIndex, pageSize, queryWhere, orderBy, isdesc);
+        }
+
+        #region 日志IPageList格式数据
+
+        /// <summary>
+        /// 日志IPageList格式数据
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public IEnumerable<AdminLoginLog> GetAdminLoginLogForAdminList(BaseRequest request)
+        {
+            request = request ?? new BaseRequest();
+            List<AdminLoginLog> getAdminLoginLogList = new List<AdminLoginLog>();
+            int totalCount = 0;
+            Expression<Func<AdminLoginLog, bool>> queryWhere = null;
+
+            if (!string.IsNullOrEmpty(request.Title))//如果查询标题不为空
+            {
+                queryWhere = (a => a.UserName.Contains(request.Title));
+            }
+            getAdminLoginLogList = GetOrderLoginLogViewByPage<DateTime?>(request.PageIndex, request.PageSize, queryWhere, a => a.LoginTime, out totalCount, true);
+            return getAdminLoginLogList.ToPagedList(request.PageIndex, request.PageSize, totalCount); ;
+        }
+
+        /// <summary>
+        /// 日志IPageList格式数据(异步)
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<AdminLoginLog>> GetAdminLoginLogForAdminListAsync(BaseRequest request)
+        {
+            request = request ?? new BaseRequest();
+            var pageData = new PageData<AdminLoginLog>();
+            List<AdminLoginLog> getAdminLoginLogList = new List<AdminLoginLog>();
+            Expression<Func<AdminLoginLog, bool>> queryWhere = null;
+
+            if (!string.IsNullOrEmpty(request.Title))//如果查询标题不为空
+            {
+                queryWhere = (a => a.UserName.Contains(request.Title));
+            }
+            pageData = await GetOrderLoginLogViewByPageAsync<DateTime?>(request.PageIndex, request.PageSize, queryWhere, a => a.LoginTime, true);
+            return pageData.DataList.ToPagedList(request.PageIndex, request.PageSize, pageData.TotalCount); 
         }
 
         #endregion
