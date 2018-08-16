@@ -1,0 +1,101 @@
+﻿@using Models
+
+@model PagedList<AdminOperateLog>
+@{
+    Layout = null;
+    string pageTitle = string.Empty;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @{
+        pageTitle = "第" + ViewBag.page + "页,第" + ViewBag.Index + "条到" + ViewBag.toIndex + "条" + "操作日志";
+    }
+    <title>@pageTitle</title>
+</head>
+<body>
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th colspan="6" style="font-size:18px; text-align: center; ">@pageTitle</th>
+                </tr>
+                <tr>
+                    <th rowspan="2" style="text-align: center">
+                        序号
+                    </th>
+                    <th rowspan="2" style="text-align: center">
+                        用户登录名
+                    </th>
+                    <th rowspan="2" style="text-align: center">
+                        IP地址
+                    </th>
+                    <th rowspan="2" style="text-align: center">
+                        操作信息
+                    </th>
+                    <th rowspan="2" style="text-align: center">
+                        具体描述
+                    </th>
+                    <th rowspan="2" style="text-align: center">
+                        操作是否成功
+                    </th>
+                    <th rowspan="2" style="text-align: center">
+                        时间
+                    </th>
+                </tr>
+                <tr></tr>
+            </thead>
+            <tbody>
+                @{
+                    int serialNumber = 1;
+                }
+                @foreach (var m in Model)
+                {
+                    <tr>
+                        <td rowspan="1">
+                            @serialNumber
+                        </td>
+                        <td rowspan="1">
+                            @m.UserName
+                        </td>
+                        <td rowspan="1">
+                            @m.UserIp
+                        </td>
+                        <td rowspan="1">
+                            @m.OperateInfo
+                        </td>
+                        <td rowspan="1">
+                            @m.Description
+                        </td>
+                        @{
+                            if (m.IsSuccess != null && m.IsSuccess == 1)
+                            {
+                                <td rowspan="1"> 成功</td>
+                            }
+                            else
+                            {
+                                <td rowspan="1"> 失败</td>
+                            }
+                        }
+                        <td rowspan="1">
+                            @{ if (m.OperateTime == null)
+                                {
+                                    <span>--</span>
+                                }
+                                else
+                                {
+                                    @m.OperateTime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+                                }
+                            }
+                        </td>
+                    </tr>
+                    serialNumber++;
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

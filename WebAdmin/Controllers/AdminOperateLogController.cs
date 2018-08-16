@@ -23,7 +23,8 @@ namespace WebAdmin.Controllers
             try
             {
                 ViewBag.PageIndex = request.PageIndex;
-                IEnumerable<AdminOperateLog> adminOperateLogList = MyOperateLogService.GetOperateLogForAdminList(request);
+                IEnumerable<AdminOperateLog> adminOperateLogList = await MyOperateLogService.GetOperateLogForAdminListAsync(request);
+                await CreateLeftMenuAsync();
 
                 return View(adminOperateLogList as PagedList<AdminOperateLog>);
             }
@@ -43,9 +44,18 @@ namespace WebAdmin.Controllers
             try
             {
                 ViewBag.page = request.PageIndex;//第几页
-                ViewBag.Index = (request.PageIndex - 1) * request.PageSize;//第几条
+                ViewBag.Index = (request.PageIndex - 1) * request.PageSize + 1;//第几条
                 ViewBag.toIndex = request.PageIndex * request.PageSize;//到多少条
-                IEnumerable<AdminOperateLog> adminOperateLogList = MyOperateLogService.GetOperateLogForAdminList(request);
+                IEnumerable<AdminOperateLog> adminOperateLogList = await MyOperateLogService.GetOperateLogForAdminListAsync(request);
+
+                var filename = $"操作日志" + DateTime.Now.ToString("yyyyMMdd") + ".xls";
+                System.Net.Mime.ContentDisposition cd = new System.Net.Mime.ContentDisposition
+                {
+                    FileName = filename,
+                    Inline = false  // false = prompt the user for downloading;  true = browser to try to show the file inline
+                };
+                Response.Headers.Add("Content-Disposition", cd.ToString());
+                Response.ContentType = "application/vnd.ms-excel";
 
                 return View(adminOperateLogList as PagedList<AdminOperateLog>);
             }

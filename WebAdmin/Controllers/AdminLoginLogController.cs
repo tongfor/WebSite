@@ -48,7 +48,7 @@ namespace WebAdmin.Controllers
             try
             {
                 ViewBag.page = request.PageIndex;//第几页
-                ViewBag.Index = (request.PageIndex - 1) * request.PageSize;//第几条
+                ViewBag.Index = (request.PageIndex - 1) * request.PageSize + 1;//第几条
                 ViewBag.toIndex = request.PageIndex * request.PageSize;//到多少条
                 IEnumerable<AdminLoginLog> adminLoginLogList = _adminLoginLogService.GetAdminLoginLogForAdminList(request);
 

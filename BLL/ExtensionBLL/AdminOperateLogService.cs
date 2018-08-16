@@ -58,8 +58,9 @@ namespace BLL
         }
 
         #region 操作日志IPageList格式数据
+
         /// <summary>
-        /// 
+        /// 操作日志IPageList格式数据
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -77,6 +78,28 @@ namespace BLL
             getAdminOperateLogList = GetListForOperateLogAdmin<DateTime?>(request.PageIndex, request.PageSize, queryWhere, a => a.OperateTime, out totalCount, true);
             return getAdminOperateLogList.ToPagedList(request.PageIndex, request.PageSize, totalCount); ;
         }
+
+        /// <summary>
+        /// 操作日志IPageList格式数据
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<AdminOperateLog>> GetOperateLogForAdminListAsync(BaseRequest request)
+        {
+            request = request ?? new BaseRequest();
+            PageData<AdminOperateLog> pageData = new PageData<AdminOperateLog>();
+            int totalCount = 0;
+            Expression<Func<AdminOperateLog, bool>> queryWhere = null;
+
+            if (!string.IsNullOrEmpty(request.Title))//如果查询标题不为空
+            {
+                queryWhere = (a => a.UserName.Contains(request.Title));
+            }
+            pageData = await GetListForOperateLogAdminAsync<DateTime?>(request.PageIndex, request.PageSize, queryWhere, a => a.OperateTime, true);
+            pageData.DataList = pageData.DataList ?? new List<AdminOperateLog>();
+            return pageData.DataList.ToPagedList(request.PageIndex, request.PageSize, totalCount); ;
+        }
+
         #endregion
     }
 }
