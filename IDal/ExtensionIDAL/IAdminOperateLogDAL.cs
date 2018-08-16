@@ -1,33 +1,31 @@
-/** 
-* IAdminOperateLogService.cs
+﻿/** 
+* IAdminOperateLogDAL.cs
 *
-* 功 能： 表AdminOperateLog业务层接口
-* 类 名： IAdminOperateLog
+* 功 能： AdminOperateLog数据层接口
+* 类 名： IAdminOperateLogDAL
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2018/4/21 23:24:54   N/A    初版
+* V0.01  2016/9/20 17:05:34   李庸    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
 *│　版权所有：成都盈辉创动科技有限公司　　　　　　　　　　　　　　│
 *└──────────────────────────────────┘
 */
-//----------AdminOperateLog开始----------
 
+using Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using Models;
-using IDAL;
-using DALMySql;
 
-namespace IBLL
+namespace IDAL
 {
-	public partial interface IAdminOperateLogService : IBaseService<AdminOperateLog>
+    /// <summary>
+    /// 账号登录日志DAL
+    /// </summary>
+    public partial interface IAdminOperateLogDAL
     {
         /// <summary>
         /// 获取后台list数据
@@ -56,7 +54,3 @@ namespace IBLL
         Task<PageData<AdminOperateLog>> GetListForOperateLogAdminAsync<TKey>(int pageIndex, int pageSize, Expression<Func<AdminOperateLog, bool>> queryWhere, Expression<Func<AdminOperateLog, TKey>> orderBy, bool isdesc = false);
     }
 }
-
-//----------AdminOperateLog结束----------
-
-    
