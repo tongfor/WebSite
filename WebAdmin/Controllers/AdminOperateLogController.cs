@@ -71,7 +71,6 @@ namespace WebAdmin.Controllers
             }
         }
 
-
         public async Task<IActionResult> ViewDescription(int? id)
         {
             try

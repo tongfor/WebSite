@@ -52,6 +52,15 @@ namespace WebAdmin.Controllers
                 ViewBag.toIndex = request.PageIndex * request.PageSize;//到多少条
                 IEnumerable<AdminLoginLog> adminLoginLogList = _adminLoginLogService.GetAdminLoginLogForAdminList(request);
 
+                var filename = $"登录日志" + DateTime.Now.ToString("yyyyMMdd") + ".xls";
+                System.Net.Mime.ContentDisposition cd = new System.Net.Mime.ContentDisposition
+                {
+                    FileName = filename,
+                    Inline = false  // false = prompt the user for downloading;  true = browser to try to show the file inline
+                };
+                Response.Headers.Add("Content-Disposition", cd.ToString());
+                Response.ContentType = "application/vnd.ms-excel";
+
                 return View(adminLoginLogList as PagedList<AdminLoginLog>);
             }
             catch (Exception ex)
