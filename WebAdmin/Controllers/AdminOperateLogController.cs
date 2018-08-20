@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
@@ -8,6 +9,7 @@ using IBLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models;
+using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
@@ -36,7 +38,7 @@ namespace WebAdmin.Controllers
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 OperateLog.OperateTime = DateTime.Now;
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
         public async Task<IActionResult> OperateLogToXls(BaseRequest request)
@@ -55,7 +57,7 @@ namespace WebAdmin.Controllers
                     Inline = false  // false = prompt the user for downloading;  true = browser to try to show the file inline
                 };
                 Response.Headers.Add("Content-Disposition", cd.ToString());
-                Response.ContentType = "application/vnd.ms-excel";
+                Response.ContentType = "application/vnd.ms-excel;utf-8";
 
                 return View(adminOperateLogList as PagedList<AdminOperateLog>);
             }
@@ -67,7 +69,7 @@ namespace WebAdmin.Controllers
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 OperateLog.OperateTime = DateTime.Now;
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -87,7 +89,7 @@ namespace WebAdmin.Controllers
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 OperateLog.OperateTime = DateTime.Now;
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -109,7 +111,7 @@ namespace WebAdmin.Controllers
         //        OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
         //        OperateLog.OperateDate = DateTime.Now;
         //        OperateLogService.Add(OperateLog);
-        //        return View("Error");
+        //        return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         //    }
         //}
 
@@ -137,7 +139,7 @@ namespace WebAdmin.Controllers
         //        OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
         //        OperateLog.OperateDate = DateTime.Now;
         //        OperateLogService.Add(OperateLog);
-        //        return View("Error");
+        //        return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         //    }
         //} 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Models;
+using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
@@ -38,7 +40,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -59,7 +61,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -84,7 +86,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -99,7 +101,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "菜单编辑页面异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递菜单ID";
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
 
                 AdminMenu model = await MyAdminMenuService.GetModelAsync(id.Value);
@@ -114,7 +116,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -130,7 +132,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "菜单编辑保存异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递菜单ID";
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
 
                 var model = await MyAdminMenuService.GetModelAsync(adminMenu.Id);
@@ -150,7 +152,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -165,7 +167,7 @@ namespace WebAdmin.Controllers
                     OperateLog.OperateInfo = "菜单删除功能异常";
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递菜单ID";
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
 
                 await MyAdminMenuService.DelIncludeRelatedDataAsync(id.Value);
@@ -178,7 +180,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -198,7 +200,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 

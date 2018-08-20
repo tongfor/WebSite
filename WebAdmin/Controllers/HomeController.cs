@@ -13,6 +13,7 @@ using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : BaseController
     {
         private readonly IAdminUserService _adminUserService;

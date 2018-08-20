@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Models;
+using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
@@ -44,7 +46,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -68,7 +70,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -100,7 +102,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
         #endregion
@@ -116,7 +118,7 @@ namespace WebAdmin.Controllers
                 OperateLog.Description = "用户未传id";
                 await MyOperateLogService.AddAsync(OperateLog);
                 ViewBag.IsEdit = false;
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             try
             {
@@ -130,7 +132,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = "未找到此用户";
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             catch (Exception ex)
             {
@@ -139,7 +141,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -186,7 +188,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
         #endregion
@@ -204,7 +206,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "用户未传id";
                     await MyOperateLogService.AddAsync(OperateLog);
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 await _userRoleService.DelByAsync(f => f.UserId == id.Value);
                 await _adminUserService.DelByAsync(f => f.Id == id.Value);
@@ -217,7 +219,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -238,7 +240,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
         #endregion
@@ -253,7 +255,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = "未传递用户ID";
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             try
             {
@@ -262,7 +264,7 @@ namespace WebAdmin.Controllers
                 if (user == null)
                 {
                     ViewBag.ErrMsg = "无此用户";
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 if ("0".Equals(isable))
                 {
@@ -282,7 +284,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -296,7 +298,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = "未传递用户ID";
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             try
             {
@@ -329,7 +331,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -348,7 +350,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递用户ID";
                     await MyOperateLogService.AddAsync(OperateLog);
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 if (adminUserAdminRole.RoleId.Value > 0)//如果选了角色才操作
                 {
@@ -384,7 +386,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -399,7 +401,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = "未传递用户ID";
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             try
             {
@@ -413,7 +415,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
     }

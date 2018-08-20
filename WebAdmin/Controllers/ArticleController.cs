@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
+using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
@@ -41,7 +43,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未正确传递文章参数";
                     MyOperateLogService.Add(OperateLog);
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
 
                 ViewBag.ClassId = request == null ? 0 : request.ClassId;
@@ -63,7 +65,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -84,7 +86,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -121,7 +123,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -137,7 +139,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
                     MyOperateLogService.Add(OperateLog);
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 ArticleView model = new ArticleView(await  _articleService.GetModelAsync(id.Value));
                 ViewBag.ClassId = model.ClassId ?? model.ClassId;
@@ -151,7 +153,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -168,7 +170,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
                     MyOperateLogService.Add(OperateLog);
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 if (article.ClassId == null || article.ClassId <= 0)
                 {
@@ -197,7 +199,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -213,7 +215,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
                     MyOperateLogService.Add(OperateLog);
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 await _articleService.DelByAsync(f => f.Id == id.Value);
                 return RedirectToAction("Index");
@@ -225,7 +227,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -245,7 +247,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
     }

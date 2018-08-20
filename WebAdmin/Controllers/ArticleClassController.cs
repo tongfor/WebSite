@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Common;
 using Common.Config;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
+using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
@@ -46,7 +48,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -66,7 +68,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -92,7 +94,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
         #endregion
@@ -108,7 +110,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = "未传递类别ID";
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             try
             {
@@ -120,7 +122,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未找到文章类别";
                     MyOperateLogService.Add(OperateLog);
-                    return View("Error");
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
                 ArticleClass entActivity = model.ToPOCO();
                 ViewBag.ParentId = entActivity.ParentId ?? entActivity.ParentId;
@@ -133,7 +135,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -167,7 +169,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
         #endregion
@@ -214,7 +216,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
         #endregion
@@ -240,7 +242,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -265,7 +267,7 @@ namespace WebAdmin.Controllers
                 OperateLog.IsSuccess = 0;
                 OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
                 MyOperateLogService.Add(OperateLog);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
     }

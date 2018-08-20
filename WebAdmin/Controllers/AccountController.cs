@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Models;
 using Setting.Mvc.Authorize;
 using System;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAdmin.Models;
@@ -116,7 +117,7 @@ namespace WebAdmin.Controllers
                     BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
                 };
                 MyAdminBugService.Add(Bug);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
@@ -226,7 +227,7 @@ namespace WebAdmin.Controllers
                     BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
                 };
                 MyAdminBugService.Add(Bug);
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
 
