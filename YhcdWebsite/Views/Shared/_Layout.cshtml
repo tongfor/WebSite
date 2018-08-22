@@ -3,11 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - YhcdWebsite</title>
+    <title>成都盈辉创动科技有限公司 - @ViewData["Title"]</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="~/css/font-awesome.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link href="~/css/base.css" rel="stylesheet" />
+        <link href="~/css/main.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -17,37 +20,63 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <!--top-->
+    <div id="top" class="clearfix">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">YhcdWebsite</a>
+            <a href="#" class="fl logo"><img src="images/logo.png" class="img-responsive" /></a>
+            <ul class="fl">
+                <li><a href="#">首页</a></li>
+                <li class="li2">
+                    <a href="#">公司简介</a>
+                    <div class="xiala">
+                        <a href="#">集团介绍</a>
+                        <a href="#">领导团队</a>
+                        <a href="#">大事记</a>
+                    </div>
+                </li>
+                <li><a href="#">新闻中心</a></li>
+                <li><a href="#">投资者关系</a></li>
+                <li><a href="#">产品服务</a></li>
+                <li><a href="#">加入我们</a></li>
+                <li><a href="#">联系我们</a></li>
+            </ul>
+            <span class="fl"></span>
+            <div class="searck">
+                <i class="fa fa-search fl"></i>
+                <p class="fl">中/EN</p>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-            </div>
+            <i class="navBtn fa fa-reorder"></i>
+            <!--<i class="userBtn fa fa-user"></i>-->
         </div>
-    </nav>
+    </div>
+    <!--/top-->
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; 2018 - YhcdWebsite</p>
-        </footer>
+        <!--footer-->
+        <div id="footer">
+            <div class="container">
+                <h3>某某网络科技有限公司</h3>
+                <ul class="clearfix">
+                    <li>地址：北京市某某路万象城</li>
+                    <li>邮编：2333000</li>
+                    <li>电话：0551-66677777</li>
+                    <li>邮箱：web@163.com</li>
+                </ul>
+                <p><a href="#"><img src="images/weibo.png" /></a><a href="#"><img src="images/qq.png" /></a><a href="#"><img src="images/weixin.png" /></a></p>
+                <span></span>
+                <p>
+                    COPYRIGHT (©) 2018 成都盈辉创动科技有限公司
+                </p>
+            </div>
+        </div>
+        <!--/footer-->
     </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery.SuperSlide.2.1.1.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
