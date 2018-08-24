@@ -1,10 +1,10 @@
 /* CSS Document */
 /*top*/
 #top{height:80px; line-height:80px; position:fixed; width:100%; z-index:9; top:0; background:#fff; border-bottom:1px solid #E6E6E6;}
-#top ul{margin-left:223px;}
+#top ul{margin-left:123px;}
 #top li{float:left;}
 #top li.li2{width:87px;}
-#top li a{display:inline-block; font-size:13px; padding:0 17px; color:#6F6F6F;}
+#top li a{display:inline-block; font-size:16px; padding:0 10px; color:#6F6F6F;}
 #top li:hover a{background:#FF0000; color:#fff;}
 #top li div{display:none; height:59px; line-height:59px; padding-left:42px; margin-top:-1px;}
 #top li div a{color:#B7B7B9;}
@@ -22,20 +22,20 @@
 
 #bg{background:#fff; position:relative; z-index:2; margin-top:990px;}
 
-/*jituan*/
-#jituan{padding-top:88px; padding-bottom:125px; background:#F2F2F2;}
-#jituan .title h3{font-size:26px; color:#333333; font-weight:normal; text-align:center;}
-#jituan .title p{color:#9A9A9A; text-align:center; margin-top:14px;}
-#jituan ul{margin-top:70px;}
-#jituan li{width:33.333%; box-sizing:border-box; float:left; text-align: center; padding-right:20px;}
-#jituan li h3{color:#595959; font-weight:normal; margin-top:29px; margin-botttom:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-#jituan li .sp_bg{width:35px; height:35px; border:1px solid #E8E8E8; border-radius:35px; line-height:35px; margin-left:180px; diplay:none;}
-#jituan li span{font-size:13px; color:#B6B6B6;}
-#jituan li p{font-size:14px; color:#737373; margin-top:28px; display:block; /*white-space:nowrap; overflow:hidden; text-overflow:ellipsis;*/}
-#jituan li i{display:block; width:100px; height:1px; background:#DFDFDF; margin-left:150px; margin-top:13px; margin-bottom:22px;}
-#jituan li a:hover .sp_bg{display:block; box-shadow:0 0 10px rgba(0,0,0,.2);}
-#jituan li a:hover i{width:26px; transition: all ease-out .2s}
-#jituan li a:hover h3{color:#E60012;}
+/*service*/
+#service{padding-top:88px; padding-bottom:125px; background:#F2F2F2;}
+#service .title h3{font-size:26px; color:#333333; font-weight:normal; text-align:center;}
+#service .title p{color:#9A9A9A; text-align:center; margin-top:14px;}
+#service ul{margin-top:70px;}
+#service li{width:25%; box-sizing:border-box; float:left; text-align: center; padding-right:20px;}
+#service li h3{color:#595959; font-weight:normal; margin-top:29px; margin-botttom:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+#service li .sp_bg{width:35px; height:35px; border:1px solid #E8E8E8; border-radius:35px; line-height:35px; margin-left:180px; diplay:none;}
+#service li span{font-size:13px; color:#B6B6B6;}
+#service li p{font-size:14px; color:#737373; margin-top:28px; display:block; /*white-space:nowrap; overflow:hidden; text-overflow:ellipsis;*/}
+#service li i{display:block; width:100px; height:1px; background:#DFDFDF; margin-left:150px; margin-top:13px; margin-bottom:22px;}
+#service li a:hover .sp_bg{display:block; box-shadow:0 0 10px rgba(0,0,0,.2);}
+#service li a:hover i{width:26px; transition: all ease-out .2s}
+#service li a:hover h3{color:#E60012;}
 .copyrights{
 	text-indent:-9999px;
 	height:0;
@@ -43,7 +43,7 @@
 	font-size:0;
 	overflow:hidden;
 }
-/*jituan*/
+/*service*/
 #chanye{margin-top:86px;}
 #chanye .title h3{font-size:26px; font-weight:normal; color:#333333; text-align:center;}
 #chanye .title p{font-size:12px; color:#8F8F8F; text-align:center; margin-top:15px;}
@@ -150,17 +150,17 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 #leftsead li a.youhui .hides{display:none; position:absolute; right:190px; top:2px;}
 
 
-@media (max-width:1199px) {#top li a{padding:0 10px;} #top ul{margin-left:7%;} .logo img{width:90%;} #jituan li .sp_bg{margin-left:45%;} #jituan li i{margin-left:35%;} #link i{top:65%;}}
-@media (max-width:990px) {#top ul{margin-left:-9%;} .logo img{width:60%; padding-top:20px;} #top span{display:none;} #top i{margin-left:0;} #top p{display:none;} #top i{display:none;}  #jituan li i{margin-left:30%;} #chanye a.more{margin-left:30%;} #city img{left:20%;} #link i{top:70%;} #link i.right{right:-10px;}}
+@media (max-width:1199px) {#top li a{padding:0 10px;} #top ul{margin-left:7%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
+@media (max-width:990px) {#top ul{margin-left:-9%;} .logo img{width:60%; padding-top:20px;} #top span{display:none;} #top i{margin-left:0;} #top p{display:none;} #top i{display:none;}  #service li i{margin-left:30%;} #chanye a.more{margin-left:30%;} #city img{left:20%;} #link i{top:70%;} #link i.right{right:-10px;}}
 @media (max-width:744px) {#top ul{float:none; position:absolute; top:80px; width:100%; left:0; background:rgba(0,0,0,.3); z-index:1; display:none; margin-left:0;} #top ul li{float:none; width:100%;} #top ul li a{text-align:left; width:100%; box-sizing:border-box; padding:0 30px;} #top .navBtn,#top .userBtn{position:absolute; display:inline-block; right:15px; top:-5px; font-size:30px; color:#333; cursor:pointer;}
 	#top .userBtn{right:55px;} #top li:hover a{background:rgba(255,0,0,.3);} #top li.li2{width:100%;} #top li div a{display:inline-block; width:28%;}#top .searck{display:block;} #city img{left:12%;} #news .more {margin-left:36%;}}
-@media (max-width:686px) {#jituan li i{margin-left:23%;} #jianjie .more{margin-left:38%;} #city img{left:9%;}}
+@media (max-width:686px) {#service li i{margin-left:23%;} #jianjie .more{margin-left:38%;} #city img{left:9%;}}
 @media (max-width:681px) {#link li.five{margin-top:-2%;}}
 @media (max-width:639px) {#chanye a.more{margin-left:25%;} #city img{width:450px; left:12%;}}
 @media (max-width:546px) {#link{display:none;}}
-@media (max-width:532px) {#jituan li i{margin-left:18%;} #jituan li p{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}}
+@media (max-width:532px) {#service li i{margin-left:18%;} #service li p{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}}
 @media (max-width:513px) {#city img{width:390px;}}
 @media (max-width:491px) {#chanye a.more{margin-left:20%;}}
 @media (max-width:442px) {#city img{width:300px;} #city .text h3{padding-top:100px;}}
-@media (max-width:414px) {#jituan li i{margin-left:12%;} #chanye a.more{margin-left:10%;} #jianjie .more{margin-left:30%;} #news .more {margin-left:30%;}}
-@media (max-width:320px) {#jituan li i{margin-left:8%;} #chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:20px;} #city .text h3 font{font-size:40px;}#news .more {margin-left:25%;}}
+@media (max-width:414px) {#service li i{margin-left:12%;} #chanye a.more{margin-left:10%;} #jianjie .more{margin-left:30%;} #news .more {margin-left:30%;}}
+@media (max-width:320px) {#service li i{margin-left:8%;} #chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:20px;} #city .text h3 font{font-size:40px;}#news .more {margin-left:25%;}}
