@@ -49,12 +49,12 @@
 
 /*intro*/
 #intro{border-top:1px solid #E8E8E8;background-color:#3ca3da;}
-#intro>div{padding-top:82px;}
+#intro>div{padding-top:52px;}
 #intro>div h2{font-size:26px; color:#FFF; text-align:center; margin-left:auto; font-weight:normal;}
-#intro>div span{color:#FFF; text-align:center; margin-top:12px; margin-bottom:60px; margin-left:auto; display:block;}
+#intro>div span{color:#FFF; text-align:center; margin-top:12px; margin-bottom:30px; margin-left:auto; display:block;}
 #intro p{color:#FFF; text-align:left; text-indent:2em;font-size:16px;}
 
-#intro .more,#news .more {border: 1px solid #EFEFEF; position: relative; transition: all 0.5s ease 0s; height:32px; line-height:32px; text-align:center; margin-left:43%; margin-top:61px; margin-bottom:98px; display:block; width:160px; color: transparent; background:url(../images/jiantou.png) no-repeat 32px -97px; }
+#intro .more,#news .more {border: 1px solid #EFEFEF; position: relative; transition: all 0.5s ease 0s; height:32px; line-height:32px; text-align:center; margin-left:43%; margin-top:31px; margin-bottom:48px; display:block; width:160px; color: transparent; background:url(../images/jiantou.png) no-repeat 32px -97px; }
 
 #intro a.more:hover,#news a.more:hover {border: 1px solid transparent; }
 
@@ -82,7 +82,7 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 /*link*/
 #link{position:relative;}
-#link ul{margin-top:70px;}
+#link ul{margin-top:30px;margin-bottom:30px;}
 #link li{float:left; width:16%; padding-left:50px; box-sizing:border-box;}
 #link li.five{margin-top:-3%;}
 #link li img{display:block; width:100%; height:auto; vertical-align:middle;}
