@@ -31,11 +31,11 @@
 #service ul{margin-top:70px;}
 #service li{width:25%; box-sizing:border-box; float:left; text-align: center; padding-right:20px;}
 #service li h3{color:#595959; font-weight:normal; margin-top:29px; margin-bottom:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-#service li .sp_bg{width:35px; height:35px; border:1px solid #E8E8E8; border-radius:35px; line-height:35px; margin-left:180px; display:none;}
 #service li span{font-size:13px; color:#B6B6B6;}
-#service li p{font-size:14px; color:#737373; margin-top:28px; display:block; /*white-space:nowrap; overflow:hidden; text-overflow:ellipsis;*/}
+#service li p{margin-top:28px; display:block; /*white-space:nowrap; overflow:hidden; text-overflow:ellipsis;*/}
+#service li p span{font-size:14px; color:#666666;font-weight:bold;margin:0 auto; width:90px;height:30px; line-height:30px;display:block; border:solid 1px #3ca3da/*white-space:nowrap; overflow:hidden; text-overflow:ellipsis;*/}
+#service li p span:hover {color:#efefef;background-color:#3ca3da;border:solid 1px #04517a}
 #service li i{display:block; width:100px; height:1px; background:#DFDFDF; margin-left:150px; margin-top:13px; margin-bottom:22px;}
-#service li a:hover .sp_bg{display:block; box-shadow:0 0 10px rgba(0,0,0,.2);}
 #service li a:hover i{width:26px; transition: all ease-out .2s}
 #service li a:hover h3{color:#E60012;}
 .copyrights{
