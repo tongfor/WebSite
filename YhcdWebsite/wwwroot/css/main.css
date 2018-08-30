@@ -28,23 +28,16 @@
 #service{padding-top:48px; padding-bottom:65px; /*background:#F2F2F2;*/}
 #service .title h3{font-size:26px; color:#333333; font-weight:normal; text-align:center;}
 #service .title p{color:#9A9A9A; text-align:center; margin-top:14px;}
-#service ul{margin-top:70px;}
+#service ul{margin-top:30px;}
 #service li{width:25%; box-sizing:border-box; float:left; text-align: center; padding-right:20px;}
 #service li h3{color:#595959; font-weight:normal; margin-top:29px; margin-bottom:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;font-size:20px;}
 #service li span{font-size:13px; color:#B6B6B6;}
-#service li p{margin-top:28px; display:block; /*white-space:nowrap; overflow:hidden; text-overflow:ellipsis;*/}
-#service li p span{font-size:14px; color:#666666;font-weight:bold;margin:0 auto; width:90px;height:30px; line-height:30px;display:block; border:solid 1px #3ca3da/*white-space:nowrap; overflow:hidden; text-overflow:ellipsis;*/}
+#service li p{margin-top:28px; display:block; }
+#service li p span{font-size:14px; color:#666666;font-weight:bold;margin:0 auto; width:90px;height:30px; line-height:30px;display:block; border:solid 1px #3ca3da;}
 #service li p span:hover {color:#efefef;background-color:#3ca3da;border:solid 1px #04517a}
 #service li i{display:block; width:100px; height:1px; background:#DFDFDF; margin-left:150px; margin-top:13px; margin-bottom:22px;}
 #service li a:hover i{width:26px; transition: all ease-out .2s}
 #service li a:hover h3{color:#E60012;}
-.copyrights{
-	text-indent:-9999px;
-	height:0;
-	line-height:0;
-	font-size:0;
-	overflow:hidden;
-}
 /*service*/
 
 /*intro*/
@@ -125,9 +118,11 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 @media (max-width:681px) {#link li.five{margin-top:-2%;}}
 @media (max-width:639px) {#chanye a.more{margin-left:25%;} #city img{width:450px; left:12%;}}
 @media (max-width:546px) {#link{display:none;}}
-@media (max-width:532px) {#service li i{margin-left:18%;} #service li p{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}}
+@media (max-width:532px) {#service li i{margin-left:18%;} #service li p{white-space:nowrap; text-overflow:ellipsis;} #service li h3{font-size:16px;}}
 @media (max-width:513px) {#city img{width:390px;}}
 @media (max-width:491px) {#chanye a.more{margin-left:20%;}}
 @media (max-width:442px) {#city img{width:300px;} #city .text h3{padding-top:100px;}}
 @media (max-width:414px) {#service li i{margin-left:12%;} #chanye a.more{margin-left:10%;} #intro .more{margin-left:30%;} #news .more {margin-left:30%;}}
 @media (max-width:320px) {#service li i{margin-left:8%;} #chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:20px;} #city .text h3 font{font-size:40px;}#news .more {margin-left:25%;}}
+
+@media (min-width: 1200px) {#intro>div .intro-pic{text-align:right;}}
