@@ -1,17 +1,6 @@
 ﻿@{
     ViewData["Title"] = "首页";
-}
-
-    <!--banner-->
-    <div id="banner">
-        <div class="bd">
-            <ul>
-                <li><a href="#"><img src="/images/banner2.jpg" class="img-responsive" /></a></li>
-                <li><a href="#"><img src="/images/banner4.jpg" class="img-responsive" /></a></li>
-            </ul>
-        </div>
-    </div>
-    <!--/banner-->
+}   
     <!--service-->
     <div id="service">
         <div class="container">
@@ -125,46 +114,5 @@
     </div>
     <!--/link-->
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-
-            $("#top .navBtn").click(function () {
-                if ($("#top ul:visible").length == 0) {
-                    $("#top ul").show()
-                } else {
-                    $("#top ul").hide()
-                }
-
-                $("#top .userBtn").click(function () {
-                    if ($("#top .searck:visible").length == 0) {
-                        $("#top .searck").show()
-                    } else {
-                        $("#top .searck").hide()
-                    }
-                })
-            })
-
-            $("#banner").slide({ mainCell: ".bd ul", autoPlay: true });
-                        
-
-            $("#leftsead a").hover(function () {
-                if ($(this).prop("className") == "youhui") {
-                    $(this).children("img.hides").show();
-                } else {
-                    $(this).children("img.hides").show();
-                    $(this).children("img.shows").hide();
-                    $(this).children("img.hides").animate({ marginRight: '0px' }, 'slow');
-                }
-            }, function () {
-                if ($(this).prop("className") == "youhui") {
-                    $(this).children("img.hides").hide('slow');
-                } else {
-                    $(this).children("img.hides").animate({ marginRight: '-143px' }, 'slow', function () { $(this).hide(); $(this).next("img.shows").show(); });
-                }
-            });
-
-            $("#top_btn").click(function () { if (scroll == "off") return; $("html,body").animate({ scrollTop: 0 }, 600); });
-
-        });
-    </script>
+    
 }
