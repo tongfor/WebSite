@@ -118,7 +118,13 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 .content {width:100%;margin:0 auto;}
 .content .container{margin-top:20px;}
 .content .container p {line-height:1.8;margin-bottom:10px;text-indent:2em;}
+.content .container ul {padding-left:2em;}
+.content .container ul li {line-height:28px;}
 /*content*/
+
+/*icon*/
+.icon-circle {width:10px;height:10px;border-radius:10px;background-color:orangered;display:block;float:left;margin:8px 10px 0 0;}
+/*icon*/
 @media (max-width:1199px) {
     #top li a{padding:0 10px;} #top ul{margin-left:7%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
 @media (max-width:990px) {#top ul{margin-left:-9%;} .logo img{width:60%; padding-top:20px;} #top span{display:none;} #top i{margin-left:0;} #top p{display:none;} #top i{display:none;}  #service li i{margin-left:30%;} #chanye a.more{margin-left:30%;} #city img{left:20%;} #link i{top:70%;} #link i.right{right:-10px;}}
