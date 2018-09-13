@@ -16,16 +16,27 @@ namespace YhcdWebsite.Controllers
         }
 
         public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-           
+        { 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Patent()
         {
-            ViewData["Message"] = "Your contact page.";
+            return View();
+        }
 
+        public IActionResult Trademark()
+        {
+            return View();
+        }
+
+        public IActionResult Qualification()
+        {
+            return View();
+        }
+
+        public IActionResult Consulting()
+        {
             return View();
         }
 

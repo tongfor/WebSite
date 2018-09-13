@@ -116,14 +116,28 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 /*content*/
 .content {width:100%;margin:0 auto;}
-.content .container{margin-top:20px;}
+.content .container{margin-top:20px;padding-bottom:20px;}
 .content .container p {line-height:1.8;margin-bottom:10px;text-indent:2em;}
-.content .container ul {padding-left:2em;}
-.content .container ul li {line-height:28px;}
+.content .container #characteristic {padding-left:2em;}
+.content .container #characteristic li {line-height:28px;}
+.content .container #advantage {margin:0 auto;width:550px;}
+.content .container #advantage li {margin-top:3px;height:45px; line-height:45px;}
+
+.content .mask-left{margin-left:200px;height: 45px;width: 350px;color:#007dbd;background:url(/images/mask-left.jpg) no-repeat center;font-size:14px;font-weight:bold;}
+.content .mask-right{height: 45px;width: 350px;color:white;background:url(/images/mask-right.jpg) no-repeat center;font-size:14px;font-weight:bold;}
 /*content*/
 
+/*menu-left*/
+.menu-left {padding-right:20px;}
+.menu-left li {height:45px;line-height:45px;width:200px;background-color:#9b9b9a;color:black;border-bottom: 2px solid #FFF;padding-left:15px;}
+.menu-left li:hover {background-color:#007dbd;}
+.menu-left li a {font-size:14px;color:white;}
+/*menu-left*/
+
+.services-content {border-left:1px solid #9b9b9a;}
 /*icon*/
-.icon-circle {width:10px;height:10px;border-radius:10px;background-color:orangered;display:block;float:left;margin:8px 10px 0 0;}
+.icon-circle {width: 10px;height: 10px;border-radius: 10px;background-color: orangered;display: block;
+    float: left;margin: 8px 10px 0 0;}
 /*icon*/
 @media (max-width:1199px) {
     #top li a{padding:0 10px;} #top ul{margin-left:7%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
