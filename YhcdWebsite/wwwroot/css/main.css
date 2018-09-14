@@ -109,9 +109,13 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 #leftsead li a .hides{margin-right:-143px; cursor:pointer; cursor:hand;}
 #leftsead li a.youhui .hides{display:none; position:absolute; right:190px; top:2px;}
 
+/*about-title*/
+.about-title{height:40px; border-bottom:solid 2px #3ca3da;width:100%;}
+.about-title .container{margin-top:20px;}
+/*about-title*/
+
 /*crumb*/
-.crumb{height:40px; border-bottom:solid 2px #3ca3da;width:100%;}
-.crumb .container{margin-top:20px;}
+
 /*crumb*/
 
 /*content*/
@@ -125,6 +129,9 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 .content .mask-left{margin-left:200px;height: 45px;width: 350px;color:#007dbd;background:url(/images/mask-left.jpg) no-repeat center;font-size:14px;font-weight:bold;}
 .content .mask-right{height: 45px;width: 350px;color:white;background:url(/images/mask-right.jpg) no-repeat center;font-size:14px;font-weight:bold;}
+
+.content h3 {font-size:16px;font-weight:bold;line-height:28px;}
+.content h4 {font-size:14px;font-weight:bold;line-height:22px;}
 /*content*/
 
 /*menu-left*/
@@ -132,9 +139,18 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 .menu-left li {height:45px;line-height:45px;width:200px;background-color:#9b9b9a;color:black;border-bottom: 2px solid #FFF;padding-left:15px;}
 .menu-left li:hover {background-color:#007dbd;}
 .menu-left li a {font-size:14px;color:white;}
+.menu-left .current {background-color:#007dbd;}
 /*menu-left*/
 
-.services-content {border-left:1px solid #9b9b9a;}
+/*services-content*/
+.services-content {border-left:1px solid #9b9b9a;padding:0 20px;width:auto;}
+.services-content .crumb{height:45px;background-color:#9b9b9a;color:white;line-height:45px;padding:0 20px;}
+.services-content .crumb a {color:white;}
+.services-content .crumb a:hover {color:red;}
+.services-content .crumb img{width:15px;height:15px;margin:-3px 0 0 0;}
+.services-content .crumb+h3{padding:10px 0;}
+/*services-content*/
+
 /*icon*/
 .icon-circle {width: 10px;height: 10px;border-radius: 10px;background-color: orangered;display: block;
     float: left;margin: 8px 10px 0 0;}
@@ -155,4 +171,5 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 @media (max-width:414px) {#service li i{margin-left:12%;} #chanye a.more{margin-left:10%;} #intro .more{margin-left:30%;} #news .more {margin-left:30%;}}
 @media (max-width:320px) {#service li i{margin-left:8%;} #chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:20px;} #city .text h3 font{font-size:40px;}#news .more {margin-left:25%;}}
 
-@media (min-width: 1200px) {#intro>div .intro-pic{text-align:right;}.crumb .container{padding-left:100px;}.content .container{padding-left:100px;padding-right:100px;}}
+@media (min-width: 1200px) {#intro>div .intro-pic{text-align:right;}.about-title .container{padding-left:100px;}.content .container{padding-left:100px;padding-right:100px;}
+    .services-content{width:760px;}}
