@@ -8,7 +8,7 @@ using YhcdWebsite.Models;
 
 namespace YhcdWebsite.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {
@@ -36,6 +36,11 @@ namespace YhcdWebsite.Controllers
         }
 
         public IActionResult Consulting()
+        {
+            return View();
+        }
+
+        public IActionResult Classic()
         {
             return View();
         }

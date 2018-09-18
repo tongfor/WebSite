@@ -34,7 +34,7 @@ namespace WebAdmin
 
             services.AddSession();
             services.AddMvc()
-                .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; }); ;
+                .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

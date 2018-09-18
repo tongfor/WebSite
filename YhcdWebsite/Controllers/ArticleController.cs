@@ -21,7 +21,8 @@ namespace YhcdWebsite.Controllers
         // GET: Article
         public async Task<IActionResult> Index()
         {
-            return View(await _articleService.GetListByAsync(f=>true));
+            var pageData = await _articleService.GetArticleListAsync();
+            return View(pageData.DataList);
         }
 
         // GET: Article/Details/5

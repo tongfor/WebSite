@@ -5,17 +5,7 @@
 <!--content-->
 <section class="content">
     <section class="container">
-        <!--menu bar-->
-        <section class="menu-left pull-left hidden-sm hidden-xs"">
-            <ul>
-                <li><a href="/Home/Patent">专利服务</a></li>
-                <li><a href="/Home/Trademark">商标版权</a></li>
-                <li><a href="/Home/Qualification">资质认证</a></li>
-                <li class="current"><a href="/Home/Consulting">科技咨询</a></li>
-                <li><a href="/Home/Classic">经典案例</a></li>
-            </ul>
-        </section>
-        <!--menu bar-->
+        @Html.Partial("LeftMenuPartial")
         <section class="services-content pull-left">
             <section class="crumb">
                 <img src="~/images/icon-home.png" alt="首页" />&nbsp;&nbsp;<a href="/">首页</a>>科技咨询
@@ -23,7 +13,7 @@
             <h3>★项目申报</h3>
             <p>
                 含各类国家级、省级、市级、区级的科技、经信、商务，组织部以及其他归口的各级政府部门资金、资质项目
-            </p>            
+            </p>
             <h3>提供最优服务质量</h3>
             <ul id="characteristic">
                 <li>
@@ -39,6 +29,7 @@
                     <span class="icon-circle"></span>永久存档 电子材料、纸质材料双保险，高安全性账户管理，全程记录存档，专业化档案管理支撑，高效保障项目申报管理；
                 </li>
             </ul>
+            <img src="~/images/service-flow.png" alt="服务流程" class="img-responsive" />
         </section>
     </section>
 </section>

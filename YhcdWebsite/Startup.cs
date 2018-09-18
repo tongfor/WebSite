@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using RepositoryPattern;
 using Setting;
+using YhcdWebsite.Config;
 
 namespace YhcdWebsite
 {
@@ -23,6 +24,8 @@ namespace YhcdWebsite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<SiteConfig>(Configuration.GetSection("SiteConfig"));
+
             services.AddScoped<IOnDatabaseConfiguring, EntityFrameWorkConfigure>();
 
             services.UseYhcdSetting(Configuration);
@@ -47,9 +50,13 @@ namespace YhcdWebsite
 
             app.UseMvc(routes =>
             {
+                //静态路由
+                routes.MapRoute(
+                   name: "html",
+                   template: "{controller=Home}/{action=Index}.html/{id?}");
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");               
             });
         }
     }

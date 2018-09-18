@@ -127,6 +127,9 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 .content .container #advantage {margin:0 auto;width:550px;}
 .content .container #advantage li {margin-top:3px;height:45px; line-height:45px;}
 
+.content .container #classicList {padding:20px 10px;}
+.content .container #classicList li {font-size:16px;color:#666;font-weight:bold;line-height:36px;}
+
 .content .mask-left{margin-left:200px;height: 45px;width: 350px;color:#007dbd;background:url(/images/mask-left.jpg) no-repeat center;font-size:14px;font-weight:bold;}
 .content .mask-right{height: 45px;width: 350px;color:white;background:url(/images/mask-right.jpg) no-repeat center;font-size:14px;font-weight:bold;}
 
