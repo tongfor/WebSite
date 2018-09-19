@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Models.ArticleView>
+<!--content-->
+<section class="content">
+    <section class="container">
+        @Html.Partial("LeftMenuPartial")
+        <section class="services-content pull-left">
+            <section class="crumb">
+                <img src="~/images/icon-home.png" alt="首页" />&nbsp;&nbsp;<a href="/">首页</a>>行业资讯
+            </section>
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AddTime)
+                            </td>
+                            <td>
+                                <a href="/Article/Details.html?id=@Html.DisplayFor(modelItem => item.Id)" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </section>
+</section>
+<!--content-->
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/Json/LeftNewsMenu.js"></script>
+        <script src="~/js/leftNewsMenu.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/leftNewsMenu.min.js" asp-append-version="true"></script>
+    </environment>
+}

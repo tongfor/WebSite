@@ -20,5 +20,33 @@
     },
     // Optionally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/leftMenu.min.js",
+    "inputFiles": [
+      "wwwroot/js/json/leftMenu.js",
+      "wwwroot/js/leftMenu.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optionally generate .map file
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/leftNewsMenu.min.js",
+    "inputFiles": [
+      "wwwroot/js/json/leftNewsMenu.js",
+      "wwwroot/js/leftNewsMenu.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optionally generate .map file
+    "sourceMap": false
   }
 ]

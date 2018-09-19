@@ -34,3 +34,12 @@
     </section>
 </section>
 <!--content-->
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/Json/LeftMenu.js"></script>
+        <script src="~/js/leftMenu.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/leftMenu.min.js" asp-append-version="true"></script>
+    </environment>
+}

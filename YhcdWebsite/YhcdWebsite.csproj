@@ -48,4 +48,13 @@
     <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Shared\Components\Pagination\Default.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\DisplayTemplates\LongDate.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

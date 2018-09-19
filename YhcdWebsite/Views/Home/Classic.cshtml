@@ -33,8 +33,17 @@
                     华西医院（应用基础研究、软科学研究项目、医疗面上项目）
                 </li>
                 <li>.....</li>
-            </ul>            
+            </ul>
         </section>
     </section>
 </section>
 <!--content-->
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/Json/LeftMenu.js"></script>
+        <script src="~/js/leftMenu.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/leftMenu.min.js" asp-append-version="true"></script>
+    </environment>
+}

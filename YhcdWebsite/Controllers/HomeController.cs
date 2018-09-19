@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using IBLL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using YhcdWebsite.Config;
 using YhcdWebsite.Models;
 
 namespace YhcdWebsite.Controllers
 {
     public class HomeController : BaseController
     {
+        public HomeController(IArticleClassService articleClassService, IOptions<SiteConfig> options) : base(articleClassService, options)
+        {
+        }
+
         public IActionResult Index()
         {
             return View();

@@ -204,7 +204,7 @@ namespace YhcdWebsite.Controllers
 
         public async Task<PartialViewResult> CreateLeftMenuAsync()
         {
-            ViewBag.MenuList = await MyArticleClassService.GetListByAsync(f=>f.ParentId = SiteConfigSettings.AllowAdminRoles);
+            ViewBag.MenuList = await MyArticleClassService.GetListByAsync(f=>f.ParentId == 11);
             return PartialView("LeftMenuPartial");
         }
 

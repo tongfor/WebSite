@@ -4,24 +4,31 @@ using BLL;
 using IBLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Models;
 using RepositoryPattern;
+using YhcdWebsite.Config;
 
 namespace YhcdWebsite.Controllers
 {
-    public class ArticleController : Controller
+    public class ArticleController : BaseController
     {
         private readonly IArticleService _articleService;
-
-        public ArticleController(IArticleService articleService, CdyhcdDBContext context)
+        
+        public ArticleController(IArticleService articleService, IArticleClassService articleClassService, IOptions<SiteConfig> options) : base(articleClassService, options)
         {
             _articleService = articleService;
         }
 
         // GET: Article
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> List(int? id, string title)
         {
-            var pageData = await _articleService.GetArticleListAsync();
+            ArticleRequest articleRequest = new ArticleRequest
+            {
+                ClassId = id ?? int.Parse(SiteConfigSettings.IndustryInformationClassId),
+                Title = title
+            };
+            var pageData = await _articleService.GetArticleListAsync(articleRequest);
             return View(pageData.DataList);
         }
 
@@ -60,7 +67,7 @@ namespace YhcdWebsite.Controllers
             if (ModelState.IsValid)
             {
                 await _articleService.AddAsync(article);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
             return View(article);
         }
@@ -112,7 +119,7 @@ namespace YhcdWebsite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
             return View(article);
         }
@@ -145,7 +152,7 @@ namespace YhcdWebsite.Controllers
             //_context.Article.Remove(article);
             //await _context.SaveChangesAsync();
             await _articleService.DelByAsync(f => f.Id == id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(List));
         }
 
         private bool ArticleExists(int id)

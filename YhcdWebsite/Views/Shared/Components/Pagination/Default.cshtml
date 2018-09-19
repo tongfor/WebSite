@@ -1,0 +1,105 @@
+﻿@using System.Text;
+@using Microsoft.AspNetCore.Http;
+<div class="pages">
+    @{
+        const int pageIncrement = 5;
+        const int pageTrailing = 10;
+        int totalCount = Model.TotalItemCount == null ? 1 : (int)Model.TotalItemCount;
+        int pageSize = Model.PageSize == null ? 10 : (int)Model.PageSize;
+        var totalPageCount = (totalCount / pageSize) + (totalCount % pageSize == 0 ? 0 : 1);//ViewBag.TotalPageCount == null ? 1 : (int)ViewBag.TotalPageCount;
+        var pageIndex = Model.CurrentPageIndex == null || Model.CurrentPageIndex < 1 ? 1 : (int)Model.CurrentPageIndex;//ViewBag.CurrentPageIndex == null ? 1 : (int)ViewBag.CurrentPageIndex;
+        if (totalPageCount > 1)
+        {
+            var pageRangeStart = pageIndex <= pageIncrement ? 1 : pageIndex - pageIncrement;
+            var pageRangeEnd = pageIndex + pageIncrement <= totalPageCount ? (totalPageCount > pageTrailing && pageIndex + pageIncrement < pageTrailing ? pageTrailing : pageIndex + pageIncrement) : totalPageCount;
+            if (pageIndex == 1)
+            {
+                <a disabled="disabled">首页</a>
+                @Html.Raw("&nbsp;")
+                <a disabled="disabled">上一页</a>
+            }
+            else
+            {
+                <a href="@GenerateUrl(1)">首页</a>
+                @Html.Raw("&nbsp;")
+                <a href="@GenerateUrl(pageIndex - 1)">上一页</a>
+            }
+            if (pageRangeStart > 1)
+            {
+                @*if (pageIndex == 1)
+                    {
+                        @Html.Raw("&nbsp;&nbsp;1")
+                    }
+                    else
+                    {
+                        @Html.Raw("&nbsp;&nbsp;")<a href="@GenerateUrl(1)">1</a>
+                    }*@
+
+                if (pageRangeStart > 2)
+                {
+                    @Html.Raw("&nbsp;&nbsp;")<a href="@GenerateUrl(pageIndex - pageIncrement - 1)">...</a>
+                }
+            }
+            for (var i = pageRangeStart; i <= pageRangeEnd; i++)
+            {
+                if (pageIndex == i)
+                {
+                    @Html.Raw("&nbsp;&nbsp;")@i
+                }
+                else
+                {
+                    @Html.Raw("&nbsp;&nbsp;")<a href="@GenerateUrl(i)">@i</a>
+                }
+            }
+            if (pageRangeEnd < totalPageCount)
+            {
+                if (pageRangeEnd + 1 < totalPageCount)
+                {
+                    @Html.Raw("&nbsp;&nbsp;")<a href="@GenerateUrl(pageIndex + pageIncrement + 1)">...</a>
+                }
+                @*@Html.Raw("&nbsp;&nbsp;")<a href="@GenerateUrl(totalPageCount)">@totalPageCount</a>*@
+            }
+            if (pageIndex == totalPageCount)
+            {
+                @Html.Raw("&nbsp;")
+                <a disabled="disabled" class="gray">下一页</a>
+                @Html.Raw("&nbsp;")
+                <a disabled="disabled" class="gray">尾页</a>
+            }
+            else
+            {
+                @Html.Raw("&nbsp;")
+                <a href="@GenerateUrl(pageIndex + 1)">下一页</a>
+                @Html.Raw("&nbsp;")
+                <a href="@GenerateUrl(totalPageCount)">尾页</a>
+            }
+            @Html.Raw("&nbsp;&nbsp;")<span>总条数: @totalCount</span>
+        }
+    }
+
+    @{
+        string GenerateUrl(int pageNo)
+        {
+            var httpRequest = ViewContext.HttpContext.Request;
+            var tmpUrl = new StringBuilder().Append(httpRequest.Path);
+            string pageUrl = "";
+
+            QueryString queryString = new QueryString().Add(httpRequest.QueryString);
+            if (httpRequest.QueryString.ToString().ToLower().Contains("pageindex="))
+            {
+                var queryList = queryString.ToString().Split('&').ToList();
+                queryList.RemoveAll(s => s.ToLower().Contains("pageindex="));
+                var newQueryString = string.Join("&", queryList.ToArray());
+                queryString = newQueryString.StartsWith("?")
+                    ? new QueryString(newQueryString).Add("pageindex", pageNo.ToString())
+                    : new QueryString("?" + newQueryString).Add("pageindex", pageNo.ToString());
+            }
+            else
+            {
+                queryString = queryString.Add("pageindex", pageNo.ToString());
+            }
+            pageUrl = tmpUrl.Append(queryString).ToString();
+            return pageUrl;
+        }
+    }
+</div>
