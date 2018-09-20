@@ -37,7 +37,7 @@ namespace YhcdWebsite.Controllers
 
                 if (request.PageSize <= 0)
                 {
-                    request.PageSize = 15;
+                    request.PageSize = SiteConfigSettings.DefaultPageCount;
                 }
                 IEnumerable<ArticleView> articleList = await _articleService.GetArticleListBySqlAsync(request);
                 return View(articleList as PagedList<ArticleView>);

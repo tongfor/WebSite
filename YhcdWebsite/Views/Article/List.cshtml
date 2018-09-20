@@ -7,22 +7,26 @@
             <section class="crumb">
                 <img src="~/images/icon-home.png" alt="首页" />&nbsp;&nbsp;<a href="/">首页</a> > 行业资讯
             </section>
-            <table class="table">
-                <tbody>
-                    @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AddTime)
-                    </td>
-                    <td>
-                        <a href="/Article/Details.html?id=@Html.DisplayFor(modelItem => item.Id)" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
-                    </td>
-                </tr>
-    }
-                </tbody>
-            </table>
-            <div class="dataTables_paginate paging_bootstrap pagination">
+            <section class="content-list">
+                @foreach (var item in Model)
+                {
+                    <ul>
+                        <li class="calendar">
+                            @Html.DisplayFor(modelItem => item.AddTime.Value)
+                        </li>
+                        <li class="content-title">
+                            <div>
+                                <a href="/Article/Details.html?id=@Html.DisplayFor(modelItem => item.Id)" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
+                            </div>
+                            <div class="summary" title="@Html.DisplayFor(modelItem => item.Introduce)">
+                                @Html.DisplayFor(modelItem => item.Introduce)
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                }
+            </section>
+            <div class="pagination text-center">
                 @await Component.InvokeAsync("Pagination")
             </div>
         </section>
@@ -37,4 +41,17 @@
     <environment exclude="Development">
         <script src="~/js/leftNewsMenu.min.js" asp-append-version="true"></script>
     </environment>
+    <script>
+        $(function () {
+            var timeObjs = $(".calendar")
+            timeObjs.each(function (i, e) {
+                var addTime = new Date($(e).text())
+                var str = '<div class="calendar-day">' + addTime.Format("dd")
+                str += '</div><div class="calendar-date">' + addTime.Format("yyyy-MM")
+                str += '</div>'
+                $(e).empty()
+                $(e).append(str)
+            })
+        })
+    </script>
 }

@@ -45,7 +45,7 @@ namespace Models
         /// </summary>
         public int PageSize
         {
-            get { return _pageSize <= 0 ? 15 : _pageSize; }
+            get { return _pageSize; }
             set { _pageSize = value; }
         }
 
