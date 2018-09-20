@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using BLL;
 using IBLL;
@@ -8,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Models;
 using RepositoryPattern;
 using YhcdWebsite.Config;
+using YhcdWebsite.Models;
 
 namespace YhcdWebsite.Controllers
 {
@@ -21,15 +25,27 @@ namespace YhcdWebsite.Controllers
         }
 
         // GET: Article
-        public async Task<IActionResult> List(int? id, string title)
+        public async Task<IActionResult> List(ArticleRequest request)
         {
-            ArticleRequest articleRequest = new ArticleRequest
+            try
             {
-                ClassId = id ?? int.Parse(SiteConfigSettings.IndustryInformationClassId),
-                Title = title
-            };
-            var pageData = await _articleService.GetArticleListAsync(articleRequest);
-            return View(pageData.DataList);
+                ViewBag.KeyWord = request.Title;
+                ViewBag.CurrentPageIndex = request.PageIndex <= 1 ? 1 : request.PageIndex;
+                ViewBag.TotalPageCount = 1;
+
+                ViewBag.ClassId = request == null ? 0 : request.ClassId;
+
+                if (request.PageSize <= 0)
+                {
+                    request.PageSize = 15;
+                }
+                IEnumerable<ArticleView> articleList = await _articleService.GetArticleListBySqlAsync(request);
+                return View(articleList as PagedList<ArticleView>);
+            }
+            catch(Exception ex)
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }            
         }
 
         // GET: Article/Details/5

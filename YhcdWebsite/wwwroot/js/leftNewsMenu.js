@@ -6,7 +6,7 @@
     var _leftNewsMenuInit = function () {
         menuObjs.empty()
         for (var p in leftNewsMenu) {
-            var li = '<li><a href="' + leftNewsMenu[p].menuLink + '?id=' + leftNewsMenu[p].id + '">' + leftNewsMenu[p].menuTitle + '</a></li>'
+            var li = '<li><a href="' + leftNewsMenu[p].menuLink + '?classid=' + leftNewsMenu[p].id + '">' + leftNewsMenu[p].menuTitle + '</a></li>'
             menuObjs.append(li)
         }
     }
@@ -17,12 +17,20 @@
             var href = $(this).find("a").attr("href")
             if (currentUrl.indexOf(href) !== -1) {
                 $(this).addClass("current")
+                _appendCrumb($(this).find("a").text())
             }
             else {
                 $(this).removeClass("current")
             }
         })
     }
+
+    //设定面包屑导航
+    var _appendCrumb = function (title) {
+        var str = '> ' + title.trim()
+        $(".crumb").append(str)
+    }
+
     return {
         leftNewsMenuInit: _leftNewsMenuInit,
         leftNewsMenuMatch: _leftNewsMenuMatch
