@@ -349,6 +349,7 @@ namespace BLL
             request = request ?? new ArticleRequest();
             List<ArticleView> result = new List<ArticleView>();
             string strWhere = " 1=1 ";
+            string orderby = string.IsNullOrEmpty(request.OrderBy) ? " aco.AddTime desc" : request.OrderBy;
 
             if (!string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title))
             {
@@ -367,7 +368,7 @@ namespace BLL
                 }
             }
             
-            var articles = await GetOrderArticleIncludeClassByPageAsync(request.PageIndex, request.PageSize, strWhere, " aco.AddTime desc");
+            var articles = await GetOrderArticleIncludeClassByPageAsync(request.PageIndex, request.PageSize, strWhere, orderby);
 
             return articles.DataList.ToPagedList(request.PageIndex, request.PageSize, articles.TotalCount);
         }

@@ -1,129 +1,37 @@
 ﻿@model Models.Article
 
-@{
-    Layout = null;
+<!--content-->
+<section class="content">
+    <section class="container">
+        @Html.Partial("LeftMenuPartial")
+        <section class="services-content pull-left">
+            <section class="crumb">
+                <img src="~/images/icon-home.png" alt="首页" />&nbsp;&nbsp;<a href="/">首页</a> > 行业资讯
+            </section>
+            <section class="news">
+                <section class="news-title">
+                    @Html.DisplayFor(model => model.Title)
+                </section>
+                <section class="news-time">
+                    @Model.AddTime.Value.ToString("yyyy-MM-dd")&nbsp;&nbsp;
+                    @Html.DisplayFor(model => model.Origin)
+                </section>
+                <section class="news-content">
+                    @Html.Raw(Model.Content)
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
+<!--content-->
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/Json/LeftNewsMenu.js"></script>
+        <script src="~/js/leftNewsMenu.js"></script>
+        <script src="~/js/timeStyle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/leftNewsMenu.min.js" asp-append-version="true"></script>
+        <script src="~/js/timeStyle.min.js" asp-append-version="true"></script>
+    </environment>
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-
-<div>
-    <h4>Article</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ClassId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TitleColor)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TitleColor)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Introduce)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Introduce)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IntroduceImg)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IntroduceImg)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Origin)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Origin)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LookCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LookCount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AddHtmlurl)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AddHtmlurl)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsTop)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsTop)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsMarquee)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsMarquee)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Sort)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Sort)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AddTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AddTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EditTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EditTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsDel)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsDel)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
-</body>
-</html>

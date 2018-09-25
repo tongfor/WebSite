@@ -55,5 +55,18 @@
     },
     // Optionally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/timeStyle.min.js",
+    "inputFiles": [
+      "wwwroot/js/timeStyle.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optionally generate .map file
+    "sourceMap": false
   }
 ]
