@@ -5,6 +5,7 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using YhcdWebsite.Config;
 using YhcdWebsite.Models;
@@ -57,7 +58,6 @@ namespace YhcdWebsite.Controllers
             {
                 return NotFound();
             }
-
             return View(article);
         }
         private bool ArticleExists(int id)
