@@ -1,0 +1,12 @@
+2018-09-26 16:58:54.5895 Error Error parsing layout year will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'year'
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)
+2018-09-26 16:58:54.6814 Error Error parsing layout year will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'year'
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)
+2018-09-26 16:58:56.8124 Error Error parsing layout year will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'year'
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)
+2018-09-26 16:58:56.8537 Error Error parsing layout year will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'year'
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)

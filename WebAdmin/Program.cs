@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace WebAdmin
 {
@@ -25,6 +26,7 @@ namespace WebAdmin
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(config)
+                .UseNLog()
                 .UseStartup<Startup>()
                 .Build();
     }

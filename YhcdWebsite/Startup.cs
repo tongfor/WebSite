@@ -1,14 +1,16 @@
-﻿using BLL;
-using IBLL;
-using IDAL;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using RepositoryPattern;
 using Setting;
+using System.IO;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using YhcdWebsite.Config;
+using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace YhcdWebsite
 {
@@ -34,7 +36,7 @@ namespace YhcdWebsite
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -43,8 +45,21 @@ namespace YhcdWebsite
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
+                  {
+                      context.Response.StatusCode = 500;
+                      if (context.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+                      {
+                          context.Response.ContentType = "text/html";
+                          await context.Response.SendFileAsync($@"{env.WebRootPath}/Errors/500.html");
+                      }
+                  }));
+                app.UseStatusCodePagesWithReExecute("/errors/{0}");
             }
+
+            loggerFactory.AddNLog(); //添加NLog
+            LogManager.LoadConfiguration("nlog.config");
 
             app.UseStaticFiles();
 

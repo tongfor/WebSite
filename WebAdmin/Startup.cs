@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Extensions.Logging;
 using RepositoryPattern;
 using Setting;
 
@@ -52,6 +54,9 @@ namespace WebAdmin
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            loggerFactory.AddNLog(); //添加NLog
+            LogManager.LoadConfiguration("nlog.config");
 
             app.UseStaticFiles();
             app.UseSession();

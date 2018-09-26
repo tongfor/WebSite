@@ -7,13 +7,14 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace YhcdWebsite
 {
     public class Program
-    {        
+    {
         public static void Main(string[] args)
-        {            
+        {
             BuildWebHost(args).Run();
         }
 
@@ -25,6 +26,7 @@ namespace YhcdWebsite
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(config)
+                .UseNLog()
                 .UseStartup<Startup>()
                 .Build();
     }

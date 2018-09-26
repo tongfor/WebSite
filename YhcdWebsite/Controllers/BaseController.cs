@@ -14,9 +14,6 @@
 *└──────────────────────────────────┘
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBLL;
@@ -25,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Options;
 using Models;
+using NLog;
 using Setting.Constant;
 using YhcdWebsite.Config;
 
@@ -33,7 +31,7 @@ namespace YhcdWebsite.Controllers
     public class BaseController : Controller
     {
         protected IArticleClassService MyArticleClassService;
-        protected Microsoft.Extensions.Logging.ILogger _logger;
+        protected Logger _logger = LogManager.GetCurrentClassLogger();
 
         public SiteConfig SiteConfigSettings;//站点设置
 

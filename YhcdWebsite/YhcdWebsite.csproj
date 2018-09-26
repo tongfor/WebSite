@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\Error.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Service\BLLSession.tt" />
   </ItemGroup>
 
@@ -20,6 +24,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.6" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="NLog" Version="4.5.10" />
+    <PackageReference Include="NLog.Web" Version="4.7.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-26216-02" />
   </ItemGroup>
 
@@ -45,10 +52,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\errors\404.html" />
+    <None Include="wwwroot\errors\500.html" />
     <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Views\Shared\Components\Pagination\Default.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

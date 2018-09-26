@@ -1,5 +1,7 @@
-﻿using IBLL;
+﻿using Common.AspNetCore.Extensions;
+using IBLL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
 using System;
@@ -41,7 +43,9 @@ namespace YhcdWebsite.Controllers
             }
             catch(Exception ex)
             {
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                _logger.Error($"于{DateTime.Now}在IP:{HttpContext.GetUserIp()}访问文章列表页报\"{ex.Message}\"，错误详细信息：{ex.StackTrace.ToString()}.");
+                return new LocalRedirectResult("/errors/500");
+                //return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }            
         }
 
@@ -52,13 +56,20 @@ namespace YhcdWebsite.Controllers
             {
                 return NotFound();
             }
-
-            var article =await _articleService.GetModelAsync(id.Value);
-            if (article == null)
+            try
             {
-                return NotFound();
+                var article = await _articleService.GetModelAsync(id.Value);
+                if (article == null)
+                {
+                    return NotFound();
+                }
+                return View(article);
             }
-            return View(article);
+            catch (Exception ex)
+            {
+                _logger.Warn($"于{DateTime.Now}在IP:{HttpContext.GetUserIp()}访问文章详细页报\"{ex.Message}\"，错误详细信息：{ex.StackTrace.ToString()}.");
+                return new LocalRedirectResult("/errors/500");
+            }
         }
         private bool ArticleExists(int id)
         {
