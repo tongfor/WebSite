@@ -29,6 +29,20 @@
     "sourceMap": false
   },
   {
+    "outputFileName": "wwwroot/js/topMenu.min.js",
+    "inputFiles": [
+      "wwwroot/js/json/topMenu.js",
+      "wwwroot/js/topMenu.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optionally generate .map file
+    "sourceMap": false
+  },
+  {
     "outputFileName": "wwwroot/js/leftMenu.min.js",
     "inputFiles": [
       "wwwroot/js/json/leftMenu.js",

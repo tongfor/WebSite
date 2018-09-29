@@ -7,7 +7,8 @@
 #top li{float:left;}
 #top li.li2{width:87px;}
 #top li a{display:inline-block; font-size:16px; padding:0 10px; color:#6F6F6F;}
-#top li:hover a{background:#3ca3da; color:#fff;}
+#top li:hover a {background:#3ca3da; color:#fff;}
+#top .current a {background:#3ca3da; color:#fff;}
 #top li div{display:none; height:59px; line-height:59px; padding-left:42px; margin-top:-1px;}
 #top li div a{color:#B7B7B9;}
 #top li:hover div{display:block; width:1000px; background:#4E4C51;} 

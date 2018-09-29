@@ -26,16 +26,6 @@
         <div class="container">
             <a href="#" class="fl logo"><img src="/images/logo.png" class="img-responsive" /></a>
             <ul class="fl">
-                <li><a href="/">首页</a></li>
-                <li>
-                    <a asp-area="" asp-controller="Home" asp-action="About">公司简介</a>
-                </li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Patent">专利服务</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Trademark">商标版权</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Qualification">资质认证</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Consulting">科技咨询</a></li>
-                <li><a asp-area="" asp-controller="Article" asp-action="List" asp-route-Classid="20">行业资讯</a></li>
-                <li><a href="/#contact">联系我们</a></li>
             </ul>
             <span class="fl"></span>
             <div class="searck">
@@ -85,6 +75,8 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/jquery.SuperSlide.2.1.1.js"></script>
+        <script src="~/js/json/topMenu.js"></script>
+        <script src="~/js/topMenu.js"></script>
         <script src="~/js/site.js"></script>
     </environment>
     <environment exclude="Development">
@@ -101,6 +93,7 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/lib/jquery.SuperSlide.2.1.1.js" asp-append-version="true"></script>
+        <script src="~/js/topMenu.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
     <script>
