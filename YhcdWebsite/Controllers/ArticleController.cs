@@ -24,15 +24,21 @@ namespace YhcdWebsite.Controllers
         }
 
         // GET: Article
-        public async Task<IActionResult> List(ArticleRequest request)
+        public async Task<IActionResult> List(int? id, ArticleRequest request)
         {
             try
             {
+                if (id == null || id == 0)
+                {
+                    return new LocalRedirectResult("/errors/400");
+                }
+
+                request.ClassId = id.Value;
                 ViewBag.KeyWord = request.Title;
                 ViewBag.CurrentPageIndex = request.PageIndex <= 1 ? 1 : request.PageIndex;
                 ViewBag.TotalPageCount = 1;
 
-                ViewBag.ClassId = request == null ? 0 : request.ClassId;
+                ViewBag.ClassId = request == null ? 0 : request.ClassId;               
 
                 if (request.PageSize <= 0)
                 {

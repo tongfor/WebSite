@@ -65,13 +65,21 @@ namespace YhcdWebsite
 
             app.UseMvc(routes =>
             {
+                //ID参数在action后静态路由
+                routes.MapRoute(
+                   name: "-id.html",
+                   template: "{controller=Home}/{action=Index}-{id}.html/{*others}");
+                ////ClassID参数在action后静态路由
+                //routes.MapRoute(
+                //   name: "-classid.html",
+                //   template: "{controller=Home}/{action=Index}-{classid}.html/{*others}");
                 //静态路由
                 routes.MapRoute(
                    name: "html",
                    template: "{controller=Home}/{action=Index}.html/{id?}");
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");               
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -11,6 +11,9 @@
                 <img src="~/images/icon-home.png" alt="首页" />&nbsp;&nbsp;<a href="/">首页</a> > 行业资讯
             </section>
             <section class="content-list">
+                @if (Model.Count() <= 0) {
+                    <h3 class="text-center">暂无内容</h3>
+                }
                 @foreach (var item in Model)
                 {
                     <ul>
@@ -19,7 +22,7 @@
                         </li>
                         <li class="content-title">
                             <div>
-                                <a href="/Article/Details.html?id=@Html.DisplayFor(modelItem => item.Id)" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
+                                <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
                             </div>
                             <div class="summary" title="@Html.DisplayFor(modelItem => item.Introduce)">
                                 @Html.DisplayFor(modelItem => item.Introduce)

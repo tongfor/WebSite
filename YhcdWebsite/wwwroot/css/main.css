@@ -3,7 +3,7 @@
 
 /*top*/
 #top{height:80px; line-height:80px; position:fixed; width:100%; z-index:9; top:0; background:#fff; border-bottom:1px solid #E6E6E6;}
-#top ul{margin-left:123px;1d85bd}
+#top ul{margin-left:123px;}
 #top li{float:left;}
 #top li.li2{width:87px;}
 #top li a{display:inline-block; font-size:16px; padding:0 10px; color:#6F6F6F;}
