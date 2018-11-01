@@ -32,6 +32,8 @@ namespace Models
         public string Title { get; set; }
         [DisplayName("标题颜色")]
         public string TitleColor { get; set; }
+        [DisplayName("文章分类标签")]
+        public string Keyword { get; set; }
         [DisplayName("内容")]
         public string Content { get; set; }
         [DisplayName("文章简介")]

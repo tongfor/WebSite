@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2018/4/4 11:41:36   N/A    初版
+* V0.01  2018/11/1 17:43:51   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -28,6 +28,7 @@ namespace Models
 						Title = this.Title,
 						TitleColor = this.TitleColor,
 						Content = this.Content,
+						Keyword = this.Keyword,
 						Introduce = this.Introduce,
 						IntroduceImg = this.IntroduceImg,
 						Author = this.Author,
