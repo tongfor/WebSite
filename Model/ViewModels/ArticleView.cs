@@ -32,6 +32,8 @@ namespace Models
         public string Title { get; set; }
         [DisplayName("标题颜色")]
         public string TitleColor { get; set; }
+        [DisplayName("分类标签")]
+        public string Keyword { get; set; }
         [DisplayName("内容")]
         public string Content { get; set; }
         [DisplayName("文章简介")]
@@ -102,6 +104,7 @@ namespace Models
             this.ClassId = article.ClassId;
             this.Title = article.Title;
             this.TitleColor = article.TitleColor;
+            this.Keyword = article.Keyword;
             this.Content = article.Content;
             this.Author = article.Author;
             this.Origin = article.Origin;
@@ -140,6 +143,7 @@ namespace Models
                 ClassId = this.ClassId,
                 Title = this.Title,
                 TitleColor = this.TitleColor,
+                Keyword = this.Keyword,
                 Content = this.Content,
                 UserName = this.UserName,
                 Author = this.Author,

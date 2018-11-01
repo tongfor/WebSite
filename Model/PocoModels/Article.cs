@@ -27,6 +27,7 @@ namespace Models
 						ClassId = this.ClassId,
 						Title = this.Title,
 						TitleColor = this.TitleColor,
+                        Keyword = this.Keyword,
 						Content = this.Content,
 						Introduce = this.Introduce,
 						IntroduceImg = this.IntroduceImg,
