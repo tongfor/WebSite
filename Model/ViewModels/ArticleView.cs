@@ -96,6 +96,8 @@ namespace Models
 
         public ArticleView()
         {
+            AddTime = DateTime.Now;
+            EditTime = DateTime.Now;
         }
 
         public ArticleView(Article article)
