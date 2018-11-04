@@ -11,6 +11,7 @@ namespace Models
         public string TitleColor { get; set; }
         public string Keyword { get; set; }
         public string Content { get; set; }
+        public string Keyword { get; set; }
         public string Introduce { get; set; }
         public string IntroduceImg { get; set; }
         public string Author { get; set; }

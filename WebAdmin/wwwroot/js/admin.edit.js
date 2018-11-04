@@ -26,8 +26,10 @@
                     window.top.location.reload();
                     window.top.tb_remove();   
                 }
+                $("#submitloading").hide();
             },
             error(xhr, status, error) {
+                $("#submitloading").hide();
                 console.log(xhr);
                 console.log(status);
                 console.log(error);

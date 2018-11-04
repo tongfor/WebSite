@@ -109,6 +109,8 @@ namespace WebAdmin.Controllers
 
                 Article model = article.ToOriginal();
                 model.UserName = User.Identity.Name;
+                model.AddTime = model.AddTime ?? DateTime.Now;
+                model.EditTime = model.EditTime ?? DateTime.Now;
                 ViewBag.ClassId = 0;                
 
                 await _articleService.AddAsync(model);
