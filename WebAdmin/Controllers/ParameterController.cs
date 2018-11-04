@@ -33,7 +33,7 @@ namespace WebAdmin.Controllers
                 {
                     request.PageSize = 10;
                 }
-                IEnumerable<Parameter> parameterList = await _parameterClassService.GetPagedArticleClassListAsync(request);
+                IEnumerable<Parameter> parameterList = await _parameterClassService.GetListByAsync(f => 1 == 1);
 
                 await CreateLeftMenuAsync();
                 return View(parameterList as PagedList<ArticleClass>);
@@ -75,14 +75,13 @@ namespace WebAdmin.Controllers
         {
             try
             {
-                if ("父级分类".Equals(parameter.ParentId))
+                if ("父级分类".Equals(parameter.ParParentId))
                 {
-                    parameter.ParentId = 0;
+                    parameter.ParParentId = 0;
                 }
-                await _parameterClassService.AddArticleClassAsync(parameter);
+                int resultNum = await _parameterClassService.AddAsync(parameter);
 
-                //return this.RefreshParent();
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "添加成功！", null);
+                return resultNum > 0 ? PackagingAjaxMsg(AjaxStatus.IsSuccess, "添加成功！", null) : PackagingAjaxMsg(AjaxStatus.Err, "添加失败！", null);
             }
             catch (Exception ex)
             {
@@ -111,7 +110,7 @@ namespace WebAdmin.Controllers
             }
             try
             {
-                ArticleClass model = await _parameterClassService.GetModelAsync(id.Value);
+                Parameter model = await _parameterClassService.GetModelAsync(id.Value);
                 if (model == null)
                 {
                     ViewBag.ErrMsg = "页面错误";
@@ -121,9 +120,9 @@ namespace WebAdmin.Controllers
                     MyOperateLogService.Add(OperateLog);
                     return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
-                ArticleClass entActivity = model.ToPOCO();
-                ViewBag.ParentId = entActivity.ParentId ?? entActivity.ParentId;
-                return View(entActivity);
+                Parameter pocoModel = model.ToPOCO();
+                ViewBag.ParParentId = pocoModel.ParParentId ?? pocoModel.ParParentId;
+                return View(pocoModel);
             }
             catch (Exception ex)
             {
@@ -152,12 +151,11 @@ namespace WebAdmin.Controllers
                     return PackagingAjaxMsg(AjaxStatus.Err, "未传递参数！", null);
                 }
 
-                ArticleClass model = _parameterClassService.GetModelBy(f => f.Id == articleClass.Id);
-                await TryUpdateModelAsync<ArticleClass>(model);
-                await _parameterClassService.ModifyArticleClassAsync(model);
+                Parameter model = _parameterClassService.GetModelBy(f => f.Id == articleClass.Id);
+                await TryUpdateModelAsync<Parameter>(model);
+                int resultNum = await _parameterClassService.ModifyAsync(model);
 
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "修改成功！", null);
-                //return this.RefreshParent();
+                return resultNum > 0 ? PackagingAjaxMsg(AjaxStatus.IsSuccess, "修改成功！", null) : PackagingAjaxMsg(AjaxStatus.Err, "修改失败！", null);
             }
             catch (Exception ex)
             {
@@ -185,18 +183,18 @@ namespace WebAdmin.Controllers
                     MyOperateLogService.Add(OperateLog);
                 }
                 //查询要删除的单个
-                ArticleClass act = await _parameterClassService.GetModelAsync(id.Value);//根据Id查询单个
+                Parameter model = await _parameterClassService.GetModelAsync(id.Value);//根据Id查询单个
                 //根据单个的路径，查询他子目录
-                List<ArticleClass> actClassList = await _parameterClassService.GetListByAsync(a => a.Path.StartsWith(act.Path));
+                List<Parameter> parameterList = await _parameterClassService.GetListByAsync(a => a.ParPath.StartsWith(model.ParPath));
 
                 List<int?> ids = new List<int?>();
-                foreach (var item in actClassList)
+                foreach (var item in parameterList)
                 {
                     ids.Add(item.Id);
                 }
                 if (ids.Count > 0)
                 {
-                    int deleteArticleCount = _articleService.DelBy(ac => ids.Contains(ac.ClassId));
+                    int deleteArticleCount = _parameterClassService.DelBy(ac => ids.Contains(ac.ClassId));
                     int resultCount = _parameterClassService.DelBy(f => ids.Contains(f.Id));
 
                     return RedirectToAction("Index");
