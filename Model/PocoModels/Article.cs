@@ -29,7 +29,6 @@ namespace Models
 						TitleColor = this.TitleColor,
                         Keyword = this.Keyword,
 						Content = this.Content,
-						Keyword = this.Keyword,
 						Introduce = this.Introduce,
 						IntroduceImg = this.IntroduceImg,
 						Author = this.Author,
