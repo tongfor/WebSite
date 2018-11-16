@@ -103,7 +103,9 @@
                 resizeType: 1,
                 allowFileManager: true,
                 uploadJson: '/Upload/FileSave',
-                fileManagerJson: '/Upload/FileManage'
+                fileManagerJson: '/Upload/FileManage',
+                //让KindEditor异步提交表单，以免服务器接收不到编辑器内数据
+                afterBlur: function () { this.sync(); }
             });
         });
 
