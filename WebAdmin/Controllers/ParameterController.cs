@@ -25,7 +25,7 @@ namespace WebAdmin.Controllers
         }
 
         // GET: ArticleClass
-        public async Task<IActionResult> Index(BaseRequest request)
+        public async Task<IActionResult> Index(ParameterRequest request)
         {
             try
             {
@@ -33,10 +33,10 @@ namespace WebAdmin.Controllers
                 {
                     request.PageSize = 10;
                 }
-                IEnumerable<Parameter> parameterList = await _parameterClassService.GetListByAsync(f => 1 == 1);
+                IEnumerable<Parameter> parameterList = await _parameterClassService.GetParameterListBySqlAsync(request);
 
                 await CreateLeftMenuAsync();
-                return View(parameterList as PagedList<ArticleClass>);
+                return View(parameterList as PagedList<Parameter>);
             }
             catch (Exception ex)
             {
@@ -194,7 +194,7 @@ namespace WebAdmin.Controllers
                 }
                 if (ids.Count > 0)
                 {
-                    int deleteArticleCount = _parameterClassService.DelBy(ac => ids.Contains(ac.Id));
+                    int deleteParameterCount = _parameterClassService.DelBy(p => ids.Contains(p.Id));
                     int resultCount = _parameterClassService.DelBy(f => ids.Contains(f.Id));
 
                     return RedirectToAction("Index");
