@@ -194,7 +194,7 @@ namespace WebAdmin.Controllers
                 }
                 if (ids.Count > 0)
                 {
-                    int deleteArticleCount = _parameterClassService.DelBy(ac => ids.Contains(ac.ClassId));
+                    int deleteArticleCount = _parameterClassService.DelBy(ac => ids.Contains(ac.Id));
                     int resultCount = _parameterClassService.DelBy(f => ids.Contains(f.Id));
 
                     return RedirectToAction("Index");

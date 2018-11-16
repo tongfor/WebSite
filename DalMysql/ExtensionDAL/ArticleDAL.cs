@@ -337,7 +337,7 @@ namespace DALMySql
             var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString());
             result = new PageData<ArticleView>
             {
-                DataList = await queryResult.Skip(skipIndex).Take(pageSize).ToListAsync(),
+                DataList = await queryResult.Skip(skipIndex).Take(pageSize).OrderBy(o=>o.Id).ToListAsync(),
                 TotalCount = await queryResult.CountAsync()
             };
             return result;

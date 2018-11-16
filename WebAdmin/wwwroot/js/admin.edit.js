@@ -12,7 +12,7 @@
     //    }
     //});
 
-    $("#mainForm").submit(function () {
+    $("#mainForm").submit(function () {       
         $.ajax({
             url: $(this).attr("action"),
             data: $(this).serialize(),
@@ -21,7 +21,7 @@
                 $("#submitloading").show();
             },
             success: function (result, status) {
-                if (result && "success" === status && 0 == result.status) {
+                if (result && "success" === status && 0 === result.status) {
                     alert(result.msg);
                     window.top.location.reload();
                     window.top.tb_remove();   
