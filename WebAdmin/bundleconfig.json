@@ -66,14 +66,18 @@
   {
     "outputFileName": "wwwroot/js/jquery.plugin.min.js",
     "inputFiles": [
-      "wwwroot/js/jquery.*.js",
-      "wwwroot/js/jquery-*.js",
+      "wwwroot/js/jquery.cookie.js",
+      "wwwroot/js/jquery.browser.js",
+      "wwwroot/js/jquery.blockui.js",
+      "wwwroot/js/jquery.numeric.js",
+      "wwwroot/js/jquery.ui.datapicker-zh-CN.js",
       "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "wwwroot/lib/uniform/jquery.uniform.js",
       "wwwroot/lib/data-tables/jquery.dataTables.js",
       "wwwroot/lib/data-tables/DT_bootstrap.js",
-      "wwwroot/lib/jquery-thickbox/jquery.thickbox.js"
+      "wwwroot/lib/jquery-thickbox/jquery.thickbox.js",
+      "wwwroot/lib/jquery-ui/jquery-ui-1.10.1.custom.min.js"
     ]
   },
   {

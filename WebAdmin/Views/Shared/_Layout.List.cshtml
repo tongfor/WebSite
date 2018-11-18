@@ -55,7 +55,7 @@
     </div>
     <!-- BEGIN JAVASCRIPTS -->
     <script type="text/javascript">
-        var staticFileRoot = "@Context.Request.GetHostUri()" + "/";
+        var staticFileRoot = "@Context.Request.GetHostUri()";
     </script>
     <environment include="Development">
         <script src="~/js/jquery-1.8.3.js"></script>
@@ -77,13 +77,13 @@
                 asp-fallback-src="~/js/jquery.min.js"
                 asp-fallback-test="window.jQuery"
                 crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+                integrity="sha384-lifoBlbdwizTl3Yoe612uhI3AcOam/QtWkozF7SuiACaf5UJl5reOYu4MigVxrCH">
         </script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/2.3.1/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+                integrity="sha384-9MLF5zdTAIDmpP/hCVmvqyFya4sY/C2V7iP3EK+NmmUxu1E+H34EnBisZoPZcVTH">
         </script>
         <!-- ie8 fixes -->
         <!--[if lt IE 9]>
