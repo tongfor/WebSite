@@ -34,7 +34,7 @@ namespace BLL
         {
             request = request ?? new ParameterRequest();
             List<Parameter> result = new List<Parameter>();
-            Expression<Func<Parameter, bool>> queryWhere = null;
+            Expression<Func<Parameter, bool>> queryWhere = f => 1 == 1;
             string orderby = string.IsNullOrEmpty(request.OrderBy) ? " AddTime desc" : request.OrderBy;
 
             if (!string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title))

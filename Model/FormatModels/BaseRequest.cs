@@ -10,6 +10,7 @@ namespace Models
     {
         public BaseRequest()
         {
+            PageSize = 10;
         }
 
         /// <summary>

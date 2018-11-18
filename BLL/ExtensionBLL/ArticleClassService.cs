@@ -81,6 +81,8 @@ namespace BLL
             if (model.ParentId == 0)
             {
                 model.Path = "0," + model.Id;
+                model.AddTime = model.AddTime ?? DateTime.Now;
+                model.EditTime = model.EditTime ?? DateTime.Now;
                 result = await MyIBaseDal.ModifyAsync(model);
             }
             return result;
@@ -111,6 +113,7 @@ namespace BLL
                     model.Path = parentModel.Path + "," + model.ParentId;
                 }
             }
+            model.EditTime = model.EditTime ?? DateTime.Now;
             return MyIBaseDal.Modify(model);
         }
 

@@ -78,7 +78,7 @@ namespace WebAdmin.Controllers
         {
             try
             {
-                if ("父级分类".Equals(articleClass.ParentId))
+                if ("根目录".Equals(articleClass.ParentId) || articleClass.ParentId == null)
                 {
                     articleClass.ParentId = 0;
                 }
@@ -190,23 +190,24 @@ namespace WebAdmin.Controllers
                 //查询要删除的单个
                 ArticleClass act = await _articleClassService.GetModelAsync(id.Value);//根据Id查询单个
                 //根据单个的路径，查询他子目录
-                List<ArticleClass> actClassList = await _articleClassService.GetListByAsync(a => a.Path.StartsWith(act.Path));
+                List<ArticleClass> actClassList = await _articleClassService.GetListByAsync(a => a.Path.StartsWith(act.Path + ","));
 
                 List<int?> ids = new List<int?>();
                 foreach (var item in actClassList)
                 {
                     ids.Add(item.Id);
                 }
+                ids.Add(id.Value);
                 if (ids.Count > 0)
                 {
                     int deleteArticleCount = _articleService.DelBy(ac => ids.Contains(ac.ClassId));
                     int resultCount = _articleClassService.DelBy(f => ids.Contains(f.Id));
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "ArticleClass", Request.QueryString);
                 }
                 else
                 {
-                    return RedirectToAction("Index");
+                    return  PackagingAjaxMsg(AjaxStatus.Err, "删除失败！", null);
                 }
             }
             catch (Exception ex)

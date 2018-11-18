@@ -43,8 +43,8 @@
                 onSelect: function (node) {
                     //返回树对象
                     var tree = $(this).tree;
-                    if (node.id == @Model.Id) {                       
-                        alert("不能选择自己为父目录!"); 
+                    if (node.id == @Model.Id) {
+                        alert("不能选择自己为父目录!");
                         //清除选中
                         $('#ParentId').combotree('clear');
                     }
