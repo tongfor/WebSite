@@ -334,10 +334,10 @@ namespace DALMySql
                 sb.AppendFormat(" order by {0} ", orderBy);
             }
 
-            var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString());
+            var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString()).OrderBy(o => o.Id);
             result = new PageData<ArticleView>
             {
-                DataList = await queryResult.Skip(skipIndex).Take(pageSize).OrderBy(o=>o.Id).ToListAsync(),
+                DataList = await queryResult.Skip(skipIndex).Take(pageSize).ToListAsync(),
                 TotalCount = await queryResult.CountAsync()
             };
             return result;
