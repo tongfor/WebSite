@@ -227,7 +227,7 @@ namespace WebAdmin.Controllers
                     BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
                 };
                 MyAdminBugService.Add(Bug);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                return PackagingAjaxMsg(AjaxStatus.Err, "验证码生成异常！" + ex.Message);
             }
         }
 

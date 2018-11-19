@@ -1,0 +1,1 @@
+﻿1、在LINUX服务器上部署时，要支持验证码，需安装libgdiplus包，ubuntu下安装命令如下：apt-get install libgdiplus;
