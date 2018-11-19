@@ -172,6 +172,8 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 .news .news-title {text-align:center;font-size:16px;font-weight:bold;color:#333;min-height:48px;padding:10px 0 10px 0;}
 .news .news-time {text-align:center;font-size:14px;color:#999;line-height:28px;border-bottom:1px solid #cdcece;}
 .news .news-content {padding:15px 0;}
+.news .news-content img{max-width:640px;}
+.news .news-content table{max-width:720px;}
 /*news*/
 /*icon*/
 .icon-circle {

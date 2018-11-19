@@ -30,6 +30,14 @@
     <script src="~/js/leftNewsMenu.js"></script>
     <script src="~/js/timeStyle.js"></script>
     <script src="~/js/base-loading.js"></script>
+    <script>
+        var currentNewsMenu = leftNewsMenu.find(function (obj) {
+            return @Model.ClassId === obj.id;
+        });
+        if (@Model.ClassId && @Model.ClassId > 0 && currentNewsMenu) {
+            $(".crumb").append(" > " + currentNewsMenu.menuTitle);
+        }
+    </script>
 </environment>
 <environment exclude="Development">
     <script src="~/js/leftNewsMenu.min.js" asp-append-version="true"></script>
