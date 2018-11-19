@@ -96,7 +96,7 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 #footer h{color:#666666; font-weight:normal;}
 #footer ul{margin-top:33px; margin-bottom:53px;}
 #footer li{float:left; margin-right:10%; color:#999999; font-size:13px;}
-#footer p a{display:inline-block; width:29px; height:29px; border-radius:30px;background:#A8A8A8; margin-right:20px; line-height:29px; text-align:center;}
+/*#footer p a{display:inline-block; width:29px; height:29px; border-radius:30px;background:#A8A8A8; margin-right:20px; line-height:29px; text-align:center;}*/
 #footer p a img{padding-top:5px;}
 #footer span{display:block; width:100%; height:1px; background:#E4E4E4; margin-bottom:19px; margin-top:53px;}
 #footer p{color:#999999;}

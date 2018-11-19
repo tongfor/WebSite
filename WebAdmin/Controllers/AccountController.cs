@@ -364,6 +364,6 @@ namespace WebAdmin.Controllers
             return !string.IsNullOrEmpty(verifycode) && verifycode.Equals(CurrentAdminVerificationCode, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        #endregion noaction       
+        #endregion noaction
     }
 }
