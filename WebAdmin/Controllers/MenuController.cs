@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL;
 using Common;
+using Common.AspNetCore.Extensions;
 using Common.Atrributes;
 using Common.Config;
 using IBLL;
@@ -36,11 +37,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "菜单查看页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "菜单查看页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -57,11 +67,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "菜单创建页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "菜单创建页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -82,11 +101,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "菜单创建保存异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "菜单创建保存异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -112,11 +140,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "菜单编辑页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "菜单编辑页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -148,11 +185,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "菜单编辑保存异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "菜单编辑保存异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -176,11 +222,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "菜单删除功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "菜单删除功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -196,11 +251,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "菜单批量删除功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "菜单批量删除功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -239,7 +303,19 @@ namespace WebAdmin.Controllers
             }
             catch (Exception ex)
             {
-                return PackagingAjaxMsg(AjaxStatus.Err, ex.Message);
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "查询所有角色菜单树异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -259,7 +335,19 @@ namespace WebAdmin.Controllers
             }
             catch (Exception ex)
             {
-                return PackagingAjaxMsg(AjaxStatus.Err, ex.Message);
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "查询所有菜单树,并以JSON字符串返回异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
     }

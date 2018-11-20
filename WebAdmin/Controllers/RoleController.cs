@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
+using Common.AspNetCore.Extensions;
 using Common.Config;
 using IBLL;
 using Microsoft.AspNetCore.Http;
@@ -49,11 +50,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色查看页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色查看页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -68,11 +78,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色编辑页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色编辑页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -92,11 +111,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色编辑保存异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色编辑保存异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -123,10 +151,19 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色编辑页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色编辑页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
                 ModelState.AddModelError(string.Empty, "内部错误，请联系管理员!");
                 return View();
             }
@@ -159,10 +196,19 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色编辑保存异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色编辑保存异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
                 ModelState.AddModelError(string.Empty, "内部错误，请联系管理员!");
                 return View();
             }
@@ -188,11 +234,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色删除功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色删除功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -208,11 +263,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色批量删除功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色批量删除功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -245,10 +309,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "角色所属用户页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "角色所属用户页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+
                 ModelState.AddModelError(string.Empty, "内部错误，请联系管理员!");
                 return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
@@ -285,11 +359,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "编辑角色菜单页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                await MyOperateLogService.AddAsync(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "编辑角色菜单页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -322,12 +405,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "编辑角色菜单保存异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                ModelState.AddModelError(string.Empty, "内部错误，请联系管理员!");
-                await MyOperateLogService.AddAsync(OperateLog);
-                return View();
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "编辑角色菜单保存异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
     }

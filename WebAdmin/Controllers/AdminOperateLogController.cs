@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
+using Common.AspNetCore.Extensions;
 using Common.Config;
 using IBLL;
 using Microsoft.AspNetCore.Mvc;
@@ -33,14 +34,27 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "操作日志列表错误:" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                OperateLog.OperateTime = DateTime.Now;
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "操作日志列表错误" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
+
+        /// <summary>
+        /// 导出操作日志到Excel
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OperateLogToXls(BaseRequest request)
         {
             try
@@ -64,15 +78,26 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "导出操作日志错误:" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                OperateLog.OperateTime = DateTime.Now;
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "导出操作日志错误" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
+        /// <summary>
+        /// 查看操作日志详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> ViewDescription(int? id)
         {
             try
@@ -84,12 +109,18 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "查看详细列表信息错误:" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                OperateLog.OperateTime = DateTime.Now;
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "查看详细列表信息错误" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);                
             }
         }
 

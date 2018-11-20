@@ -109,7 +109,10 @@
             });
         });
 
-
+        //在localStorage存储最近使用的关键字
+        function saveRecentKeyword() {
+            
+        }
     </script>
 }
 @section MainContent{
@@ -121,14 +124,14 @@
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Title)：</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.Title, new { @class = "m-wrap large", style = "width:120px;" })
+                                @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;" })
                                 <span class="help-inline">@Html.ValidationMessageFor(m => m.Title)</span>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">@Html.DisplayNameFor(m => m.Introduce)：</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.Introduce, new { rows = "3", style = "width:560px;" })
+                                @Html.TextBoxFor(m => m.Introduce, new { rows = "3", style = "width:560px;height:80px;" })
                                 <span class="help-inline">@Html.ValidationMessageFor(m => m.Introduce)</span>                              
                             </div>
                         </div>

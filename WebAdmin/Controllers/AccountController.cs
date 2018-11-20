@@ -50,15 +50,22 @@ namespace WebAdmin.Controllers
         }
 
         [TempData]
-        public string ErrorMessage { get; set; }       
+        public string ErrorMessage { get; set; }
 
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public IActionResult Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
             //await HttpContext.SignOutAsync(DefaultAuthorizeAttribute.DefaultAuthenticationScheme);
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Article");
+            }
+            else
+            {
+                ViewData["ReturnUrl"] = returnUrl;
+                return View();
+            }
         }
 
         // POST: Account/Login
@@ -114,10 +121,13 @@ namespace WebAdmin.Controllers
                     IsShow = 1,
                     IsSolve = 0,
                     BugInfo = "登录功能异常" + ex.Message,
-                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
                 };
                 MyAdminBugService.Add(Bug);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                return PackagingAjaxMsg(AjaxStatus.Err, "登录功能异常" + ex.Message);
             }
         }
 
@@ -167,7 +177,10 @@ namespace WebAdmin.Controllers
                     IsShow = 1,
                     IsSolve = 0,
                     BugInfo = "修改密码错误" + ex.Message,
-                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
                 };
                 MyAdminBugService.Add(Bug);
                 return View(viewModel);
@@ -224,7 +237,10 @@ namespace WebAdmin.Controllers
                     IsShow = 1,
                     IsSolve = 0,
                     BugInfo = "验证码生成异常" + ex.Message,
-                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString())
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
                 };
                 MyAdminBugService.Add(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, "验证码生成异常！" + ex.Message);

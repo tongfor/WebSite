@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Common;
+using Common.AspNetCore.Extensions;
 using Common.Config;
 using IBLL;
 using Microsoft.AspNetCore.Authorization;
@@ -44,11 +45,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "文章类别列表页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "文章类别列表页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -64,11 +74,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "创建文章类别页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "创建文章类别页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -90,11 +109,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "创建文章类别功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "创建文章类别功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
         #endregion
@@ -131,11 +159,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "编辑文章类别页面异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "编辑文章类别页面异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -165,11 +202,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "编辑文章类别功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "编辑文章类别功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
         #endregion
@@ -213,11 +259,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "删除文章类别功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "删除文章类别功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
         #endregion
@@ -239,11 +294,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "AJAX获取文章类别功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "AJAX获取文章类别功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
@@ -264,11 +328,20 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "获取文章类别Json功能异常-" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "获取文章类别Json功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
     }

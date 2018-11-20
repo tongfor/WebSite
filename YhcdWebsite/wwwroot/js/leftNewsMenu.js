@@ -6,7 +6,7 @@
     var _leftNewsMenuInit = function () {
         menuObjs.empty()
         for (var p in leftNewsMenu) {
-            var li = '<li><a href="' + leftNewsMenu[p].menuLink + '?classid=' + leftNewsMenu[p].id + '">' + leftNewsMenu[p].menuTitle + '</a></li>'
+            var li = '<li><a href="' + leftNewsMenu[p].menuLink + '-' + leftNewsMenu[p].id + '.html">' + leftNewsMenu[p].menuTitle + '</a></li>'
             menuObjs.append(li)
         }
     }

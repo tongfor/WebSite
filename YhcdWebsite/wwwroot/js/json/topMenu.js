@@ -26,7 +26,7 @@ var topMenu = [{
 }, {
     "id": 7,
     "menuTitle": "行业资讯",
-    "menuLink": "/Article/List-20.html"
+    "menuLink": "/Article/List-2.html"
 }, {
     "id": 8,
     "menuTitle": "联系我们",

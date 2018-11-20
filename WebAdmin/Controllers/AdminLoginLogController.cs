@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
+using Common.AspNetCore.Extensions;
 using Common.Config;
 using IBLL;
 using Microsoft.AspNetCore.Mvc;
@@ -36,12 +37,19 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "登录日志列表错误:" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                OperateLog.OperateTime = DateTime.Now;
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "登录日志列表错误" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, "登录功能异常" + ex.Message);                
             }
         }
 
@@ -68,12 +76,19 @@ namespace WebAdmin.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
-                OperateLog.OperateInfo = "导出登录日志错误:" + ex.Message;
-                OperateLog.IsSuccess = 0;
-                OperateLog.Description = JsonUtil.StringFilter(ex.StackTrace.ToString());
-                OperateLog.OperateTime = DateTime.Now;
-                MyOperateLogService.Add(OperateLog);
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "导出登录日志错误" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                MyAdminBugService.Add(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, "登录功能异常" + ex.Message);
             }
         }
 
