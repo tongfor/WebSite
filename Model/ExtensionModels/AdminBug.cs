@@ -1,12 +1,12 @@
-﻿/** 
-* AdminUser.cs
+/** 
+* AdminBug.cs
 *
-* 功 能： AdminUser元数据与 AdminRole关联
-* 类 名： AdminUser
+* 功 能： 模型AdminBug
+* 类 名： AdminBug
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2016/9/25 17:05:34   李庸    初版
+* V0.01  2018/4/4 11:41:36   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -14,28 +14,22 @@
 *└──────────────────────────────────┘
 */
 
+//----------AdminBug开始----------
+
 using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Models
 {
-    public partial class AdminUser
+    public partial class AdminBug
     {
-        public AdminUser()
+        public AdminBug()
         {
             AddTime = DateTime.Now;
             EditTime = DateTime.Now;
         }
-
-        /// <summary>
-        /// 初始化对象
-        /// </summary>
-        public void InitAdminUser()
-        {
-            this.AddTime = DateTime.Now;
-            this.IsAble = 1;
-            this.IsChangePwd = 0;
-        }
     }
 }
+
+//----------AdminBug结束----------
+
+    

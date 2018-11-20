@@ -11,6 +11,7 @@ namespace Models
         public AdminMenu()
         {
             AddTime = DateTime.Now;
+            EditTime = DateTime.Now;
             Name = string.Empty;
             ParentId = 0;
             Code = string.Empty;
