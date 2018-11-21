@@ -1,1 +1,2 @@
 ﻿1、在LINUX服务器上部署时，要支持验证码，需安装libgdiplus包，ubuntu下安装命令如下：apt-get install libgdiplus;
+2、在LINUX服务器上部署时注意数据库名及表名默认区分大小写，在服务运行目录找到my.ini或者my.cnf文件，打开文件，找到[mysqld]在下面增加一行 lower_case_table_names=0 （0:大小写敏感;1:大小写不敏感）
