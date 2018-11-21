@@ -58,7 +58,6 @@
             });
 
             articlePidBind(0);
-
             $("#AddTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $("#EditTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $(".ClassId .validatebox-readonly").removeAttr("readonly");
@@ -66,6 +65,8 @@
             if (@ViewBag.ClassId != null && @ViewBag.ClassId > 0) {
                 $('#ClassId').combotree('setValue', @ViewBag.ClassId);
             }
+
+           
         });
 
         //绑定文章类别(类别号)
@@ -109,10 +110,9 @@
             });
         });
 
-        //在localStorage存储最近使用的关键字
-        function saveRecentKeyword() {
-            
-        }
+        //在localStorage中存储的关键字名
+        var savedRecentKeywordKey = "rk";
+
     </script>
 }
 @section MainContent{

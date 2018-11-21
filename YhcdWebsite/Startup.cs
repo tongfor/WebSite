@@ -52,7 +52,7 @@ namespace YhcdWebsite
                       if (context.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
                       {
                           context.Response.ContentType = "text/html";
-                          await context.Response.SendFileAsync($@"{env.WebRootPath}/Errors/500.html");
+                          await context.Response.SendFileAsync($@"{env.WebRootPath}/errors/500.html");
                       }
                   }));
                 app.UseStatusCodePagesWithReExecute("/errors/{0}");
