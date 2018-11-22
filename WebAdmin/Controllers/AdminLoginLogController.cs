@@ -48,12 +48,12 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, "登录功能异常" + ex.Message);                
             }
         }
 
-        public ActionResult LoginLogToXls(BaseRequest request)
+        public async Task<ActionResult> LoginLogToXls(BaseRequest request)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, "登录功能异常" + ex.Message);
             }
         }
