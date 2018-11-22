@@ -72,9 +72,9 @@
                 saveRecentKeyword();
             });
 
-            $(".recentKeyword").mouseup(function (e) {
-                recentKeyword_mouseup(e.target);
-            });
+            //$(".recentKeyword").click(function (e) {
+            //    recentKeyword_click(e.target);
+            //});
         });
 
         //绑定文章类别(类别号)
@@ -166,7 +166,7 @@
                 if (savedRecentKeywords && savedRecentKeywords != undefined) {
                     var arr_SavedRecentKeyword = savedRecentKeywords.split(" ");
                     for (sk in arr_SavedRecentKeyword) {
-                        var span_RecentKeyword = "<span class='recentKeyword'>" + arr_SavedRecentKeyword[sk] + "</span>";
+                        var span_RecentKeyword = "<span class='recentKeyword' onclick='recentKeyword_click(this)'>" + arr_SavedRecentKeyword[sk] + "</span>";
                         operateObjHtml += span_RecentKeyword;
                     }
                     operateObj.html(operateObjHtml);
@@ -178,7 +178,7 @@
         }
 
         //点击最近输入的关键字，自动在文章分类标签中筛重并添加
-        function recentKeyword_mouseup(obj) {
+        function recentKeyword_click(obj) {
             var currentObj = $(obj);
             var currentKeyword = currentObj[0].innerText;
             var inputtedKeywords = $("#Keyword").val();
