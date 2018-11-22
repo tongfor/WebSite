@@ -24,7 +24,6 @@
         })
     }
     return {
-        
         topMenuInit: _topMenuInit,
         topMenuMatch: _topMenuMatch
     }
