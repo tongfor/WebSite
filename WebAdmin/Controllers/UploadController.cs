@@ -25,6 +25,7 @@ namespace WebAdmin.Controllers
         }
 
         [HttpPost]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> FileSave(List<IFormFile> files)
         {
             string webRootPath = _hostingEnv.WebRootPath;
