@@ -113,6 +113,7 @@
                 allowFileManager: true,
                 uploadJson: '/Upload/FileSave',
                 fileManagerJson: '/Upload/FileManage',
+                filterMode: false, //不自动过滤html
                 //让KindEditor异步提交表单，以免服务器接收不到编辑器内数据
                 afterBlur: function () { this.sync(); }
             });
