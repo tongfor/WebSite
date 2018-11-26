@@ -122,7 +122,7 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 /*content*/
 .content {width:100%;margin:0 auto;}
 .content .container{margin-top:20px;padding-bottom:20px;}
-.content .container p {line-height:1.8;margin-bottom:10px;text-indent:2em;}
+.content .container p {line-height:1.8;margin-bottom:10px;}
 .content .container #characteristic {padding-left:2em;}
 .content .container #characteristic li {line-height:28px;}
 .content .container #advantage {margin:0 auto;width:550px;}

@@ -58,6 +58,8 @@
             });
 
             articlePidBind(0);
+            bindRecentKeywords();
+
             $("#AddTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $("#EditTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $(".ClassId .validatebox-readonly").removeAttr("readonly");
@@ -66,7 +68,13 @@
                 $('#ClassId').combotree('setValue', @ViewBag.ClassId);
             }
 
-           
+            $("#Keyword").focusout(function () {
+                saveRecentKeyword();
+            });
+
+            //$(".recentKeyword").click(function (e) {
+            //    recentKeyword_click(e.target);
+            //});
         });
 
         //绑定文章类别(类别号)
@@ -105,6 +113,7 @@
                 allowFileManager: true,
                 uploadJson: '/Upload/FileSave',
                 fileManagerJson: '/Upload/FileManage',
+                filterMode: false, //不自动过滤html
                 //让KindEditor异步提交表单，以免服务器接收不到编辑器内数据
                 afterBlur: function () { this.sync(); }
             });
@@ -112,7 +121,73 @@
 
         //在localStorage中存储的关键字名
         var savedRecentKeywordKey = "rk";
+        //存储多少个关键字
+        var savedRecentKeywordCount = 3;
 
+        //在LocalStorage中存储最近使用的关键字
+        function saveRecentKeyword() {
+            var storage = window.localStorage;
+            if (storage) {
+                var inputtedKeywords = $("#Keyword").val();
+                var arr_InputtedKeyword = inputtedKeywords.split(' ');
+                var savedRecentKeywords = storage.getItem(savedRecentKeywordKey);
+                if (savedRecentKeywords && savedRecentKeywords != undefined) {
+                    var arr_SavedRecentKeyword = savedRecentKeywords.split(" ");
+                    var arr_SavingRecentKeyword = arr_SavedRecentKeyword;
+                    for (k in arr_InputtedKeyword) {
+                        if (arr_SavedRecentKeyword.indexOf(arr_InputtedKeyword[k]) < 0 && arr_InputtedKeyword[k] !="") {
+                            arr_SavingRecentKeyword.push(arr_InputtedKeyword[k]);
+                        }
+                    }
+                    if (arr_SavingRecentKeyword.length > savedRecentKeywordCount) {
+                        arr_SavingRecentKeyword = arr_SavingRecentKeyword.slice(arr_SavingRecentKeyword.length - savedRecentKeywordCount, arr_SavingRecentKeyword.length);
+                    }
+                    var savingRecentKeyword = arr_SavingRecentKeyword.join(" ");
+                    savingRecentKeyword = savingRecentKeyword.trimRight(" ");
+                        storage.setItem(savedRecentKeywordKey, savingRecentKeyword);
+                }
+                else {
+                    if (arr_InputtedKeyword.length > savedRecentKeywordCount) {
+                        arr_InputtedKeyword = arr_InputtedKeyword.slice(0, savedRecentKeywordCount);
+                    }
+                    storage.setItem(savedRecentKeywordKey, inputtedKeywords);
+                }
+                bindRecentKeywords();
+            }          
+        }
+
+        //绑定最近输入的关键字
+        function bindRecentKeywords() {
+            var storage = window.localStorage;
+            if (storage) {
+                var operateObj = $(".recentKeywords");
+                var operateObjHtml = "";
+                var savedRecentKeywords = storage.getItem(savedRecentKeywordKey);
+                operateObj.css("height", "0px");
+                if (savedRecentKeywords && savedRecentKeywords != undefined) {
+                    var arr_SavedRecentKeyword = savedRecentKeywords.split(" ");
+                    for (sk in arr_SavedRecentKeyword) {
+                        var span_RecentKeyword = "<span class='recentKeyword' onclick='recentKeyword_click(this)'>" + arr_SavedRecentKeyword[sk] + "</span>";
+                        operateObjHtml += span_RecentKeyword;
+                    }
+                    operateObj.html(operateObjHtml);
+                    if (savedRecentKeywords.length > 0) {
+                        operateObj.css("height", "32px");
+                    }
+                }
+            }
+        }
+
+        //点击最近输入的关键字，自动在文章分类标签中筛重并添加
+        function recentKeyword_click(obj) {
+            var currentObj = $(obj);
+            var currentKeyword = currentObj[0].innerText;
+            var inputtedKeywords = $("#Keyword").val();
+            var arr_InputtedKeyword = inputtedKeywords.split(' ');
+            if (arr_InputtedKeyword.indexOf(currentKeyword) < 0) {
+                $("#Keyword").val($("#Keyword").val() + " " + currentKeyword);
+            }
+        }
     </script>
 }
 @section MainContent{
@@ -141,7 +216,7 @@
                                 @Html.TextBoxFor(m => m.Keyword, new { @class = "m-wrap large", style = "width: 120px;" })<span class="gray" style="line-height:34px;">&nbsp;在此输入标签关键字，以空格分隔。</span>
                                 <span class="help-inline">@Html.ValidationMessageFor(m => m.Introduce)</span>
                                 <br />
-                                <div class="recentKeyword"></div>
+                                <div class="recentKeywords"></div>
                             </div>
                         </div>
                         <div class="control-group">

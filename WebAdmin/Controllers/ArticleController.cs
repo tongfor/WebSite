@@ -74,13 +74,13 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
 
         // GET: Article/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             try
             {
@@ -104,7 +104,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -152,7 +152,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -191,7 +191,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -246,7 +246,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -283,7 +283,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -312,7 +312,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }

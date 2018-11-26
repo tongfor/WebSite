@@ -47,7 +47,7 @@ namespace DALMySql
             sb.Append("AdminUserAdminRole ur on u.Id=ur.UserId  ");
             sb.Append("join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join ");
             sb.Append("AdminMenu m on rmb.MenuId=m.Id ");
-            sb.Append($" where u.id={userId} order by m.ParentId,m.Sort");
+            sb.Append($" where u.id={userId} order by menuparentid,menusort");
             
             var queryResult = SqlQuery<AdminUserMenuView>(_db, sb.ToString());
             if (queryResult != null)
@@ -72,7 +72,7 @@ namespace DALMySql
             sb.Append("AdminUserAdminRole ur on u.Id=ur.UserId  ");
             sb.Append("join AdminRoleAdminMenuButton rmb on ur.RoleId=rmb.RoleId  join ");
             sb.Append("AdminMenu m on rmb.MenuId=m.Id ");
-            sb.Append($" where u.id={userId} order by m.ParentId,m.Sort");
+            sb.Append($" where u.id={userId} order by menuparentid,menusort");
 
             var queryResult = await SqlQueryAsync<AdminUserMenuView>(_db, sb.ToString());
             if (queryResult != null)

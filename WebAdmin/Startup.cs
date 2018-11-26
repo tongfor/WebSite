@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Common.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,11 @@ namespace WebAdmin
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SiteConfig>(Configuration.GetSection("SiteConfig"));
+
+            services.Configure<FormOptions>(x => {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue;
+            });
 
             services.AddScoped<IOnDatabaseConfiguring, EntityFrameWorkConfigure>();
 

@@ -62,7 +62,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -90,7 +90,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -123,7 +123,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -163,7 +163,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 ModelState.AddModelError(string.Empty, "内部错误，请联系管理员!");
                 return View();
             }
@@ -208,7 +208,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 ModelState.AddModelError(string.Empty, "内部错误，请联系管理员!");
                 return View();
             }
@@ -246,7 +246,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -275,7 +275,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -321,7 +321,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
 
                 ModelState.AddModelError(string.Empty, "内部错误，请联系管理员!");
                 return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -371,7 +371,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -417,7 +417,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-                MyAdminBugService.Add(Bug);
+               await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }

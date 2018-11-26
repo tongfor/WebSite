@@ -248,7 +248,7 @@ namespace BLL
             }
             if (string.IsNullOrEmpty(request.OrderBy) || !CanOrdered(request.OrderBy))
             {
-                request.OrderBy = "AddTime desc";
+                request.OrderBy = " AddTime desc";
             }
             var articles = GetOrderArticleIncludeClassByPage(request.PageIndex, request.PageSize, queryWhere, request.OrderBy, out totalCount);
 
@@ -289,7 +289,7 @@ namespace BLL
             }
             if (string.IsNullOrEmpty(request.OrderBy) || !CanOrdered(request.OrderBy))
             {
-                request.OrderBy = "AddTime desc";
+                request.OrderBy = " AddTime desc";
             }
             var result = await GetOrderArticleIncludeClassByPageAsync(request.PageIndex, request.PageSize, queryWhere, request.OrderBy);
 
@@ -333,7 +333,7 @@ namespace BLL
 
             //articles = GetArticleIncludeClass(strWhere);
             int totalCount = 0;
-            articles = GetOrderArticleIncludeClassByPage(request.PageIndex, request.PageSize, strWhere, " aco.AddTime desc", out totalCount);
+            articles = GetOrderArticleIncludeClassByPage(request.PageIndex, request.PageSize, strWhere, " AddTime desc", out totalCount);
 
             //return articles.OrderByDescending(u => u.id).ToPagedList(request.PageIndex, request.PageSize, totalCount);
             return articles.ToPagedList(request.PageIndex, request.PageSize, totalCount);
@@ -349,7 +349,7 @@ namespace BLL
             request = request ?? new ArticleRequest();
             List<ArticleView> result = new List<ArticleView>();
             string strWhere = " 1=1 ";
-            string orderby = string.IsNullOrEmpty(request.OrderBy) ? " aco.AddTime desc" : request.OrderBy;
+            string orderby = string.IsNullOrEmpty(request.OrderBy) ? " AddTime desc" : request.OrderBy;
 
             if (!string.IsNullOrEmpty(request.Title) && Utils.IsSafeSqlString(request.Title))
             {
