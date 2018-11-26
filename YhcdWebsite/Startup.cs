@@ -11,6 +11,7 @@ using NLog.Web;
 using YhcdWebsite.Config;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace YhcdWebsite
 {
@@ -46,9 +47,18 @@ namespace YhcdWebsite
             else
             {
                 //app.UseExceptionHandler("/Home/Error");
+
+                loggerFactory.AddNLog(); //添加NLog
+                LogManager.LoadConfiguration("nlog.config");
+                var logger = LogManager.GetCurrentClassLogger();
+
                 app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
                   {
+                      var feature = context.Features.Get<IExceptionHandlerFeature>();
+                      var error = feature?.Error;
+                      logger.Error(error.Message, error.StackTrace);
                       context.Response.StatusCode = 500;
+
                       if (context.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
                       {
                           context.Response.ContentType = "text/html";
@@ -57,9 +67,6 @@ namespace YhcdWebsite
                   }));
                 app.UseStatusCodePagesWithReExecute("/errors/{0}");
             }
-
-            loggerFactory.AddNLog(); //添加NLog
-            LogManager.LoadConfiguration("nlog.config");
 
             app.UseStaticFiles();
 

@@ -73,7 +73,7 @@ namespace YhcdWebsite.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Warn($"于{DateTime.Now}在IP:{HttpContext.GetUserIp()}访问文章详细页报\"{ex.Message}\"，错误详细信息：{ex.StackTrace.ToString()}.");
+                _logger.Error($"于{DateTime.Now}在IP:{HttpContext.GetUserIp()}访问文章详细页报\"{ex.Message}\"，错误详细信息：{ex.StackTrace.ToString()}.");
                 return new LocalRedirectResult("/errors/500");
             }
         }
