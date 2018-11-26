@@ -30,7 +30,7 @@ namespace BLL
     /// </summary>
     public partial class AdminMenuService
     {
-        #region 获取文章关联文章类别的数据（直接执行查询语句）
+        #region 根据用户ID获取当前用户能够查询的菜单List（直接执行查询语句）
 
         /// <summary>
         /// 根据用户ID获取当前用户能够查询的菜单List（直接执行查询语句）
