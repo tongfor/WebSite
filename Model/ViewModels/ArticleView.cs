@@ -47,34 +47,39 @@ namespace Models
         [DisplayName("添加人用户名")]
         [Required]
         public string UserName { get; set; }
+        private Nullable<int> _lookCount = 0;
         [DisplayName("文章查看次数")]
-        public Nullable<int> LookCount { get; set; }
+        public Nullable<int> LookCount
+        {
+            get
+            {
+                return _lookCount;
+            }
+            set
+            {
+                _lookCount = value == null ? value : value.Value;               
+            }
+        }
         [DisplayName("文章生成的url")]
         public string AddHtmlurl { get; set; }
-        private sbyte _isTop = 0;
+        private Nullable<sbyte> _isTop = 0;
         [DisplayName("是否置顶")]
         public Nullable<sbyte> IsTop
         {
             get { return _isTop; }
             set
             {
-                if (value != null)
-                {
-                    _isTop = value.Value;
-                }
+                _isTop = value == null ? value : value.Value;
             }
         }
-        private sbyte _isMarquee = 0;
+        private Nullable<sbyte> _isMarquee = 0;
         [DisplayName("是否滚动")]
         public Nullable<sbyte> IsMarquee
         {
             get { return _isMarquee; }
             set
             {
-                if (value != null)
-                {
-                    _isMarquee = value.Value;
-                }
+                _isMarquee = value == null ? value : value.Value;
             }
         }
         [DisplayName("排序")]

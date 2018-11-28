@@ -143,7 +143,7 @@ namespace DALMySql
                 }
             }
             var articleViewList = orderQuery.ToList();
-            articleViewList = articleViewList.Skip(skipIndex).Take(pageSize).ToList();
+            articleViewList = articleViewList.Skip(skipIndex).Take(pageSize).OrderByDescending(o => o.AddTime).ToList();
             totalCount = dbQuery.Count();
             return articleViewList;
         }       
@@ -298,7 +298,7 @@ namespace DALMySql
             var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString());
             if (queryResult != null)
             {
-                articleList = queryResult.Skip(skipIndex).Take(pageSize).ToList();
+                articleList = queryResult.Skip(skipIndex).Take(pageSize).OrderByDescending(o => o.AddTime).ToList();
                 totalCount = queryResult.Count();
             }
             return articleList;
@@ -334,10 +334,10 @@ namespace DALMySql
                 sb.AppendFormat(" order by {0} ", orderBy);
             }
 
-            var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString()).OrderBy(o => o.Id);
+            var queryResult = _db.Set<ArticleView>().FromSql(sb.ToString());
             result = new PageData<ArticleView>
             {
-                DataList = await queryResult.Skip(skipIndex).Take(pageSize).ToListAsync(),
+                DataList = await queryResult.Skip(skipIndex).Take(pageSize).OrderByDescending(o => o.AddTime).ToListAsync(),
                 TotalCount = await queryResult.CountAsync()
             };
             return result;
