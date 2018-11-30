@@ -89,7 +89,10 @@ namespace Setting
             .AddCookie(DefaultAuthorizeAttribute.DefaultAuthenticationScheme, o =>
             {
                 o.LoginPath = new PathString("/Account/Login");
-                o.ExpireTimeSpan = TimeSpan.FromHours(expiresHours);
+                if (expiresHours > 0)
+                {
+                    o.ExpireTimeSpan = TimeSpan.FromHours(expiresHours);
+                }
             });
         }
     }
