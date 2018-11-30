@@ -1,5 +1,4 @@
 ﻿@model Models.Article
-
 <!--content-->
 <section class="content">
     <section class="container">
@@ -25,23 +24,27 @@
 </section>
 <!--content-->
 @section Scripts {
-<environment include="Development">
-    <script src="~/js/Json/LeftNewsMenu.js"></script>
-    <script src="~/js/leftNewsMenu.js"></script>
-    <script src="~/js/timeStyle.js"></script>
-    <script src="~/js/base-loading.js"></script>
+    <environment include="Development">
+        <script src="~/js/Json/LeftNewsMenu.js"></script>
+        <script src="~/js/leftNewsMenu.js"></script>
+        <script src="~/js/timeStyle.js"></script>
+        <script src="~/js/base-loading.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/leftNewsMenu.min.js" asp-append-version="true"></script>
+        <script src="~/js/timeStyle.min.js" asp-append-version="true"></script>
+        <script src="~/js/base-loading.min.js" asp-append-version="true"></script>
+    </environment>
     <script>
-        var currentNewsMenu = leftNewsMenu.find(function (obj) {
-            return @Model.ClassId === obj.id;
+        $(document).ready(function () {
+            var currentNewsMenu = leftNewsMenu.find(function (obj) {
+                return @Model.ClassId === obj.id;
+            });
+            if (@Model.ClassId && @Model.ClassId > 0 && currentNewsMenu) {
+                $(".crumb").append(" > " + currentNewsMenu.menuTitle);
+                $("#menu-left a").parent().removeClass("current");
+                $("#menu-left a[href$='/Article/List-" +@Model.ClassId+".html']").parent().addClass("current");
+            }
         });
-        if (@Model.ClassId && @Model.ClassId > 0 && currentNewsMenu) {
-            $(".crumb").append(" > " + currentNewsMenu.menuTitle);
-        }
     </script>
-</environment>
-<environment exclude="Development">
-    <script src="~/js/leftNewsMenu.min.js" asp-append-version="true"></script>
-    <script src="~/js/timeStyle.min.js" asp-append-version="true"></script>
-    <script src="~/js/base-loading.min.js" asp-append-version="true"></script>
-</environment>
 }

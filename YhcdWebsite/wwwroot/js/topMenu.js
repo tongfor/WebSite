@@ -15,7 +15,7 @@
     var _topMenuMatch = function () {
         menuObjs.children("li").each(function (i, e) {
             var href = $(this).find("a").attr("href")
-            if (currentUrl.split('?')[0].indexOf(href.split('?')[0].split('.')[0]) !== -1 && href !== "/") {
+            if ((currentUrl.split('?')[0].indexOf(href.split('?')[0].split('.')[0]) !== -1 || ((currentUrl.split('/')[3].indexOf("Article") !== -1 || currentUrl.split('/')[3].indexOf("article") !== -1) && (href.split('/')[1].indexOf("Article") !== -1 || href.split('/')[1].indexOf("article") !== -1))) && href !== "/") {
                 $(this).addClass("current")
             }
             else {

@@ -84,15 +84,15 @@ namespace Setting
 
         public static void UseAdminSetting(this IServiceCollection services, IConfiguration configuration)
         {            
-            int expiresHours = configuration.GetSection("SiteConfig").GetValue("DefaultLoginExpiresHours", 2);
+            var expiresHours = configuration.GetSection("SiteConfig").GetValue("DefaultLoginExpiresHours", 2.0);
             services.AddAuthentication(DefaultAuthorizeAttribute.DefaultAuthenticationScheme)
             .AddCookie(DefaultAuthorizeAttribute.DefaultAuthenticationScheme, o =>
             {
                 o.LoginPath = new PathString("/Account/Login");
-                if (expiresHours > 0)
-                {
-                    o.ExpireTimeSpan = TimeSpan.FromHours(expiresHours);
-                }
+                //if (expiresHours > 0)
+                //{
+                //    o.ExpireTimeSpan = TimeSpan.FromHours(expiresHours);
+                //}
             });
         }
     }
