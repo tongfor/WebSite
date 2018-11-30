@@ -339,12 +339,20 @@ namespace WebAdmin.Controllers
                         var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
                         var authenticationProp = new AuthenticationProperties()
                         {
-                            IsPersistent = true
+                            IsPersistent = true,
+                            AllowRefresh = true                           
                         };
                         if (isSaveLogin && saveDays >= 0)
                         {
                             authenticationProp.ExpiresUtc = DateTime.UtcNow.AddDays(saveDays);
-                        }                        
+                        }
+                        else
+                        {
+                            int expiresHours = 2;
+                            int.TryParse(SiteConfigSettings.DefaultLoginExpiresHours, out expiresHours);
+                            authenticationProp.ExpiresUtc = DateTime.UtcNow.AddHours(expiresHours);
+                            //authenticationProp.ExpiresUtc = DateTime.UtcNow.AddSeconds(5);
+                        }
                         await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties());
                        
 

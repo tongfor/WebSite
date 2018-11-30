@@ -23,6 +23,7 @@ using IBLL;
 using IDAL;
 using RepositoryPattern;
 using Setting.Mvc.Authorize;
+using System;
 
 namespace Setting
 {
@@ -82,11 +83,13 @@ namespace Setting
         }
 
         public static void UseAdminSetting(this IServiceCollection services, IConfiguration configuration)
-        {
+        {            
+            int expiresHours = configuration.GetSection("SiteConfig").GetValue("DefaultLoginExpiresHours", 2);
             services.AddAuthentication(DefaultAuthorizeAttribute.DefaultAuthenticationScheme)
             .AddCookie(DefaultAuthorizeAttribute.DefaultAuthenticationScheme, o =>
             {
                 o.LoginPath = new PathString("/Account/Login");
+                o.ExpireTimeSpan = TimeSpan.FromHours(expiresHours);
             });
         }
     }

@@ -71,6 +71,10 @@ namespace Common.Config
         /// 申请入驻文档保存位置
         /// </summary>
         public string ApplyEnterWordPath { get; set; }
+        /// <summary>
+        /// 后台默认登录过期小时数
+        /// </summary>
+        public string DefaultLoginExpiresHours { get; set; }
         #endregion
     }
 }

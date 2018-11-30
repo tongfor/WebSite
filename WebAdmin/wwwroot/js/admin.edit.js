@@ -17,7 +17,8 @@
             url: $(this).attr("action"),
             data: $(this).serialize(),
             type: "POST",
-            beforeSend: function () {               
+            beforeSend: function () {
+                $("#submit").attr("disabled", "true");//防止连击
                 $("#submitloading").show();
             },
             success: function (result, status) {
@@ -27,9 +28,11 @@
                     window.top.tb_remove();   
                 }
                 $("#submitloading").hide();
+                $("#submit").attr("disabled", "false");
             },
             error(xhr, status, error) {
                 $("#submitloading").hide();
+                $("#submit").attr("disabled", "false");
                 console.log(xhr);
                 console.log(status);
                 console.log(error);
