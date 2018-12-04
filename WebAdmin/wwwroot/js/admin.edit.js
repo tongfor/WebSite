@@ -1,4 +1,9 @@
 ﻿$(document).ready(function () {
+    $("input").change(function (e) {
+        var obj = $(e.target);
+        obj.val(obj.val().trim());
+    });
+
     $("#cancel").click(function () {
         window.top.tb_remove();
     });
