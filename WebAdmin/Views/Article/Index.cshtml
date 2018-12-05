@@ -140,14 +140,14 @@
                     <td>
                         <input type="checkbox" class="checkboxes" name='ids' value='@m.Id' />
                     </td>
-                    <td>
+                    <td style="max-width:480px;">
                         <a href="@articleUrl@m.Id" target="_blank">@m.Title</a>
                     </td>
                     <td>
                         @m.ArticleClassName
                     </td>
                     <td>
-                        @m.AddTime
+                        @m.AddTime.Value.ToString("yyyy-MM-dd HH:mm:ss")
                     </td>
                     <td>
                         @m.LookCount
