@@ -23,18 +23,18 @@ namespace WebAdmin.Controllers
     [AllowAnonymous]
     public class AccountController : BaseController
     {
-        /// <summary>
-        /// 默认记住账号天数
-        /// </summary>
-        private const int DefaultRemberDays = 7;
-        /// <summary>
-        /// 同一IP允许登录失败最大限制
-        /// </summary>
-        private const int MaxLoginErrorCount = 5;
-        /// <summary>
-        /// 同一IP登录失败超过最大限制后，多长时间能重新登录
-        /// </summary>
-        private const int LoginErrorTryMinutes = 30;
+        ///// <summary>
+        ///// 默认记住账号天数
+        ///// </summary>
+        //private const int DefaultRemberDays = 7;
+        ///// <summary>
+        ///// 同一IP允许登录失败最大限制
+        ///// </summary>
+        //private const int MaxLoginErrorCount = 5;
+        ///// <summary>
+        ///// 同一IP登录失败超过最大限制后，多长时间能重新登录
+        ///// </summary>
+        //private const int LoginErrorTryMinutes = 30;
 
         private readonly IAdminUserService _adminUserService;
         private readonly IAdminLoginLogService _loginLogService;
@@ -86,16 +86,16 @@ namespace WebAdmin.Controllers
                 }
                 DateTime? lastLoginErrorDatetime = null;
                 string userIp = HttpContext.GetUserIp();
-                var loginCheck = await _loginLogService.CheckLoginErrorCountAsync(MaxLoginErrorCount, LoginErrorTryMinutes, userIp);
+                var loginCheck = await _loginLogService.CheckLoginErrorCountAsync(SiteConfigSettings.MaxLoginErrorCount, SiteConfigSettings.LoginErrorTryMinutes, userIp);
                 if (loginCheck.Item1)
                 {
                     //$"尝试登录次数超过最大限制，请{LoginErrorTryMinutes}后重试！"
-                    ModelState.AddModelError("error", string.Format("尝试登录次数超过最大限制，请{0}后重试！", LoginErrorTryMinutes));
+                    ModelState.AddModelError("error", string.Format("尝试登录次数超过最大限制，请{0}后重试！", SiteConfigSettings.LoginErrorTryMinutes));
                     lastLoginErrorDatetime = loginCheck.Item2;
                 }
                 AjaxMsgModel amm = new AjaxMsgModel();
 
-                amm = await LoginIn(model.UserName, model.Password, model.VerifyCode, model.RememberMe, DefaultRemberDays);
+                amm = await LoginIn(model.UserName, model.Password, model.VerifyCode, model.RememberMe, SiteConfigSettings.DefaultRemberDays);
                 if (amm != null && amm.Status == AjaxStatus.IsSuccess)
                 {
                     _logger.LogInformation($"用户{model.UserName}于{DateTime.Now}在IP:{userIp}上登录.");
@@ -339,22 +339,13 @@ namespace WebAdmin.Controllers
                         var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
                         var authenticationProp = new AuthenticationProperties()
                         {
-                            IsPersistent = false,
-                            AllowRefresh= true
+                            IsPersistent = true
                         };
                         if (isSaveLogin && saveDays >= 0)
                         {
                             authenticationProp.ExpiresUtc = DateTime.UtcNow.AddDays(saveDays);
                         }
-                        else
-                        {
-                            double expiresHours = 2.0;
-                            double.TryParse(SiteConfigSettings.DefaultLoginExpiresHours, out expiresHours);
-                            //authenticationProp.ExpiresUtc = DateTime.UtcNow.AddHours(expiresHours);
-                            authenticationProp.ExpiresUtc = DateTime.UtcNow.AddSeconds(5);
-                        }
                         await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties());
-                       
 
                         amm.Msg = "登录成功！";
                         amm.Status = AjaxStatus.IsSuccess;

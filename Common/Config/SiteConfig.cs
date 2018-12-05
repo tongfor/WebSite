@@ -74,7 +74,19 @@ namespace Common.Config
         /// <summary>
         /// 后台默认登录过期小时数
         /// </summary>
-        public string DefaultLoginExpiresHours { get; set; }
+        public double DefaultLoginExpiresHours { get; set; } = 2;
+        /// <summary>
+        /// 默认记住账号天数
+        /// </summary>
+        public int DefaultRemberDays { get; set; } = 7;
+        /// <summary>
+        /// 同一IP允许登录失败最大限制
+        /// </summary>
+        public int MaxLoginErrorCount { get; set; } = 5;
+        /// <summary>
+        /// 同一IP登录失败超过最大限制后，多长时间能重新登录
+        /// </summary>
+        public int LoginErrorTryMinutes { get; set; } = 30;
         #endregion
     }
 }
