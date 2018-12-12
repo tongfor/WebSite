@@ -1,12 +1,13 @@
 /* CSS Document */
-* {font-size:14px;}
+body {font-family: "Microsoft Yahei","微软雅黑","宋体", "Simsun", "Open Sans";font-size:62.5%;}
+* {font-size:14px;font-size:1.4rem;}
 
 /*top*/
 #top{height:80px; line-height:80px; position:fixed; width:100%; z-index:9; top:0; background:#fff; border-bottom:1px solid #E6E6E6;}
 #top ul{margin-left:123px;}
 #top li{float:left;}
 #top li.li2{width:87px;}
-#top li a{display:inline-block; font-size:16px; padding:0 10px; color:#6F6F6F;}
+#top li a{display:inline-block; font-size:1.6rem; padding:0 10px; color:#6F6F6F;}
 #top li:hover a {background:#3ca3da; color:#fff;}
 #top .current a {background:#3ca3da; color:#fff;}
 #top li div{display:none; height:59px; line-height:59px; padding-left:42px; margin-top:-1px;}
@@ -14,7 +15,7 @@
 #top li:hover div{display:block; width:1000px; background:#4E4C51;} 
 #top li.li2:hover div a{background:none;}
 #top span{display:block; width:1px; height:80px; background:#E7E7E7;}
-#top p{font-size:13px; color:#8C8C8C; margin-left:14px;}
+#top p{font-size:1.3rem; color:#8C8C8C; margin-left:14px;}
 #top i{margin-top:35px; margin-left:10px;}
 .navBtn,.userBtn{display:none;}
 
@@ -27,14 +28,14 @@
 
 /*service*/
 #service{padding-top:48px; padding-bottom:35px; /*background:#F2F2F2;*/}
-#service .title h3{font-size:26px; color:#333333; font-weight:normal; text-align:center;}
+#service .title h3{font-size:2.6rem; color:#333333; font-weight:normal; text-align:center;}
 #service .title p{color:#9A9A9A; text-align:center; margin-top:14px;}
 #service ul{margin-top:30px;}
 #service li{width:25%; box-sizing:border-box; float:left; text-align: center; padding-right:20px;}
-#service li h3{color:#595959; font-weight:normal; margin-top:29px; margin-bottom:13px; white-space:nowrap; /*overflow:hidden; text-overflow:ellipsis;*/font-size:20px;}
-#service li span{font-size:13px; color:#B6B6B6;}
+#service li h3{color:#595959; font-weight:normal; margin-top:29px; margin-bottom:13px; white-space:nowrap; /*overflow:hidden; text-overflow:ellipsis;*/font-size:2.0rem;}
+#service li span{font-size:1.3rem; color:#B6B6B6;}
 #service li p{margin-top:28px; display:block; }
-#service li p span{font-size:14px; color:#666666;font-weight:bold;margin:0 auto; width:90px;height:30px; line-height:30px;display:block; border:solid 1px #3ca3da;}
+#service li p span{font-size:1.4rem; color:#666666;font-weight:bold;margin:0 auto; width:90px;height:30px; line-height:30px;display:block; border:solid 1px #3ca3da;}
 #service li p span:hover {color:#efefef;background-color:#3ca3da;border:solid 1px #04517a}
 #service li i{display:block; width:100px; height:1px; background:#DFDFDF; margin-left:85px; margin-top:13px; margin-bottom:22px;}
 #service li a:hover i{width:26px; transition: all ease-out .2s}
@@ -44,9 +45,9 @@
 /*intro*/
 #intro{border-top:1px solid #E8E8E8;background-color:#3ca3da;}
 #intro>div{padding-top:52px;}
-#intro>div h2{font-size:26px; color:#FFF; text-align:center; margin-left:auto; font-weight:normal;}
+#intro>div h2{font-size:2.6rem; color:#FFF; text-align:center; margin-left:auto; font-weight:normal;}
 #intro>div span{color:#FFF; text-align:center; margin-top:12px; margin-bottom:30px; margin-left:auto; display:block;}
-#intro p{color:#FFF; text-align:left; text-indent:2em;font-size:16px;}
+#intro p{color:#FFF; text-align:left; text-indent:2em;font-size:1.6rem;}
 
 #intro .more,#news .more {border: 1px solid #EFEFEF; position: relative; transition: all 0.5s ease 0s; height:32px; line-height:32px; text-align:center; margin-left:43%; margin-top:31px; margin-bottom:48px; display:block; width:160px; color: transparent; background:url(../images/jiantou.png) no-repeat 32px -97px; }
 
@@ -61,14 +62,14 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 /*news*/
 #news{margin-top:81px;}
-#news>h3{color:#333333; font-size:26px; font-weight:normal; margin-bottom:14px; text-align:center;}
+#news>h3{color:#333333; font-size:2.6rem; font-weight:normal; margin-bottom:14px; text-align:center;}
 #news>span{text-align:center; color:#979797; margin-left:48%;}
 #news p{color:#8F8F8F;}
 #news ul{margin-top:70px; text-align:center;}
 #news li{width:33.333%; box-sizing:border-box; float:left; padding-right:20px; transition:All 0.4s ease-in-out; -webkit-transition:All 0.4s ease-in-out;    -moz-transition:All 0.4s ease-in-out; -o-transition:All 0.4s ease-in-out;}
 #news li.last{padding-right:0;}
 #news li img{display:block; width:100%; height:189px;}
-#news li h3{font-size:16px; font-weight:normal; color:#333333; margin-top:16px; margin-bottom:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+#news li h3{font-size:1.6rem; font-weight:normal; color:#333333; margin-top:16px; margin-bottom:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 #news li i{width:376px; height:1px; display:block; background:#EFEFEF; margin-top:30px; margin-bottom:36px;}
 #news li p{color:#666666; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center;}
 #news li:hover{transform:translate(0,-20px); -webkit-transform:translate(0,-20px);    -moz-transform:translate(0,-20px); -o-transform:translate(0,-20px); -ms-transform:translate(0,-20px);}
@@ -95,7 +96,7 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 #footer{background:#F0F0F0; padding-top:43px; padding-bottom:15px;}
 #footer h{color:#666666; font-weight:normal;}
 #footer ul{margin-top:33px; margin-bottom:53px;}
-#footer li{float:left; margin-right:10%; color:#999999; font-size:13px;}
+#footer li{float:left; margin-right:10%; color:#999999; font-size:1.3rem;}
 /*#footer p a{display:inline-block; width:29px; height:29px; border-radius:30px;background:#A8A8A8; margin-right:20px; line-height:29px; text-align:center;}*/
 #footer p a img{padding-top:5px;}
 #footer span{display:block; width:100%; height:1px; background:#E4E4E4; margin-bottom:19px; margin-top:53px;}
@@ -129,48 +130,47 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 .content .container #advantage li {margin-top:3px;height:45px; line-height:45px;}
 
 .content .container #classicList {padding:20px 10px;}
-.content .container #classicList li {font-size:16px;color:#666;font-weight:bold;line-height:36px;}
+.content .container #classicList li {font-size:1.6rem;color:#666;font-weight:bold;line-height:36px;}
 
-.content .mask-left{margin-left:200px;height: 45px;width: 350px;color:#007dbd;background:url(/images/mask-left.jpg) no-repeat center;font-size:14px;font-weight:bold;}
-.content .mask-right{height: 45px;width: 350px;color:white;background:url(/images/mask-right.jpg) no-repeat center;font-size:14px;font-weight:bold;}
+.content .mask-left{margin-left:200px;height: 45px;width: 350px;color:#007dbd;background:url(/images/mask-left.jpg) no-repeat center;font-size:1.4rem;font-weight:bold;}
+.content .mask-right{height: 45px;width: 350px;color:white;background:url(/images/mask-right.jpg) no-repeat center;font-size:1.4rem;font-weight:bold;}
 
-.content h3 {font-size:16px;font-weight:bold;line-height:28px;}
-.content h4 {font-size:14px;font-weight:bold;line-height:22px;}
+.content h3 {font-size:1.6rem;font-weight:bold;line-height:28px;}
+.content h4 {font-size:1.4rem;font-weight:bold;line-height:22px;}
 /*content*/
 
 /*menu-left*/
 .menu-left {padding-right:20px;}
 .menu-left li {height:45px;line-height:45px;width:200px;background-color:#9b9b9a;color:black;border-bottom: 2px solid #FFF;padding-left:15px;}
 .menu-left li:hover {background-color:#007dbd;}
-.menu-left li a {font-size:14px;color:white;}
+.menu-left li a {font-size:1.4rem;color:white;}
 .menu-left .current {background-color:#007dbd;}
 /*menu-left*/
 
 /*services-content*/
 .services-content {/*border-left:1px solid #9b9b9a;*/padding:0 20px;width:auto;}
-.services-content .crumb{height:45px;background-color:#9b9b9a;color:white;line-height:45px;padding:0 20px;}
-.services-content .crumb a {color:white;}
+.services-content .crumb{height:45px;background-color:#9b9b9a;color:white;line-height:45px;padding:0 20px;font-size:1.4rem;}
+.services-content .crumb a {color:white;font-size:1.4rem;}
 .services-content .crumb a:hover {color:red;}
 .services-content .crumb img{width:15px;height:15px;margin:-3px 0 0 0;}
 .services-content .crumb+h3{padding:10px 0;}
 /*services-content*/
 
 /*content-list*/
-.content-list {padding:20px 0;}
 .content-list ul {min-height:80px;height:auto !important;border-bottom:1px dotted #ccc;padding:5px 0;width:100%;white-space:nowrap;}
-.content-list ul li {list-style:none;float:left;padding:0 1em;line-height:1.4;}
-.content-list ul .content-title {width:86%;}
+.content-list ul li {list-style:none;float:left;padding:0 0 0 10px;line-height:1.4;}
+.content-list ul .content-title {text-overflow:ellipsis;white-space:nowrap;overflow:hidden;max-height:48px;}
 .content-list ul li .summary {text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width:86%;}
-.content-list ul li a {font-size:16px; font-weight:bold;color:#4d4d4d;white-space:normal;}
+.content-list ul li a {font-size:1.6rem; font-weight:bold;color:#4d4d4d;white-space:normal;}
 .content-list ul .calendar {background-color:#f5f5f5;font-family: Arial;text-align:center;width:90px; border-radius: 5px;}
-.content-list ul .calendar-day {border-bottom:2px solid #fff;line-height:32px;font-size:24px;width:100%;}
-.content-list ul .calendar-date {line-height:22px;font-size:14px;}
+.content-list ul .calendar-day {border-bottom:2px solid #fff;line-height:32px;font-size:2.4rem;width:100%;}
+.content-list ul .calendar-date {line-height:22px;font-size:1.4rem;}
 /*content-list*/
 
 /*news*/
 .news {width:98%;margin:0 auto;}
-.news .news-title {text-align:center;font-size:16px;font-weight:bold;color:#333;min-height:48px;padding:10px 0 10px 0;}
-.news .news-time {text-align:center;font-size:14px;color:#999;line-height:28px;border-bottom:1px solid #cdcece;}
+.news .news-title {text-align:center;font-size:1.6rem;font-weight:bold;color:#333;min-height:48px;padding:10px 0 10px 0;}
+.news .news-time {text-align:center;font-size:1.4rem;color:#999;line-height:28px;border-bottom:1px solid #cdcece;}
 .news .news-content {padding:15px 0;}
 .news .news-content img{max-width:640px;}
 .news .news-content table{max-width:720px;}
@@ -193,27 +193,28 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 /*分页控件样式*/
 .pages { color:red;font-weight:bold; clear:both; }
-.pages  .item{padding: 1px 6px;font-size: 13px;} /*数字页索引样式*/
+.pages  .item{padding: 1px 6px;font-size: 1.3rem;} /*数字页索引样式*/
 .pages a { border: 1px solid #ddd;padding:3px 10px;color:#333;font-weight:normal; background:#eee; }
 .pages a:hover { background-color: #007dbd; color:#fff;border:1px solid #ddd; text-decoration:none;font-weight:normal;}
 .pages span{ color:#000; padding:4px 10px; background-color:#ddd; margin:5px; }
 /*分页控件样式*/
 
 @media (max-width:1199px) {
-    #top li a{padding:0 10px;} #top ul{margin-left:7%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
+    #top li a{padding:0 5px;} #top ul{margin-left:1%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
 @media (max-width:990px) {#top ul{margin-left:-9%;} .logo img{width:60%; padding-top:20px;} #top span{display:none;} #top i{margin-left:0;} #top p{display:none;} #top i{display:none;}  #service li i{margin-left:30%;} #chanye a.more{margin-left:30%;} #city img{left:20%;} #link i{top:70%;} #link i.right{right:-10px;}}
-@media (max-width:744px) {#top ul{float:none; position:absolute; top:80px; width:100%; left:0; background:rgba(0,0,0,.3); z-index:1; display:none; margin-left:0;} #top ul li{float:none; width:100%;} #top ul li a{text-align:left; width:100%; box-sizing:border-box; padding:0 30px;} #top .navBtn,#top .userBtn{position:absolute; display:inline-block; right:15px; top:-5px; font-size:30px; color:#333; cursor:pointer;}
+@media (max-width:768px) {#top {line-height:4rem;} #top ul{float:none; position:absolute; top:80px; width:100%; left:0; background:#fff; z-index:1; display:none; margin-left:0;} #top ul li{float:none; width:100%;} #top ul li a{text-align:left; width:100%; box-sizing:border-box; padding:0 30px;font-weight:bold;} #top .navBtn,#top .userBtn{position:absolute; display:inline-block; right:15px; top:-5px; font-size:3.0rem; color:#333; cursor:pointer;}
 	#top .userBtn{right:55px;} #top li:hover a{background:rgba(255,0,0,.3);} #top li.li2{width:100%;} #top li div a{display:inline-block; width:28%;}#top .searck{display:block;} #city img{left:12%;} #news .more {margin-left:36%;}}
 @media (max-width:686px) {#service li i{margin-left:23%;} #intro .more{margin-left:38%;} #city img{left:9%;}}
 @media (max-width:681px) {#link li.five{margin-top:-2%;}}
 @media (max-width:639px) {#chanye a.more{margin-left:25%;} #city img{width:450px; left:12%;}}
 @media (max-width:546px) {#link{display:none;}}
-@media (max-width:532px) {#service li i{margin-left:18%;} #service li p{white-space:nowrap; text-overflow:ellipsis;} #service li h3{font-size:16px;}}
+@media (max-width:532px) {#service li i{margin-left:18%;} #service li p{white-space:nowrap; text-overflow:ellipsis;} #service li h3{font-size:1.6rem;}}
 @media (max-width:513px) {#city img{width:390px;}}
 @media (max-width:491px) {#chanye a.more{margin-left:20%;}}
 @media (max-width:442px) {#city img{width:300px;} #city .text h3{padding-top:100px;}}
 @media (max-width:414px) {#service li i{margin-left:12%;} #chanye a.more{margin-left:10%;} #intro .more{margin-left:30%;} #news .more {margin-left:30%;}}
-@media (max-width:320px) {#service li i{margin-left:8%;} #chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:20px;} #city .text h3 font{font-size:40px;}#news .more {margin-left:25%;}}
+@media (max-width:320px) {#service li i{margin-left:8%;} #chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:2.0rem;} #city .text h3 font{font-size:4.0rem;}#news .more {margin-left:25%;}}
 
 @media (min-width: 1200px) {#intro>div .intro-pic{text-align:right;}.about-title .container{padding-left:100px;}.content .container{padding-left:100px;padding-right:100px;}}
 @media (min-width: 1000px) {.services-content{width:76%;border-left:1px solid #9b9b9a;}}
+@media (max-width:999px){.services-content{width:100%;padding:0 0;} .content-list{padding:0 0;} .content-list ul .calendar{width:auto;} .content-list ul .content-title{width:75%;}}

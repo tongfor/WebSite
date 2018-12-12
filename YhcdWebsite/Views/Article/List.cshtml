@@ -24,7 +24,7 @@
                             <div>
                                 <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
                             </div>
-                            <div class="summary" title="@Html.DisplayFor(modelItem => item.Introduce)">
+                            <div class="summary hidden-sm hidden-xs hidden-md" title="@Html.DisplayFor(modelItem => item.Introduce)">
                                 @Html.DisplayFor(modelItem => item.Introduce)
                             </div>
                         </li>
