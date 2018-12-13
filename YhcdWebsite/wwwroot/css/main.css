@@ -49,7 +49,7 @@ body {font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ","ËÎÌå", "Simsun", "Open Sans";fo
 #intro>div span{color:#FFF; text-align:center; margin-top:12px; margin-bottom:30px; margin-left:auto; display:block;}
 #intro p{color:#FFF; text-align:left; text-indent:2em;font-size:1.6rem;}
 
-#intro .more,#news .more {border: 1px solid #EFEFEF; position: relative; transition: all 0.5s ease 0s; height:32px; line-height:32px; text-align:center; margin-left:43%; margin-top:31px; margin-bottom:48px; display:block; width:160px; color: transparent; background:url(../images/jiantou.png) no-repeat 32px -97px; }
+#intro .more,#news .more {border: 1px solid #EFEFEF; position: relative; transition: all 0.5s ease 0s; height:32px; line-height:32px; text-align:center; margin:31px auto 48px auto;display:block; width:160px; color: transparent; background:url(../images/jiantou.png) no-repeat 32px -97px; }
 
 #intro a.more:hover,#news a.more:hover {border: 1px solid transparent; }
 
@@ -149,7 +149,7 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 /*services-content*/
 .services-content {/*border-left:1px solid #9b9b9a;*/padding:0 20px;width:auto;}
-.services-content .crumb{height:45px;background-color:#9b9b9a;color:white;line-height:45px;padding:0 20px;font-size:1.4rem;}
+.services-content .crumb{height:45px;background-color:#007dbd;color:white;line-height:45px;padding:0 20px;font-size:1.4rem;}
 .services-content .crumb a {color:white;font-size:1.4rem;}
 .services-content .crumb a:hover {color:red;}
 .services-content .crumb img{width:15px;height:15px;margin:-3px 0 0 0;}
@@ -159,7 +159,7 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 /*content-list*/
 .content-list ul {min-height:80px;height:auto !important;border-bottom:1px dotted #ccc;padding:5px 0;width:100%;white-space:nowrap;}
 .content-list ul li {list-style:none;float:left;padding:0 0 0 10px;line-height:1.4;}
-.content-list ul .content-title {text-overflow:ellipsis;white-space:nowrap;overflow:hidden;max-height:48px;}
+.content-list ul .content-title {text-overflow:ellipsis;white-space:nowrap;overflow:hidden;max-height:46px;}
 .content-list ul li .summary {text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width:86%;}
 .content-list ul li a {font-size:1.6rem; font-weight:bold;color:#4d4d4d;white-space:normal;}
 .content-list ul .calendar {background-color:#f5f5f5;font-family: Arial;text-align:center;width:90px; border-radius: 5px;}
@@ -201,20 +201,20 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 @media (max-width:1199px) {
     #top li a{padding:0 5px;} #top ul{margin-left:1%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
+@media (max-width:999px){.services-content{width:100%;padding:0 0;} .content-list{padding:0 0;} .content-list ul .calendar{width:auto;} .content-list ul .content-title{width:75%;}}
 @media (max-width:990px) {#top ul{margin-left:-9%;} .logo img{width:60%; padding-top:20px;} #top span{display:none;} #top i{margin-left:0;} #top p{display:none;} #top i{display:none;}  #service li i{margin-left:30%;} #chanye a.more{margin-left:30%;} #city img{left:20%;} #link i{top:70%;} #link i.right{right:-10px;}}
-@media (max-width:768px) {#top {line-height:4rem;} #top ul{float:none; position:absolute; top:80px; width:100%; left:0; background:#fff; z-index:1; display:none; margin-left:0;} #top ul li{float:none; width:100%;} #top ul li a{text-align:left; width:100%; box-sizing:border-box; padding:0 30px;font-weight:bold;} #top .navBtn,#top .userBtn{position:absolute; display:inline-block; right:15px; top:-5px; font-size:3.0rem; color:#333; cursor:pointer;}
-	#top .userBtn{right:55px;} #top li:hover a{background:rgba(255,0,0,.3);} #top li.li2{width:100%;} #top li div a{display:inline-block; width:28%;}#top .searck{display:block;} #city img{left:12%;} #news .more {margin-left:36%;}}
-@media (max-width:686px) {#service li i{margin-left:23%;} #intro .more{margin-left:38%;} #city img{left:9%;}}
+@media (max-width:768px) {#top {line-height:4rem;} #top ul{float:none; position:absolute; top:80px; width:100%; left:0; background:#fff; z-index:1; display:none; margin-left:0;} #top ul li{float:none; width:100%;} #top ul li a{text-align:left; width:100%; box-sizing:border-box; padding:0 30px;font-weight:bold;} #top .navBtn,#top .userBtn{position:absolute; display:inline-block; right:15px; top:-5px; font-size:3.0rem; color:#333; cursor:pointer;} #top .userBtn{right:55px;} #top li:hover a{background:rgba(255,0,0,.3);} #top li.li2{width:100%;} #top li div a{display:inline-block; width:28%;}#top .searck{display:block;} #city img{left:12%;} #news .more {margin-left:36%;}.menu-left li {height:36px;line-height:36px;width:10rem;float:left;margin-bottom:10px;}.content .mask-left, .content .mask-right{margin:0 auto;}}
+@media (max-width:686px) {#service li i{margin-left:23%;}  #city img{left:9%;}}
 @media (max-width:681px) {#link li.five{margin-top:-2%;}}
 @media (max-width:639px) {#chanye a.more{margin-left:25%;} #city img{width:450px; left:12%;}}
 @media (max-width:546px) {#link{display:none;}}
-@media (max-width:532px) {#service li i{margin-left:18%;} #service li p{white-space:nowrap; text-overflow:ellipsis;} #service li h3{font-size:1.6rem;}}
+@media (max-width:532px) {#service li i{margin-left:18%;} #service li p{white-space:nowrap; text-overflow:ellipsis;} #service li h3{font-size:1.6rem;} .content .container #advantage{width:auto;}}
 @media (max-width:513px) {#city img{width:390px;}}
 @media (max-width:491px) {#chanye a.more{margin-left:20%;}}
 @media (max-width:442px) {#city img{width:300px;} #city .text h3{padding-top:100px;}}
-@media (max-width:414px) {#service li i{margin-left:12%;} #chanye a.more{margin-left:10%;} #intro .more{margin-left:30%;} #news .more {margin-left:30%;}}
-@media (max-width:320px) {#service li i{margin-left:8%;} #chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:2.0rem;} #city .text h3 font{font-size:4.0rem;}#news .more {margin-left:25%;}}
+@media (max-width:414px) {#service li i{margin-left:12%;} #chanye a.more{margin-left:10%;}  #news .more {margin-left:30%;}#service li p span{width:75px;}}
+@media (max-width:320px) {#service li i{margin-left:8%;} #service li p span {width:70px;}#chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:2.0rem;} #city .text h3 font{font-size:4.0rem;}#news .more {margin-left:25%;}}
+@media(max-width:240px){.content .mask-left, .content .mask-right{font-size:1rem;}}
 
 @media (min-width: 1200px) {#intro>div .intro-pic{text-align:right;}.about-title .container{padding-left:100px;}.content .container{padding-left:100px;padding-right:100px;}}
 @media (min-width: 1000px) {.services-content{width:76%;border-left:1px solid #9b9b9a;}}
-@media (max-width:999px){.services-content{width:100%;padding:0 0;} .content-list{padding:0 0;} .content-list ul .calendar{width:auto;} .content-list ul .content-title{width:75%;}}

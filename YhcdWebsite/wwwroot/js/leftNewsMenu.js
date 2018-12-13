@@ -40,4 +40,5 @@
 $(function () {
     leftNewsMenuFunc.leftNewsMenuInit()
     leftNewsMenuFunc.leftNewsMenuMatch()
+    $(".menu-left").removeClass("hidden-sm").removeClass("hidden-xs")
 });
