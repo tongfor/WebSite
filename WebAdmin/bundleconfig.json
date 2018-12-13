@@ -46,6 +46,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/lib/zTree_v3/zTreeStyle/zTreeStyle.min.css",
+    "inputFiles": [
+      "wwwroot/lib/zTree_v3/zTreeStyle/zTreeStyle.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/admin.main.min.css",
     "inputFiles": [
       "wwwroot/css/admin.main.css"
@@ -77,7 +83,8 @@
       "wwwroot/lib/data-tables/jquery.dataTables.js",
       "wwwroot/lib/data-tables/DT_bootstrap.js",
       "wwwroot/lib/jquery-thickbox/jquery.thickbox.js",
-      "wwwroot/lib/jquery-ui/jquery-ui-1.10.1.custom.min.js"
+      "wwwroot/lib/jquery-ui/jquery-ui-1.10.1.custom.min.js",
+      "wwwroot/lib/zTree_v3/jquery.ztree.core.js"
     ]
   },
   {

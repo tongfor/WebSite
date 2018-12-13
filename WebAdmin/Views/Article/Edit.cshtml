@@ -9,9 +9,7 @@
     <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
 }
 @section PageSpecificJavascriptIncludes{
-    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>
-    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+    @*<script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>*@
     <script type="text/javascript" src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script type="text/javascript" src="~/lib/uploadPreview/uploadPreview.min.js"></script>
@@ -190,6 +188,86 @@
             }
         }
     </script>
+    <SCRIPT type="text/javascript">
+		<!--
+        var setting = {
+            view: {
+                dblClickExpand: false
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                beforeClick: beforeClick,
+                onClick: onClick
+            }
+        };
+
+        var zNodes = [
+            { id: 1, pId: 0, name: "北京" },
+            { id: 2, pId: 0, name: "天津" },
+            { id: 3, pId: 0, name: "上海" },
+            { id: 6, pId: 0, name: "重庆" },
+            { id: 4, pId: 0, name: "河北省", open: true },
+            { id: 41, pId: 4, name: "石家庄" },
+            { id: 42, pId: 4, name: "保定" },
+            { id: 43, pId: 4, name: "邯郸" },
+            { id: 44, pId: 4, name: "承德" },
+            { id: 5, pId: 0, name: "广东省", open: true },
+            { id: 51, pId: 5, name: "广州" },
+            { id: 52, pId: 5, name: "深圳" },
+            { id: 53, pId: 5, name: "东莞" },
+            { id: 54, pId: 5, name: "佛山" },
+            { id: 6, pId: 0, name: "福建省", open: true },
+            { id: 61, pId: 6, name: "福州" },
+            { id: 62, pId: 6, name: "厦门" },
+            { id: 63, pId: 6, name: "泉州" },
+            { id: 64, pId: 6, name: "三明" }
+        ];
+
+        function beforeClick(treeId, treeNode) {
+            var check = (treeNode && !treeNode.isParent);
+            if (!check) alert("只能选择城市...");
+            return check;
+        }
+
+        function onClick(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = zTree.getSelectedNodes(),
+                v = "";
+            nodes.sort(function compare(a, b) { return a.id - b.id; });
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                v += nodes[i].name + ",";
+            }
+            if (v.length > 0) v = v.substring(0, v.length - 1);
+            var cityObj = $("#citySel");
+            cityObj.attr("value", v);
+        }
+
+        function showMenu() {
+            var cityObj = $("#citySel");
+            var cityOffset = $("#citySel").offset();
+            $("#menuContent").css({ left: cityOffset.left + "px", top: cityOffset.top + cityObj.outerHeight() + "px" }).slideDown("fast");
+
+            $("body").bind("mousedown", onBodyDown);
+        }
+        function hideMenu() {
+            $("#menuContent").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        }
+        function onBodyDown(event) {
+            if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
+                hideMenu();
+            }
+        }
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        });
+        //-->
+    </SCRIPT>
 }
 @section MainContent{
     <div class="tabbable tabbable-custom">
@@ -205,14 +283,27 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
                             <div class="controls">
-                                <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
-                                    <option value="请选择所属类别" selected="selected"></option>
-                                </select>
-                                <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
+                                <div class="zTreeDemoBackground left">
+                                    <ul class="list">
+                                        <li class="title">&nbsp;&nbsp;<span class="highlight_red">选择城市时，按下 Ctrl 或 Cmd 键可以进行多选</span></li>
+                                        <li class="title">
+                                            &nbsp;&nbsp;城市：<input id="citySel" type="text" readonly value="" style="width:120px;" />
+                                            &nbsp;<a id="menuBtn" href="#" onclick="showMenu(); return false;">选择</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+                        <div class="control-group">
+                                <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
+                                <div class="controls">
+                                    <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
+                                        <option value="请选择所属类别" selected="selected"></option>
+                                    </select>
+                                    <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
+                                </div>
+                            </div>
                         <div class="control-group">
                             <label class="control-label">@Html.DisplayNameFor(m => m.Author)：</label>
                             <div class="controls">
@@ -254,16 +345,16 @@
                                     <tr>
                                         <td width="40%">
                                             @if (Model.AddTime != null)
-                        {
-                            @Html.TextBox("AddTime", Model.AddTime.Value.ToString("yyyy-MM-dd HH:mm:ss"), new { type = "input", style = "width:160px;" })
-    }
+                                            {
+                                                @Html.TextBox("AddTime", Model.AddTime.Value.ToString("yyyy-MM-dd HH:mm:ss"), new { type = "input", style = "width:160px;" })
+                                            }
                                         </td>
                                         <td width="10%">@Html.DisplayNameFor(m => m.EditTime)：</td>
                                         <td>
                                             @if (Model.EditTime != null)
-                        {
-                            @Html.TextBox("EditTime", Model.EditTime.Value.ToString("yyyy-MM-dd HH:mm:ss"), new { type = "input", style = "width:160px;" })
-    }
+                                            {
+                                                @Html.TextBox("EditTime", Model.EditTime.Value.ToString("yyyy-MM-dd HH:mm:ss"), new { type = "input", style = "width:160px;" })
+                                            }
                                         </td>
                                     </tr>
                                 </table>
@@ -295,13 +386,13 @@
                                             <td>
                                                 <div id="imgdiv">
                                                     @if (string.IsNullOrEmpty(Model.IntroduceImg))
-                                {
-                                    <img id="imgShow" width="60" height="40" alt="缩略图" class="hide" />
-            }
-            else
-            {
-                    <img id="imgShow" width="60" height="40" style="width:60px;height:40px;" alt="缩略图" src="@Model.IntroduceImg" />
-}
+                                                    {
+                                                        <img id="imgShow" width="60" height="40" alt="缩略图" class="hide" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img id="imgShow" width="60" height="40" style="width:60px;height:40px;" alt="缩略图" src="@Model.IntroduceImg" />
+                                                    }
                                                 </div>
                                             </td>
 
@@ -309,8 +400,8 @@
 
                                         </tr>
                                         @*<tr>
-                            <td colspan="3"><div id="fileQueue" class="pull-left"></div></td>
-                        </tr>*@
+                                                <td colspan="3"><div id="fileQueue" class="pull-left"></div></td>
+                                            </tr>*@
                                     </table>
                                 </div>
                             </div>
@@ -319,5 +410,9 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+        <ul id="treeDemo" class="ztree" style="margin-top:0; width:160px;"></ul>
     </div>
 }
