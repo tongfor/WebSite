@@ -192,12 +192,21 @@
 		<!--
         var setting = {
             view: {
-                dblClickExpand: false
+                dblClickExpand: false,
+                selectedMulti: false
             },
-            data: {
-                simpleData: {
-                    enable: true
-                }
+            //data: {
+            //    simpleData: {
+            //        enable: true
+            //    }
+            //},
+            async: {
+                enable: true,
+                url: "/ArticleClass/GetAllArticleClassTreeJsonForzTree",
+                type: "post",
+                autoParam: ["id", "name=n", "level=lv"],
+                otherParam: { "otherParam": "zTreeAsyncTest" },
+                dataFilter: filter
             },
             callback: {
                 beforeClick: beforeClick,
@@ -224,7 +233,8 @@
             { id: 61, pId: 6, name: "福州" },
             { id: 62, pId: 6, name: "厦门" },
             { id: 63, pId: 6, name: "泉州" },
-            { id: 64, pId: 6, name: "三明" }
+            { id: 64, pId: 6, name: "三明" },
+            { id: 65, pId: 64, name: "三明区" }
         ];
 
         function beforeClick(treeId, treeNode) {
@@ -263,8 +273,27 @@
             }
         }
 
+        //$(document).ready(function () {
+        //    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        //});
+
+        function filter(treeId, parentNode, childNodes) {
+            if (!childNodes) return null;
+            for (var i = 0, l = childNodes.length; i < l; i++) {
+                childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+                //let grandChildNodes = childNodes.filter(item => childNodes[i].id === item.pId);
+                //if (grandChildNodes && grandChildNodes.length > 0) {
+                //    childNodes[i].isParent = true;
+                //}
+                //else {
+                //    childNodes[i].isParent = false;
+                //}
+            }
+            return childNodes;
+        }
+
         $(document).ready(function () {
-            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            $.fn.zTree.init($("#treeDemo"), setting);
         });
         //-->
     </SCRIPT>

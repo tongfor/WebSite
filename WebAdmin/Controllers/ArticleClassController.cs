@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using Common.AspNetCore.Extensions;
@@ -341,6 +343,55 @@ namespace WebAdmin.Controllers
                     EditTime = DateTime.Now
                 };
                await MyAdminBugService.AddAsync(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
+            }
+        }
+
+        /// <summary>
+        /// 查询所有文章类别树,并以JSON字符串返回(zTree使用)
+        /// </summary>
+        /// <param name="classid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllArticleClassTreeJsonForzTree(int? classid = null)
+        {
+            try
+            {
+                var articleList = classid == null ? await _articleClassService.GetListByAsync(f => 0 == f.IsDel) : await _articleClassService.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
+                var a = articleList.Select(s => new { id = s.Id.ToString(), isParent = (articleList.Count(f => f.ParentId.Value == s.Id) > 0).ToString(), name = s.Name}).ToList();
+                a.Add(new { id = 4.ToString(), isParent = "true", name = "河北省"});
+                a.Add(new { id = 41.ToString(), isParent = "false", name = "石家庄"});
+
+                return Json(a);
+               // var a = new ArrayList
+               // {
+               //     new  { id= 4, pId= 0, name= "河北省", open= true },
+               //     new { id= 41, pId= 4, name= "石家庄" },
+               //     new { id= 42, pId= 4, name= "保定" },
+               //     new { id= 43, pId= 4, name= "邯郸" },
+               //     new { id= 44, pId= 4, name= "承德" }
+               // };
+               //return Json(a);
+                //string data = await _articleClassService.GetAllArticleClassTreeJsonForzTreeAsync(classid);
+                //return Content(data);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "为zTree获取文章类别Json功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
