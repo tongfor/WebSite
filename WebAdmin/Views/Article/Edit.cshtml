@@ -16,7 +16,7 @@
     <script type="text/javascript" src="~/lib/kindeditor-4.1.7/kindeditor-all-min.js"></script>
     <script type="text/javascript" src="~/lib/kindeditor-4.1.7/lang/zh_CN.js"></script>
     <script type="text/javascript">
-
+        <!--
         $(function() {
             //首页图片上传绑定
             new uploadPreview({
@@ -187,19 +187,13 @@
                 $("#Keyword").val($("#Keyword").val() + " " + currentKeyword);
             }
         }
-    </script>
-    <SCRIPT type="text/javascript">
-		<!--
+		
         var setting = {
             view: {
                 dblClickExpand: false,
-                selectedMulti: false
+                selectedMulti: false,
+                showLine: false
             },
-            //data: {
-            //    simpleData: {
-            //        enable: true
-            //    }
-            //},
             async: {
                 enable: true,
                 url: "/ArticleClass/GetAllArticleClassTreeJsonForzTree?classid=@ViewBag.ClassId",
@@ -209,36 +203,14 @@
             },
             callback: {
                 beforeClick: beforeClick,
-                onClick: onClick
+                onClick: onClick,
+                onAsyncSuccess: expandAll
             }
         };
 
-        var zNodes = [
-            { id: 1, pId: 0, name: "北京" },
-            { id: 2, pId: 0, name: "天津" },
-            { id: 3, pId: 0, name: "上海" },
-            { id: 6, pId: 0, name: "重庆" },
-            { id: 4, pId: 0, name: "河北省", open: true },
-            { id: 41, pId: 4, name: "石家庄" },
-            { id: 42, pId: 4, name: "保定" },
-            { id: 43, pId: 4, name: "邯郸" },
-            { id: 44, pId: 4, name: "承德" },
-            { id: 5, pId: 0, name: "广东省", open: true },
-            { id: 51, pId: 5, name: "广州" },
-            { id: 52, pId: 5, name: "深圳" },
-            { id: 53, pId: 5, name: "东莞" },
-            { id: 54, pId: 5, name: "佛山" },
-            { id: 6, pId: 0, name: "福建省", open: true },
-            { id: 61, pId: 6, name: "福州" },
-            { id: 62, pId: 6, name: "厦门" },
-            { id: 63, pId: 6, name: "泉州" },
-            { id: 64, pId: 6, name: "三明" },
-            { id: 65, pId: 64, name: "三明区" }
-        ];
-
         function beforeClick(treeId, treeNode) {
             var check = (treeNode && !treeNode.isParent);
-            if (!check) alert("只能选择城市...");
+            if (!check) alert("只能选择子栏目...");
             return check;
         }
 
@@ -262,6 +234,7 @@
 
             $("body").bind("mousedown", onBodyDown);
         }
+
         function hideMenu() {
             $("#menuContent").fadeOut("fast");
             $("body").unbind("mousedown", onBodyDown);
@@ -272,23 +245,17 @@
             }
         }
 
-        //$(document).ready(function () {
-        //    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-        //});
-
         function filter(treeId, parentNode, childNodes) {
             if (!childNodes) return null;
             for (var i = 0, l = childNodes.length; i < l; i++) {
                 childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
-                //let grandChildNodes = childNodes.filter(item => childNodes[i].id === item.pId);
-                //if (grandChildNodes && grandChildNodes.length > 0) {
-                //    childNodes[i].isParent = true;
-                //}
-                //else {
-                //    childNodes[i].isParent = false;
-                //}
             }
             return childNodes;
+        }
+
+        function expandAll() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.expandAll(true);
         }
 
         $(document).ready(function () {
@@ -314,9 +281,7 @@
                             <div class="controls">
                                 <div class="zTreeDemoBackground left">
                                     <ul class="list">
-                                        <li class="title">&nbsp;&nbsp;<span class="highlight_red">选择城市时，按下 Ctrl 或 Cmd 键可以进行多选</span></li>
-                                        <li class="title">
-                                            &nbsp;&nbsp;城市：<input id="citySel" type="text" readonly value="" style="width:120px;" />
+                                        <li class="title"><input id="citySel" type="text" readonly value="" style="width:120px;" />
                                             &nbsp;<a id="menuBtn" href="#" onclick="showMenu(); return false;">选择</a>
                                         </li>
                                     </ul>
