@@ -202,10 +202,9 @@
             //},
             async: {
                 enable: true,
-                url: "/ArticleClass/GetAllArticleClassTreeJsonForzTree",
+                url: "/ArticleClass/GetAllArticleClassTreeJsonForzTree?classid=@ViewBag.ClassId",
                 type: "post",
-                autoParam: ["id", "name=n", "level=lv"],
-                otherParam: { "otherParam": "zTreeAsyncTest" },
+                autoParam: ["id=classId"],
                 dataFilter: filter
             },
             callback: {

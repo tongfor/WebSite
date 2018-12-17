@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
+using Newtonsoft.Json;
 using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
@@ -358,12 +359,17 @@ namespace WebAdmin.Controllers
         {
             try
             {
-                var articleList = classid == null ? await _articleClassService.GetListByAsync(f => 0 == f.IsDel) : await _articleClassService.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
-                var a = articleList.Select(s => new { id = s.Id.ToString(), isParent = (articleList.Count(f => f.ParentId.Value == s.Id) > 0).ToString(), name = s.Name}).ToList();
-                a.Add(new { id = 4.ToString(), isParent = "true", name = "河北省"});
-                a.Add(new { id = 41.ToString(), isParent = "false", name = "石家庄"});
+                //var articleList = classid == null ?
+                //await _articleClassService.GetListByAsync(f => 0 == f.IsDel) 
+                //: await _articleClassService.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
+                string strJson = await _articleClassService.GetAllArticleClassTreeJsonForzTreeAsync(classid);
+                var jsonResult = JsonConvert.DeserializeObject(strJson);
 
-                return Json(a);
+                //var a = articleList.Select(s => new { id = s.Id.ToString(), isParent = (articleList.Count(f => f.ParentId.Value == s.Id) > 0).ToString(), name = s.Name}).ToList();
+                //a.Add(new { id = 4.ToString(), isParent = "true", name = "河北省"});
+                //a.Add(new { id = 41.ToString(), isParent = "false", name = "石家庄"});
+
+                return Json(jsonResult);
                // var a = new ArrayList
                // {
                //     new  { id= 4, pId= 0, name= "河北省", open= true },
