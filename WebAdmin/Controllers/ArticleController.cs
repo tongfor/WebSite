@@ -115,6 +115,11 @@ namespace WebAdmin.Controllers
         {
             try
             {
+                if (string.IsNullOrEmpty(article.Title))
+                {
+                    ModelState.AddModelError("Title", "请填写文章标题!");
+                    return View("Edit", article);
+                }
                 if (article.ClassId == null || article.ClassId <= 0)
                 {
                     ModelState.AddModelError("ClassId", "请选择文章类别!");
@@ -169,7 +174,7 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
                     MyOperateLogService.Add(OperateLog);
-                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                    return PackagingAjaxMsg(AjaxStatus.Err, "请传递正确参数!");
                 }
                 ArticleView model = new ArticleView(await  _articleService.GetModelAsync(id.Value));
                 ViewBag.ClassId = model.ClassId ?? model.ClassId;
@@ -191,7 +196,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-               await MyAdminBugService.AddAsync(Bug);
+                await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -211,6 +216,11 @@ namespace WebAdmin.Controllers
                     MyOperateLogService.Add(OperateLog);
                     return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
                 }
+                if (string.IsNullOrEmpty(article.Title))
+                {
+                    ModelState.AddModelError("Title", "请填写文章标题!");
+                    return View("Edit", article);
+                }
                 if (article.ClassId == null || article.ClassId <= 0)
                 {
                     ModelState.AddModelError("ClassId", "请选择文章类别!");
@@ -219,7 +229,7 @@ namespace WebAdmin.Controllers
                 if (article.Content == null)
                 {
                     ModelState.AddModelError("Content", "请填写文章内容!");
-                    return View("article", article);
+                    return View("Edit", article);
                 }
 
                 Article modifyModel = article.ToOriginal();

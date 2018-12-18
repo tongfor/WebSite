@@ -55,16 +55,17 @@
                 }
             });
 
-            articlePidBind(0);
+            //articlePidBind(0);
+            $.fn.zTree.init($("#classTree"), setting);
             bindRecentKeywords();
 
             $("#AddTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $("#EditTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $(".ClassId .validatebox-readonly").removeAttr("readonly");
 
-            if (@ViewBag.ClassId != null && @ViewBag.ClassId > 0) {
-                $('#ClassId').combotree('setValue', @ViewBag.ClassId);
-            }
+            @*if (@ViewBag.ClassId && @ViewBag.ClassId > 0) {
+                classIdBind(@ViewBag.ClassId);
+            }*@
 
             $("#Keyword").focusout(function () {
                 saveRecentKeyword();
@@ -76,33 +77,33 @@
         });
 
         //绑定文章类别(类别号)
-        function articlePidBind(classid) {
-            $('#ClassId')
-                .combotree({
-                    url: "/ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
-                    method:"post",
-                    onlyLeafCheck: true,
-                    checkbox: false,
-                    disabled: false,
-                    readonly: false,
-                    required: true,
-                    loadFilter: function(data) {
-                        return data;
-                    },
-                    //选择树节点触发事件
-                    onSelect: function(node) {
-                        //返回树对象
-                        var tree = $(this).tree;
-                        //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
-                        var isLeaf = tree('isLeaf', node.target);
-                        if (!isLeaf) {
-                            alert("有下级目录时请选择下级目录!");
-                            //清除选中
-                            $('#ClassId').combotree('clear');
-                        }
-                    }
-                });
-        }
+        //function articlePidBind(classid) {
+        //    $('#ClassId')
+        //        .combotree({
+        //            url: "/ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
+        //            method:"post",
+        //            onlyLeafCheck: true,
+        //            checkbox: false,
+        //            disabled: false,
+        //            readonly: false,
+        //            required: true,
+        //            loadFilter: function(data) {
+        //                return data;
+        //            },
+        //            //选择树节点触发事件
+        //            onSelect: function(node) {
+        //                //返回树对象
+        //                var tree = $(this).tree;
+        //                //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+        //                var isLeaf = tree('isLeaf', node.target);
+        //                if (!isLeaf) {
+        //                    alert("有下级目录时请选择下级目录!");
+        //                    //清除选中
+        //                    $('#ClassId').combotree('clear');
+        //                }
+        //            }
+        //        });
+        //}
 
         KindEditor.ready(function(K) {
             var editor1 = K.create('#Content',
@@ -196,7 +197,7 @@
             },
             async: {
                 enable: true,
-                url: "/ArticleClass/GetAllArticleClassTreeJsonForzTree?classid=@ViewBag.ClassId",
+                url: "/ArticleClass/GetAllArticleClassTreeJsonForzTree?classid=0",
                 type: "post",
                 autoParam: ["id=classId"],
                 dataFilter: filter
@@ -217,19 +218,24 @@
         function onClick(e, treeId, treeNode) {
             var zTree = $.fn.zTree.getZTreeObj("classTree"),
                 nodes = zTree.getSelectedNodes(),
-                v = "";
+                v = "", ids = "";
             nodes.sort(function compare(a, b) { return a.id - b.id; });
             for (var i = 0, l = nodes.length; i < l; i++) {
                 v += nodes[i].name + ",";
+                ids += nodes[i].id + ",";
             }
             if (v.length > 0) v = v.substring(0, v.length - 1);
-            var cityObj = $("#citySel");
+            if (ids.length > 0) ids = ids.substring(0, ids.length - 1);
+            var cityObj = $("#classSel");
             cityObj.attr("value", v);
+            var hideClassObj = $("#ClassId");
+            hideClassObj.attr("value", ids);
+            hideMenu();
         }
 
         function showMenu() {
-            var cityObj = $("#citySel");
-            var cityOffset = $("#citySel").offset();
+            var cityObj = $("#classSel");
+            var cityOffset = $("#classSel").offset();
             $("#zTreeDropdownMenu").css({ left: cityOffset.left + "px", top: cityOffset.top + cityObj.outerHeight() + "px" }).slideDown("fast");
 
             $("body").bind("mousedown", onBodyDown);
@@ -256,11 +262,19 @@
         function expandAll() {
             var zTree = $.fn.zTree.getZTreeObj("classTree");
             zTree.expandAll(true);
+            if (@ViewBag.ClassId && @ViewBag.ClassId > 0) {
+                classIdBind(@ViewBag.ClassId);
+            }
         }
 
-        $(document).ready(function () {
-            $.fn.zTree.init($("#classTree"), setting);
-        });
+        function classIdBind(classId) {
+            if (!classId) { return; }
+            var zTree = $.fn.zTree.getZTreeObj("classTree");
+            var node = zTree.getNodeByParam("id", classId, null);
+            zTree.selectNode(node, false, false);
+            onClick(event, classId, node, true);
+        }
+
         //-->
     </SCRIPT>
 }
@@ -269,34 +283,39 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+                    <div asp-validation-summary="ModelOnly" class="help-inline"></div>
                     <div class="row-fluid">
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Title)：</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;" })
-                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Title)</span>
+                                <span class="help-inline" asp-validation-for="Title"></span>
                             </div>
                         </div>
                         <div class="control-group">
+                            <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
                             <div class="controls">
                                 <div class="classTreeBackground">
                                     <ul class="list">
-                                        <li class="title"><input id="citySel" type="text" readonly value="" style="width:120px;" onclick="showMenu(); return false;"/>
+                                        <li class="title">
+                                            <input id="classSel" type="text" readonly value="" style="width:120px;" onclick="showMenu(); return false;" />
                                             &nbsp;<a id="menuBtn" href="#" onclick="showMenu(); return false;">点我选择</a>
+                                            <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
                                         </li>
                                     </ul>
                                 </div>
+                                @Html.HiddenFor(m => m.ClassId)
                             </div>
                         </div>
-                        <div class="control-group">
-                                <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
-                                <div class="controls">
-                                    <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
-                                        <option value="请选择所属类别" selected="selected"></option>
-                                    </select>
-                                    <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
-                                </div>
-                            </div>
+                        @*<div class="control-group">
+                <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
+                <div class="controls">
+                    <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
+                        <option value="请选择所属类别" selected="selected"></option>
+                    </select>
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
+                </div>
+            </div>*@
                         <div class="control-group">
                             <label class="control-label">@Html.DisplayNameFor(m => m.Author)：</label>
                             <div class="controls">
@@ -393,8 +412,8 @@
 
                                         </tr>
                                         @*<tr>
-                                                <td colspan="3"><div id="fileQueue" class="pull-left"></div></td>
-                                            </tr>*@
+                                <td colspan="3"><div id="fileQueue" class="pull-left"></div></td>
+                            </tr>*@
                                     </table>
                                 </div>
                             </div>
