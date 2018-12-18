@@ -173,7 +173,7 @@ namespace BLL
         /// <summary>
         /// 查询所有文章类别树
         /// </summary>
-        public List<ArticleClassTreeView> GetAllArticleClassTree(int? classid = null)
+        public List<ArticleClassTreeView> GetAllArticleClassTree(int classid)
         {
             List<ArticleClassTreeView> resultList = new List<ArticleClassTreeView>();
             List<ArticleClass> modelList = classid == null ? MyIArticleClassDAL.GetListBy(f => 0 == f.IsDel) : MyIArticleClassDAL.GetListBy(f => classid == f.ParentId && 0 == f.IsDel);
@@ -193,10 +193,10 @@ namespace BLL
         /// <summary>
         /// 异步查询所有文章类别树
         /// </summary>
-        public async Task<List<ArticleClassTreeView>> GetAllArticleClassTreeAsync(int? classid = null)
+        public async Task<List<ArticleClassTreeView>> GetAllArticleClassTreeAsync(int classid)
         {
             List<ArticleClassTreeView> resultList = new List<ArticleClassTreeView>();
-            List<ArticleClass> modelList = classid == null ? await MyIArticleClassDAL.GetListByAsync(f => 0 == f.IsDel) : await MyIArticleClassDAL.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
+            List<ArticleClass> modelList = await MyIArticleClassDAL.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
 
             foreach (ArticleClass ac in modelList)
             {
@@ -217,11 +217,9 @@ namespace BLL
         /// <summary>
         /// 查询所有文章类别树并返回JSON
         /// </summary>
-        public string GetAllArticleClassTreeJson(int? classid = null)
+        public string GetAllArticleClassTreeJson(int classid)
         {
-            List<ArticleClass> modelList = classid == null ?
-                MyIArticleClassDAL.GetListBy(f => 0 == f.IsDel)
-                : MyIArticleClassDAL.GetListBy(f => classid == f.ParentId && 0 == f.IsDel);
+            List<ArticleClass> modelList = MyIArticleClassDAL.GetListBy(f => classid == f.ParentId && 0 == f.IsDel);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
@@ -250,11 +248,9 @@ namespace BLL
         /// <summary>
         /// 异步查询所有文章类别树并返回JSON
         /// </summary>
-        public async Task<string> GetAllArticleClassTreeJsonAsync(int? classid = null)
+        public async Task<string> GetAllArticleClassTreeJsonAsync(int classid)
         {
-            List<ArticleClass> modelList = classid == null ?
-               await MyIArticleClassDAL.GetListByAsync(f => 0 == f.IsDel)
-                : await MyIArticleClassDAL.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
+            List<ArticleClass> modelList = await MyIArticleClassDAL.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");
@@ -283,11 +279,9 @@ namespace BLL
         /// <summary>
         /// 异步查询所有文章类别树并返回JSON（zTree使用）
         /// </summary>
-        public async Task<string> GetAllArticleClassTreeJsonForzTreeAsync(int? classid = null)
+        public async Task<string> GetAllArticleClassTreeJsonForzTreeAsync(int classid)
         {
-            List<ArticleClass> modelList = classid == null ?
-                MyIArticleClassDAL.GetListBy(f => 0 == f.IsDel)
-                : MyIArticleClassDAL.GetListBy(f => classid == f.ParentId && 0 == f.IsDel);
+            List<ArticleClass> modelList = await MyIArticleClassDAL.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
             StringBuilder jsonResult = new StringBuilder();
 
             jsonResult.Append("[");

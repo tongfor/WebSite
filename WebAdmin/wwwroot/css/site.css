@@ -169,3 +169,23 @@ h4 {
     border-radius: 3px;
     height: 28px;
 }
+
+.classTreeBackground ul{
+    list-style:none;
+    margin:0;
+}
+
+.ztree {
+    margin: 0 auto;
+    width: 192px;
+}
+
+.zTreeDropdownMenu {
+    position: absolute;
+    background: white;
+    border: 1px #ccc solid;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 9999;
+    display: none;
+}

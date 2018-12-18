@@ -355,32 +355,18 @@ namespace WebAdmin.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllArticleClassTreeJsonForzTree(int? classid = null)
+        public async Task<IActionResult> GetAllArticleClassTreeJsonForzTree(int? classid)
         {
             try
             {
-                //var articleList = classid == null ?
-                //await _articleClassService.GetListByAsync(f => 0 == f.IsDel) 
-                //: await _articleClassService.GetListByAsync(f => classid == f.ParentId && 0 == f.IsDel);
-                string strJson = await _articleClassService.GetAllArticleClassTreeJsonForzTreeAsync(classid);
+                if (classid == null)
+                {
+                    return PackagingAjaxMsg(AjaxStatus.Err, "请输入正确的文章类别！");
+                }
+                string strJson = await _articleClassService.GetAllArticleClassTreeJsonForzTreeAsync(classid.Value);
                 var jsonResult = JsonConvert.DeserializeObject(strJson);
-
-                //var a = articleList.Select(s => new { id = s.Id.ToString(), isParent = (articleList.Count(f => f.ParentId.Value == s.Id) > 0).ToString(), name = s.Name}).ToList();
-                //a.Add(new { id = 4.ToString(), isParent = "true", name = "河北省"});
-                //a.Add(new { id = 41.ToString(), isParent = "false", name = "石家庄"});
-
+                
                 return Json(jsonResult);
-               // var a = new ArrayList
-               // {
-               //     new  { id= 4, pId= 0, name= "河北省", open= true },
-               //     new { id= 41, pId= 4, name= "石家庄" },
-               //     new { id= 42, pId= 4, name= "保定" },
-               //     new { id= 43, pId= 4, name= "邯郸" },
-               //     new { id= 44, pId= 4, name= "承德" }
-               // };
-               //return Json(a);
-                //string data = await _articleClassService.GetAllArticleClassTreeJsonForzTreeAsync(classid);
-                //return Content(data);
             }
             catch (Exception ex)
             {

@@ -84,12 +84,12 @@ namespace IBLL
         /// <summary>
         /// 查询所有文章类别树
         /// </summary>
-        List<ArticleClassTreeView> GetAllArticleClassTree(int? classid = null);
+        List<ArticleClassTreeView> GetAllArticleClassTree(int classid);
 
         /// <summary>
         /// 异步查询所有文章类别树
         /// </summary>
-        Task<List<ArticleClassTreeView>> GetAllArticleClassTreeAsync(int? classid = null);
+        Task<List<ArticleClassTreeView>> GetAllArticleClassTreeAsync(int classid);
 
         #endregion
 
@@ -98,17 +98,17 @@ namespace IBLL
         /// <summary>
         /// 查询所有文章类别树并返回JSON
         /// </summary>
-        string GetAllArticleClassTreeJson(int? classid = null);
+        string GetAllArticleClassTreeJson(int classid);
 
         /// <summary>
         /// 异步查询所有文章类别树并返回JSON
         /// </summary>
-        Task<string> GetAllArticleClassTreeJsonAsync(int? classid = null);
+        Task<string> GetAllArticleClassTreeJsonAsync(int classid);
 
         /// <summary>
         /// 异步查询所有文章类别树并返回JSON（zTree使用）
         /// </summary>
-        Task<string> GetAllArticleClassTreeJsonForzTreeAsync(int? classid = null);
+        Task<string> GetAllArticleClassTreeJsonForzTreeAsync(int classid);
 
         #endregion
 
