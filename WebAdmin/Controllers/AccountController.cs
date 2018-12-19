@@ -82,7 +82,7 @@ namespace WebAdmin.Controllers
                 if (!IsValidVerifyCode(model.VerifyCode))
                 {
                     ModelState.AddModelError("error", "验证码错误");
-                    return View();
+                    return View(model);
                 }
                 DateTime? lastLoginErrorDatetime = null;
                 string userIp = HttpContext.GetUserIp();

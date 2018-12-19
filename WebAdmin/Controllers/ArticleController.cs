@@ -214,32 +214,35 @@ namespace WebAdmin.Controllers
                     OperateLog.IsSuccess = 0;
                     OperateLog.Description = "未传递文章ID";
                     MyOperateLogService.Add(OperateLog);
-                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                    ModelState.AddModelError("Title", "请传递文章ID!");
                 }
+
                 if (string.IsNullOrEmpty(article.Title))
                 {
                     ModelState.AddModelError("Title", "请填写文章标题!");
-                    return View("Edit", article);
                 }
                 if (article.ClassId == null || article.ClassId <= 0)
                 {
                     ModelState.AddModelError("ClassId", "请选择文章类别!");
-                    return View("Edit", article);
                 }
                 if (article.Content == null)
                 {
-                    ModelState.AddModelError("Content", "请填写文章内容!");
-                    return View("Edit", article);
+                    ModelState.AddModelError("Content", "请填写文章内容!");                    
                 }
 
-                Article modifyModel = article.ToOriginal();
-                ViewBag.ClassId = modifyModel.ClassId ?? modifyModel.ClassId;                
-                modifyModel.EditTime = DateTime.Now;
+                if (ModelState.IsValid)
+                {
+                    Article modifyModel = article.ToOriginal();
+                    ViewBag.ClassId = modifyModel.ClassId ?? modifyModel.ClassId;
+                    modifyModel.EditTime = DateTime.Now;
 
-                await _articleService.ModifyAsync(modifyModel);
+                    await _articleService.ModifyAsync(modifyModel);
 
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "修改成功！", null);
-                //return this.RefreshParent();
+                    return PackagingAjaxMsg(AjaxStatus.IsSuccess, "修改成功！", null);
+                    //return this.RefreshParent();
+                }
+
+                return View(article);
             }
             catch (Exception ex)
             {

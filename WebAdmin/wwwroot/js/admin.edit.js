@@ -33,7 +33,7 @@
                     window.top.tb_remove();   
                 }
                 $("#submitloading").hide();
-                $("#submit").attr("disabled", "false");
+                $("#submit").removeAttr("disabled");
             },
             error(xhr, status, error) {
                 $("#submitloading").hide();
