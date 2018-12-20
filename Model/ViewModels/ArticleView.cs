@@ -26,17 +26,17 @@ namespace Models
         [DisplayName("ID")]
         public int Id { get; set; }
         [DisplayName("文章类别")]
-        [Required]
+        //[Required]
         public Nullable<int> ClassId { get; set; }
         [DisplayName("标题")]
-        [Required]
+        //[Required]
         public string Title { get; set; }
         [DisplayName("标题颜色")]
         public string TitleColor { get; set; }
         [DisplayName("文章分类标签")]
         public string Keyword { get; set; }
         [DisplayName("内容")]
-        [Required]
+        //[Required]
         public string Content { get; set; }
         [DisplayName("文章简介")]
         public string Introduce { get; set; }

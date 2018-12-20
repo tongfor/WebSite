@@ -43,6 +43,7 @@
                 error(xhr, status, error) {
                     $("#submitloading").hide();
                     $("#submit").attr("disabled", "false");
+                    document.write(xhr.responseText);
                     console.log(xhr);
                     console.log(status);
                     console.log(error);

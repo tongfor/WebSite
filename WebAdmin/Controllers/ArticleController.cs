@@ -118,29 +118,31 @@ namespace WebAdmin.Controllers
                 if (string.IsNullOrEmpty(article.Title))
                 {
                     ModelState.AddModelError("Title", "请填写文章标题!");
-                    return View("Edit", article);
                 }
                 if (article.ClassId == null || article.ClassId <= 0)
                 {
                     ModelState.AddModelError("ClassId", "请选择文章类别!");
-                    return View("Edit", article);
                 }
-                if (article.Content == null)
+                if (string.IsNullOrEmpty(article.Content))
                 {
                     ModelState.AddModelError("Content", "请填写文章内容!");
-                    return View("Edit", article);
                 }
 
-                Article model = article.ToOriginal();
-                model.UserName = User.Identity.Name;
-                model.AddTime = model.AddTime ?? DateTime.Now;
-                model.EditTime = model.EditTime ?? DateTime.Now;
-                ViewBag.ClassId = 0;                
+                if (ModelState.IsValid)
+                {
+                    Article model = article.ToOriginal();
+                    article.UserName = string.IsNullOrEmpty(User.Identity.Name) ? "" : User.Identity.Name;
+                    model.AddTime = model.AddTime ?? DateTime.Now;
+                    model.EditTime = model.EditTime ?? DateTime.Now;
+                    ViewBag.ClassId = 0;
 
-                await _articleService.AddAsync(model);
+                    int addedCount = await _articleService.AddAsync(model);
 
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, "添加成功！", null);
-                //return this.RefreshParent();
+                    return PackagingAjaxMsg(addedCount > 0 ? AjaxStatus.IsSuccess : AjaxStatus.Err, addedCount > 0 ? "添加成功！" : "添加失败！", null);
+                    //return this.RefreshParent();
+                }
+
+                return View("Edit", article);
             }
             catch (Exception ex)
             {
@@ -157,7 +159,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-               await MyAdminBugService.AddAsync(Bug);
+                await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -225,7 +227,7 @@ namespace WebAdmin.Controllers
                 {
                     ModelState.AddModelError("ClassId", "请选择文章类别!");
                 }
-                if (article.Content == null)
+                if (string.IsNullOrEmpty(article.Content))
                 {
                     ModelState.AddModelError("Content", "请填写文章内容!");                    
                 }
@@ -237,9 +239,9 @@ namespace WebAdmin.Controllers
                     ViewBag.ClassId = modifyModel.ClassId ?? modifyModel.ClassId;
                     modifyModel.EditTime = DateTime.Now;
 
-                    await _articleService.ModifyAsync(modifyModel);
+                    int modifiedCount = await _articleService.ModifyAsync(modifyModel);
 
-                    return PackagingAjaxMsg(AjaxStatus.IsSuccess, "修改成功！", null);
+                    return PackagingAjaxMsg(modifiedCount > 0 ? AjaxStatus.IsSuccess : AjaxStatus.Err, modifiedCount > 0 ? "修改成功！" : "修改失败！", null);
                     //return this.RefreshParent();
                 }
 

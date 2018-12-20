@@ -17,7 +17,7 @@
     <script type="text/javascript" src="~/lib/kindeditor-4.1.7/lang/zh_CN.js"></script>
     <script type="text/javascript">
         <!--
-        $(function() {
+        $(function () {
             //首页图片上传绑定
             new uploadPreview({
                 UpBtn: "imgFile",
@@ -62,18 +62,10 @@
             $("#AddTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $("#EditTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
             $(".ClassId .validatebox-readonly").removeAttr("readonly");
-
-            @*if (@ViewBag.ClassId && @ViewBag.ClassId > 0) {
-                classIdBind(@ViewBag.ClassId);
-            }*@
-
+        
             $("#Keyword").focusout(function () {
                 saveRecentKeyword();
             });
-
-            //$(".recentKeyword").click(function (e) {
-            //    recentKeyword_click(e.target);
-            //});
 
             KindEditor.ready(function (K) {
                 var editor1 = K.create('#Content',
@@ -88,36 +80,7 @@
                         afterBlur: function () { this.sync(); }
                     });
             });
-        });
-
-        //绑定文章类别(类别号)
-        //function articlePidBind(classid) {
-        //    $('#ClassId')
-        //        .combotree({
-        //            url: "/ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
-        //            method:"post",
-        //            onlyLeafCheck: true,
-        //            checkbox: false,
-        //            disabled: false,
-        //            readonly: false,
-        //            required: true,
-        //            loadFilter: function(data) {
-        //                return data;
-        //            },
-        //            //选择树节点触发事件
-        //            onSelect: function(node) {
-        //                //返回树对象
-        //                var tree = $(this).tree;
-        //                //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
-        //                var isLeaf = tree('isLeaf', node.target);
-        //                if (!isLeaf) {
-        //                    alert("有下级目录时请选择下级目录!");
-        //                    //清除选中
-        //                    $('#ClassId').combotree('clear');
-        //                }
-        //            }
-        //        });
-        //}
+        });       
 
         //在localStorage中存储的关键字名
         var savedRecentKeywordKey = "rk";
@@ -263,18 +226,12 @@
             var zTree = $.fn.zTree.getZTreeObj("classTree");
             zTree.expandAll(true);
             @{
-                if (ViewBag.ClassId != null && ViewBag.ClassId > 0)
+                if (Model.ClassId != null && Model.ClassId > 0)
                 {
                     var strJs = "classIdBind(" + ViewBag.ClassId + ");";
                     @strJs
                 }
-                else
-                {
-                    var strJs = "classIdBind(0);";
-                    @strJs
-                }
             }
-
         }
 
         function classIdBind(classId) {
@@ -297,8 +254,8 @@
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Title)：</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;", placeholder = "请输入文章标题", data_val_required = "文章标题不能为空", data_val = "true" })
-                                <span class="help-inline" asp-validation-for="Title"></span>
+                                @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;", placeholder = "请输入文章标题"})
+                                <span asp-validation-for="Title"></span>
                             </div>
                         </div>
                         <div class="control-group">
@@ -309,11 +266,11 @@
                                         <li class="title">
                                             <input id="classSel" type="text" readonly value="" style="width:120px;" onclick="showMenu(); return false;"/>
                                             &nbsp;<a id="menuBtn" href="#" onclick="showMenu(); return false;">点我选择</a>
-                                            <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
+                                            @Html.ValidationMessageFor(m => m.ClassId)
                                         </li>
                                     </ul>
                                 </div>
-                                @Html.HiddenFor(m => m.ClassId, new { data_val_required = "文章类别不能为空", data_val = "true" })
+                                @Html.HiddenFor(m => m.ClassId)
                             </div>
                         </div>
                         @*<div class="control-group">
@@ -355,8 +312,8 @@
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Content)：</label>
                             <div class="controls">
-                                @Html.TextAreaFor(m => m.Content, new { id = "Content", style = "width: 100%; height:280px", data_val_required = "文章内容不能为空", data_val = "true" })
-                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Content)</span>
+                                @Html.TextAreaFor(m => m.Content, new { id = "Content", style = "width: 100%; height:280px"})
+                                @Html.ValidationMessageFor(m => m.Content)
                             </div>
                         </div>
                         <div class="control-group">
@@ -385,14 +342,14 @@
                             <label class="control-label">@Html.DisplayNameFor(m => m.Introduce)：</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.Introduce, new { rows = "3", style = "width:560px;height:80px;" })
-                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Introduce)</span>
+                                @Html.ValidationMessageFor(m => m.Introduce)
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">@Html.DisplayNameFor(m => m.Keyword)：</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.Keyword, new { @class = "m-wrap large", style = "width: 120px;" })<span class="gray" style="line-height:34px;">&nbsp;在此输入标签关键字，以空格分隔。</span>
-                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Introduce)</span>
+                                @Html.ValidationMessageFor(m => m.Introduce)
                                 <br />
                                 <div class="recentKeywords"></div>
                             </div>
