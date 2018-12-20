@@ -29,12 +29,14 @@ namespace Models
         [Required]
         public Nullable<int> ClassId { get; set; }
         [DisplayName("标题")]
+        [Required]
         public string Title { get; set; }
         [DisplayName("标题颜色")]
         public string TitleColor { get; set; }
         [DisplayName("文章分类标签")]
         public string Keyword { get; set; }
         [DisplayName("内容")]
+        [Required]
         public string Content { get; set; }
         [DisplayName("文章简介")]
         public string Introduce { get; set; }
@@ -44,8 +46,7 @@ namespace Models
         public string Author { get; set; }
         [DisplayName("文件来源")]
         public string Origin { get; set; }
-        [DisplayName("添加人用户名")]
-        [Required]
+        [DisplayName("添加人用户名")]       
         public string UserName { get; set; }
         private Nullable<int> _lookCount = 0;
         [DisplayName("文章查看次数")]

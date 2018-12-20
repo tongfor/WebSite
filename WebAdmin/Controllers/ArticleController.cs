@@ -229,6 +229,7 @@ namespace WebAdmin.Controllers
                 {
                     ModelState.AddModelError("Content", "请填写文章内容!");                    
                 }
+                article.UserName = string.IsNullOrEmpty(User.Identity.Name) ? "" : User.Identity.Name;
 
                 if (ModelState.IsValid)
                 {

@@ -74,6 +74,20 @@
             //$(".recentKeyword").click(function (e) {
             //    recentKeyword_click(e.target);
             //});
+
+            KindEditor.ready(function (K) {
+                var editor1 = K.create('#Content',
+                    {
+                        pasteType: 1,
+                        resizeType: 1,
+                        allowFileManager: true,
+                        uploadJson: '/Upload/FileSave',
+                        fileManagerJson: '/Upload/FileManage',
+                        filterMode: false, //不自动过滤html
+                        //让KindEditor异步提交表单，以免服务器接收不到编辑器内数据
+                        afterBlur: function () { this.sync(); }
+                    });
+            });
         });
 
         //绑定文章类别(类别号)
@@ -104,20 +118,6 @@
         //            }
         //        });
         //}
-
-        KindEditor.ready(function(K) {
-            var editor1 = K.create('#Content',
-            {
-                pasteType: 1,
-                resizeType: 1,
-                allowFileManager: true,
-                uploadJson: '/Upload/FileSave',
-                fileManagerJson: '/Upload/FileManage',
-                filterMode: false, //不自动过滤html
-                //让KindEditor异步提交表单，以免服务器接收不到编辑器内数据
-                afterBlur: function () { this.sync(); }
-            });
-        });
 
         //在localStorage中存储的关键字名
         var savedRecentKeywordKey = "rk";
@@ -188,7 +188,7 @@
                 $("#Keyword").val($("#Keyword").val() + " " + currentKeyword);
             }
         }
-		
+
         var setting = {
             view: {
                 dblClickExpand: false,
@@ -262,9 +262,19 @@
         function expandAll() {
             var zTree = $.fn.zTree.getZTreeObj("classTree");
             zTree.expandAll(true);
-            if (@ViewBag.ClassId && @ViewBag.ClassId > 0) {
-                classIdBind(@ViewBag.ClassId);
+            @{
+                if (ViewBag.ClassId != null && ViewBag.ClassId > 0)
+                {
+                    var strJs = "classIdBind(" + ViewBag.ClassId + ");";
+                    @strJs
+                }
+                else
+                {
+                    var strJs = "classIdBind(0);";
+                    @strJs
+                }
             }
+
         }
 
         function classIdBind(classId) {
@@ -276,19 +286,18 @@
         }
 
         //-->
-    </SCRIPT>
+    </script>
 }
 @section MainContent{
     <div class="tabbable tabbable-custom">
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <div class="portlet-body form-horizontal form-bordered form-row-stripped">
-                    <div asp-validation-summary="ModelOnly" class="help-inline"></div>
                     <div class="row-fluid">
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Title)：</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;" })
+                                @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;", placeholder = "请输入文章标题", data_val_required = "文章标题不能为空", data_val = "true" })
                                 <span class="help-inline" asp-validation-for="Title"></span>
                             </div>
                         </div>
@@ -298,13 +307,13 @@
                                 <div class="classTreeBackground">
                                     <ul class="list">
                                         <li class="title">
-                                            <input id="classSel" type="text" readonly value="" style="width:120px;" onclick="showMenu(); return false;" />
+                                            <input id="classSel" type="text" readonly value="" style="width:120px;" onclick="showMenu(); return false;"/>
                                             &nbsp;<a id="menuBtn" href="#" onclick="showMenu(); return false;">点我选择</a>
                                             <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
                                         </li>
                                     </ul>
                                 </div>
-                                @Html.HiddenFor(m => m.ClassId)
+                                @Html.HiddenFor(m => m.ClassId, new { data_val_required = "文章类别不能为空", data_val = "true" })
                             </div>
                         </div>
                         @*<div class="control-group">
@@ -346,8 +355,8 @@
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Content)：</label>
                             <div class="controls">
-                                @Html.TextAreaFor(m => m.Content, new { id = "Content", style = "width: 100%; height:280px" })
-                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Content)@Html.ValidationSummary(false)</span>
+                                @Html.TextAreaFor(m => m.Content, new { id = "Content", style = "width: 100%; height:280px", data_val_required = "文章内容不能为空", data_val = "true" })
+                                <span class="help-inline">@Html.ValidationMessageFor(m => m.Content)</span>
                             </div>
                         </div>
                         <div class="control-group">
