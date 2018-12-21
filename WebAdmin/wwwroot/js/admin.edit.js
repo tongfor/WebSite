@@ -40,7 +40,7 @@
                     $("#submitloading").hide();
                     $("#submit").removeAttr("disabled");
                 },
-                error(xhr, status, error) {
+                error: function (xhr, status, error) {
                     $("#submitloading").hide();
                     $("#submit").attr("disabled", "false");
                     document.write(xhr.responseText);

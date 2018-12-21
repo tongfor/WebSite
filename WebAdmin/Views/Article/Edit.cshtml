@@ -6,7 +6,7 @@
 }
 
 @section PageSpecificStyleSheetIncludes{
-    <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
+    
 }
 @section PageSpecificJavascriptIncludes{
     @*<script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>*@
@@ -24,7 +24,7 @@
                 UpBtn: "imgFile",
                 DivShow: "imgdiv",
                 ImgShow: "imgShow",
-                callback: function() {
+                callback: function () {
                     var formData = new FormData();
                     var name = $("#imgFile").val();
                     $("#imgShow").css({ "width": "60px", "height": "40px" });
@@ -34,22 +34,22 @@
                         url: "/Upload/FileSave",
                         type: 'POST',
                         data: formData,
-                        dataType:"json",
+                        dataType: "json",
                         // 告诉jQuery不要去处理发送的数据
                         processData: false,
                         // 告诉jQuery不要去设置Content-Type请求头
                         contentType: false,
-                        beforeSend: function() {
+                        beforeSend: function () {
                             $("#imguploading").show();
                         },
-                        success: function(response, status) {
+                        success: function (response, status) {
                             $("#imguploading").hide();
                             $("#imgShow").show();
                             if ("undefined" != typeof staticFileRoot && status && response.error === 0) {
                                 $("#IntroduceImg").val(response.url.replace(staticFileRoot, ""));
                             }
                         },
-                        error: function(responseStr) {
+                        error: function (responseStr) {
                             console.log("error");
                         }
                     });
@@ -60,12 +60,9 @@
             var zdm = zTreeDropdownMenu;
             zdm.init("classTree");
             @{
-                if (Model.ClassId != null && Model.ClassId > 0)
-                {
-                    var strJs = "zdm.setClassId(" + Model.ClassId + ");";
-                    @strJs
-                }
-            }
+                var classId = (Model != null && Model.ClassId != null && Model.ClassId > 0) ? Model.ClassId : 0;
+               }
+            zdm.setClassId(@classId);
             bindRecentKeywords();
 
             $("#AddTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true });
@@ -182,8 +179,8 @@
                                 <div class="classTreeBackground">
                                     <ul class="list">
                                         <li class="title">
-                                            <input id="classSel" type="text" readonly value="" style="width:120px;" class="zTreeSel"/>
-                                            &nbsp;<a id="menuBtn" href="#" class="zTreeSel">点我选择</a>
+                                            <input id="classSel" type="text" readonly value="" class="zTreeSel"/>
+                                            &nbsp;<a id="menuBtn" href="#" class="zTreeSel zTree-combo-arrow"></a>
                                             @Html.ValidationMessageFor(m => m.ClassId)
                                         </li>
                                     </ul>
