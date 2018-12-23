@@ -1,5 +1,5 @@
 ﻿var zTreeDropdownMenu = (function () {
-    //基于zTree的下拉菜单树
+    //文章编辑页面基于zTree的下拉菜单树
     var setting = {
         view: {
             dblClickExpand: false,
@@ -16,7 +16,7 @@
         callback: {
             beforeClick: beforeClick,
             onClick: onClick,
-            onAsyncSuccess: expandAll
+            onAsyncSuccess: expandAll,
         }
     };
 
@@ -98,7 +98,8 @@
             });
         },
         setClassId: function (val) {
-            classId = val;
-        }
+            classId = val; 
+        },
+        setting: setting
     };
 })();

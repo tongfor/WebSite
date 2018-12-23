@@ -7,12 +7,13 @@
 @{
     string webStageDomain = ViewBag.DomainName;
     string articleUrl = webStageDomain + "/Article/Details/";
-    ViewBag.Title = "首页";
+    ViewBag.Title = "文章列表页";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section PageSpecificStyleSheetIncludes{
-    <link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/zTree_v3/zTreeStyle/zTreeStyle.css" />
+    @*<link href="~/lib/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="stylesheet" />*@
     <style type="text/css">
         #ClassId {
             margin: 1px;
@@ -21,62 +22,82 @@
     </style>
 }
 @section PageSpecificJavascriptIncludes{
-    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>
+    @*<script type="text/javascript" src="~/lib/jquery-easyui-1.5/plugins/jquery.tree.js"></script>
     <script type="text/javascript" src="~/lib/jquery-easyui-1.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>*@
+    <script src="~/lib/zTree_v3/jquery.ztree.core.js"></script>>
     <script type="text/javascript">
 
         $(function () {
-            articleClassBind(0);
+            //articleClassBind(0);
             $(".dataTables_filter .validatebox-readonly").removeAttr("readonly");
 
-            if ( @ViewBag.ClassId !=null && @ViewBag.ClassId >0)
+            @*if ( @ViewBag.ClassId !=null && @ViewBag.ClassId >0)
             {
                 $('#ClassId').combotree('setValue', @ViewBag.ClassId);
-            }
+            }*@
         });
 
         //绑定文章类别(suffix为绑定控件ID号的后缀)
-        function articleClassBind(classid) {
-            var treedata;
-            $('#ClassId').combotree({
-                url: "../../ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
-                onlyLeafCheck: true,
-                checkbox: false,
-                disabled: false,
-                readonly: false,
-                loadFilter: function (data) {
-                    treedata = data;
-                    return data;
-                },
-                //选择树节点触发事件
-                onSelect: function (node) {
-                    //返回树对象
-                    var tree = $(this).tree;
-                    //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
-                    var isLeaf = tree('isLeaf', node.target);
-                    if (!isLeaf) {
-                        var $tree = $('#ClassId');
-                        $tree.tree({
-                            url: "../../ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
-                            onlyLeafCheck: true,
-                            checkbox: false,
-                            disabled: false,
-                            readonly: false
-                        });
-                        //var node = $tree.tree('find',2);
-                        //var childrenNodes = $tree.tree('getChildren',node.target);
-                        //alert("有下级目录时请选择下级目录!");
-                        //var aa=$('#ClassId').tree("getRoots");
-                        //var childnode = $('#ClassId').tree("getChildren", node.target);
-                        alert("有下级目录时请选择下级目录!");
-                        //清除选中
-                        $('#ClassId').combotree('clear');
-                        //$('#ClassId').combotree("select", childnode.target);
-                    }
-                }
-            });
-        }
+        //function articleClassBind(classid) {
+        //    var treedata;
+        //    $('#ClassId').combotree({
+        //        url: "../../ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
+        //        onlyLeafCheck: true,
+        //        checkbox: false,
+        //        disabled: false,
+        //        readonly: false,
+        //        loadFilter: function (data) {
+        //            treedata = data;
+        //            return data;
+        //        },
+        //        //选择树节点触发事件
+        //        onSelect: function (node) {
+        //            //返回树对象
+        //            var tree = $(this).tree;
+        //            //选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+        //            var isLeaf = tree('isLeaf', node.target);
+        //            if (!isLeaf) {
+        //                var $tree = $('#ClassId');
+        //                $tree.tree({
+        //                    url: "../../ArticleClass/GetAllArticleClassTreeJson?classid=" + classid,
+        //                    onlyLeafCheck: true,
+        //                    checkbox: false,
+        //                    disabled: false,
+        //                    readonly: false
+        //                });
+        //                //var node = $tree.tree('find',2);
+        //                //var childrenNodes = $tree.tree('getChildren',node.target);
+        //                //alert("有下级目录时请选择下级目录!");
+        //                //var aa=$('#ClassId').tree("getRoots");
+        //                //var childnode = $('#ClassId').tree("getChildren", node.target);
+        //                alert("有下级目录时请选择下级目录!");
+        //                //清除选中
+        //                $('#ClassId').combotree('clear');
+        //                //$('#ClassId').combotree("select", childnode.target);
+        //            }
+        //        }
+        //    });
+        //}
+
+        var zdm = zTreeDropdownMenu;
+        zdm.setting.async.dataFilter = function filter(treeId, parentNode, childNodes) {
+            if (!childNodes) return null;
+            for (var i = 0, l = childNodes.length; i < l; i++) {
+                childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+            }
+            var firstNode = {
+                id: -1,
+                name: "所有文章"
+            };
+            childNodes.unshift(firstNode);
+            return childNodes;
+        };
+        zdm.init("classTree");
+        @{
+            var classId = (ViewBag.ClassId != null && ViewBag.ClassId > 0) ? ViewBag.ClassId : -1;
+            }
+        zdm.setClassId(@classId);
     </script>
 }
 <div class="row-fluid">
@@ -98,10 +119,13 @@
                     @Html.TextBox("Title", "", new { @class = "m-wrap small" })
                 </label>
                 <label>
-                    <span>频道：</span>
-                    <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
-                        <option value="所有文章" selected="selected"></option>
-                    </select>
+                    <span>文章类别：</span>
+                    <input id="classSel" type="text" readonly value="" class="zTreeSel" />
+                    &nbsp;<a id="menuBtn" href="#" class="zTreeSel zTree-combo-arrow"></a>
+                    @Html.Hidden("ClassId", "")
+                    @*<select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
+            <option value="所有文章" selected="selected"></option>
+        </select>*@
                 </label>
             </div>
         }
@@ -169,6 +193,9 @@
         </tbody>
     </table>
 }
-    <div class="dataTables_paginate paging_bootstrap pagination">
-        @await Component.InvokeAsync("Pagination")
-    </div>
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @await Component.InvokeAsync("Pagination")
+</div>
+<div id="zTreeDropdownMenu" class="zTreeDropdownMenu">
+    <ul id="classTree" class="ztree"></ul>
+</div>
