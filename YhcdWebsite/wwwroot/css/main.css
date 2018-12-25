@@ -19,6 +19,45 @@ body {font-family: "Microsoft Yahei","微软雅黑","宋体", "Simsun", "Open Sans";fo
 #top i{margin-top:35px; margin-left:10px;}
 .navBtn,.userBtn{display:none;}
 
+/*logo animation start*/
+.logo {
+    background: #871317 -webkit-linear-gradient(left,#561214,#febaf7 50%,#ff0 90%,#561214) no-repeat 0 0;
+    background-size: 20% 100%;
+    width:324px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 36px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.logo {
+    -webkit-animation: slideShine 4s linear infinite;
+    animation: slideShine 4s linear infinite;
+}
+
+@-webkit-keyframes logo {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+@keyframes logo {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}
+/*logo animation end*/
+
 /*banner*/
 #banner{margin-top:80px; width:100%; top:0; left:0; z-index:1;}
 
@@ -199,6 +238,14 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 .pages span{ color:#000; padding:4px 10px; background-color:#ddd; margin:5px; }
 /*分页控件样式*/
 
+/*箭头样式控制*/
+#ac1 {
+    line-height: 40px;
+}
+.arrow-container span {
+    margin-right: 10px;
+}
+/*箭头样式控制*/
 @media (max-width:1199px) {
     #top li a{padding:0 5px;} #top ul{margin-left:1%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
 @media (max-width:999px){.services-content{width:100%;padding:0 0;} .content-list{padding:0 0;} .content-list ul .calendar{width:auto;} .content-list ul .content-title{width:75%;}}

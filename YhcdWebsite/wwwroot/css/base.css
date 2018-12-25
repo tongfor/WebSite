@@ -214,6 +214,8 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary
 .tc{text-align:center;}
 .tr{text-align:right;}
 
+.bold{font-weight:bold;}
+
 .arial{font-family:"arial";}
 .pr{position: relative;}
 
