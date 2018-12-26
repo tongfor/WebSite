@@ -17,16 +17,14 @@
                 @foreach (var item in Model)
                 {
                     <ul>
-                        <li class="calendar">
-                            @Html.DisplayFor(modelItem => item.AddTime.Value)
+                        <li @*class="calendar"*@>
+                            @Html.DisplayFor(modelItem => item.AddTime.Value, "ShortDate")
                         </li>
                         <li class="content-title">
-                            <div>
                                 <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
-                            </div>
-                            <div class="summary hidden-sm hidden-xs hidden-md" title="@Html.DisplayFor(modelItem => item.Introduce)">
+                            @*<div class="summary hidden-sm hidden-xs hidden-md" title="@Html.DisplayFor(modelItem => item.Introduce)">
                                 @Html.DisplayFor(modelItem => item.Introduce)
-                            </div>
+                            </div>*@
                         </li>
                     </ul>
                     <div class="clearfix"></div>
@@ -43,7 +41,7 @@
 <environment include="Development">
     <script src="~/js/Json/LeftNewsMenu.js"></script>
     <script src="~/js/leftNewsMenu.js"></script>
-    <script src="~/js/timeStyle.js"></script>
+    @*<script src="~/js/timeStyle.js"></script>*@
     <script src="~/js/base-loading.js"></script>   
 </environment>
 <environment exclude="Development">
