@@ -4,7 +4,7 @@ body {font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ","ËÎÌå", "Simsun", "Open Sans";fo
 
 /*top*/
 #top{height:80px; line-height:80px; position:fixed; width:100%; z-index:9; top:0; background:#fff; border-bottom:1px solid #E6E6E6;}
-#top ul{margin-left:123px;}
+#top ul{margin-left:80px;}
 #top li{float:left;}
 #top li.li2{width:87px;}
 #top li a{display:inline-block; font-size:1.6rem; padding:0 10px; color:#6F6F6F;}
@@ -14,7 +14,7 @@ body {font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ","ËÎÌå", "Simsun", "Open Sans";fo
 #top li div a{color:#B7B7B9;}
 #top li:hover div{display:block; width:1000px; background:#4E4C51;} 
 #top li.li2:hover div a{background:none;}
-#top span{display:block; width:1px; height:80px; background:#E7E7E7;}
+#top .interval{display:block; width:1px; height:80px; background:#E7E7E7;}
 #top p{font-size:1.3rem; color:#8C8C8C; margin-left:14px;}
 #top i{margin-top:35px; margin-left:10px;}
 .navBtn,.userBtn{display:none;}
@@ -26,25 +26,27 @@ body {font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ","ËÎÌå", "Simsun", "Open Sans";fo
 }
 .logo {
     width: 280px;
+    text-align: right;
+}
+.logo, .logo span {
     font-size: 3.6rem;
-    text-align: center;
     font-weight: bold;
     font-family: "Arial","Microsoft YaHei","ºÚÌå","ËÎÌå",sans-serif;
-    color:aqua;
+    color: #f69305;
 }
-.logo-gradient-animation {
+.logo-animation-gradient {
     background: #f69305 -webkit-linear-gradient(left,rgba(255,255,255,0.3),rgba(255,255,255,0.9),rgba(255,255,255,0.3)) no-repeat 0 0;
     background-size: 20% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.logo-gradient-animation {
-    -webkit-animation: logo-gradient-animation 5s linear infinite;
-    animation: logo-gradient-animation 5s linear infinite;
+.logo-animation-gradient {
+    -webkit-animation: gradient 5s linear infinite;
+    animation: gradient 5s linear infinite;
 }
 
-@-webkit-keyframes logo-gradient-animation {
+@-webkit-keyframes gradient {
     0% {
         background-position: 0 0;
     }
@@ -54,7 +56,7 @@ body {font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ","ËÎÌå", "Simsun", "Open Sans";fo
     }
 }
 
-@keyframes logo-gradient-animation {
+@keyframes gradient {
     0% {
         background-position: 0 0;
     }
@@ -63,6 +65,83 @@ body {font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ","ËÎÌå", "Simsun", "Open Sans";fo
         background-position: 100% 100%;
     }
 }
+
+
+/* animation revolvedrop */
+
+.logo-animation-revolveDrop span {
+    opacity: 0;
+    transform: translate(0, -100px) rotate(360deg) scale(0);
+    animation: revolveDrop .3s forwards;
+}
+
+@keyframes revolveDrop {
+    30% {
+        transform: translate(0, -50px) rotate(180deg) scale(1);
+    }
+
+    60% {
+        transform: translate(0, 20px) scale(.8) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.logo-animation-revolveDrop span:nth-of-type(2) {
+    animation-delay: .05s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(3) {
+    animation-delay: .1s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(4) {
+    animation-delay: .15s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(5) {
+    animation-delay: .2s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(6) {
+    animation-delay: .25s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(7) {
+    animation-delay: .3s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(8) {
+    animation-delay: .35s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(9) {
+    animation-delay: .4s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(10) {
+    animation-delay: .45s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(11) {
+    animation-delay: .5s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(12) {
+    animation-delay: .55s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(13) {
+    animation-delay: .6s;
+}
+
+.logo-animation-revolveDrop span:nth-of-type(14) {
+    animation-delay: .65s;
+}
+
 /*logo animation end*/
 
 /*banner*/

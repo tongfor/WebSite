@@ -26,9 +26,10 @@
     <!--top-->
     <div id="top" class="clearfix">
         <div class="container">
-            <div class="fl logo logo-gradient-animation hidden-md hidden-sm hidden-xs img-responsive">
+            <div class="fl logo logo-animation-revolveDrop hidden-md hidden-sm hidden-xs">
                 @*<img src="/images/logo.png" class="img-responsive" />*@
-                成都盈辉创动
+                @*<span>成</span><span>都</span><span>盈</span><span>辉</span><span>创</span><span>动</span>*@
+                <span>成都盈辉创动</span>
             </div>
             <div class="fl logo-small hidden-lg">
                 @*<img src="/images/logo.png" class="img-responsive" />*@
@@ -145,7 +146,13 @@
 
             $("#top_btn").click(function () { if (scroll == "off") return; $("html,body").animate({ scrollTop: 0 }, 600); });
 
+            setTimeout(animation_gradient_run, 1500)
         });
+
+        function animation_gradient_run() {
+            $(".logo").removeClass("logo-animation-revolveDrop");
+            $(".logo").addClass("logo-animation-gradient");
+        }
     </script>
 
     @RenderSection("Scripts", required: false)
