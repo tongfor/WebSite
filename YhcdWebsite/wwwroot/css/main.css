@@ -20,24 +20,31 @@ body {font-family: "Microsoft Yahei","微软雅黑","宋体", "Simsun", "Open Sans";fo
 .navBtn,.userBtn{display:none;}
 
 /*logo animation start*/
+.logo-small{
+    font-size:2.6rem;
+    line-height:8rem;
+}
 .logo {
-    background: #871317 -webkit-linear-gradient(left,#561214,#febaf7 50%,#ff0 90%,#561214) no-repeat 0 0;
-    background-size: 20% 100%;
-    width:324px;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 36px;
+    width: 280px;
+    font-size: 3.6rem;
     text-align: center;
     font-weight: bold;
-    text-decoration: underline;
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+    color:aqua;
+}
+.logo-gradient-animation {
+    background: #f69305 -webkit-linear-gradient(left,rgba(255,255,255,0.3),rgba(255,255,255,0.9),rgba(255,255,255,0.3)) no-repeat 0 0;
+    background-size: 20% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.logo {
-    -webkit-animation: slideShine 4s linear infinite;
-    animation: slideShine 4s linear infinite;
+.logo-gradient-animation {
+    -webkit-animation: logo-gradient-animation 5s linear infinite;
+    animation: logo-gradient-animation 5s linear infinite;
 }
 
-@-webkit-keyframes logo {
+@-webkit-keyframes logo-gradient-animation {
     0% {
         background-position: 0 0;
     }
@@ -47,7 +54,7 @@ body {font-family: "Microsoft Yahei","微软雅黑","宋体", "Simsun", "Open Sans";fo
     }
 }
 
-@keyframes logo {
+@keyframes logo-gradient-animation {
     0% {
         background-position: 0 0;
     }
@@ -188,11 +195,12 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 
 /*services-content*/
 .services-content {/*border-left:1px solid #9b9b9a;*/padding:0 20px;width:auto;}
-.services-content .crumb{height:45px;background-color:#007dbd;color:white;line-height:45px;padding:0 20px;font-size:1.4rem;}
+.services-content .crumb{height:45px;background-color:#007dbd;color:white;line-height:45px;padding:0 20px;font-size:1.4rem;}.services-content .crumb+h3
 .services-content .crumb a {color:white;font-size:1.4rem;}
 .services-content .crumb a:hover {color:red;}
 .services-content .crumb img{width:15px;height:15px;margin:-3px 0 0 0;}
-.services-content .crumb+h3{padding:10px 0;color:#D76139;}
+.services-content .crumb+h3{padding:10px 0;}
+.services-content h3{color:#D76139;}
 /*services-content*/
 
 /*content-list*/
@@ -239,14 +247,14 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 .pages span{ color:#000; padding:4px 10px; background-color:#ddd; margin:5px; }
 /*分页控件样式*/
 
-/*箭头样式控制*/
+/*箭头样式控制开始*/
 .application-flow {
     line-height: 40px;
 }
 .arrow-container span {
     margin-right: 10px;
 }
-/*箭头样式控制*/
+/*箭头样式控制结束*/
 @media (max-width:1199px) {
     #top li a{padding:0 5px;} #top ul{margin-left:1%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:35%;} #link i{top:65%;}}
 @media (max-width:999px){.services-content{width:100%;padding:0 0;} .content-list{padding:0 0;} .content-list ul .calendar{width:auto;} .content-list ul .content-title{width:75%;}}

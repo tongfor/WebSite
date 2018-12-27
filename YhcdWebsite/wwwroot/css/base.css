@@ -48,7 +48,7 @@ hr{
 
 h1,h2,h3,h4,h5,h6{font-size:100%}
 a,area{outline:none;blr:expression(this.onFocus=this.blur())}
-a{text-decoration:none; color:#8D8D8D;}
+a{text-decoration:none; color:white;}
 a:focus{outline:none}
 a:hover,a:active{outline:none; text-decoration:none;}
 :focus{outline:none}
