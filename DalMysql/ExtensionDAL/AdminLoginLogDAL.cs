@@ -82,9 +82,9 @@ namespace DALMySql
                 _db.Set<AdminLoginLog>().CountAsync(f => f.UserIp == ip && (f.IsSuccess == null || f.IsSuccess.Value == 0) && compareDateTime < f.LoginTime.Value);
             if (errorLoginCount >= maxErrorCount)
             {
-                lastLoginTime = await _db.Set<AdminLoginLog>()
-                    .Where(f => f.UserIp == ip && (f.IsSuccess == null || f.IsSuccess.Value == 0))
-                    .MaxAsync(p => p.LoginTime.Value);
+                var logList = await _db.Set<AdminLoginLog>()
+                    .Where(f => f.UserIp == ip && (f.IsSuccess == null || f.IsSuccess.Value == 0)).ToListAsync();
+                lastLoginTime = logList.Max(p => p.LoginTime.Value);
                 bResult = true;
             }
             return new Tuple<bool, DateTime>(bResult, lastLoginTime);

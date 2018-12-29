@@ -1,52 +1,62 @@
-﻿@{
-    ViewData["Title"] = "首页";
-}   
-    <!--service-->
-    <div id="service">
-        <div class="container">
-            <div class="title">
+﻿@using System.IO
+@model HomeArticleList
+@{
+    ViewData["Title"] = "首页";    
+}
+<!--service-->
+<div id="service">
+    <div class="container">
+        @*<div class="title">
                 <h3>公司业务</h3>
                 <p>Company business</p>
-            </div>
-            <ul class="clearfix">
-                <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Patent">
-                        <img src="/images/ico_1.png" class="img-responsive aligncenter img1" />
-                        <h3>专利服务</h3>
-                        <i></i>
-                        <p class="description"><span>查看详情</span></p>
-                    </a>
-                </li>
-                <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Trademark">
-                        <img src="/images/ico_2.png" class="img-responsive aligncenter img2" />
-                        <h3>商标版权</h3>
-                        <i></i>
-                        <p class="description"><span>查看详情</span></p>
-                    </a>
-                </li>
-                <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Qualification">
-                        <img src="/images/ico_3.png" class="img-responsive aligncenter img3" />
-                        <h3>资质认证</h3>
-                        <i></i>
-                        <p class="description"><span>查看详情</span></p>
-                    </a>
-                </li>
-                <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Consulting">
-                        <img src="/images/ico_4.png" class="img-responsive aligncenter img4" />
-                        <h3>科技咨询</h3>
-                        <i></i>
-                        <p class="description"><span>查看详情</span></p>
-                    </a>
-                </li>
-            </ul>
-        </div>
+            </div>*@
+        <ul class="clearfix">
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Patent">
+                    <img src="/images/ico_1.png" class="img-responsive aligncenter img1" />
+                    <h3>专利服务</h3>
+                    <i class="hidden-sm hidden-xs"></i>
+                    <p class="description hidden-sm hidden-xs"><span>查看详情</span></p>
+                </a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Trademark">
+                    <img src="/images/ico_2.png" class="img-responsive aligncenter img2" />
+                    <h3>商标版权</h3>
+                    <i class="hidden-sm hidden-xs"></i>
+                    <p class="description hidden-sm hidden-xs"><span>查看详情</span></p>
+                </a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Qualification">
+                    <img src="/images/ico_3.png" class="img-responsive aligncenter img3" />
+                    <h3>资质认证</h3>
+                    <i class="hidden-sm hidden-xs"></i>
+                    <p class="description hidden-sm hidden-xs"><span>查看详情</span></p>
+                </a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Consulting">
+                    <img src="/images/ico_4.png" class="img-responsive aligncenter img4" />
+                    <h3>科技咨询</h3>
+                    <i class="hidden-sm hidden-xs"></i>
+                    <p class="description hidden-sm hidden-xs"><span>查看详情</span></p>
+                </a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Website">
+                    <img src="/images/ico_5.png" class="img-responsive aligncenter img5" />
+                    <h3>网站建设</h3>
+                    <i class="hidden-sm hidden-xs"></i>
+                    <p class="description hidden-sm hidden-xs"><span>查看详情</span></p>
+                </a>
+            </li>
+        </ul>
     </div>
-    <!--/service-->
-    <!--intro-->
-    <div id="intro">
+</div>
+<!--/service-->
+<!--intro-->
+@*<div id="intro">
         <div class="container">
             <h2>公司简介</h2>
             <span>About Us</span>
@@ -62,59 +72,74 @@
             <div class="clearfix"></div>
             <a asp-area="" asp-controller="Home" asp-action="About" class="more wow" data-wow-delay=".5s" title="查看详情"></a>
         </div>
+    </div>*@
+<!--/intro-->
+<!--news-->
+<div id="news" class="container">
+    <div id="news-title">
+        <h3 class="fl">行业资讯</h3>
+        <h4 class="fl">NEWS</h4>
+        <a class="fr hidden-lg hidden-md" href="#">MORE</a>
     </div>
-    <!--/intro-->
-    <!--city-->
-    <!--news-->
-    @*<div id="news" class="container">
-            <h3>新闻中心</h3>
-            <span>NEWS</span>
-            <ul class="clearfix">
-                <li>
-                    <a href="#">
-                        <img src="/images/img_7.png" />
-                        <h3>2016广东省企业500强发布 深圳大生荣列第30位</h3>
-                        <span>2016.008.19</span>
-                        <i></i>
-                        <p>8月3日，广东省企业联合会、广东省企业家协会发布2016年广东省企业500强及广东省民营企业100强榜单......</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="/images/img_8.png" />
-                        <h3>2016广东省企业500强发布 深圳大生荣列第30位</h3>
-                        <span>2016.008.19</span>
-                        <i></i>
-                        <p>8月3日，广东省企业联合会、广东省企业家协会发布2016年广东省企业500强及广东省民营企业100强榜单......</p>
-                    </a>
-                </li>
-                <li class="last">
-                    <a href="#">
-                        <img src="/images/img_9.png" />
-                        <h3>2016广东省企业500强发布 深圳大生荣列第30位</h3>
-                        <span>2016.008.19</span>
-                        <i></i>
-                        <p>8月3日，广东省企业联合会、广东省企业家协会发布2016年广东省企业500强及广东省民营企业100强榜单......</p>
-                    </a>
-                </li>
-            </ul>
-            <a href="#" class="more wow" data-wow-delay=".5s"></a>
-        </div>*@
-    <!--/news-->
-    <!--link-->
-    <div id="link" class="container">
-        @*<i class="left"></i>
-            <i class="right"></i>*@
-        <ul class="clearfix">
-            <li><a href="#"><img src="/images/link_1.png" /></a></li>
-            <li><a href="#"><img src="/images/link_2.png" /></a></li>
-            <li><a href="#"><img src="/images/link_3.png" /></a></li>
-            <li><a href="#"><img src="/images/link_4.png" /></a></li>
-            <li><a href="#"><img src="/images/link_5.png" /></a></li>
-            <li><a href="#"><img src="/images/link_6.png" /></a></li>
-        </ul>
+    <div class="clearfix"></div>
+    <ul class="pic-news">
+        @{ int picNewsCount = 1;}
+        @foreach (var item in Model.PicArticleList)
+        {
+            <li>
+                <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                    @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg)))
+                    {
+                        <img src="~/@item.IntroduceImg.TrimStart('/')" />
+                    }
+                    else
+                    {
+                        string imgSrc = "/images/news-img" + picNewsCount + ".jpg";
+                        <img src="@imgSrc" />
+                    }
+                    <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+                    <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
+                    <i></i>
+                </a>
+            </li>
+            picNewsCount++;
+        }
+    </ul>
+    <ul class="text-news">
+        @foreach (var item in Model.TextArticleList)
+        {
+            <li>
+                <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                    @Html.DisplayFor(modelItem => item.Title)
+                </a>
+                <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
+
+            </li>
+        }       
+    </ul>
+    <a href="#" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s">MORE</a>
+</div>
+<!--/news-->
+<!--link-->
+<div id="link" class="container">
+    <div id="link-title">
+        <h3 class="fl">服务客户</h3>
+        <h4 class="fl">OUR CUSTOMERS</h4>
     </div>
-    <!--/link-->
+    <div class="clearfix"></div>
+    <ul>
+        <li><img src="/images/link_1.png" class="img-responsive" /></li>
+        <li><img src="/images/link_2.png" class="img-responsive" /></li>
+        <li><img src="/images/link_3.png" class="img-responsive" /></li>
+        <li><img src="/images/link_4.png" class="img-responsive" /></li>
+        <li><img src="/images/link_5.png" class="img-responsive" /></li>
+        <li><img src="/images/link_6.png" class="img-responsive" /></li>
+    </ul>
+</div>
+<!--/link-->
 @section Scripts {
-    
+    <script>
+        $("#news-title>a").attr("href", topMenu[7].menuLink);
+        $("#news>.more").attr("href", topMenu[7].menuLink);
+    </script>
 }

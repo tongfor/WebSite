@@ -51,7 +51,7 @@ namespace YhcdWebsite.Config
         /// <summary>
         /// 前台行业资讯栏目ID
         /// </summary>
-        public string IndustryInformationClassId { get; set; }
+        public string IndustryInformationClassIds { get; set; }
         /// <summary>
         /// 前台默认新闻每页显示条数
         /// </summary>

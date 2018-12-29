@@ -48,7 +48,7 @@ hr{
 
 h1,h2,h3,h4,h5,h6{font-size:100%}
 a,area{outline:none;blr:expression(this.onFocus=this.blur())}
-a{text-decoration:none; color:white;}
+a{text-decoration:none; color:#8D8D8D;}
 a:focus{outline:none}
 a:hover,a:active{outline:none; text-decoration:none;}
 :focus{outline:none}
@@ -218,6 +218,12 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary
 
 .arial{font-family:"arial";}
 .pr{position: relative;}
+
+/*阴影*/
+.shadow {
+    box-shadow: 0 0 3px #000;
+} 
+/*/阴影*/
 
 @media (min-width:768px) {
 	.container {width: 750px}
