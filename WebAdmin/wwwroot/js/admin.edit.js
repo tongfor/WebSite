@@ -12,20 +12,21 @@
     //mainForm.submit(function () {
     //    if (mainForm.valid()) {
     //        $("#submitloading").show();
+    //        marinFromSubmit();
     //    } else {
     //        $(".validation-summary-errors").hide(8000);
     //    }
-    //});
+    //});    
 
     $("#mainForm").validate({
-        success: marinFromSubmit
+        submitHandler: marinFromSubmit
     });
 
     function marinFromSubmit() {
-        $("#mainForm").submit(function () {
+        //$("#mainForm").submit(function () {
             $.ajax({
-                url: $(this).attr("action"),
-                data: $(this).serialize(),
+                url: $("#mainForm").attr("action"),
+                data: $("#mainForm").serialize(),
                 type: "POST",
                 beforeSend: function () {
                     $("#submit").attr("disabled", "true");//防止连击
@@ -50,7 +51,7 @@
                 }
             });
             return false;
-        });
+        //});
     }   
 
     //$("input[type='text']").blur(function () { $(this).removeClass("highlight"); }).focus(function () { $(this).addClass("highlight"); });

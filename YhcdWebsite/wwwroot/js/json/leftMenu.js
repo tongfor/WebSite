@@ -16,10 +16,6 @@ var leftMenu = [{
     "menuTitle": "科技咨询",
     "menuLink": "/Home/Consulting.html"
 }, {
-    "id": 4,
-    "menuTitle": "科技咨询",
-    "menuLink": "/Home/Consulting.html"
-}, {
     "id": 5,
     "menuTitle": "网站建设",
     "menuLink": "/Home/Website.html"

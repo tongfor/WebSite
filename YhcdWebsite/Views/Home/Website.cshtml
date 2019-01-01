@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "网站建设";
+}
+
+<!--content-->
+<section class="content">
+    <section class="container">
+        @Html.Partial("LeftMenuPartial")
+        <section class="services-content pull-left">
+            <section class="crumb">
+                <img src="~/images/icon-home.png" alt="首页" />&nbsp;&nbsp;<a href="/">首页</a>>网站建设
+            </section>
+            <section id="website-service">
+                @*<ul class="fold_wrap" id="sm">
+                    <li>
+                            <div class="mask_b"><h4>企业门户网站</h4></div>
+                            <div class="pic_auto pic_auto1"></div>
+                            <div class="adv_intro"></div>
+                    </li>
+                    <li>
+                            <div class="mask_b"><h4>手机网站微官网</h4></div>
+                            <div class="pic_auto pic_auto2"></div>
+                            <div class="adv_intro"></div>
+                    </li>
+                    <li>
+                            <div class="mask_b"><h4>定制型网站</h4></div>
+                            <div class="pic_auto pic_auto3"></div>
+                            <div class="adv_intro">/div>
+                    </li>
+                    <li>
+                            <div class="mask_b"><h4>H5响应式网站</h4></div>
+                            <div class="pic_auto pic_auto4"></div>
+                            <div class="adv_intro"></div>
+                    </li>                    
+                </ul>*@
+                <img src="~/images/website-bg.jpg" alt="网站建设" style="width:100%;padding-top:10px;" />
+                @*<ul>
+                    <li>企业门户网站</li>
+                    <li>企业门户网站</li>
+                </ul>*@
+            </section>
+            <section id="immigration-flow">
+                <img src="~/images/Immigration-Flow.png" alt="办理流程" />
+                <img src="~/images/Immigration-Flow-Details.png" alt="办理流程" style="width:100%;" />
+            </section>
+        </section>
+    </section>
+</section>
+<!--content-->
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/Json/LeftMenu.js"></script>
+        <script src="~/js/leftMenu.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/leftMenu.min.js" asp-append-version="true"></script>
+    </environment>
+}

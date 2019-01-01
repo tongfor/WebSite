@@ -88,7 +88,7 @@
         {
             <li>
                 <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
-                    @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg)))
+                    @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg.TrimStart('/'))))
                     {
                         <img src="~/@item.IntroduceImg.TrimStart('/')" />
                     }
