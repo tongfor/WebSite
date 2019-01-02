@@ -37,8 +37,10 @@ body {font-family: "Microsoft Yahei","微软雅黑","宋体", "Simsun", "Open Sans";fo
 }
 .logo-animation-gradient {
     background: #FF5206 -webkit-linear-gradient(left,rgba(255,255,255,0.3),rgba(255,255,255,0.9),rgba(255,255,255,0.3)) no-repeat 0 0;
+    background: #FF5206 linear-gradient(to right,rgba(255,255,255,0.3),rgba(255,255,255,0.9),rgba(255,255,255,0.3)) no-repeat 0 0; 
     background-size: 20% 100%;
     -webkit-background-clip: text;
+    background-clip:text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -499,8 +501,18 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
     text-align:center;
     padding-top:10px;
 }
-/*/网站建设页面样式*/
 
+#website-service{
+    width:100%;
+}
+#website-service ul {
+    list-style-type:none;
+}
+#website-service li{
+    float:left;
+    width:25%;
+}
+/*/网站建设页面样式*/
 @media (max-width:1199px) {
     #top li a{padding:0 5px;} #top ul{margin-left:1%;} .logo img{width:90%;} #service li .sp_bg{margin-left:45%;} #service li i{margin-left:20%;} #link i{top:65%;}}
 @media (max-width:999px){#service{padding-bottom:0;} .services-content{width:100%;padding:0 0;} .content-list{padding:0 0;} .content-list ul .calendar{width:auto;} .content-list ul .content-title{width:75%;} #link li{width:auto;margin:0 auto;float:none;padding-bottom:5px;} #link li img{width:80%;} #news .pic-news{height:auto;} #news .pic-news li{width:100%;height:auto;float:none;margin:0 3%;} .text-news{height:8.4rem; overflow:hidden;} .text-news > li{width:100%;height:2.8rem;} #link ul{height:auto;}}
