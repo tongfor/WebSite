@@ -11,9 +11,13 @@ namespace YhcdWebsite.Models
     /// </summary>
     public class HomeArticleList
     {
-        //图片新闻列表
-        public IEnumerable<ArticleView> PicArticleList;
-        //文字新闻列表
-        public IEnumerable<ArticleView> TextArticleList;
+        //政策信息图片新闻列表
+        public IEnumerable<ArticleView> PolicyPicArticleList;
+        //政策信息文字新闻列表
+        public IEnumerable<ArticleView> PolicyTextArticleList;
+        //申报快讯图片新闻列表
+        public IEnumerable<ArticleView> NotificationPicArticleList;
+        //申报快讯文字新闻列表
+        public IEnumerable<ArticleView> NotificationTextArticleList;
     }
 }

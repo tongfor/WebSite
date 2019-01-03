@@ -23,4 +23,8 @@ var leftMenu = [{
     "id": 6,
     "menuTitle": "经典案例",
     "menuLink": "/Home/Classic.html"
+}, {
+    "id": 7,
+    "menuTitle": "行业资讯",
+    "menuLink": "/Article/List-2.html"
 }];

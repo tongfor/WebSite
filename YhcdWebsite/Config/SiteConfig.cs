@@ -53,6 +53,14 @@ namespace YhcdWebsite.Config
         /// </summary>
         public string IndustryInformationClassIds { get; set; }
         /// <summary>
+        /// 前台政策信息栏目ID
+        /// </summary>
+        public string PolicyClassId { get; set; }
+        /// <summary>
+        /// 前台申报快讯栏目ID
+        /// </summary>
+        public string  NotificationClassId { get; set; }
+        /// <summary>
         /// 前台默认新闻每页显示条数
         /// </summary>
         public int DefaultPageCount { get; set; }

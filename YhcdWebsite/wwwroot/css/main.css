@@ -27,8 +27,8 @@ body {font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ","ËÎÌå", "Simsun", "Open Sans";fo
     padding-top:12px;
 }
 .logo {
-    width: 280px;
-    text-align: right;
+    width: 220px;
+    /*text-align: right;*/
 }
 .logo, .logo span {
     font-size: 3.6rem;
@@ -213,7 +213,16 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 #news hr {
     border-bottom: 1px dashed #999999;
 }
-#news .pic-news{margin-top:15px; text-align:center;height:266px;}
+#news #policy {
+    display: block;
+    margin-top: 25px;
+}
+#news #notification {
+    display:block;
+    margin-top: -241px;
+    margin-left:0;
+}
+#news .pic-news{text-align:center;height:266px;width:100%;}
 #news .pic-news li{width:33.333%; box-sizing:border-box; float:left; padding-right:20px; transition:All 0.4s ease-in-out; -webkit-transition:All 0.4s ease-in-out;    -moz-transition:All 0.4s ease-in-out; -o-transition:All 0.4s ease-in-out;}
 /*#news .pic-news li.last{padding-right:0;}*/
 #news .pic-news li img{display:block; width:100%; height:189px;border: 1px solid #ddd;padding:2px;background-color:white;}
@@ -528,6 +537,7 @@ background-repeat: no-repeat; background-attachment: scroll; background-position
 @media (max-width:491px) {#chanye a.more{margin-left:20%;}}
 @media (max-width:442px) {#city img{width:300px;} #city .text h3{padding-top:100px;}}
 @media (max-width:414px) {#service li i{margin-left:12%;} #chanye a.more{margin-left:10%;}  #news .more {margin-left:30%;}#service li p span{width:75px;}}
+@media (max-width:360px) {#top .navBtn{right:55px;} }
 @media (max-width:320px) {#service li i{margin-left:8%;} #service li p span {width:70px;}#chanye a.more {width:200px; margin-left:15%;} #chanye a.more:hover::after {width: 200px;} #chanye .title .p_list a{margin-right:50px;} #city img{width:260px;} #city .text h3{font-size:2.0rem;} #city .text h3 font{font-size:4.0rem;}#news .more {margin-left:25%;}}
 @media(max-width:240px){.content .mask-left, .content .mask-right{font-size:1rem;}}
 

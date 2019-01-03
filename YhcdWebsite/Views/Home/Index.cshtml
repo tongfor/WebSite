@@ -1,7 +1,7 @@
 ﻿@using System.IO
 @model HomeArticleList
 @{
-    ViewData["Title"] = "首页";    
+    ViewData["Title"] = "首页";
 }
 <!--service-->
 <div id="service">
@@ -82,48 +82,103 @@
         <a class="fr hidden-lg hidden-md" href="#">MORE</a>
     </div>
     <div class="clearfix"></div>
-    <ul class="pic-news">
-        @{ int picNewsCount = 1;}
-        @foreach (var item in Model.PicArticleList)
-        {
-            <li>
-                <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
-                    @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg.TrimStart('/'))))
-                    {
-                        <img src="~/@item.IntroduceImg.TrimStart('/')" />
-                    }
-                    else
-                    {
-                        string imgSrc = "/images/news-img" + picNewsCount + ".jpg";
-                        <img src="@imgSrc" />
-                    }
-                    <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
-                    <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
-                    <i></i>
-                </a>
-            </li>
-            picNewsCount++;
-        }
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#policy" data-toggle="tab" class="bold f16">
+                政策信息
+            </a>
+        </li>
+        <li>
+            <a href="#notification" data-toggle="tab" class="bold f16">
+                申报快讯
+            </a>
+        </li>
     </ul>
-    <ul class="text-news">
-        @foreach (var item in Model.TextArticleList)
-        {
-            <li>
-                <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
-                    @Html.DisplayFor(modelItem => item.Title)
-                </a>
-                <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
+    <div id="new-content">
+        <div class="tab-pane fade in active" id="policy">
+            <ul class="pic-news">
+                @{ int picNewsCount = 1;}
+                @foreach (var item in Model.PolicyPicArticleList)
+                {
+                    <li>
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                            @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg.TrimStart('/'))))
+                            {
+                                <img src="~/@item.IntroduceImg.TrimStart('/')" />
+                            }
+                            else
+                            {
+                                string imgSrc = "/images/news-img" + picNewsCount + ".jpg";
+                                <img src="@imgSrc" />
+                            }
+                            <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+                            <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
+                            <i></i>
+                        </a>
+                    </li>
+                    picNewsCount++;
+                }
+            </ul>
+            <ul class="text-news">
+                @foreach (var item in Model.PolicyTextArticleList)
+                {
+                    <li>
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                        <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
 
-            </li>
-        }       
-    </ul>
-    <a href="#" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s">MORE</a>
+                    </li>
+                }
+            </ul>
+            <a href="/Article/List-2.html" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s">MORE</a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="tab-pane fade" id="notification">
+            <ul class="pic-news">
+                @{ int picNewsCount1 = 1;}
+                @foreach (var item in Model.NotificationPicArticleList)
+                {
+                    <li>
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                            @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg.TrimStart('/'))))
+                            {
+                                <img src="~/@item.IntroduceImg.TrimStart('/')" />
+                            }
+                            else
+                            {
+                                string imgSrc = "/images/news1-img" + picNewsCount1 + ".jpg";
+                                <img src="@imgSrc" />
+                            }
+                            <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+                            <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
+                            <i></i>
+                        </a>
+                    </li>
+                    picNewsCount1++;
+                }
+            </ul>
+            <ul class="text-news">
+                @foreach (var item in Model.NotificationTextArticleList)
+                {
+                    <li>
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                        <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
+
+                    </li>
+                }
+            </ul>
+            <a href="/Article/List-3.html" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s">MORE</a>
+        </div>
+    </div>
 </div>
 <!--/news-->
 <!--link-->
 <div id="link" class="container">
     <div id="link-title">
-        <h3 class="fl">服务客户</h3>
+        <h3 class="fl">合作伙伴</h3>
         <h4 class="fl">OUR CUSTOMERS</h4>
     </div>
     <div class="clearfix"></div>
@@ -139,7 +194,6 @@
 <!--/link-->
 @section Scripts {
     <script>
-        $("#news-title>a").attr("href", topMenu[7].menuLink);
-        $("#news>.more").attr("href", topMenu[7].menuLink);
+        $("#news-title>a").attr("href", $(".tab-pane").filter(".active").find("a").attr("href"));
     </script>
 }

@@ -28,15 +28,22 @@ namespace YhcdWebsite.Controllers
         {
             try
             {
-                string picArticleWhere = $"ClassId in ({SiteConfigSettings.IndustryInformationClassIds}) and (aco.IsDel = 0 or aco.IsDel is NULL)";
-                string textArticleWhere = $"ClassId in ({SiteConfigSettings.IndustryInformationClassIds}) and (aco.IsDel = 0 or aco.IsDel is NULL) and (IntroduceImg is NULL || IntroduceImg = '')";
-                var picArticleList = await _articleService.GetOrderArticleIncludeClassByPageAsync(1, 3, picArticleWhere, "(case when IntroduceImg is not null then 1 else 0 end) desc, AddTime DESC");
-                var textArticleList = await _articleService.GetOrderArticleIncludeClassByPageAsync(1, 9, textArticleWhere, "AddTime DESC");
+                string policyPicArticleWhere = $"ClassId = {SiteConfigSettings.PolicyClassId} and (aco.IsDel = 0 or aco.IsDel is NULL)";
+                string policyTextArticleWhere = $"ClassId = {SiteConfigSettings.PolicyClassId} and (aco.IsDel = 0 or aco.IsDel is NULL) and (IntroduceImg is NULL || IntroduceImg = '')";
+                var picArticleList = await _articleService.GetOrderArticleIncludeClassByPageAsync(1, 3, policyPicArticleWhere, "(case when IntroduceImg is not null then 1 else 0 end) desc, AddTime DESC");
+                var textArticleList = await _articleService.GetOrderArticleIncludeClassByPageAsync(1, 9, policyTextArticleWhere, "AddTime DESC");
+
+                string notificationPicArticleWhere = $"ClassId = {SiteConfigSettings.NotificationClassId} and (aco.IsDel = 0 or aco.IsDel is NULL)";
+                string notificationTextArticleWhere = $"ClassId = {SiteConfigSettings.NotificationClassId} and (aco.IsDel = 0 or aco.IsDel is NULL) and (IntroduceImg is NULL || IntroduceImg = '')";
+                var notificationPicArticleList = await _articleService.GetOrderArticleIncludeClassByPageAsync(1, 3, notificationPicArticleWhere, "(case when IntroduceImg is not null then 1 else 0 end) desc, AddTime DESC");
+                var notificationTextArticleList = await _articleService.GetOrderArticleIncludeClassByPageAsync(1, 9, notificationTextArticleWhere, "AddTime DESC");
 
                 HomeArticleList articleList = new HomeArticleList
                 {
-                    PicArticleList = picArticleList.DataList,
-                    TextArticleList = textArticleList.DataList
+                    PolicyPicArticleList = picArticleList.DataList,
+                    PolicyTextArticleList = textArticleList.DataList,
+                    NotificationPicArticleList = notificationPicArticleList.DataList,
+                    NotificationTextArticleList = notificationTextArticleList.DataList
                 };
                 ViewBag.WebRootPath = _hostingEnvironment.WebRootPath;
                 return View(articleList);
