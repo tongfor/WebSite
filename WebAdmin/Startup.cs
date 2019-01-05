@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Common.Config;
 using Microsoft.AspNetCore.Builder;
@@ -74,6 +75,8 @@ namespace WebAdmin
                     name: "default",
                     template: "{controller=Account}/{action=Login}/{id?}");
             });
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//注册编码提供程序
         }
     }
 }

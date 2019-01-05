@@ -27,7 +27,7 @@ var topMenu = [
     }, {
         "id": 7,
         "menuTitle": "经典案例",
-        "menuLink": "/Home/Consulting.html"
+        "menuLink": "/Home/Classic.html"
     }, {
         "id": 8,
         "menuTitle": "网站建设",

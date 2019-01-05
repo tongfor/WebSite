@@ -87,6 +87,46 @@ namespace Common.Config
         /// 同一IP登录失败超过最大限制后，多长时间能重新登录
         /// </summary>
         public int LoginErrorTryMinutes { get; set; } = 30;
+        /// <summary>
+        /// 政策信息栏目ID
+        /// </summary>
+        public int PolicyClassId { get; set; } = 2;
+        /// <summary>
+        /// 申报快讯栏目ID
+        /// </summary>
+        public int NotificationClassId { get; set; } = 3;
+        /// <summary>
+        /// 政策信息过滤关键字
+        /// </summary>
+        public string PolicyKeywords { get; set; } = "暂行办法,管理办法,实施细则,申报指南";
+        /// <summary>
+        /// 申报快讯过滤关键字
+        /// </summary>
+        public string NotificationKeywords { get; set; } = "项目 and 征集,申报";
+        /// <summary>
+        /// 采集站点属性
+        /// </summary>
+        public List<GatherWebsite> GatherWebsiteList { get; set; }
+
         #endregion
+    }
+
+    /// <summary>
+    /// 采集站点属性
+    /// </summary>
+    public class GatherWebsite
+    {
+        /// <summary>
+        /// 采集站点关键字
+        /// </summary>
+        public string Key { get; set; }
+        /// <summary>
+        /// 站点名
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// 采集URL模板
+        /// </summary>
+        public string UrlTemp { get; set; }
     }
 }

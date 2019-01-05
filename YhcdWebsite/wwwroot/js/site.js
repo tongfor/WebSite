@@ -18,7 +18,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 };
 
@@ -30,14 +30,14 @@ $(document).ready(function () {
     }
 
     $("#top .navBtn").click(function () {
-        if ($("#top ul:visible").length == 0) {
+        if ($("#top ul:visible").length === 0) {
             $("#top ul").show()
         } else {
             $("#top ul").hide()
         }
 
         $("#top .userBtn").click(function () {
-            if ($("#top .searck:visible").length == 0) {
+            if ($("#top .searck:visible").length === 0) {
                 $("#top .searck").show()
             } else {
                 $("#top .searck").hide()
@@ -49,7 +49,7 @@ $(document).ready(function () {
 
 
     $("#leftsead a").hover(function () {
-        if ($(this).prop("className") == "youhui") {
+        if ($(this).prop("className") === "youhui") {
             $(this).children("img.hides").show();
         } else {
             $(this).children("img.hides").show();
@@ -57,14 +57,14 @@ $(document).ready(function () {
             $(this).children("img.hides").animate({ marginRight: '0px' }, 'slow');
         }
     }, function () {
-        if ($(this).prop("className") == "youhui") {
+        if ($(this).prop("className") === "youhui") {
             $(this).children("img.hides").hide('slow');
         } else {
             $(this).children("img.hides").animate({ marginRight: '-143px' }, 'slow', function () { $(this).hide(); $(this).next("img.shows").show(); });
         }
     });
 
-    $("#top_btn").click(function () { if (scroll == "off") return; $("html,body").animate({ scrollTop: 0 }, 600); });
+    $("#top_btn").click(function () { if (scroll === "off") return; $("html,body").animate({ scrollTop: 0 }, 600); });
 
     setTimeout(animation_gradient_run, 1500)
 });

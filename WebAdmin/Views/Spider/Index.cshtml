@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "网页采集";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>网页采集</h2>
+<input value="采集政策信息" id="g1" type="button"/>
+<br />
+<span id="submitloading" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+@section PageSpecificJavascriptIncludes{
+    <script>
+        $(function () {
+            $("#g1").click(function () {
+                $.ajax({
+                    url: "/Spider/GatherCdgyWebsite?pageStartNo=1&pageEndNo=100",
+                    type: "POST",
+                    beforeSend: function () {
+                        $("#g1").attr("disabled", "true");//防止连击
+                        $("#submitloading").show();
+                    },
+                    success: function (result, status) {
+                        if (result && "success" === status && 0 === result.status) {
+                            alert(result.msg);
+                            window.top.location.reload();
+                            window.top.tb_remove();
+                        }
+                        $("#submitloading").hide();
+                        $("#g1").removeAttr("disabled");
+                    },
+                    error: function (xhr, status, error) {
+                        $("#submitloading").hide();
+                        $("#g1").removeAttr("disabled");
+                        document.write(xhr.responseText);
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+}
+
+
+
