@@ -2,8 +2,8 @@
 @using Microsoft.AspNetCore.Http;
 <div class="pages">
     @{
-        const int pageIncrement = 5;
-        const int pageTrailing = 10;
+        const int pageIncrement = 2;
+        const int pageTrailing = 6;
         int totalCount = Model.TotalItemCount == null ? 1 : (int)Model.TotalItemCount;
         int pageSize = Model.PageSize == null ? 10 : (int)Model.PageSize;
         var totalPageCount = (totalCount / pageSize) + (totalCount % pageSize == 0 ? 0 : 1);//ViewBag.TotalPageCount == null ? 1 : (int)ViewBag.TotalPageCount;

@@ -101,7 +101,7 @@
                 @foreach (var item in Model.PolicyPicArticleList)
                 {
                     <li>
-                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)"  target="_blank">
                             @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg.TrimStart('/'))))
                             {
                                 <img src="~/@item.IntroduceImg.TrimStart('/')" />
@@ -123,7 +123,7 @@
                 @foreach (var item in Model.PolicyTextArticleList)
                 {
                     <li>
-                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)" target="_blank">
                             @Html.DisplayFor(modelItem => item.Title)
                         </a>
                         <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
@@ -131,7 +131,7 @@
                     </li>
                 }
             </ul>
-            <a href="/Article/List-2.html" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s">MORE</a>
+            <a href="/Article/List-2.html" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s" target="_blank">MORE</a>
         </div>
         <div class="tab-pane fade" id="notification">
             <ul class="pic-news">
@@ -139,7 +139,7 @@
                 @foreach (var item in Model.NotificationPicArticleList)
                 {
                     <li>
-                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)"  target="_blank">
                             @if (!string.IsNullOrEmpty(item.IntroduceImg) && File.Exists(System.IO.Path.Combine(ViewBag.WebRootPath, item.IntroduceImg.TrimStart('/'))))
                             {
                                 <img src="~/@item.IntroduceImg.TrimStart('/')" />
@@ -161,7 +161,7 @@
                 @foreach (var item in Model.NotificationTextArticleList)
                 {
                     <li>
-                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">
+                        <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)"  target="_blank">
                             @Html.DisplayFor(modelItem => item.Title)
                         </a>
                         <span>@Html.DisplayFor(modelItem => item.AddTime)</span>
@@ -169,7 +169,7 @@
                     </li>
                 }
             </ul>
-            <a href="/Article/List-3.html" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s">MORE</a>
+            <a href="/Article/List-3.html" class="more wow hidden-sm hidden-xs" data-wow-delay=".5s" target="_blank">MORE</a>
         </div>
     </div>
 </div>

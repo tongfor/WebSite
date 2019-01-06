@@ -21,7 +21,7 @@
                             @Html.DisplayFor(modelItem => item.AddTime.Value, "ShortDate")
                         </li>
                         <li class="content-title">
-                                <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)">@Html.DisplayFor(modelItem => item.Title)</a>
+                                <a asp-area="" asp-controller="Article" asp-action="Details" asp-route-id="@item.Id" title="@Html.DisplayFor(modelItem => item.Title)" target="_blank">@Html.DisplayFor(modelItem => item.Title)</a>
                             @*<div class="summary hidden-sm hidden-xs hidden-md" title="@Html.DisplayFor(modelItem => item.Introduce)">
                                 @Html.DisplayFor(modelItem => item.Introduce)
                             </div>*@

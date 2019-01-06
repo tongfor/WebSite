@@ -125,6 +125,10 @@ namespace Common.Config
         /// </summary>
         public string Name { get; set; }
         /// <summary>
+        /// 站点域名
+        /// </summary>
+        public string SiteUrl { get; set; }
+        /// <summary>
         /// 采集URL模板
         /// </summary>
         public string UrlTemp { get; set; }

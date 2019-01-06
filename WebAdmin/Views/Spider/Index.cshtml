@@ -5,19 +5,92 @@
 }
 
 <h2>网页采集</h2>
-<input value="采集政策信息" id="g1" type="button"/>
-<br />
-<span id="submitloading" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+<div style="text-align:center;">
+    <h3>政策信息采集</h3>
+    <ul style="list-style:none;">
+        <li class="floatleft">
+            <input value="采集市经委信息" id="g_Cdgy_classId_2" data-classId="2" data-siteKey="Cdgy" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdgy_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集省经委信息" id="g_Jxt_classId_2" data-classId="2" data-siteKey="Jxt" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Jxt_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集市科技局信息" id="g_Cdst_classId_2" data-classId="2" data-siteKey="Cdst" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdst_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集省科技厅信息" id="g_Kjt_classId_2" data-classId="2" data-siteKey="Kjt" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Kjt_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集高新区信息" id="g_Cdht_classId_2" data-classId="2" data-siteKey="Cdht" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdht_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集天府新区信息" id="g_Cdtf_classId_2" data-classId="2" data-siteKey="Cdtf" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdtf_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+    </ul>
+</div>
+<div class="clearfix"></div>
+<div style="text-align:center;">
+    <h3>申报快讯采集</h3>
+    <ul style="list-style:none;">
+        <li class="floatleft">
+            <input value="采集市经委信息" id="g_Cdgy_classId_3" data-classId="3" data-siteKey="Cdgy" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdgy_classId_3" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集省经委信息" id="g_Jxt_classId_3" data-classId="3" data-siteKey="Jxt" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Jxt_classId_3" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集市科技局信息" id="g_Cdst_classId_3" data-classId="3" data-siteKey="Cdst" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdst_classId_3" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集省科技厅信息" id="g_Kjt_classId_3" data-classId="3" data-siteKey="Kjt" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Kjt_classId_3" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集高新区信息" id="g_Cdht_classId_3" data-classId="3" data-siteKey="Cdht" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdht_classId_3" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+        <li class="floatleft">
+            <input value="采集天府新区信息" id="g_Cdtf_classId_3" data-classId="3" data-siteKey="Cdtf" type="button" class="gatherbtn" />
+            <br />
+            <span id="submitloading_Cdtf_classId_3" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+        </li>
+    </ul>
+</div>
 @section PageSpecificJavascriptIncludes{
     <script>
         $(function () {
-            $("#g1").click(function () {
+            $(".gatherbtn").click(function (e) {
+                var obj = $(e.target);
+                var classId = obj.attr("data-classId");
+                var siteKey = obj.attr("data-siteKey")
+                var loadingId = "submitloading_" + siteKey + "_" + "classId" + "_" + classId;
+
                 $.ajax({
-                    url: "/Spider/GatherCdgyWebsite?pageStartNo=1&pageEndNo=100",
+                    url: "/Spider/Gather" + siteKey + "Website?pageStartNo=1&pageEndNo=30&classId=" + classId,
                     type: "POST",
                     beforeSend: function () {
-                        $("#g1").attr("disabled", "true");//防止连击
-                        $("#submitloading").show();
+                        obj.attr("disabled", "true");//防止连击
+                        $("#" + loadingId).show();
                     },
                     success: function (result, status) {
                         if (result && "success" === status && 0 === result.status) {
@@ -25,12 +98,12 @@
                             window.top.location.reload();
                             window.top.tb_remove();
                         }
-                        $("#submitloading").hide();
-                        $("#g1").removeAttr("disabled");
+                        $("#" + loadingId).hide();
+                        obj.removeAttr("disabled");
                     },
                     error: function (xhr, status, error) {
-                        $("#submitloading").hide();
-                        $("#g1").removeAttr("disabled");
+                        $("#" + loadingId).hide();
+                        obj.removeAttr("disabled");
                         document.write(xhr.responseText);
                         console.log(xhr);
                         console.log(status);
@@ -39,6 +112,35 @@
                 });
                 return false;
             });
+
+            //$("#g_jxt_classId_3").click(function () {
+            //    $.ajax({
+            //        url: "/Spider/GatherJxtWebsite?pageStartNo=1&pageEndNo=67&classId=2",
+            //        type: "POST",
+            //        beforeSend: function () {
+            //            $("#g_jxt_classId_3").attr("disabled", "true");//防止连击
+            //            $("#submitloading_jxt_classId_3").show();
+            //        },
+            //        success: function (result, status) {
+            //            if (result && "success" === status && 0 === result.status) {
+            //                alert(result.msg);
+            //                window.top.location.reload();
+            //                window.top.tb_remove();
+            //            }
+            //            $("#submitloading_jxt_classId_3").hide();
+            //            $("#g_jxt_classId_3").removeAttr("disabled");
+            //        },
+            //        error: function (xhr, status, error) {
+            //            $("#submitloading_jxt_classId_3").hide();
+            //            $("#g_jxt_classId_3").removeAttr("disabled");
+            //            document.write(xhr.responseText);
+            //            console.log(xhr);
+            //            console.log(status);
+            //            console.log(error);
+            //        }
+            //    });
+            //    return false;
+            //});
         });
     </script>
 }
