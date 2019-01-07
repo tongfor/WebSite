@@ -137,5 +137,10 @@ namespace Common.Config
         /// </summary>
         public bool IsGatherByDetail { get; set; }
 
+        /// <summary>
+        /// 文章详细采集是否使用Javascript配置
+        /// </summary>
+        public bool DetailIsUseJavascript { get; set; }
+
     }
 }

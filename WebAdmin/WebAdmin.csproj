@@ -20,9 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="0.10.0" />
+    <PackageReference Include="AngleSharp" Version="0.9.11" />
+    <PackageReference Include="AngleSharp.Scripting.JavaScript" Version="0.5.1" />
     <PackageReference Include="Bundler" Version="1.1.31" />
     <PackageReference Include="BundlerMinifier.Core" Version="2.8.391" />
+    <PackageReference Include="Jint" Version="2.11.58" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />

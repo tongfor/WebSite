@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp;
-using AngleSharp.Html.Parser;
+using AngleSharp.Parser.Html;
 using Common;
 using Common.AspNetCore.Extensions;
 using Common.Config;
@@ -64,7 +64,7 @@ namespace WebAdmin.Controllers
                             http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseDocumentAsync(htmlString);
+                            var document = await htmlParser.ParseAsync(htmlString);
                             preGatherUrlList.AddRange(document.QuerySelectorAll("cmspro_documents ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
                             && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
                             && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
@@ -129,7 +129,7 @@ namespace WebAdmin.Controllers
                     var htmlString = await http.GetStringAsync(url);
                     HtmlParser htmlParser = new HtmlParser();
                     var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdgy" == f.Key);
-                    var document = await htmlParser.ParseDocumentAsync(htmlString);
+                    var document = await htmlParser.ParseAsync(htmlString);
                     string pagePath = url.Substring(0, url.LastIndexOf('/') + 1);
                     var detailsInfo = document
                         .QuerySelectorAll("html")
@@ -262,7 +262,7 @@ namespace WebAdmin.Controllers
                             http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseDocumentAsync(htmlString);
+                            var document = await htmlParser.ParseAsync(htmlString);
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul.list-li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
@@ -323,7 +323,7 @@ namespace WebAdmin.Controllers
                     var htmlString = await http.GetStringAsync(url);
                     HtmlParser htmlParser = new HtmlParser();
                     var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "jxt" == f.Key);
-                    var document = await htmlParser.ParseDocumentAsync(htmlString);
+                    var document = await htmlParser.ParseAsync(htmlString);
                     var detailsInfo = document
                         .QuerySelectorAll("div.listlmtt")
                         .Select(t => new Article()
@@ -395,7 +395,7 @@ namespace WebAdmin.Controllers
                             http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseDocumentAsync(htmlString);
+                            var document = await htmlParser.ParseAsync(htmlString);
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul#showMoreNChildren li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
@@ -455,7 +455,7 @@ namespace WebAdmin.Controllers
                     var htmlString = await http.GetStringAsync(url);
                     HtmlParser htmlParser = new HtmlParser();
                     var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdst" == f.Key);
-                    var document = await htmlParser.ParseDocumentAsync(htmlString);
+                    var document = await htmlParser.ParseAsync(htmlString);
                     string pagePath = url.Substring(0, url.LastIndexOf('/') + 1);
                     var detailsInfo = document
                         .QuerySelectorAll("html")
@@ -551,7 +551,7 @@ namespace WebAdmin.Controllers
                             http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseDocumentAsync(htmlString);
+                            var document = await htmlParser.ParseAsync(htmlString);
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("div.news_right h2").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
@@ -611,7 +611,7 @@ namespace WebAdmin.Controllers
                     var htmlString = await http.GetStringAsync(url);
                     HtmlParser htmlParser = new HtmlParser();
                     var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "kjt" == f.Key);
-                    var document = await htmlParser.ParseDocumentAsync(htmlString);
+                    var document = await htmlParser.ParseAsync(htmlString);
                     string pagePath = url.Substring(0, url.LastIndexOf('/') + 1);
                     var detailsInfo = document
                         .QuerySelectorAll("html")
@@ -705,7 +705,7 @@ namespace WebAdmin.Controllers
                             http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseDocumentAsync(htmlString);
+                            var document = await htmlParser.ParseAsync(htmlString);
                             if (gatherwebsite.IsGatherByDetail)
                             {
                                 //所有链接均放入列表，在分析详情页时再确认是否采集，适用于在文章列表页无法获取标题详情的页面
@@ -781,11 +781,16 @@ namespace WebAdmin.Controllers
             {
                 using (HttpClient http = new HttpClient())
                 {
-                    http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
+                    http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");                    
                     var htmlString = await http.GetStringAsync(url);
-                    HtmlParser htmlParser = new HtmlParser();
+                    //创建一个自定义的配置文件,使用javascript
+                    var config = Configuration.Default.WithJavaScript();
+                    //var address = "https://en.wikipedia.org/wiki/List_of_The_Big_Bang_Theory_episodes";
+                    //// Asynchronously get the document in a new context using the configuration
+                    //var document = await BrowsingContext.New(config).OpenAsync(address);
+                    HtmlParser htmlParser = new HtmlParser(config);
                     var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdht" == f.Key);
-                    var document = await htmlParser.ParseDocumentAsync(htmlString);
+                    var document = await htmlParser.ParseAsync(htmlString);
                     var titleElement = document.QuerySelector("div.page h1");
                     if ((gatherwebsite.IsGatherByDetail && !CanGatherByTitle(titleElement, out classId)) || classId == null)
                     {
@@ -875,7 +880,7 @@ namespace WebAdmin.Controllers
                             http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseDocumentAsync(htmlString);
+                            var document = await htmlParser.ParseAsync(htmlString);
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul.list-ul li")?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
@@ -937,7 +942,7 @@ namespace WebAdmin.Controllers
                     var htmlString = await http.GetStringAsync(url);
                     HtmlParser htmlParser = new HtmlParser();
                     var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdtf" == f.Key);
-                    var document = await htmlParser.ParseDocumentAsync(htmlString);
+                    var document = await htmlParser.ParseAsync(htmlString);
                     string pagePath = url.Substring(0, url.LastIndexOf('/') + 1);
                     var detailsInfo = document
                         .QuerySelectorAll("html")
