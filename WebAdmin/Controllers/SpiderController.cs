@@ -49,7 +49,7 @@ namespace WebAdmin.Controllers
             try
             {
                 int gatherCount = 0;
-                List<string> gatherUrlList = new List<string>();
+                List<Article> preGatherUrlList = new List<Article>();
                 List<Article> articles = new List<Article>();
                 pageStartNo = pageStartNo == null || pageStartNo <= 0 ? 1 : pageStartNo;
                 pageEndNo = pageEndNo == null || pageEndNo <= 0 ? 1 : pageEndNo;
@@ -65,21 +65,22 @@ namespace WebAdmin.Controllers
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
                             var document = await htmlParser.ParseDocumentAsync(htmlString);
-                            if (SiteConfigSettings.NotificationClassId == classId)
+                            preGatherUrlList.AddRange(document.QuerySelectorAll("cmspro_documents ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
+                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                                .Select(t => new Article()
+                                {
+                                    AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
+                                    ClassId = SiteConfigSettings.NotificationClassId
+                                }).ToList());
+
+                            preGatherUrlList.AddRange(document.QuerySelectorAll("cmspro_documents ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
+                        && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+                            .Select(t => new Article()
                             {
-                                gatherUrlList.AddRange(document.QuerySelectorAll("cmspro_documents ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
-                                    .Select(t => t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
-                                    ).ToList());
-                            }
-                            else if (SiteConfigSettings.PolicyClassId == classId)
-                            {
-                                gatherUrlList.AddRange(document.QuerySelectorAll("cmspro_documents ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
-                                .Select(t => t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
-                                ).ToList());
-                            }
+                                Title = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
+                                ClassId = SiteConfigSettings.PolicyClassId
+                            }).ToList());
                         }
                     }
                     catch (Exception ex)
@@ -87,9 +88,9 @@ namespace WebAdmin.Controllers
                         continue;
                     }
                 }
-                foreach (string u in gatherUrlList)
+                foreach (var a in preGatherUrlList)
                 {
-                    var details = await GetCdgyDetails(u, classId);
+                    var details = await GetCdgyDetails(a.AddHtmlurl, a.ClassId);
                     int addResult = await AddArticle(details);
                     if (addResult > 0)
                     {
@@ -114,10 +115,14 @@ namespace WebAdmin.Controllers
         /// <param name="url"></param>
         /// <returns></returns>
         [NonAction]
-        private async Task<Article> GetCdgyDetails(string url, int classId)
+        private async Task<Article> GetCdgyDetails(string url, int? classId)
         {
             try
             {
+                if (classId == null)
+                {
+                    return null;
+                }
                 using (HttpClient http = new HttpClient())
                 {
                     http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
@@ -220,7 +225,7 @@ namespace WebAdmin.Controllers
             }
             catch (Exception ex)
             {
-                //RecoreBug("采集市经委详情", ex);
+                _logger.LogError("采集市经委详情", ex);
                 return null;
             }
         }
@@ -482,6 +487,26 @@ namespace WebAdmin.Controllers
                             item.SetAttribute("href", href.StartsWith("http") ? href : href.StartsWith('/') ? gatherwebsite.SiteUrl.TrimEnd('/') + href : pagePath + href.TrimStart('/'));
                         }
                     }
+                    foreach (var item in document.QuerySelectorAll("div#content p,div#content span").ToList())
+                    {
+                        //去掉WORD格式
+                        if (item.HasAttribute("style"))
+                        {
+                            if (item.GetAttribute("style").Contains("text-indent"))
+                            {
+                                item.SetAttribute("style", "text-indent:2em;");
+                            }
+                            else
+                            {
+                                item.RemoveAttribute("style");
+                            }
+
+                        }
+                        if (item.HasAttribute("face"))
+                        {
+                            item.RemoveAttribute("face");
+                        }
+                    }
                     detailsInfo.Content = document.QuerySelector("div#content")?.InnerHtml;
                     var addHtmlurlArray = detailsInfo.AddHtmlurl?.Split('/');
                     string strAddTime = document.QuerySelector("div.detail .title p span")?.TextContent;
@@ -618,6 +643,26 @@ namespace WebAdmin.Controllers
                             item.SetAttribute("href", href.StartsWith("http") ? href : href.StartsWith('/') ? gatherwebsite.SiteUrl.TrimEnd('/') + href : pagePath + href.TrimStart('/'));
                         }
                     }
+                    foreach (var item in document.QuerySelectorAll("div.newsCon p,div.newsCon span").ToList())
+                    {
+                        //去掉WORD格式
+                        if (item.HasAttribute("style"))
+                        {
+                            if (item.GetAttribute("style").Contains("text-indent"))
+                            {
+                                item.SetAttribute("style", "text-indent:2em;");
+                            }
+                            else
+                            {
+                                item.RemoveAttribute("style");
+                            }
+
+                        }
+                        if (item.HasAttribute("face"))
+                        {
+                            item.RemoveAttribute("face");
+                        }
+                    }
                     detailsInfo.Content = document.QuerySelector("div.newsCon")?.InnerHtml;
                     DateTime addTime = DateTime.Now;
                     string strAddTime = document.QuerySelector(".msgbar")?.TextContent.Split("来源：")[0]?.Replace("发布时间： ", "").Trim();
@@ -646,7 +691,7 @@ namespace WebAdmin.Controllers
             try
             {
                 int gatherCount = 0;
-                List<string> gatherUrlList = new List<string>();
+                List<Article> preGatherUrlList = new List<Article>();
                 List<Article> articles = new List<Article>();
                 pageStartNo = pageStartNo == null || pageStartNo <= 0 ? 1 : pageStartNo;
                 pageEndNo = pageEndNo == null || pageEndNo <= 0 ? 1 : pageEndNo;
@@ -661,31 +706,51 @@ namespace WebAdmin.Controllers
                             var htmlString = await http.GetStringAsync(website);
                             HtmlParser htmlParser = new HtmlParser();
                             var document = await htmlParser.ParseDocumentAsync(htmlString);
-                            if (SiteConfigSettings.NotificationClassId == classId)
+                            if (gatherwebsite.IsGatherByDetail)
                             {
-                                gatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
-                                    .Select(t => t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
-                                    ).ToList());
+                                //所有链接均放入列表，在分析详情页时再确认是否采集，适用于在文章列表页无法获取标题详情的页面
+                                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
+                                    ?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null)
+                                    ?.Select(t => new Article()
+                                    {
+                                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()
+                                        ?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
+                                    }).ToList());
                             }
-                            else if (SiteConfigSettings.PolicyClassId == classId)
+                            else
                             {
-                                gatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                            && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
-                                .Select(t => t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
-                                ).ToList());
+                                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
+                                    ?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
+                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                                    .Select(t => new Article()
+                                    {
+                                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
+                                        ClassId = SiteConfigSettings.NotificationClassId
+                                    }).ToList());
+                                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
+                                    .Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+                                    .Select(t => new Article()
+                                    {
+                                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
+                                        ClassId = SiteConfigSettings.PolicyClassId
+                                    }).ToList());
                             }
                         }
                     }
                     catch(Exception ex)
                     {
+                        _logger.LogError("采集高新区列表", ex);
                         continue;
                     }
                 }
-                foreach (string u in gatherUrlList)
+                foreach (var a in preGatherUrlList)
                 {
-                    var details = await GetCdhtDetails(u, classId);
+                    var details = await GetCdhtDetails(a.AddHtmlurl, a.ClassId);
+                    if (details == null)
+                    {
+                        continue;
+                    }
                     int addResult = await AddArticle(details);
                     if (addResult > 0)
                     {
@@ -710,7 +775,7 @@ namespace WebAdmin.Controllers
         /// <param name="url"></param>
         /// <returns></returns>
         [NonAction]
-        private async Task<Article> GetCdhtDetails(string url, int classId)
+        private async Task<Article> GetCdhtDetails(string url, int? classId)
         {
             try
             {
@@ -721,12 +786,17 @@ namespace WebAdmin.Controllers
                     HtmlParser htmlParser = new HtmlParser();
                     var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdht" == f.Key);
                     var document = await htmlParser.ParseDocumentAsync(htmlString);
+                    var titleElement = document.QuerySelector("div.page h1");
+                    if ((gatherwebsite.IsGatherByDetail && !CanGatherByTitle(titleElement, out classId)) || classId == null)
+                    {
+                        return null;
+                    }
                     string pagePath = url.Substring(0, url.LastIndexOf('/') + 1);
                     var detailsInfo = document
                         .QuerySelectorAll("html")
                         .Select(t => new Article()
                         {
-                            Title = t.QuerySelector("div.page h1")?.TextContent,
+                            Title = titleElement?.TextContent,
                             Origin = gatherwebsite.Name + t.QuerySelectorAll("div.sx span")?[1]?.TextContent.Replace("来源:", "").Trim(),
                             EditTime = DateTime.Now,
                             Author = "",
@@ -753,16 +823,26 @@ namespace WebAdmin.Controllers
                         }
                     }
                     detailsInfo.Content = document.QuerySelector("div#d_content")?.InnerHtml;
+                    foreach (var item in document.QuerySelectorAll("div[style='line-height:30px;color:#919191'] a").ToList())
+                    {
+                        if (item.HasAttribute("href"))
+                        {
+                            string href = item.GetAttribute("href");
+                            item.SetAttribute("href", href.StartsWith("http") ? href : href.StartsWith('/') ? gatherwebsite.SiteUrl.TrimEnd('/') + href : pagePath + href.TrimStart('/'));
+                        }
+                    }
+                    detailsInfo.Content += document.QuerySelector("div[style='line-height:30px;color:#919191']")?.OuterHtml;//添加附件下载部分
                     DateTime addTime = DateTime.Now;
                     string strAddTime = document.QuerySelectorAll("div.sx span")?[0]?.TextContent.Trim();
                     DateTime.TryParse(strAddTime, out addTime);
                     detailsInfo.AddTime = addTime;
+                    _logger.LogInformation("高新区采集详情", detailsInfo.Title,detailsInfo.AddHtmlurl);
                     return detailsInfo;
                 }
             }
             catch (Exception ex)
             {
-                //RecoreBug("采集市经委详情", ex);
+                _logger.LogError("高新区采集详情", ex);
                 return null;
             }
         }
@@ -889,6 +969,26 @@ namespace WebAdmin.Controllers
                             item.SetAttribute("href", href.StartsWith("http") ? href : href.StartsWith('/') ? gatherwebsite.SiteUrl.TrimEnd('/') + href : pagePath + href.TrimStart('/'));
                         }
                     }
+                    foreach(var item in document.QuerySelectorAll("div#NewsContent p,div#NewsContent span").ToList())
+                    {
+                        //去掉WORD格式
+                        if (item.HasAttribute("style"))
+                        {
+                            if (item.GetAttribute("style").Contains("text-indent"))
+                            {
+                                item.SetAttribute("style", "text-indent:2em;");
+                            }
+                            else
+                            {
+                                item.RemoveAttribute("style");
+                            }
+                            
+                        }
+                        if (item.HasAttribute("face"))
+                        {
+                            item.RemoveAttribute("face");
+                        }
+                    }
                     detailsInfo.Content = document.QuerySelector("div#NewsContent")?.InnerHtml;
                     DateTime addTime = DateTime.Now;
                     string strAddTime = document.QuerySelector("table.detail-table td[width='25%']")?.TextContent.Replace("发布时间：", "").Trim();
@@ -959,6 +1059,7 @@ namespace WebAdmin.Controllers
         /// <summary>
         /// 补全采集网址中链接地址
         /// </summary>
+        [NonAction]
         private async void ResetLink(IEnumerable<AngleSharp.Dom.IElement> elements, string siteUrl, string pageUrl)
         {
             await Task.Run(() => {
@@ -985,6 +1086,34 @@ namespace WebAdmin.Controllers
                     }
                 }
             });
+        }
+
+        /// <summary>
+        /// 根据文章标题判断是否能够采集
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        private bool CanGatherByTitle(AngleSharp.Dom.IElement titleElement, out int? classId)
+        {
+            if (titleElement == null)
+            {
+                classId = null;
+                return false;
+            }
+            var notificationCondition = SiteConfigSettings.NotificationKeywords.Split("and");
+            if (titleElement.TextContent.MyContains(notificationCondition?[0].Trim())
+                    && titleElement.TextContent.MyContains(notificationCondition?[1].Trim()))
+            {
+                classId = SiteConfigSettings.NotificationClassId;
+                return true;
+            }
+            if (titleElement.TextContent.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+            {
+                classId = SiteConfigSettings.PolicyClassId;
+                return true;
+            }
+            classId = null;
+            return false;
         }
     }
 }

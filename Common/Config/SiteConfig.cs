@@ -132,5 +132,10 @@ namespace Common.Config
         /// 采集URL模板
         /// </summary>
         public string UrlTemp { get; set; }
+        /// <summary>
+        /// 是否采集此文章是否由文章详情页中特性确定
+        /// </summary>
+        public bool IsGatherByDetail { get; set; }
+
     }
 }

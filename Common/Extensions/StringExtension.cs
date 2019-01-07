@@ -14,6 +14,10 @@ namespace Common
         /// <returns></returns>
         public static bool MyContains(this string source, string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return true;
+            }
             foreach (string s in value.Split(','))
             {
                 if (source.Contains(s))

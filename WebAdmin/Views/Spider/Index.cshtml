@@ -88,6 +88,7 @@
                 $.ajax({
                     url: "/Spider/Gather" + siteKey + "Website?pageStartNo=1&pageEndNo=30&classId=" + classId,
                     type: "POST",
+                    timeout: 3000000, //超时时间设置，单位毫秒
                     beforeSend: function () {
                         obj.attr("disabled", "true");//防止连击
                         $("#" + loadingId).show();
@@ -108,6 +109,12 @@
                         console.log(xhr);
                         console.log(status);
                         console.log(error);
+                    },
+                    complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                        if ('timeout' === status) {//超时,status还有success,error等值的情况
+                            ajaxTimeoutTest.abort();
+                            console.log("超时");
+                        }
                     }
                 });
                 return false;
