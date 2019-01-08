@@ -66,10 +66,37 @@ $(document).ready(function () {
 
     $("#top_btn").click(function () { if (scroll === "off") return; $("html,body").animate({ scrollTop: 0 }, 600); });
 
-    setTimeout(animation_gradient_run, 1500)
+    setTimeout(animation_gradient_run, 1500);
+
+    //文章页面进行首行缩进
+    var objs = $(".news-content p:not([style*='text-indent'])");
+    if (objs) {
+        objs.css("text-indent", "2em");
+        //去除多余的空格
+        objs.text(myTrimLeft(objs.text(),4));
+    }
+    var first_P = $(".news-content p:first");
+    var first_P_Text = first_P.text().trim();
+    if (":" === first_P_Text.charAt(first_P_Text.length - 1) || "：" === first_P_Text.charAt(first_P_Text.length - 1)) {
+        //通知首行不缩进
+        first_P.css("text-indent", "");
+        first_P.text(myTrimLeft(first_P.text(),4));
+    }
 });
 
 function animation_gradient_run() {
     $(".logo").removeClass("logo-animation-revolveDrop");
     $(".logo").addClass("logo-animation-gradient");
+}
+
+//String.prototype.
+function myTrimLeft(s, n) {
+    //替换前n个&nbsp;
+    var strLeft = s.substr(0, n * 6);
+    var strRight = s.length < n * 6 ? "" : s.substr(n * 6 - 1, s.length);
+    for (var i = 0; i < n; i++) {
+        strLeft.replace("&nbsp;", "");
+    }
+    s = strLeft + strRight;
+    return s;
 }
