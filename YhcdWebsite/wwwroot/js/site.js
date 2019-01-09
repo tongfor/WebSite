@@ -73,14 +73,17 @@ $(document).ready(function () {
     if (objs) {
         objs.css("text-indent", "2em");
         //去除多余的空格
-        objs.text(myTrimLeft(objs.text(),4));
+        objs.each(function () {
+            $(this).html(myTrimLeft($(this).html(), 4));
+        });
     }
     var first_P = $(".news-content p:first");
     var first_P_Text = first_P.text().trim();
     if (":" === first_P_Text.charAt(first_P_Text.length - 1) || "：" === first_P_Text.charAt(first_P_Text.length - 1)) {
         //通知首行不缩进
         first_P.css("text-indent", "");
-        first_P.text(myTrimLeft(first_P.text(),4));
+        first_P.html(myTrimLeft(first_P.html(), 4));
+        //first_P.html(first_P.html().replace(/&nbsp;/g, "");
     }
 });
 
@@ -95,7 +98,7 @@ function myTrimLeft(s, n) {
     var strLeft = s.substr(0, n * 6);
     var strRight = s.length < n * 6 ? "" : s.substr(n * 6 - 1, s.length);
     for (var i = 0; i < n; i++) {
-        strLeft.replace("&nbsp;", "");
+        strLeft = strLeft.replace("&nbsp;", "");
     }
     s = strLeft + strRight;
     return s;
