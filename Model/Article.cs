@@ -18,11 +18,13 @@ namespace Models
         public string UserName { get; set; }
         public int? LookCount { get; set; }
         public string AddHtmlurl { get; set; }
+        public string Gatherurl { get; set; }
         public sbyte? IsTop { get; set; }
         public sbyte? IsMarquee { get; set; }
         public int? Sort { get; set; }
         public DateTime? AddTime { get; set; }
         public DateTime? EditTime { get; set; }
+        public DateTime? GatherTime { get; set; }
         public sbyte? IsDel { get; set; }
     }
 }

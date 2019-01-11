@@ -19,7 +19,7 @@ namespace WebAdmin.Controllers
     {
         private readonly IParameterService _parameterClassService;
 
-        public ParameterController(IParameterService parameterService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, ILogger<ArticleClassController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
+        public ParameterController(IParameterService parameterService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, ILogger<ArticleClassController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _parameterClassService = parameterService;
             _logger = logger;

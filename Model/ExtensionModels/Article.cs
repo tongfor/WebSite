@@ -20,6 +20,7 @@ namespace Models
             this.IsTop = 0;
             this.IsMarquee = 0;
             this.AddHtmlurl = "";
+            this.Gatherurl = "";
             this.TitleColor = "";
             this.Sort = 0;
             this.Author = "";

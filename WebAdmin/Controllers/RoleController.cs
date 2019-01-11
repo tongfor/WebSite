@@ -21,7 +21,7 @@ namespace WebAdmin.Controllers
         private IAdminUserService _adminUserService;
         private IAdminRoleAdminMenuButtonService _adminRoleAdminMenuButtonService;
 
-        public RoleController(IAdminRoleService adminRoleService, IAdminUserService adminUserService, IAdminRoleAdminMenuButtonService adminRoleAdminMenuButtonService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
+        public RoleController(IAdminRoleService adminRoleService, IAdminUserService adminUserService, IAdminRoleAdminMenuButtonService adminRoleAdminMenuButtonService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _adminRoleService = adminRoleService;
             _adminUserService = adminUserService;

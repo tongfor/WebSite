@@ -21,7 +21,7 @@ namespace WebAdmin.Controllers
         private readonly IArticleService _articleService;
         private readonly IArticleClassService _articleClassService;
 
-        public ArticleController(IArticleService articleService, IArticleClassService articleClassService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, ILogger<ArticleController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
+        public ArticleController(IArticleService articleService, IArticleClassService articleClassService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, ILogger<ArticleController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _articleService = articleService;
             _articleClassService = articleClassService;

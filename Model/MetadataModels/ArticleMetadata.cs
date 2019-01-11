@@ -50,6 +50,8 @@ namespace Models
         public Nullable<int> LookCount { get; set; }
         [DisplayName("文章生成的url")]
         public string AddHTMLUrl { get; set; }
+        [DisplayName("文章采集url")]
+        public string GatherUrl { get; set; }
         private sbyte _isTop = 0;
         [DisplayName("是否置顶")]
         public Nullable<sbyte> IsTop
@@ -84,6 +86,9 @@ namespace Models
         [DisplayName("修改时间")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> EditTime { get; set; }
+        [DisplayName("采集时间")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> GatherTime { get; set; }
         [DisplayName("是否删除")]
         public Nullable<sbyte> IsDel { get; set; }
     }

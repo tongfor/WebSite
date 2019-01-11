@@ -21,7 +21,7 @@ namespace WebAdmin.Controllers
         private readonly IAdminRoleService _adminRoleService;
 
         public HomeController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminUserService adminUserService, IAdminRoleService adminRoleService,
-            IAdminLoginLogService adminLoginLog, IAdminMenuService adminMenuService, ILogger<AccountController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
+            IAdminLoginLogService adminLoginLog, IAdminMenuService adminMenuService, ILogger<AccountController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _adminUserService = adminUserService;
             _adminRoleService = adminRoleService;

@@ -36,11 +36,13 @@ namespace Models
 						UserName = this.UserName,
 						LookCount = this.LookCount,
 						AddHtmlurl = this.AddHtmlurl,
+                        Gatherurl = this.Gatherurl,
 						IsTop = this.IsTop,
 						IsMarquee = this.IsMarquee,
 						Sort = this.Sort,
 						AddTime = this.AddTime,
 						EditTime = this.EditTime,
+                        GatherTime = this.GatherTime,
 						IsDel = this.IsDel,
 				};
 			}

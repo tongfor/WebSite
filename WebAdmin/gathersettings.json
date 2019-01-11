@@ -1,0 +1,343 @@
+﻿{
+  "GatherConfig": {
+    //政策信息过滤关键字
+    "PolicyKeywords": "暂行办法,管理办法,实施细则,申报指南,扶持政策,认定工作,若干政策,专项政策,实施方案",
+    //申报快讯过滤关键字
+    "NotificationKeywords": "项目,资金 and 征集,申报,拨付",
+    //要排除的关键字
+    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证",
+    //采集站点属性,
+    "GatherWebsiteList": [
+      {
+        "Key": "cdgy",
+        "Name": "市经委",
+        "SiteUrl": "http://www.cdgy.gov.cn",
+        "UrlTemp": "http://www.cdgy.gov.cn/es-search/search/e5b8fe1e6f3d4f768af14fb73c581180?_isAgg=0&_pageSize=25&_template=ucap/cdgy_zwxx&_channelName=%E9%80%9A%E7%9F%A5%E5%85%AC%E5%91%8A&_allNum=0&page={0}",
+        "FirstPageUrl": null,
+        "ArticleListSelector": "cmspro_documents ul li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Tilte",
+            "Selector": "meta[name='ArticleTitle'],div#top .up span,h2.main-show-title", //选择特征排在越前面的越优先
+            "ValueAttributeName": "content,,",
+            "ValueOrder": "-1",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "meta[name='PubDate'],.move .xxly", //选择特征排在越前面的越优先
+            "ValueAttributeName": "content,",
+            "ValueOrder": "-1",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "div#top,div.main-show-txt", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "-1",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "div#top .up,div.bottom-icon01",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "meta[name = 'others']", //选择特征排在越前面的越优先
+            "ValueAttributeName": "content",
+            "ValueOrder": "-1",
+            "BeReplacedStr": "页面生成时间 ",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "jxt",
+        "Name": "省经信厅",
+        "SiteUrl": "http://jxt.sc.gov.cn",
+        "UrlTemp": "http://jxt.sc.gov.cn/scjxw/ggtz/common_list_{0}.shtml",
+        "FirstPageUrl": "http://jxt.sc.gov.cn/scjxw/ggtz/common_list.shtml",
+        "ArticleListSelector": "ul.list-li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "div.listlmtt",
+        "DetailsList": [
+          {
+            "Name": "Tilte",
+            "Selector": "div#zoomtitl", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "div.source", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "信息来源：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "div#zoomcon", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "div.date", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "发布日期:",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "cdst",
+        "Name": "市科技局",
+        "SiteUrl": "http://www.cdst.gov.cn",
+        "UrlTemp": "http://www.cdst.gov.cn/es-search/search/63dbfe2e6c324e7e89395ecb6ca69d35?_isAgg=0&_pageSize=15&_template=zhaofa/cdkjj_list&_channelName=%E9%80%9A%E7%9F%A5%E5%85%AC%E5%91%8A&_allNum=0&page={0}",
+        "FirstPageUrl": null,
+        "ArticleListSelector": "ul#showMoreNChildren li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Tilte",
+            "Selector": ".detail .title h3", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "#source", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "来源：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "div#content", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "div.detail .title p span", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "kjt",
+        "Name": "省科技厅",
+        "SiteUrl": "http://kjt.sc.gov.cn",
+        "UrlTemp": "http://www.scst.gov.cn/tz/index_{0}.jhtml",
+        "FirstPageUrl": null,
+        "ArticleListSelector": "div.news_right h2",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Tilte",
+            "Selector": ".newsTex h1", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".msgbar", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "来源：,取消收藏,收藏",
+            "Replacer": ",,",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "div.newsCon", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".msgbar", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "发布时间： ",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "cdht",
+        "Name": "高新区",
+        "SiteUrl": "http://www.cdht.gov.cn",
+        "UrlTemp": "http://www.cdht.gov.cn/zwgktzgg/index_{0}.jhtml#",
+        "FirstPageUrl": null,
+        "ArticleListSelector": "div.news-list-list td",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Tilte",
+            "Selector": "div.page h1", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "div.sx span", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "1",
+            "BeReplacedStr": "来源:",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "div#d_content", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "div.sx span", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "true",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "cdtf",
+        "Name": "天府新区",
+        "SiteUrl": "http://www.cdtf.gov.cn/",
+        "UrlTemp": "http://www.cdtf.gov.cn/es-search/search/530f470809ce45ac832fad173bbbfa20?_isAgg=0&_pageSize=20&_template=cdstfxq_list&_channelName=%E5%85%AC%E7%A4%BA%E5%85%AC%E5%91%8A&_allNum=0&page={0}",
+        "FirstPageUrl": null,
+        "ArticleListSelector": "ul.list-ul li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Tilte",
+            "Selector": "p.detail-title", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "table.detail-table td[width='30%']", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "来源:",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "div#NewsContent", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "table.detail-table td[width='25%']", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "发布时间：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      }
+    ]
+  }
+}

@@ -178,4 +178,6 @@
     <Folder Include="wwwroot\Attached\flash\" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
 </Project>

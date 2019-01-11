@@ -107,40 +107,8 @@ namespace Common.Config
         /// 采集站点属性
         /// </summary>
         public List<GatherWebsite> GatherWebsiteList { get; set; }
+        public GatherConfig GatherConfig { get; set; }
 
         #endregion
-    }
-
-    /// <summary>
-    /// 采集站点属性
-    /// </summary>
-    public class GatherWebsite
-    {
-        /// <summary>
-        /// 采集站点关键字
-        /// </summary>
-        public string Key { get; set; }
-        /// <summary>
-        /// 站点名
-        /// </summary>
-        public string Name { get; set; }
-        /// <summary>
-        /// 站点域名
-        /// </summary>
-        public string SiteUrl { get; set; }
-        /// <summary>
-        /// 采集URL模板
-        /// </summary>
-        public string UrlTemp { get; set; }
-        /// <summary>
-        /// 是否采集此文章是否由文章详情页中特性确定
-        /// </summary>
-        public bool IsGatherByDetail { get; set; }
-
-        /// <summary>
-        /// 文章详细采集是否使用Javascript配置
-        /// </summary>
-        public bool DetailIsUseJavascript { get; set; }
-
-    }
+    }    
 }

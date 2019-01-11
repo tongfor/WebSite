@@ -23,7 +23,7 @@ namespace WebAdmin.Controllers
         private readonly IArticleService _articleService;
         private readonly IArticleClassService _articleClassService;
 
-        public SpiderController(IArticleService articleService, IArticleClassService articleClassService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, ILogger<ArticleController> logger, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
+        public SpiderController(IArticleService articleService, IArticleClassService articleClassService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, ILogger<ArticleController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _articleService = articleService;
             _articleClassService = articleClassService;
@@ -179,7 +179,8 @@ namespace WebAdmin.Controllers
                     DateTime addTime = DateTime.Now;
                     DateTime.TryParse(strAddTime, out addTime);
                     detailsInfo.AddTime = addTime;
-                    detailsInfo.AddTime = detailsInfo.AddTime ?? document.QuerySelectorAll("meta[name = 'others']").FirstOrDefault()?.Attributes.FirstOrDefault(a => "content".Equals(a.Name, StringComparison.CurrentCultureIgnoreCase))?.Value.Replace("页面生成时间 ", "").ToDateTime();
+                    detailsInfo.AddTime = detailsInfo.AddTime ?? document.QuerySelectorAll("meta[name = 'others']").FirstOrDefault()?.Attributes.FirstOrDefault(a => "content".Equals(a.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
+                        .Replace("页面生成时间 ", "").ToDateTime();
                     if (detailsInfo == null || string.IsNullOrEmpty(detailsInfo.Title) || string.IsNullOrEmpty(detailsInfo.Content))
                     {
                         document

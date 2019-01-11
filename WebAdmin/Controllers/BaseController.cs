@@ -45,13 +45,15 @@ namespace WebAdmin.Controllers
         protected Microsoft.Extensions.Logging.ILogger _logger;
 
         public SiteConfig SiteConfigSettings;//站点设置
+        public GatherConfig GatherSettings;//采集设置
 
-        public BaseController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options)
+        public BaseController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions)
         {
             MyOperateLogService = operateLogService;
             MyAdminBugService = adminBugService;
             MyAdminMenuService = adminMenuService;
             SiteConfigSettings = options.Value;
+            GatherSettings = gatherOptions.Value;
         }
 
         public BaseController(IAdminOperateLogService operateLogService)

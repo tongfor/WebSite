@@ -18,7 +18,7 @@ namespace WebAdmin.Controllers
     {
         private IAdminLoginLogService _adminLoginLogService;
 
-        public AdminLoginLogController(IAdminLoginLogService adminLoginLogService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options) : base(operateLogService, adminBugService, adminMenuService, options)
+        public AdminLoginLogController(IAdminLoginLogService adminLoginLogService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _adminLoginLogService = adminLoginLogService;
         }

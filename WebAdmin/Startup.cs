@@ -30,6 +30,7 @@ namespace WebAdmin
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SiteConfig>(Configuration.GetSection("SiteConfig"));
+            services.Configure<GatherConfig>(Configuration.GetSection("GatherConfig"));
 
             services.Configure<FormOptions>(x => {
                 x.ValueLengthLimit = int.MaxValue;
