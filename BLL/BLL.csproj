@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.9.11" />
+    <PackageReference Include="AngleSharp.Scripting.JavaScript" Version="0.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DalMysql\DalMysql.csproj" />
     <ProjectReference Include="..\DatabaseTool\DatabaseTool.csproj" />

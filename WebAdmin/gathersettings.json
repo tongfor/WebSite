@@ -20,10 +20,10 @@
         "DetailsSelector": "html",
         "DetailsList": [
           {
-            "Name": "Tilte",
+            "Name": "Title",
             "Selector": "meta[name='ArticleTitle'],div#top .up span,h2.main-show-title", //选择特征排在越前面的越优先
             "ValueAttributeName": "content,,",
-            "ValueOrder": "-1",
+            "ValueOrder": "0",
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",
@@ -33,7 +33,7 @@
             "Name": "Origin",
             "Selector": "meta[name='PubDate'],.move .xxly", //选择特征排在越前面的越优先
             "ValueAttributeName": "content,",
-            "ValueOrder": "-1",
+            "ValueOrder": "0",
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",
@@ -43,7 +43,7 @@
             "Name": "Content",
             "Selector": "div#top,div.main-show-txt", //选择特征排在越前面的越优先
             "ValueAttributeName": "",
-            "ValueOrder": "-1",
+            "ValueOrder": "0",
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "div#top .up,div.bottom-icon01",
@@ -53,7 +53,7 @@
             "Name": "AddTime",
             "Selector": "meta[name = 'others']", //选择特征排在越前面的越优先
             "ValueAttributeName": "content",
-            "ValueOrder": "-1",
+            "ValueOrder": "0",
             "BeReplacedStr": "页面生成时间 ",
             "Replacer": "",
             "RemoveSelector": "",
@@ -75,7 +75,7 @@
         "DetailsSelector": "div.listlmtt",
         "DetailsList": [
           {
-            "Name": "Tilte",
+            "Name": "Title",
             "Selector": "div#zoomtitl", //选择特征排在越前面的越优先
             "ValueAttributeName": "",
             "ValueOrder": "0",
@@ -130,7 +130,7 @@
         "DetailsSelector": "html",
         "DetailsList": [
           {
-            "Name": "Tilte",
+            "Name": "Title",
             "Selector": ".detail .title h3", //选择特征排在越前面的越优先
             "ValueAttributeName": "",
             "ValueOrder": "0",
@@ -185,7 +185,7 @@
         "DetailsSelector": "html",
         "DetailsList": [
           {
-            "Name": "Tilte",
+            "Name": "Title",
             "Selector": ".newsTex h1", //选择特征排在越前面的越优先
             "ValueAttributeName": "",
             "ValueOrder": "0",
@@ -240,7 +240,7 @@
         "DetailsSelector": "html",
         "DetailsList": [
           {
-            "Name": "Tilte",
+            "Name": "Title",
             "Selector": "div.page h1", //选择特征排在越前面的越优先
             "ValueAttributeName": "",
             "ValueOrder": "0",
@@ -266,7 +266,7 @@
             "ValueOrder": "0",
             "BeReplacedStr": "",
             "Replacer": "",
-            "RemoveSelector": "",
+            "RemoveSelector": "div#top .up,div.bottom-icon01",
             "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
           },
           {
@@ -295,7 +295,7 @@
         "DetailsSelector": "html",
         "DetailsList": [
           {
-            "Name": "Tilte",
+            "Name": "Title",
             "Selector": "p.detail-title", //选择特征排在越前面的越优先
             "ValueAttributeName": "",
             "ValueOrder": "0",

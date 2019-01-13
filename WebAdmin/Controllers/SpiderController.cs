@@ -22,11 +22,13 @@ namespace WebAdmin.Controllers
     {
         private readonly IArticleService _articleService;
         private readonly IArticleClassService _articleClassService;
+        private readonly IGatherService _gatherService;
 
-        public SpiderController(IArticleService articleService, IArticleClassService articleClassService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, ILogger<ArticleController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
+        public SpiderController(IArticleService articleService, IArticleClassService articleClassService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IGatherService gatherService, ILogger<ArticleController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _articleService = articleService;
             _articleClassService = articleClassService;
+            _gatherService = gatherService;
             _logger = logger;
         }
 
@@ -48,64 +50,16 @@ namespace WebAdmin.Controllers
         public async Task<IActionResult> GatherCdgyWebsite(int? pageStartNo, int? pageEndNo, int classId)
         {
             try
-            {
-                int gatherCount = 0;
-                List<Article> preGatherUrlList = new List<Article>();
-                List<Article> articles = new List<Article>();
-                pageStartNo = pageStartNo == null || pageStartNo <= 0 ? 1 : pageStartNo;
-                pageEndNo = pageEndNo == null || pageEndNo <= 0 ? 1 : pageEndNo;
-                var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdgy" == f.Key);
-                for (int i = pageStartNo.Value; i <= pageEndNo.Value; i++)
-                {
-                    string website = string.Format(gatherwebsite.UrlTemp, i);
-                    try
-                    {
-                        using (HttpClient http = new HttpClient())
-                        {
-                            http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
-                            var htmlString = await http.GetStringAsync(website);
-                            HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseAsync(htmlString);
-                            preGatherUrlList.AddRange(document.QuerySelectorAll("cmspro_documents ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
-                                .Select(t => new Article()
-                                {
-                                    AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
-                                    ClassId = SiteConfigSettings.NotificationClassId
-                                }).ToList());
-
-                            preGatherUrlList.AddRange(document.QuerySelectorAll("cmspro_documents ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                        && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
-                            .Select(t => new Article()
-                            {
-                                Title = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
-                                ClassId = SiteConfigSettings.PolicyClassId
-                            }).ToList());
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        continue;
-                    }
-                }
-                foreach (var a in preGatherUrlList)
-                {
-                    var details = await GetCdgyDetails(a.AddHtmlurl, a.ClassId);
-                    int addResult = await AddArticle(details);
-                    if (addResult > 0)
-                    {
-                        articles.Add(details);
-                        gatherCount++;
-                    }
-                }
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", null);
+            {               
+                var gatherResult = await _gatherService.GatherWebsiteAsync("cdgy", pageStartNo, pageEndNo, classId, string.IsNullOrEmpty(User.Identity.Name) ? "" : User.Identity.Name);
+                int gatherCount = gatherResult.GatheredArticleLIst.Count;
+                return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResult != null && gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", gatherResult);
             }
             catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                RecoreBug("采集市经委列表", ex);
+                RecordBug("采集市经委列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -304,7 +258,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                RecoreBug("采集省经委列表", ex);
+                RecordBug("采集省经委列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -436,7 +390,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                RecoreBug("采集市科技局列表", ex);
+                RecordBug("采集市科技局列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -592,7 +546,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                RecoreBug("采集省科技厅列表", ex);
+                RecordBug("采集省科技厅列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -766,7 +720,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                RecoreBug("采集高新区列表", ex);
+                RecordBug("采集高新区列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -934,7 +888,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                RecoreBug("采集天府新区列表", ex);
+                RecordBug("采集天府新区列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -1020,29 +974,7 @@ namespace WebAdmin.Controllers
                 //RecoreBug("采集市经委详情", ex);
                 return null;
             }
-        }
-
-        /// <summary>
-        /// 记录BUG
-        /// </summary>
-        /// <param name="bugTitle"></param>
-        /// <param name="ex"></param>
-        [NonAction]
-        private async void RecoreBug(string bugTitle, Exception ex)
-        {
-            Bug = new AdminBug
-            {
-                UserIp = HttpContext.GetUserIp(),
-                IsShow = 1,
-                IsSolve = 0,
-                BugInfo = "文章采集异常" + ex.Message,
-                BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
-                UserName = User != null && User.Identity != null ? User.Identity.Name : "",
-                AddTime = DateTime.Now,
-                EditTime = DateTime.Now
-            };
-            await MyAdminBugService.AddAsync(Bug);
-        }
+        }        
 
         /// <summary>
         /// 将采集的文章持久化

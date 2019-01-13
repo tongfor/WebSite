@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Common.Config
@@ -87,6 +88,19 @@ namespace Common.Config
         public bool DetailIsUseJavascript { get; set; }
     }
 
+    public static class GatherWebsiteExtension
+    {
+        /// <summary>
+        /// 得到细节选择特征
+        /// </summary>
+        /// <param name="gatherWebsite"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static GatherDetails GetGatherDetailsByName(this GatherWebsite gatherWebsite, string name)
+        {
+            return gatherWebsite?.DetailsList?.FirstOrDefault(f => name.Equals(f.Name, StringComparison.CurrentCultureIgnoreCase));
+        }
+    }
 
     /// <summary>
     /// 要采集的文章细节
@@ -126,7 +140,7 @@ namespace Common.Config
         /// </summary>
         public string RemoveSelector { get; set; }
     }
-
+    
     /// <summary>
     /// 取值类型，1为取text,2为取innerHtml,3为取outerHtml,默认为1
     /// </summary>

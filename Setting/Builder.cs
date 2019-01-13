@@ -78,6 +78,7 @@ namespace Setting
             services.TryAddTransient<IArticleClassService, ArticleClassService>();
             services.TryAddTransient<IBoardService, BoardService>();
             services.TryAddTransient<IParameterService, ParameterService>();
+            services.TryAddTransient<IGatherService, GatherService>();
 
             #endregion
         }

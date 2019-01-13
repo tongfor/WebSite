@@ -28,6 +28,8 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.AspNetCore.Extensions;
+using Common;
 
 namespace WebAdmin.Controllers
 {
@@ -249,5 +251,27 @@ namespace WebAdmin.Controllers
         }
 
         #endregion 分部视图
+
+        /// <summary>
+        /// 记录BUG
+        /// </summary>
+        /// <param name="bugTitle"></param>
+        /// <param name="ex"></param>
+        [NonAction]
+        public async void RecordBug(string bugTitle, Exception ex)
+        {
+            Bug = new AdminBug
+            {
+                UserIp = HttpContext.GetUserIp(),
+                IsShow = 1,
+                IsSolve = 0,
+                BugInfo = "文章采集异常" + ex.Message,
+                BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                AddTime = DateTime.Now,
+                EditTime = DateTime.Now
+            };
+            await MyAdminBugService.AddAsync(Bug);
+        }
     }
 }

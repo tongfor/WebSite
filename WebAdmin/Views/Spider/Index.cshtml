@@ -86,7 +86,7 @@
                 var loadingId = "submitloading_" + siteKey + "_" + "classId" + "_" + classId;
 
                 $.ajax({
-                    url: "/Spider/Gather" + siteKey + "Website?pageStartNo=1&pageEndNo=30&classId=" + classId,
+                    url: "/Spider/Gather" + siteKey + "Website?pageStartNo=1&pageEndNo=2&classId=" + classId,
                     type: "POST",
                     timeout: 3000000, //超时时间设置，单位毫秒
                     beforeSend: function () {
