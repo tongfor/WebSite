@@ -57,6 +57,11 @@ namespace WebAdmin.Controllers
         {
             // Clear the existing external cookie to ensure a clean login process
             //await HttpContext.SignOutAsync(DefaultAuthorizeAttribute.DefaultAuthenticationScheme);
+            string s1 = "texT-indent: 2em; line-height: 2; font-family: 宋体; font-size: 12pt; text-align: center;";
+            s1 = s1.Replace("text-indent", "text-indent", StringComparison.CurrentCultureIgnoreCase)
+                        .Replace("text-align", "text-align", StringComparison.CurrentCultureIgnoreCase);
+            var s2 = s1.Split("text-indent");
+            var s3 = s1.Split("text-align");
             if (User != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Article");

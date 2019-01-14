@@ -271,6 +271,8 @@ namespace RepositoryPattern
 
                 entity.Property(e => e.AddHtmlurl).HasMaxLength(500);
 
+                entity.Property(e => e.Gatherurl).HasMaxLength(500);
+
                 entity.Property(e => e.AddTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Author).HasMaxLength(100);
@@ -280,6 +282,8 @@ namespace RepositoryPattern
                 entity.Property(e => e.Content).IsRequired();
 
                 entity.Property(e => e.EditTime).HasColumnType("datetime");
+
+                entity.Property(e => e.GatherTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Introduce).HasMaxLength(1000);
 
