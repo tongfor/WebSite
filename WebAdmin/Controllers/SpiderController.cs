@@ -51,7 +51,7 @@ namespace WebAdmin.Controllers
         {
             try
             {               
-                var gatherResult = await _gatherService.GatherWebsiteAsync("cdgy", pageStartNo, pageEndNo, classId, string.IsNullOrEmpty(User.Identity.Name) ? "" : User.Identity.Name);
+                var gatherResult = await _gatherService.GatherWebsiteAsync("cdgy", pageStartNo, pageEndNo, classId, User?.Identity?.Name);
                 int gatherCount = gatherResult.GatheredArticleLIst.Count;
                 return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResult != null && gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", gatherResult);
             }
