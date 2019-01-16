@@ -12,7 +12,7 @@ namespace Common
         /// <param name="source"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool MyContains(this string source, string value)
+        public static bool ContainsAny(this string source, string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -29,14 +29,14 @@ namespace Common
         }
 
         /// <summary>
-        /// 对字符串进行多重替换
+        /// 对包含多个字符串的字符串进行分隔替换
         /// </summary>
         /// <param name="source">可以,分隔，按顺序替换</param>
         /// <param name="strBeReplaced">被替换词，可以,分隔，按顺序替换</param>
         /// <param name="strReplacer">替换词，可以,分隔，按顺序替换</param>
         /// <param name="separator">分隔符</param>
         /// <returns></returns>
-        public static string MyReplace(this string source, string strBeReplaced, string strReplacer, char separator)
+        public static string ReplaceEvery(this string source, string strBeReplaced, string strReplacer, char separator)
         {
             var sourceArr = source.Split(separator);
             var beReplacedArr = strBeReplaced.Split(separator);
@@ -52,6 +52,28 @@ namespace Common
                     : source.Replace(beReplacedArr[i], replacerArr[0]);
             }
             return source;
+        }
+
+        /// <summary>
+        /// 多字符串排除，不包含任一字符串
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool ExcludeAll(this string source, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return true;
+            }
+            foreach (string s in value.Split(','))
+            {
+                if (source.Contains(s))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

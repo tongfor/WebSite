@@ -130,7 +130,8 @@ namespace BLL
                             {
                                 //所有链接均放入列表，在分析详情页时再确认是否采集，适用于在文章列表页无法获取标题详情的页面
                                 preGatherUrlList.AddRange(document.QuerySelectorAll(gatherWebsite.ArticleListSelector)
-                                    ?.Where(t => t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault() != null)
+                                    ?.Where(t => t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault() != null 
+                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
                                     ?.Select(t => new Article()
                                     {
                                         Gatherurl = t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault()
@@ -142,8 +143,9 @@ namespace BLL
                             {
                                 preGatherUrlList.AddRange(document.QuerySelectorAll(gatherWebsite.ArticleListSelector)
                                     ?.Where(t => t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault() != null
-                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.MyContains(_siteConfig.NotificationKeywords.Split("and")[0].Trim())
-                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.MyContains(_siteConfig.NotificationKeywords.Split("and")[1].Trim()))
+                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_siteConfig.NotificationKeywords.Split("and")[0].Trim())
+                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_siteConfig.NotificationKeywords.Split("and")[1].Trim())
+                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
                                     .Select(t => new Article()
                                     {
                                         Gatherurl = t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
@@ -151,7 +153,9 @@ namespace BLL
                                         UserName = userName
                                     }).ToList());
                                 preGatherUrlList.AddRange(document.QuerySelectorAll(gatherWebsite.ArticleListSelector)
-                                    .Where(t => t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault() != null && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.MyContains(_siteConfig.PolicyKeywords.Trim()))
+                                    .Where(t => t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault() != null 
+                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_siteConfig.PolicyKeywords.Trim())
+                                    && t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
                                     .Select(t => new Article()
                                     {
                                         Gatherurl = t.QuerySelectorAll(gatherWebsite.TitleSelectorInList).FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
@@ -217,46 +221,9 @@ namespace BLL
                         .FirstOrDefault();
                     
                     string pagePath = url.Substring(0, url.LastIndexOf('/') + 1);
-                    //#region 处理正文中的链接、图片地址
-                    //foreach (var item in document.QuerySelectorAll(ContentSet.Selector + " [src]").ToList())
-                    //{
-                    //    if (item.HasAttribute("src"))
-                    //    {
-                    //        string src = item.GetAttribute("src");
-                    //        item.SetAttribute("src", src.StartsWith("http") ? src : src.StartsWith('/') ? gatherWebsite.SiteUrl.TrimEnd('/') + src : pagePath + src.TrimStart('/'));
-                    //    }
-                    //}
-                    //foreach (var item in document.QuerySelectorAll("div#d_content [href]").ToList())
-                    //{
-                    //    if (item.HasAttribute("href"))
-                    //    {
-                    //        string href = item.GetAttribute("href");
-                    //        item.SetAttribute("href", href.StartsWith("http") ? href : href.StartsWith('/') ? gatherWebsite.SiteUrl.TrimEnd('/') + href : pagePath + href.TrimStart('/'));
-                    //    }
-                    //}
-                    //#endregion
 
                     detailsInfo.Content = GetFormatUrlContent(document, gatherWebsite, pagePath);
-
-                    //#region 处理正文中附件下载的链接，高新区附件下载地址是动态生成的
-                    //var urls = await GetCdhtAttachmentUrlAsync(GetCdhtAttachmentPara(document));
-                    //var isAttachmentGathered = false;
-                    //foreach (var item in document.QuerySelectorAll("div[style='line-height:30px;color:#919191'] a").ToList())
-                    //{
-                    //    var tagId = item.GetAttribute("id");
-                    //    if (string.IsNullOrEmpty(tagId) || string.IsNullOrEmpty(urls[tagId]))
-                    //    {
-                    //        continue;
-                    //    }
-                    //    item.SetAttribute("href", urls[tagId]);
-                    //    isAttachmentGathered = true;
-                    //}
-                    //var attachmentHtml = isAttachmentGathered ?
-                    //    document.QuerySelector("div[style='line-height:30px;color:#919191']")?.OuterHtml
-                    //    : $"<p>附件请点击 <i><a href='{detailsInfo.Gatherurl}' title='文章原文'>原文</a></i> 下载";
-                    //#endregion
-                    //detailsInfo.Content += attachmentHtml;//添加附件下载部分
-
+                    
                     DateTime addTime = DateTime.Now;
                     string strAddTime = GetDetailValueByName(document, gatherWebsite, "AddTime");
                     DateTime.TryParse(strAddTime, out addTime);
@@ -284,13 +251,13 @@ namespace BLL
                 return false;
             }
             var notificationCondition = _siteConfig.NotificationKeywords.Split("and");
-            if (titleElement.TextContent.MyContains(notificationCondition?[0].Trim())
-                    && titleElement.TextContent.MyContains(notificationCondition?[1].Trim()))
+            if (titleElement.TextContent.ContainsAny(notificationCondition?[0].Trim())
+                    && titleElement.TextContent.ContainsAny(notificationCondition?[1].Trim()))
             {
                 classId = _siteConfig.NotificationClassId;
                 return true;
             }
-            if (titleElement.TextContent.MyContains(_siteConfig.PolicyKeywords.Trim()))
+            if (titleElement.TextContent.ContainsAny(_siteConfig.PolicyKeywords.Trim()))
             {
                 classId = _siteConfig.PolicyClassId;
                 return true;
@@ -343,7 +310,7 @@ namespace BLL
             var result = string.IsNullOrEmpty(set.ValueAttributeName) || valueAttributeNameArr == null || string.IsNullOrEmpty(valueAttributeNameArr[selectorIndex])
                 ? element?.TextContent.Trim()
                 : element.GetAttribute(valueAttributeNameArr[selectorIndex])?.Trim();
-            result = result.MyReplace(set.BeReplacedStr, set.Replacer, ',').Trim();
+            result = result.ReplaceEvery(set.BeReplacedStr, set.Replacer, ',').Trim();
             return result;
         }
 
