@@ -222,15 +222,15 @@ namespace WebAdmin.Controllers
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul.list-li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                                && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                                && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
                                     .Select(t => gatherwebsite.SiteUrl + "/" + t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value.TrimStart('/')
                                     ).ToList());
                             }
                             else if (SiteConfigSettings.PolicyClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul.list-li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                            && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+                            && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
                                 .Select(t => gatherwebsite.SiteUrl + "/" + t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value.TrimStart('/')
                                 ).ToList());
                             }
@@ -355,15 +355,15 @@ namespace WebAdmin.Controllers
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul#showMoreNChildren li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
                                     .Select(t => gatherwebsite.SiteUrl + "/" + t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value.TrimStart('/')
                                     ).ToList());
                             }
                             else if (SiteConfigSettings.PolicyClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul#showMoreNChildren li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
                                 .Select(t => gatherwebsite.SiteUrl + "/" + t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value.TrimStart('/')
                                 ).ToList());
                             }
@@ -511,15 +511,15 @@ namespace WebAdmin.Controllers
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("div.news_right h2").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
                                     .Select(t => gatherwebsite.SiteUrl + "/" + t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
                                     ).ToList());
                             }
                             else if (SiteConfigSettings.PolicyClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("div.news_right h2").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
                                 .Select(t => gatherwebsite.SiteUrl + "/" + t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value.TrimStart('/')
                                 ).ToList());
                             }
@@ -677,15 +677,15 @@ namespace WebAdmin.Controllers
                             {
                                 preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
                                     ?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
                                     .Select(t => new Article()
                                     {
                                         AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
                                         ClassId = SiteConfigSettings.NotificationClassId
                                     }).ToList());
                                 preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
-                                    .Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null && t.QuerySelectorAll("a").FirstOrDefault().TextContent.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+                                    .Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
                                     .Select(t => new Article()
                                     {
                                         AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
@@ -851,8 +851,8 @@ namespace WebAdmin.Controllers
                             if (SiteConfigSettings.NotificationClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul.list-ul li")?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                                && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
                                     .Select(t =>
                                         t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
                                     ).ToList());
@@ -860,7 +860,7 @@ namespace WebAdmin.Controllers
                             else if (SiteConfigSettings.PolicyClassId == classId)
                             {
                                 gatherUrlList.AddRange(document.QuerySelectorAll("ul.list-ul li").Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+                            && t.QuerySelectorAll("a").FirstOrDefault().Attributes.FirstOrDefault(f => "title".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase)).Value.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
                                 .Select(t =>
                                     t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
                                 ).ToList());
@@ -1051,13 +1051,13 @@ namespace WebAdmin.Controllers
                 return false;
             }
             var notificationCondition = SiteConfigSettings.NotificationKeywords.Split("and");
-            if (titleElement.TextContent.MyContains(notificationCondition?[0].Trim())
-                    && titleElement.TextContent.MyContains(notificationCondition?[1].Trim()))
+            if (titleElement.TextContent.ContainsAny(notificationCondition?[0].Trim())
+                    && titleElement.TextContent.ContainsAny(notificationCondition?[1].Trim()))
             {
                 classId = SiteConfigSettings.NotificationClassId;
                 return true;
             }
-            if (titleElement.TextContent.MyContains(SiteConfigSettings.PolicyKeywords.Trim()))
+            if (titleElement.TextContent.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
             {
                 classId = SiteConfigSettings.PolicyClassId;
                 return true;
