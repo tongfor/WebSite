@@ -50,7 +50,7 @@ namespace WebAdmin.Controllers
         public async Task<IActionResult> GatherCdgyWebsite(int? pageStartNo, int? pageEndNo, int classId)
         {
             try
-            {               
+            {
                 var gatherResult = await _gatherService.GatherWebsiteAsync("cdgy", pageStartNo, pageEndNo, classId, User?.Identity?.Name);
                 int gatherCount = gatherResult.GatheredArticleLIst.Count;
                 return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResult != null && gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", gatherResult);
@@ -1136,6 +1136,31 @@ namespace WebAdmin.Controllers
                 _logger.LogDebug("生成高新区网页链接地址", ex);
             }
             return result;
+        }
+
+        [NonAction]
+        private async Task<Article> CdhtContentCallbackAsync(AngleSharp.Dom.Html.IHtmlDocument document, Article oldArticle)
+        {
+            var detailsInfo = oldArticle;
+            #region 处理正文中附件下载的链接，高新区附件下载地址是动态生成的
+            var urls = await GetCdhtAttachmentUrlAsync(GetCdhtAttachmentPara(document));
+            var isAttachmentGathered = false;
+            foreach (var item in document.QuerySelectorAll("div[style='line-height:30px;color:#919191'] a").ToList())
+            {
+                var tagId = item.GetAttribute("id");
+                if (string.IsNullOrEmpty(tagId) || string.IsNullOrEmpty(urls[tagId]))
+                {
+                    continue;
+                }
+                item.SetAttribute("href", urls[tagId]);
+                isAttachmentGathered = true;
+            }
+            var attachmentHtml = isAttachmentGathered ?
+                document.QuerySelector("div[style='line-height:30px;color:#919191']")?.OuterHtml
+                : $"<p>附件请点击 <i><a href='{detailsInfo.AddHtmlurl}' title='文章原文'>原文</a></i> 下载";
+            #endregion
+            detailsInfo.Content += attachmentHtml;//添加附件下载部分
+            return null;
         }
     }
 }

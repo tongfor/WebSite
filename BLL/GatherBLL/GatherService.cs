@@ -27,6 +27,7 @@ using Common;
 using IBLL;
 using System.Threading;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace BLL
 {
@@ -43,6 +44,8 @@ namespace BLL
         private readonly GatherConfig _gatherConfig;
 
         private readonly IArticleService _articleService;
+
+        public delegate Article DetailsCallback();
 
         public GatherService(IOptionsMonitor<SiteConfig> siteConfigOptions, IOptionsMonitor<GatherConfig> gatherConfigOptions, IArticleService articleService)
         {
@@ -257,6 +260,8 @@ namespace BLL
                     //#endregion
                     //detailsInfo.Content += attachmentHtml;//添加附件下载部分
 
+                    detailsInfo = await CdhtContentCallbackAsync(document, detailsInfo);
+
                     DateTime addTime = DateTime.Now;
                     string strAddTime = GetDetailValueByName(document, gatherWebsite, "AddTime");
                     DateTime.TryParse(strAddTime, out addTime);
@@ -466,6 +471,109 @@ namespace BLL
             {
                 return 0;
             }
+        }
+
+        /// <summary>
+        /// 根据高新区网站接口获取网页附件下载相关数据
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private async Task<List<string>> GetCdhtAttachmentDataAsync(string cid, string n)
+        {
+            using (HttpClient http = new HttpClient())
+            {
+                var htmlString = await http.GetStringAsync($"{_gatherConfig.GatherWebsiteList.FirstOrDefault(f => f.Key == "cdht")?.SiteUrl}/attachment_url.jspx?cid={cid}&n={n}");
+                if (string.IsNullOrEmpty(htmlString))
+                {
+                    return null;
+                }
+                var result = JsonConvert.DeserializeObject<List<string>>(htmlString);
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// 从高新区网页中抓取附件链接生成参数
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        private List<string> GetCdhtAttachmentPara(AngleSharp.Dom.Html.IHtmlDocument document)
+        {
+            if (document == null)
+            {
+                return null;
+            }
+            var pageHtml = document.QuerySelector("html")?.OuterHtml;
+            if (pageHtml == null)
+            {
+                return null;
+            }
+            var startPosition = pageHtml.IndexOf("Cms.attachment(") + "Cms.attachment(".Length;
+            var endPosition = pageHtml.IndexOf("\");\n  Cms.viewCount(");
+            if (startPosition <= 0 || endPosition <= 0 || endPosition <= startPosition)
+            {
+                return null;
+            }
+            var strPara = pageHtml.Substring(startPosition, endPosition - startPosition).Replace("\"", "");
+            if (string.IsNullOrEmpty(strPara) || strPara.Split(',').Length != 4)
+            {
+                return null;
+            }
+            return strPara.Split(',').ToList();
+        }
+
+        /// <summary>
+        /// 生成高新区网页链接地址
+        /// </summary>
+        /// <param name="paras"></param>
+        /// <returns>链接标签ID与链接地址Dictionany</returns>
+        private async Task<Dictionary<string, string>> GetCdhtAttachmentUrlAsync(List<string> paras)
+        {
+            var result = new Dictionary<string, string>();
+            try
+            {
+                var attachmentData = await GetCdhtAttachmentDataAsync(paras[1], paras[2]);
+                for (var i = 0; i < paras[2].ToInt(); i++)
+                {
+                    result.Add(paras[3] + i, (string.IsNullOrEmpty(paras[0]) ? _gatherConfig.GatherWebsiteList.FirstOrDefault(f => "cdht".Equals(f.Key)).SiteUrl : paras[0]) + "/attachment.jspx?cid=" + paras[1] + "&i=" + i + attachmentData[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("生成高新区网页链接地址", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 高新区网站文章正文附加处理
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="oldArticle"></param>
+        /// <returns></returns>
+        private async Task<Article> CdhtContentCallbackAsync(AngleSharp.Dom.Html.IHtmlDocument document, Article oldArticle)
+        {
+            var detailsInfo = oldArticle;
+            #region 处理正文中附件下载的链接，高新区附件下载地址是动态生成的
+            var urls = await GetCdhtAttachmentUrlAsync(GetCdhtAttachmentPara(document));
+            var isAttachmentGathered = false;
+            foreach (var item in document.QuerySelectorAll("div[style='line-height:30px;color:#919191'] a").ToList())
+            {
+                var tagId = item.GetAttribute("id");
+                if (string.IsNullOrEmpty(tagId) || string.IsNullOrEmpty(urls[tagId]))
+                {
+                    continue;
+                }
+                item.SetAttribute("href", urls[tagId]);
+                isAttachmentGathered = true;
+            }
+            var attachmentHtml = isAttachmentGathered ?
+                document.QuerySelector("div[style='line-height:30px;color:#919191']")?.OuterHtml
+                : $"<p>附件请点击 <i><a href='{detailsInfo.Gatherurl}' title='文章原文'>原文</a></i> 下载";
+            #endregion
+            detailsInfo.Content += attachmentHtml;//添加附件下载部分
+            return null;
         }
     }
 }
