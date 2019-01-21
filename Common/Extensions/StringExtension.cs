@@ -75,5 +75,16 @@ namespace Common
             }
             return true;
         }
+
+        /// <summary>
+        /// 首字母大写
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string ToTitleCase(this string source)
+        {
+            source = source.Substring(0, 1).ToUpper() + source.Substring(1);
+            return source;
+        }
     }
 }

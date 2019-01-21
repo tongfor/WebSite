@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.9.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IGatherExtension\GatherExtensionBase.csproj" />
+  </ItemGroup>
+
+</Project>
