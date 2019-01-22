@@ -61,9 +61,9 @@ namespace Models
                 _lookCount = value == null ? value : value.Value;               
             }
         }
-        [DisplayName("文章生成的url")]
+        [DisplayName("文章生成url")]
         public string AddHtmlurl { get; set; }
-        [DisplayName("文章采集的url")]
+        [DisplayName("文章采集url")]
         public string Gatherurl { get; set; }
         private Nullable<sbyte> _isTop = 0;
         [DisplayName("是否置顶")]
@@ -124,6 +124,7 @@ namespace Models
             this.UserName = article.UserName;
             this.LookCount = article.LookCount;
             this.AddHtmlurl = article.AddHtmlurl;
+            this.Gatherurl = article.Gatherurl;
             this.IsTop = article.IsTop;
             this.IsMarquee = article.IsMarquee;
             this.Introduce = article.Introduce;
@@ -132,6 +133,7 @@ namespace Models
             this.IsDel = article.IsDel;
             this.AddTime = article.AddTime;
             this.EditTime = article.EditTime;
+            this.GatherTime = article.GatherTime;
     }       
 
         //[DataType(DataType.Date)]
@@ -163,6 +165,7 @@ namespace Models
                 Origin = this.Origin,
                 LookCount = this.LookCount,
                 AddHtmlurl = this.AddHtmlurl,
+                Gatherurl = this.Gatherurl,
                 IsTop = this.IsTop,
                 IsMarquee = this.IsMarquee,
                 Introduce = this.Introduce,
@@ -171,6 +174,7 @@ namespace Models
                 IsDel = this.IsDel,
                 AddTime = this.AddTime,
                 EditTime = this.EditTime,
+                GatherTime = this.GatherTime
             };
         }
     }

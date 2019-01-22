@@ -49,7 +49,7 @@ namespace BLL
 
         private readonly IArticleService _articleService;
 
-        private readonly ILogger _logger;
+        private readonly ILogger<GatherService> _logger;
 
         public GatherService(IOptionsMonitor<SiteConfig> siteConfigOptions, IOptionsMonitor<GatherConfig> gatherConfigOptions, IArticleService articleService, ILogger<GatherService> logger)
         {
@@ -233,7 +233,7 @@ namespace BLL
 
                     detailsInfo.Content = GetFormatUrlContent(document, website, pagePath);
                     
-                    IGatherHandler specialHanlder = (IGatherHandler)GetGatherHandlerInstance(website.Key);
+                    IGatherHandler<Article> specialHanlder = (IGatherHandler<Article>)GetGatherHandlerInstance(website.Key);
                     detailsInfo = specialHanlder == null
                         ? detailsInfo
                         : await specialHanlder.InvokeAsync(website.SiteUrl, document, detailsInfo);

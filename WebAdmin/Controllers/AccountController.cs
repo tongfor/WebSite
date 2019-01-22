@@ -13,9 +13,6 @@ using Microsoft.Extensions.Options;
 using Models;
 using Setting.Mvc.Authorize;
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAdmin.Models;
@@ -40,7 +37,7 @@ namespace WebAdmin.Controllers
 
         private readonly IAdminUserService _adminUserService;
         private readonly IAdminLoginLogService _loginLogService;
-        private readonly IAdminRoleService _adminRoleService;        
+        private readonly IAdminRoleService _adminRoleService;
 
         public AccountController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminUserService adminUserService, IAdminRoleService adminRoleService,
             IAdminLoginLogService adminLoginLog, IAdminMenuService adminMenuService, ILogger<AccountController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
@@ -58,7 +55,7 @@ namespace WebAdmin.Controllers
         public IActionResult Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
-            //await HttpContext.SignOutAsync(DefaultAuthorizeAttribute.DefaultAuthenticationScheme);            
+            //await HttpContext.SignOutAsync(DefaultAuthorizeAttribute.DefaultAuthenticationScheme);
             if (User != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Article");

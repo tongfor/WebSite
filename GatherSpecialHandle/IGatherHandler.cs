@@ -6,8 +6,8 @@ namespace GatherSpecialHandler
     /// <summary>
     /// 站点采集特殊处理接口
     /// </summary>
-    public interface IGatherHandler
+    public interface IGatherHandler<T> where T : class
     {
-        Task<Article> InvokeAsync(string siteUrl, AngleSharp.Dom.Html.IHtmlDocument document, Article oldArticle);
+        Task<T> InvokeAsync(string siteUrl, AngleSharp.Dom.Html.IHtmlDocument document, T oldArticle);
     }
 }

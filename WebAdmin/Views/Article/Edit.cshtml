@@ -169,7 +169,7 @@
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Title)：</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;", placeholder = "请输入文章标题"})
+                                @Html.TextBoxFor(m => m.Title, new { @class = "", style = "width:560px;", placeholder = "请输入文章标题" })
                                 <span asp-validation-for="Title"></span>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                 <div class="classTreeBackground">
                                     <ul class="list">
                                         <li class="title">
-                                            <input id="classSel" type="text" readonly value="" class="zTreeSel"/>
+                                            <input id="classSel" type="text" readonly value="" class="zTreeSel" />
                                             &nbsp;<a id="menuBtn" href="#" class="zTreeSel zTree-combo-arrow"></a>
                                             @Html.ValidationMessageFor(m => m.ClassId)
                                         </li>
@@ -189,14 +189,14 @@
                             </div>
                         </div>
                         @*<div class="control-group">
-                <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
-                <div class="controls">
-                    <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
-                        <option value="请选择所属类别" selected="selected"></option>
-                    </select>
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
-                </div>
-            </div>*@
+            <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.ClassId)：</label>
+            <div class="controls">
+                <select id="ClassId" name="ClassId" class="easyui-combotree" style="width: 220px;">
+                    <option value="请选择所属类别" selected="selected"></option>
+                </select>
+                <span class="help-inline">@Html.ValidationMessageFor(m => m.ClassId)</span>
+            </div>
+        </div>*@
                         <div class="control-group">
                             <label class="control-label">@Html.DisplayNameFor(m => m.Author)：</label>
                             <div class="controls">
@@ -227,7 +227,7 @@
                         <div class="control-group">
                             <label class="control-label"><span class="required">*</span>@Html.DisplayNameFor(m => m.Content)：</label>
                             <div class="controls">
-                                @Html.TextAreaFor(m => m.Content, new { id = "Content", style = "width: 100%; height:280px"})
+                                @Html.TextAreaFor(m => m.Content, new { id = "Content", style = "width: 100%; height:280px" })
                                 @Html.ValidationMessageFor(m => m.Content)
                             </div>
                         </div>
@@ -293,10 +293,26 @@
 
                                         </tr>
                                         @*<tr>
-                                <td colspan="3"><div id="fileQueue" class="pull-left"></div></td>
-                            </tr>*@
+                            <td colspan="3"><div id="fileQueue" class="pull-left"></div></td>
+                        </tr>*@
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.Gatherurl)：</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Gatherurl, new { @class = "m-wrap large", style = "width: 160px;" })<span class="gray" style="line-height:34px;"></span>
+                                @Html.ValidationMessageFor(m => m.Gatherurl)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.GatherTime)：</label>
+                            <div class="controls">
+                                            @if (Model.GatherTime != null)
+                                            {
+                                                @Html.TextBox("GatherTime", Model.GatherTime.Value.ToString("yyyy-MM-dd HH:mm:ss"), new { type = "input", @readonly = "readonly", style = "width:160px;" })
+                                            }
                             </div>
                         </div>
                     </div>

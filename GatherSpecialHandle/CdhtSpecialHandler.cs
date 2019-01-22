@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GatherSpecialHandler
 {
-    public class CdhtSpecialHandler : IGatherHandler
+    public class CdhtSpecialHandler : IGatherHandler<Article>
     {
         /// <summary>
         /// 对高新区的文章正文进行特殊处理

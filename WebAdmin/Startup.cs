@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Config;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,6 +67,21 @@ namespace WebAdmin
 
             loggerFactory.AddNLog(); //添加NLog
             LogManager.LoadConfiguration("nlog.config");
+            var logger = LogManager.GetCurrentClassLogger();
+
+            app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
+            {
+                var feature = context.Features.Get<IExceptionHandlerFeature>();
+                var error = feature?.Error;
+                logger.Error(error.Message, error.StackTrace);
+                context.Response.StatusCode = 500;
+
+                if (context.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+                {
+                    context.Response.ContentType = "text/html";
+                    await context.Response.SendFileAsync($@"{env.WebRootPath}/errors/500.html");
+                }
+            }));
 
             app.UseStaticFiles();
             app.UseSession();
