@@ -3,7 +3,7 @@
     //政策信息过滤关键字
     "PolicyKeywords": "暂行办法,管理办法,实施细则,申报指南,扶持政策,认定工作,若干政策,专项政策,实施方案",
     //申报快讯过滤关键字
-    "NotificationKeywords": "项目,资金,通知,补助 and 征集,申报,拨付",
+    "NotificationKeywords": "项目,资金,通知,补助,人才 and 征集,申报,拨付",
     //要排除的关键字
     "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证",
     //采集站点属性,
@@ -330,6 +330,65 @@
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "发布时间：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "jnq",
+        "Name": "金牛区",
+        "SiteUrl": "http://www.jinniu.gov.cn/",
+        "UrlTemp": "http://www.jinniu.gov.cn/jinniu/c107163/gongkai_{0}.shtml",
+        "FirstPageUrl": "http://www.jinniu.gov.cn/jinniu/c107163/gongkai.shtml",
+        "ArticleListSelector": "div.blk1 h3",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "#part4 h1", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "#part4 h3", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "来源：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#part4 #myFont", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "#part4 h3", //选择特征排在越前面的越优先
+            "ValueAttributeName": "",
+            "ValueOrder": "1",
+            "ValueForward": "来源：", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",
             "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
