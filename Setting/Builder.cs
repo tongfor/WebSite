@@ -38,7 +38,7 @@ namespace Setting
             services.Configure<DatabaseOption>(configuration.GetSection("Database"));
 
             #endregion
-
+            
             #region inject DAL Setting
 
             services.TryAddTransient<IAdminBugDAL, DALMySql.AdminBugDAL>();

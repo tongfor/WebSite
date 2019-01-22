@@ -1,5 +1,4 @@
 ﻿using AngleSharp.Dom.Html;
-using GatherExtensionBase;
 using Models;
 using Newtonsoft.Json;
 using System;
@@ -8,9 +7,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CdhtGather
+namespace GatherSpecialHandler
 {
-    public class CdhtGatherExtension : IGatherExtension
+    public class CdhtSpecialHandler : IGatherHandler
     {
         /// <summary>
         /// 对高新区的文章正文进行特殊处理
@@ -36,7 +35,7 @@ namespace CdhtGather
                 isAttachmentGathered = true;
             }
             var attachmentHtml = isAttachmentGathered ?
-                document.QuerySelector("div[style='line-height:30px;color:#919191']")?.OuterHtml
+                document.QuerySelector("div[style='line-height:30px;color:#919191']")?.OuterHtml.Replace("&amp;", "&")
                 : $"<p>附件请点击 <i><a href='{detailsInfo.Gatherurl}' title='文章原文'>原文</a></i> 下载";
             #endregion
             detailsInfo.Content += attachmentHtml;//添加附件下载部分
@@ -104,7 +103,7 @@ namespace CdhtGather
             try
             {
                 var attachmentData = await GetCdhtAttachmentDataAsync(siteUrl, paras[1], paras[2]);
-                for (var i = 0; i < paras[2].Count(); i++)
+                for (var i = 0; i < int.Parse(paras[2]); i++)
                 {
                     result.Add(paras[3] + i, (string.IsNullOrEmpty(paras[0])
                         ? siteUrl

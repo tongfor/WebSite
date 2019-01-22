@@ -108,7 +108,19 @@ namespace Common.Config
         /// </summary>
         public List<GatherWebsite> GatherWebsiteList { get; set; }
         public GatherConfig GatherConfig { get; set; }
-
+        /// <summary>
+        /// 站点采集特殊处理DLL名
+        /// </summary>
+        public string GatherSpecialHandlerDllName { get; set; } = "GatherSpecialHandler.dll";
+        /// <summary>
+        /// 站点采集特殊处理程序集名
+        /// </summary>
+        public string GatherSpecialHandlerAssemblyName { get; set; } = "GatherSpecialHandler";
+        /// <summary>
+        /// 站点采集特殊处理类后缀
+        /// </summary>
+        public string GatherSpecialHandlerSuffix { get; set; } = "SpecialHandler";        
+        
         #endregion
     }    
 }

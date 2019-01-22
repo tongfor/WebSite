@@ -646,75 +646,78 @@ namespace WebAdmin.Controllers
         {
             try
             {
-                int gatherCount = 0;
-                List<Article> preGatherUrlList = new List<Article>();
-                List<Article> articles = new List<Article>();
-                pageStartNo = pageStartNo == null || pageStartNo <= 0 ? 1 : pageStartNo;
-                pageEndNo = pageEndNo == null || pageEndNo <= 0 ? 1 : pageEndNo;
-                var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdht" == f.Key);
-                for (int i = pageStartNo.Value; i <= pageEndNo.Value; i++)
-                {
-                    string website = string.Format(gatherwebsite.UrlTemp, i);
-                    try {
-                        using (HttpClient http = new HttpClient())
-                        {
-                            http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
-                            var htmlString = await http.GetStringAsync(website);
-                            HtmlParser htmlParser = new HtmlParser();
-                            var document = await htmlParser.ParseAsync(htmlString);
-                            if (gatherwebsite.IsGatherByDetail)
-                            {
-                                //所有链接均放入列表，在分析详情页时再确认是否采集，适用于在文章列表页无法获取标题详情的页面
-                                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
-                                    ?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null)
-                                    ?.Select(t => new Article()
-                                    {
-                                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()
-                                        ?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
-                                    }).ToList());
-                            }
-                            else
-                            {
-                                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
-                                    ?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
-                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
-                                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
-                                    .Select(t => new Article()
-                                    {
-                                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
-                                        ClassId = SiteConfigSettings.NotificationClassId
-                                    }).ToList());
-                                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
-                                    .Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
-                                    .Select(t => new Article()
-                                    {
-                                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
-                                        ClassId = SiteConfigSettings.PolicyClassId
-                                    }).ToList());
-                            }
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        _logger.LogError("采集高新区列表", ex);
-                        continue;
-                    }
-                }
-                foreach (var a in preGatherUrlList)
-                {
-                    var details = await GetCdhtDetails(a.AddHtmlurl, a.ClassId);
-                    if (details == null)
-                    {
-                        continue;
-                    }
-                    int addResult = await AddArticle(details);
-                    if (addResult > 0)
-                    {
-                        articles.Add(details);
-                        gatherCount++;
-                    }
-                }
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", null);
+                var gatherResult = await _gatherService.GatherWebsiteAsync("cdht", pageStartNo, pageEndNo, classId, User?.Identity?.Name);
+                int gatherCount = gatherResult.GatheredArticleLIst.Count;
+                return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResult != null && gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", gatherResult);
+                //int gatherCount = 0;
+                //List<Article> preGatherUrlList = new List<Article>();
+                //List<Article> articles = new List<Article>();
+                //pageStartNo = pageStartNo == null || pageStartNo <= 0 ? 1 : pageStartNo;
+                //pageEndNo = pageEndNo == null || pageEndNo <= 0 ? 1 : pageEndNo;
+                //var gatherwebsite = SiteConfigSettings.GatherWebsiteList.FirstOrDefault(f => "cdht" == f.Key);
+                //for (int i = pageStartNo.Value; i <= pageEndNo.Value; i++)
+                //{
+                //    string website = string.Format(gatherwebsite.UrlTemp, i);
+                //    try {
+                //        using (HttpClient http = new HttpClient())
+                //        {
+                //            http.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0");
+                //            var htmlString = await http.GetStringAsync(website);
+                //            HtmlParser htmlParser = new HtmlParser();
+                //            var document = await htmlParser.ParseAsync(htmlString);
+                //            if (gatherwebsite.IsGatherByDetail)
+                //            {
+                //                //所有链接均放入列表，在分析详情页时再确认是否采集，适用于在文章列表页无法获取标题详情的页面
+                //                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
+                //                    ?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null)
+                //                    ?.Select(t => new Article()
+                //                    {
+                //                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()
+                //                        ?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value
+                //                    }).ToList());
+                //            }
+                //            else
+                //            {
+                //                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
+                //                    ?.Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null
+                //                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[0].Trim())
+                //                    && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.NotificationKeywords.Split("and")[1].Trim()))
+                //                    .Select(t => new Article()
+                //                    {
+                //                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
+                //                        ClassId = SiteConfigSettings.NotificationClassId
+                //                    }).ToList());
+                //                preGatherUrlList.AddRange(document.QuerySelectorAll("div.news-list-list td")
+                //                    .Where(t => t.QuerySelectorAll("a").FirstOrDefault() != null && t.QuerySelectorAll("a").FirstOrDefault().TextContent.ContainsAny(SiteConfigSettings.PolicyKeywords.Trim()))
+                //                    .Select(t => new Article()
+                //                    {
+                //                        AddHtmlurl = t.QuerySelectorAll("a").FirstOrDefault()?.Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value,
+                //                        ClassId = SiteConfigSettings.PolicyClassId
+                //                    }).ToList());
+                //            }
+                //        }
+                //    }
+                //    catch(Exception ex)
+                //    {
+                //        _logger.LogError("采集高新区列表", ex);
+                //        continue;
+                //    }
+                //}
+                //foreach (var a in preGatherUrlList)
+                //{
+                //    var details = await GetCdhtDetails(a.AddHtmlurl, a.ClassId);
+                //    if (details == null)
+                //    {
+                //        continue;
+                //    }
+                //    int addResult = await AddArticle(details);
+                //    if (addResult > 0)
+                //    {
+                //        articles.Add(details);
+                //        gatherCount++;
+                //    }
+                //}
+                //return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", null);
             }
             catch (Exception ex)
             {

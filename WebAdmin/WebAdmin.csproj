@@ -21,16 +21,13 @@
 
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.9.11" />
-    <PackageReference Include="AngleSharp.Scripting.JavaScript" Version="0.5.1" />
     <PackageReference Include="Bundler" Version="1.1.31" />
     <PackageReference Include="BundlerMinifier.Core" Version="2.8.391" />
     <PackageReference Include="Jint" Version="2.11.58" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NLog" Version="4.5.10" />
-    <PackageReference Include="NLog.Web" Version="4.7.0" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
   </ItemGroup>
 
@@ -161,6 +158,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\GatherSpecialHandle\GatherSpecialHandler.csproj" />
     <ProjectReference Include="..\IBLL\IBLL.csproj" />
     <ProjectReference Include="..\IDal\IDAL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />

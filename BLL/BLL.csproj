@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DalMysql\DalMysql.csproj" />
     <ProjectReference Include="..\DatabaseTool\DatabaseTool.csproj" />
+    <ProjectReference Include="..\GatherSpecialHandle\GatherSpecialHandler.csproj" />
     <ProjectReference Include="..\IBLL\IBLL.csproj" />
     <ProjectReference Include="..\IDal\IDAL.csproj" />
     <ProjectReference Include="..\Model\Models.csproj" />
