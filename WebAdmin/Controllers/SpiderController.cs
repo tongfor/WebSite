@@ -32,6 +32,13 @@ namespace WebAdmin.Controllers
             _logger = logger;
         }
 
+        // GET: Spider
+        public async Task<IActionResult> Index()
+        {
+            await CreateLeftMenuAsync();
+            return View();
+        }
+
         /// <summary>
         /// 采集网站数据
         /// </summary>

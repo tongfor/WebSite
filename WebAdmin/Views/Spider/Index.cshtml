@@ -75,86 +75,13 @@
     </ul>
 </div>
 <div class="clearfix"></div>
-@section PageSpecificJavascriptIncludes{
-    <script>
-        $(function () {
-            $(".gatherbtn").click(function (e) {
-                var obj = $(e.target);
-                var classId = obj.attr("data-classId");
-                var siteKey = obj.attr("data-siteKey")
-                var loadingId = "submitloading_" + siteKey + "_" + "classId" + "_" + classId;
-                var paras = {
-                    "siteKey": siteKey,
-                    "pageStartNo": 1,
-                    "pageEndNo": 2,
-                    "classId": classId
-                };
-                $.ajax({
-                    url: "/Spider/GatherWebsite",
-                    type: "POST",
-                    data: paras,
-                    timeout: 3000000, //超时时间设置，单位毫秒
-                    beforeSend: function () {
-                        obj.attr("disabled", "true");//防止连击
-                        $("#" + loadingId).show();
-                    },
-                    success: function (result, status) {
-                        if (result && "success" === status && 0 === result.status) {
-                            alert(result.msg);
-                            window.top.location.reload();
-                            window.top.tb_remove();
-                        }
-                        $("#" + loadingId).hide();
-                        obj.removeAttr("disabled");
-                    },
-                    error: function (xhr, status, error) {
-                        $("#" + loadingId).hide();
-                        obj.removeAttr("disabled");
-                        document.write(xhr.responseText);
-                        console.log(xhr);
-                        console.log(status);
-                        console.log(error);
-                    },
-                    complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                        if ('timeout' === status) {//超时,status还有success,error等值的情况
-                            ajaxTimeoutTest.abort();
-                            console.log("超时");
-                        }
-                    }
-                });
-                return false;
-            });
-
-            //$("#g_jxt_classId_3").click(function () {
-            //    $.ajax({
-            //        url: "/Spider/GatherjxtWebsite?pageStartNo=1&pageEndNo=67&classId=2",
-            //        type: "POST",
-            //        beforeSend: function () {
-            //            $("#g_jxt_classId_3").attr("disabled", "true");//防止连击
-            //            $("#submitloading_jxt_classId_3").show();
-            //        },
-            //        success: function (result, status) {
-            //            if (result && "success" === status && 0 === result.status) {
-            //                alert(result.msg);
-            //                window.top.location.reload();
-            //                window.top.tb_remove();
-            //            }
-            //            $("#submitloading_jxt_classId_3").hide();
-            //            $("#g_jxt_classId_3").removeAttr("disabled");
-            //        },
-            //        error: function (xhr, status, error) {
-            //            $("#submitloading_jxt_classId_3").hide();
-            //            $("#g_jxt_classId_3").removeAttr("disabled");
-            //            document.write(xhr.responseText);
-            //            console.log(xhr);
-            //            console.log(status);
-            //            console.log(error);
-            //        }
-            //    });
-            //    return false;
-            //});
-        });
-    </script>
+@section PageSpecificJavascriptIncludes{    
+    <environment include="Development">
+        <script src="~/js/gather.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/gather.min.js" asp-append-version="true"></script>
+    </environment>    
 }
 
 

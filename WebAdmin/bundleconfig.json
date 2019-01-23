@@ -110,5 +110,11 @@
     "inputFiles": [
       "wwwroot/js/admin.main.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/gather.min.js",
+    "inputFiles": [
+      "wwwroot/js/gather.js"
+    ]
   }
 ]
