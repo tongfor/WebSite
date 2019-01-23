@@ -49,7 +49,7 @@ namespace WebAdmin.Controllers
         public SiteConfig SiteConfigSettings;//站点设置
         public GatherConfig GatherSettings;//采集设置
 
-        public BaseController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions)
+        public BaseController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptionsSnapshot<SiteConfig> options, IOptionsSnapshot<GatherConfig> gatherOptions)
         {
             MyOperateLogService = operateLogService;
             MyAdminBugService = adminBugService;

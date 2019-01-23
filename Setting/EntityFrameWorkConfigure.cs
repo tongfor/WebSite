@@ -11,7 +11,7 @@ namespace Setting
     /// </summary>
     public class EntityFrameWorkConfigure : IOnDatabaseConfiguring
     {
-        private readonly IOptions<DatabaseOption> _dataBaseOption;
+        private readonly IOptionsSnapshot<DatabaseOption> _dataBaseOption;
         private readonly ILoggerFactory _loggerFactory;
         public EntityFrameWorkConfigure(IOptionsSnapshot<DatabaseOption> dataBaseOption, ILoggerFactory loggerFactory)
         {

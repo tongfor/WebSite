@@ -40,7 +40,7 @@ namespace WebAdmin.Controllers
         private readonly IAdminRoleService _adminRoleService;
 
         public AccountController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminUserService adminUserService, IAdminRoleService adminRoleService,
-            IAdminLoginLogService adminLoginLog, IAdminMenuService adminMenuService, ILogger<AccountController> logger, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
+            IAdminLoginLogService adminLoginLog, IAdminMenuService adminMenuService, ILogger<AccountController> logger, IOptionsSnapshot<SiteConfig> options, IOptionsSnapshot<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _adminUserService = adminUserService;
             _adminRoleService = adminRoleService;

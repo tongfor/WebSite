@@ -19,7 +19,7 @@ namespace WebAdmin.Controllers
     {
         private IHostingEnvironment _hostingEnv;
 
-        public UploadController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options, IHostingEnvironment env, IOptions<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
+        public UploadController(IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptionsSnapshot<SiteConfig> options, IHostingEnvironment env, IOptionsSnapshot<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             this._hostingEnv = env;
         }

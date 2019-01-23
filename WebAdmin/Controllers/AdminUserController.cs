@@ -23,7 +23,7 @@ namespace WebAdmin.Controllers
         private readonly IAdminRoleService _adminRoleService;
         private readonly IAdminUserAdminRoleService _userRoleService;
 
-        public AdminUserController(IAdminUserService adminUserService, IAdminRoleService adminRoleService, IAdminUserAdminRoleService adminUserAdminRoleService, IAdminOperateLogService MyOperateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptions<SiteConfig> options, IOptions<GatherConfig> gatherOptions) : base(MyOperateLogService, adminBugService, adminMenuService, options, gatherOptions)
+        public AdminUserController(IAdminUserService adminUserService, IAdminRoleService adminRoleService, IAdminUserAdminRoleService adminUserAdminRoleService, IAdminOperateLogService MyOperateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptionsSnapshot<SiteConfig> options, IOptionsSnapshot<GatherConfig> gatherOptions) : base(MyOperateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             this._adminUserService = adminUserService;
             this._adminRoleService = adminRoleService;
