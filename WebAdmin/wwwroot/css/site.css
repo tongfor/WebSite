@@ -220,3 +220,11 @@ h4 {
     height:29px;
     margin-left:-26px;
 }
+
+#gather-list ul {
+    list-style: none;
+}
+
+#gather-list li{
+    min-height:80px;
+}

@@ -21,7 +21,7 @@
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": "meta[name='ArticleTitle'],div#top .up span,h2.main-show-title", //选择特征排在越前面的越优先
+            "Selector": "meta[name='ArticleTitle'],div#top .up span,h2.main-show-title", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "content,,",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -31,7 +31,7 @@
           },
           {
             "Name": "Origin",
-            "Selector": "meta[name='PubDate'],.move .xxly", //选择特征排在越前面的越优先
+            "Selector": "meta[name='PubDate'],.move .xxly", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "content,",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -41,7 +41,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "div#top,div.main-show-txt", //选择特征排在越前面的越优先
+            "Selector": "div#top,div.main-show-txt", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -51,7 +51,7 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "meta[name = 'others']", //选择特征排在越前面的越优先
+            "Selector": "meta[name = 'others']", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "content",
             "ValueOrder": "0",
             "BeReplacedStr": "页面生成时间 ",
@@ -76,7 +76,7 @@
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": "div#zoomtitl", //选择特征排在越前面的越优先
+            "Selector": "div#zoomtitl", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -86,7 +86,7 @@
           },
           {
             "Name": "Origin",
-            "Selector": "div.source", //选择特征排在越前面的越优先
+            "Selector": "div.source", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "信息来源：",
@@ -96,7 +96,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "div#zoomcon", //选择特征排在越前面的越优先
+            "Selector": "div#zoomcon", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -106,7 +106,7 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "div.date", //选择特征排在越前面的越优先
+            "Selector": "div.date", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "发布日期:",
@@ -131,7 +131,7 @@
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": ".detail .title h3", //选择特征排在越前面的越优先
+            "Selector": ".detail .title h3", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -141,7 +141,7 @@
           },
           {
             "Name": "Origin",
-            "Selector": "#source", //选择特征排在越前面的越优先
+            "Selector": "#source", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "来源：",
@@ -151,7 +151,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "div#content", //选择特征排在越前面的越优先
+            "Selector": "div#content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -161,7 +161,7 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "div.detail .title p span", //选择特征排在越前面的越优先
+            "Selector": "div.detail .title p span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -186,7 +186,7 @@
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": ".newsTex h1", //选择特征排在越前面的越优先
+            "Selector": ".newsTex h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -196,7 +196,7 @@
           },
           {
             "Name": "Origin",
-            "Selector": ".msgbar", //选择特征排在越前面的越优先
+            "Selector": ".msgbar", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "来源：,取消收藏,收藏",
@@ -206,7 +206,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "div.newsCon", //选择特征排在越前面的越优先
+            "Selector": "div.newsCon", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -216,7 +216,7 @@
           },
           {
             "Name": "AddTime",
-            "Selector": ".msgbar", //选择特征排在越前面的越优先
+            "Selector": ".msgbar", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "发布时间： ",
@@ -241,7 +241,7 @@
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": "div.page h1", //选择特征排在越前面的越优先
+            "Selector": "div.page h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -251,7 +251,7 @@
           },
           {
             "Name": "Origin",
-            "Selector": "div.sx span", //选择特征排在越前面的越优先
+            "Selector": "div.sx span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "1",
             "BeReplacedStr": "来源:",
@@ -261,7 +261,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "div#d_content", //选择特征排在越前面的越优先
+            "Selector": "div#d_content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -271,7 +271,7 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "div.sx span", //选择特征排在越前面的越优先
+            "Selector": "div.sx span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -296,7 +296,7 @@
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": "p.detail-title", //选择特征排在越前面的越优先
+            "Selector": "p.detail-title", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -306,7 +306,7 @@
           },
           {
             "Name": "Origin",
-            "Selector": "table.detail-table td[width='30%']", //选择特征排在越前面的越优先
+            "Selector": "table.detail-table td[width='30%']", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "来源:",
@@ -316,7 +316,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "div#NewsContent", //选择特征排在越前面的越优先
+            "Selector": "div#NewsContent", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -326,7 +326,7 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "table.detail-table td[width='25%']", //选择特征排在越前面的越优先
+            "Selector": "table.detail-table td[width='25%']", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "发布时间：",
@@ -344,14 +344,14 @@
         "SiteUrl": "http://www.jinniu.gov.cn/",
         "UrlTemp": "http://www.jinniu.gov.cn/jinniu/c107163/gongkai_{0}.shtml",
         "FirstPageUrl": "http://www.jinniu.gov.cn/jinniu/c107163/gongkai.shtml",
-        "ArticleListSelector": "div.blk1 h3",
-        "TitleSelectorInList": "a",
+        "ArticleListSelector": "div.blk1 .box h3",
+        "TitleSelectorInList": "a[class!='a_link']",
         "TitleAttributeNameInList": "title",
         "DetailsSelector": "html",
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": "#part4 h1", //选择特征排在越前面的越优先
+            "Selector": "#part4 h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -361,11 +361,11 @@
           },
           {
             "Name": "Origin",
-            "Selector": "#part4 h3", //选择特征排在越前面的越优先
+            "Selector": "#part4 h3", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
-            "ValueForward": "", //取值前特征
-            "ValueAfter": "来源：", //取值后特征
+            "ValueForward": "来源：", //取值前特征
+            "ValueAfter": "", //取值后特征
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",
@@ -373,7 +373,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "#part4 #myFont", //选择特征排在越前面的越优先
+            "Selector": "#part4 #myFont", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -383,11 +383,176 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "#part4 h3", //选择特征排在越前面的越优先
+            "Selector": "#part4 h3", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "来源：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "jjq",
+        "Name": "锦江区",
+        "SiteUrl": "http://www.cdjinjiang.gov.cn/",
+        "UrlTemp": "http://www.cdjinjiang.gov.cn/jinjiang/c134335/xxgk_list_{0}.shtml",
+        "FirstPageUrl": "http://www.cdjinjiang.gov.cn/jinjiang/c134335/xxgk_list.shtml",
+        "ArticleListSelector": "div.cont_list li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "div.new_topic h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".func_left span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "信息来源：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#cont", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".func_left span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "1",
-            "ValueForward": "来源：", //取值前特征
-            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "发布日期：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "whqjkj",
+        "Name": "武侯区经科局",
+        "SiteUrl": "http://www.cdwh.gov.cn/",
+        "UrlTemp": "http://www.cdwh.gov.cn/wuhou/c121557/green_list_{0}.shtml",
+        "FirstPageUrl": "http://www.cdwh.gov.cn/wuhou/c121557/green_list.shtml",
+        "ArticleListSelector": "div.listleft li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".detailDiv .tit", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "meta[name='PubDate']", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "content",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "qyqkjj",
+        "Name": "青羊区科经局",
+        "SiteUrl": "http://www.cdqingyang.gov.cn/",
+        "UrlTemp": "http://www.cdqingyang.gov.cn/kjxj/xxgk/bm_list_{0}.shtml",
+        "FirstPageUrl": "http://www.cdqingyang.gov.cn/kjxj/xxgk/bm_list.shtml",
+        "ArticleListSelector": ".main .left li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "ucapcontent", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "ucapsource", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "publishtime", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",

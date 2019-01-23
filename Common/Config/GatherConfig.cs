@@ -60,7 +60,7 @@ namespace Common.Config
         /// <summary>
         /// 文章列表选择特征
         /// </summary>
-        public string ArticleListSelector { get; set; }
+        public string ArticleListSelector { get; set; }       
         /// <summary>
         /// 文章列表中标题选择特征
         /// </summary>
@@ -123,6 +123,14 @@ namespace Common.Config
         /// 根据特征选择的结果如果是多个，则从第几个结果中获取结果,0为选择第一个
         /// </summary>
         public int ValueOrder { get; set; }
+        /// <summary>
+        /// 取值前特征
+        /// </summary>
+        public string ValueForward { get; set; }
+        /// <summary>
+        /// 取值后特征
+        /// </summary>
+        public string ValueAfter { get; set; }
         /// <summary>
         /// 取值类型，1为取text,2为取innerHtml,3为取outerHtml,默认为1
         /// </summary>
