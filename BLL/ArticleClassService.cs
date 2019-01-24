@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2018/4/27 15:47:24   N/A    初版
+* V0.01  2019/1/24 22:57:12   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -32,15 +32,16 @@ namespace BLL
 	public partial class ArticleClassService : BaseService<ArticleClass>, IArticleClassService 
     {
         //EF上下文
-        protected readonly CdyhcdDBContext MyDBContext;
+        //protected readonly CdyhcdDBContext MyDBContext;
         //操作DAL
         protected IArticleClassDAL MyIArticleClassDAL;
 
         #region 构造函数
 
-		public ArticleClassService(CdyhcdDBContext db, IArticleClassDAL articleClassDAl) : base(articleClassDAl)
+		//public ArticleClassService(CdyhcdDBContext db, IArticleClassDAL articleClassDAl) : base(articleClassDAl)
+		public ArticleClassService(IArticleClassDAL articleClassDAl) : base(articleClassDAl)
 		{
-            MyDBContext = db;
+            //MyDBContext = db;
             MyIArticleClassDAL = articleClassDAl;
 		}
 
@@ -69,9 +70,16 @@ namespace BLL
             var modelList = await this.GetListByAsync(queryWhere);
             ArticleClass result = modelList.FirstOrDefault();
             return result;
-        }
+        }		
 
 		#endregion 
+
+		public override void Dispose()
+        {
+            MyIArticleClassDAL = null;
+            //MyDBContext.Dispose();
+            base.Dispose();
+        }
     }
 }
 

@@ -99,6 +99,8 @@ namespace BLL
             return gatherResult;
         }
 
+        #region private
+
         /// <summary>
         /// 获取要采集的文章列表
         /// </summary>
@@ -108,7 +110,7 @@ namespace BLL
         /// <param name="website">站点采集设置</param>
         /// <param name="userName">采集员账号</param>
         /// <returns></returns>
-        public async Task<List<Article>> GetGatherArticleListAsync(GatherWebsite website, int? pageStartNo, int? pageEndNo, int classId, string userName)
+        private async Task<List<Article>> GetGatherArticleListAsync(GatherWebsite website, int? pageStartNo, int? pageEndNo, int classId, string userName)
         {
             try
             {
@@ -213,7 +215,7 @@ namespace BLL
         /// <param name="classId">文章类别</param>
         /// <param name="userName">采集员账号</param>
         /// <returns></returns>
-        public async Task<Article> GetArticleDetailsAsync(GatherWebsite website, string url, int? classId, string userName)
+        private async Task<Article> GetArticleDetailsAsync(GatherWebsite website, string url, int? classId, string userName)
         {
             try
             {
@@ -269,7 +271,7 @@ namespace BLL
                 return null;
             }
         }
-
+        
         /// <summary>
         /// 根据文章标题判断是否能够采集
         /// </summary>
@@ -329,7 +331,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError($"采集{name}的内容时报错：" + ex.Message, ex.StackTrace.ToString());                
+                _logger.LogError($"获取{name}的html元素时报错：" + ex.Message, ex.StackTrace.ToString());
             }
             selectorIndex = 0;
             return null;
@@ -393,12 +395,12 @@ namespace BLL
             {
                 return null;
             }
-            foreach(string contentSelector in contentSelectorArr )
+            foreach (string contentSelector in contentSelectorArr)
             {
                 #region 去除要替换的标签
                 if (RemoveSelectorArr != null && RemoveSelectorArr.Count() > 0)
                 {
-                    foreach(string rs  in RemoveSelectorArr)
+                    foreach (string rs in RemoveSelectorArr)
                     {
                         try
                         {
@@ -476,7 +478,7 @@ namespace BLL
                 }
                 return result;
             }
-            return null;           
+            return null;
         }
 
         /// <summary>
@@ -525,7 +527,7 @@ namespace BLL
                     return null;
                 }
                 var o = Activator.CreateInstance(type);
-                Console.WriteLine(siteKey + "对象创建OK！"); 
+                Console.WriteLine(siteKey + "对象创建OK！");
                 return o;
             }
             catch (Exception ex)
@@ -534,6 +536,12 @@ namespace BLL
             }
         }
 
+        /// <summary>
+        /// 拼接出网站绝对路径
+        /// </summary>
+        /// <param name="site"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
         private string GetAbsoluteUrl(string site, string url)
         {
             if (url.StartsWith("http") || string.IsNullOrEmpty(site) || string.IsNullOrEmpty(url))
@@ -541,6 +549,7 @@ namespace BLL
                 return url;
             }
             return $"{site.TrimEnd('/')}/{url.TrimStart('/')}";
-        }
+        } 
+        #endregion
     }    
 }

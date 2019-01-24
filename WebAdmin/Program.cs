@@ -32,10 +32,10 @@ namespace WebAdmin
             }
         }
 
-        private static IConfiguration config = new ConfigurationBuilder()
+        private static readonly IConfiguration config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("hosting.json", optional: true)
-                .AddJsonFile("gathersettings.json", optional: true)
+                .AddJsonFile("hosting.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("gathersettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
         public static IWebHost BuildWebHost(string[] args) =>

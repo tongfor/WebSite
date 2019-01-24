@@ -40,11 +40,19 @@ namespace BLL
 
         public T GetModel(int id)
         {
+            if (MyIBaseDal==null)
+            {
+                return null;
+            }
             return MyIBaseDal.GetModel(id);
         }
 
         public async Task<T> GetModelAsync(int id)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             var result = await MyIBaseDal.GetModelAsync(id);
             return result;
         }
@@ -60,6 +68,10 @@ namespace BLL
         /// <returns></returns>
         public int Add(T model)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return MyIBaseDal.Add(model);
         }
 
@@ -70,6 +82,10 @@ namespace BLL
         /// <returns></returns>
         public async  Task<int> AddAsync(T model)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return await MyIBaseDal.AddAsync(model);
         }
 
@@ -84,6 +100,10 @@ namespace BLL
         /// <returns></returns>
         public int Del(T model)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return MyIBaseDal.Del(model);
         }
 
@@ -94,6 +114,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> DelAsync(T model)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return await MyIBaseDal.DelAsync(model);
         }
 
@@ -108,6 +132,10 @@ namespace BLL
         /// <returns></returns>
         public int DelBy(Expression<Func<T, bool>> delWhere)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return MyIBaseDal.DelBy(delWhere);
         }
 
@@ -118,6 +146,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> DelByAsync(Expression<Func<T, bool>> delWhere)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return await MyIBaseDal.DelByAsync(delWhere);
         }
 
@@ -133,6 +165,10 @@ namespace BLL
         /// <returns></returns>
         public int Modify(T model, params string[] proNames)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return MyIBaseDal.Modify(model, proNames);
         }
 
@@ -144,6 +180,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> ModifyAsync(T model, params string[] proNames)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return await MyIBaseDal.ModifyAsync(model, proNames);
         }
 
@@ -160,6 +200,10 @@ namespace BLL
         /// <returns></returns>
         public int ModifyBy(T model, Expression<Func<T, bool>> modifyWhere, params string[] proNames)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return MyIBaseDal.ModifyBy(model, modifyWhere, proNames);
         }
 
@@ -172,6 +216,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> ModifyByAsync(T model, Expression<Func<T, bool>> modifyWhere, params string[] proNames)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             return await MyIBaseDal.ModifyByAsync(model, modifyWhere, proNames);
         }
 
@@ -186,6 +234,10 @@ namespace BLL
         /// <returns></returns>
         public int GetTotal(Expression<Func<T, bool>> queryWhere)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             var result = MyIBaseDal.GetTotal(queryWhere);
             return result;
         }
@@ -197,6 +249,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<int> GetTotalAsync(Expression<Func<T, bool>> queryWhere)
         {
+            if (MyIBaseDal == null)
+            {
+                return 0;
+            }
             var result = await MyIBaseDal.GetTotalAsync(queryWhere);
             return result;
         }
@@ -212,6 +268,10 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetListBy(Expression<Func<T, bool>> queryWhere)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return MyIBaseDal.GetListBy(queryWhere);
         }
 
@@ -222,6 +282,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<T>> GetListByAsync(Expression<Func<T, bool>> queryWhere)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return await MyIBaseDal.GetListByAsync(queryWhere);
         }
 
@@ -239,6 +303,10 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetOrderListBy<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return MyIBaseDal.GetOrderListBy(queryWhere, orderBy, isDesc);
         }
 
@@ -252,6 +320,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<T>> GetOrderListByAsync<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return await MyIBaseDal.GetOrderListByAsync(queryWhere, orderBy, isDesc);
         }
 
@@ -271,6 +343,10 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return MyIBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
@@ -286,6 +362,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<List<T>> GetPageListByAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return await MyIBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
@@ -306,6 +386,11 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetPageListBy<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, out int totalCount, bool isDesc = false)
         {
+            if (MyIBaseDal == null)
+            {
+                totalCount = 0;
+                return null;
+            }
             return MyIBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, orderBy, out totalCount, isDesc);
         }
 
@@ -322,6 +407,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<PageData<T>> GetPageDataAsync<TKey>(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return await MyIBaseDal.GetPageDataAsync(pageIndex, pageSize, queryWhere, orderBy, isDesc);
         }
 
@@ -342,6 +431,11 @@ namespace BLL
         /// <returns></returns>
         public List<T> GetPageListBy(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy, out int totalCount)
         {
+            if (MyIBaseDal == null)
+            {
+                totalCount = 0;
+                return null;
+            }
             return MyIBaseDal.GetPageListBy(pageIndex, pageSize, queryWhere, strOrderBy, out totalCount);
         }
 
@@ -358,6 +452,10 @@ namespace BLL
         /// <returns></returns>
         public async Task<PageData<T>> GetPageListByAsync(int pageIndex, int pageSize, Expression<Func<T, bool>> queryWhere, string strOrderBy)
         {
+            if (MyIBaseDal == null)
+            {
+                return null;
+            }
             return await MyIBaseDal.GetPageListByAsync(pageIndex, pageSize, queryWhere, strOrderBy);
         }
 

@@ -49,15 +49,16 @@ namespace BLL
 	public partial class <#=tableName#>Service : BaseService<<#=tableName#>>, I<#=tableName#>Service 
     {
         //EF上下文
-        protected readonly CdyhcdDBContext MyDBContext;
+        //protected readonly CdyhcdDBContext MyDBContext;
         //操作DAL
         protected I<#=tableName#>DAL MyI<#=tableName#>DAL;
 
         #region 构造函数
 
-		public <#=tableName#>Service(CdyhcdDBContext db, I<#=tableName#>DAL <#=MysqlDbHelper.ToFirstLower(tableName)#>DAl) : base(<#=MysqlDbHelper.ToFirstLower(tableName)#>DAl)
+		//public <#=tableName#>Service(CdyhcdDBContext db, I<#=tableName#>DAL <#=MysqlDbHelper.ToFirstLower(tableName)#>DAl) : base(<#=MysqlDbHelper.ToFirstLower(tableName)#>DAl)
+		public <#=tableName#>Service(I<#=tableName#>DAL <#=MysqlDbHelper.ToFirstLower(tableName)#>DAl) : base(<#=MysqlDbHelper.ToFirstLower(tableName)#>DAl)
 		{
-            MyDBContext = db;
+            //MyDBContext = db;
             MyI<#=tableName#>DAL = <#=MysqlDbHelper.ToFirstLower(tableName)#>DAl;
 		}
 
@@ -86,9 +87,16 @@ namespace BLL
             var modelList = await this.GetListByAsync(queryWhere);
             <#=tableName#> result = modelList.FirstOrDefault();
             return result;
-        }
+        }		
 
 		#endregion 
+
+		public override void Dispose()
+        {
+            MyI<#=tableName#>DAL = null;
+            //MyDBContext.Dispose();
+            base.Dispose();
+        }
     }
 }
 

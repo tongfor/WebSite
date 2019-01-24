@@ -120,8 +120,8 @@ namespace DALMySql
                     string strIds = string.Join(',', ids);
                     sb.Append($"delete from AdminRoleAdminMenuButton where RoleId in ({strIds});");
                     sb.Append($"delete from AdminUserAdminRole where RoleId in ({strIds});");
-                    sb.Append($"delete from AdminRole where Id in ({strIds});");                   
-                    
+                    sb.Append($"delete from AdminRole where Id in ({strIds});");
+
                     _db.Database.ExecuteSqlCommand(sb.ToString());
                 }
                 catch (Exception ex)

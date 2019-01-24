@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2018/4/27 15:47:24   N/A    初版
+* V0.01  2019/1/24 22:57:12   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -32,15 +32,16 @@ namespace BLL
 	public partial class AdminRoleAdminMenuButtonService : BaseService<AdminRoleAdminMenuButton>, IAdminRoleAdminMenuButtonService 
     {
         //EF上下文
-        protected readonly CdyhcdDBContext MyDBContext;
+        //protected readonly CdyhcdDBContext MyDBContext;
         //操作DAL
         protected IAdminRoleAdminMenuButtonDAL MyIAdminRoleAdminMenuButtonDAL;
 
         #region 构造函数
 
-		public AdminRoleAdminMenuButtonService(CdyhcdDBContext db, IAdminRoleAdminMenuButtonDAL adminRoleAdminMenuButtonDAl) : base(adminRoleAdminMenuButtonDAl)
+		//public AdminRoleAdminMenuButtonService(CdyhcdDBContext db, IAdminRoleAdminMenuButtonDAL adminRoleAdminMenuButtonDAl) : base(adminRoleAdminMenuButtonDAl)
+		public AdminRoleAdminMenuButtonService(IAdminRoleAdminMenuButtonDAL adminRoleAdminMenuButtonDAl) : base(adminRoleAdminMenuButtonDAl)
 		{
-            MyDBContext = db;
+            //MyDBContext = db;
             MyIAdminRoleAdminMenuButtonDAL = adminRoleAdminMenuButtonDAl;
 		}
 
@@ -69,9 +70,16 @@ namespace BLL
             var modelList = await this.GetListByAsync(queryWhere);
             AdminRoleAdminMenuButton result = modelList.FirstOrDefault();
             return result;
-        }
+        }		
 
 		#endregion 
+
+		public override void Dispose()
+        {
+            MyIAdminRoleAdminMenuButtonDAL = null;
+            //MyDBContext.Dispose();
+            base.Dispose();
+        }
     }
 }
 

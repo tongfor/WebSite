@@ -31,6 +31,7 @@ namespace BLL
     /// </summary>
     public partial class AdminRoleAdminMenuButtonService
     {
+        protected CdyhcdDBContext MyDBContext;
         protected IAdminMenuDAL MyIAdminMenuDAL;
 
         #region 构造函数

@@ -59,7 +59,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                RecordBug("采集天府新区列表", ex);
+                RecordBug($"采集{sitekey}列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
