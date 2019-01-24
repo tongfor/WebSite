@@ -561,6 +561,61 @@
         ],
         "IsGatherByDetail": "false",
         "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "chqjkj",
+        "Name": "成华区经科局",
+        "SiteUrl": "http://www.chenghua.gov.cn/",
+        "UrlTemp": "http://www.chenghua.gov.cn/chqrmzfw/c144318hgf/jgml_list_{0}.shtml",
+        "FirstPageUrl": "http://www.chenghua.gov.cn/chqrmzfw/c144318hgf/jgml_list.shtml",
+        "ArticleListSelector": ".cont .tl",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "ucaptitle", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "ucapcontent", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "publishtime", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
       }
     ]
   }

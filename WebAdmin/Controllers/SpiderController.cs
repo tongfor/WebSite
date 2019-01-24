@@ -52,7 +52,7 @@ namespace WebAdmin.Controllers
             try
             {
                 var gatherResult = await _gatherService.GatherWebsiteAsync(sitekey, pageStartNo, pageEndNo, classId, User?.Identity?.Name);
-                int gatherCount = gatherResult.GatheredArticleLIst.Count;
+                int gatherCount = gatherResult.GatheredArticleList.Count;
                 return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResult != null && gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", gatherResult);
             }
             catch (Exception ex)

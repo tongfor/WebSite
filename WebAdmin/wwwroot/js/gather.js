@@ -1,5 +1,5 @@
 ﻿//互联网信息采集对象
-; var gatherMenu = (function () {
+; var siteGather = (function () {
     var _menuData = [
         {
             "id": 1,
@@ -41,6 +41,10 @@
             "id": 10,
             "siteName": "青羊区科经局",
             "siteKey": "qyqkjj"
+        }, {
+            "id": 11,
+            "siteName": "成华区经科局",
+            "siteKey": "chqjkj"
         }
     ];
     var menuObjs = $("#gather-list")
@@ -64,14 +68,55 @@
         menuObjs.append(ul)
     }
 
+    //在标签中显示采集结果
+    var _showGatherResult = function (tagClassName, data) {
+        if (!tagClassName) {
+            return
+        }
+        var o = $("." + tagClassName)
+        var showHtml = ""
+        if (data && data.gatheredArticleList) {
+            showHtml += '<p>在' + data.gatherTime
+            showHtml += '从' + data.siteName + '采集了' + data.gatheredArticleList.length + '条信息:</p>\n'
+            for (var i in data.gatheredArticleList) {
+                showHtml += '<p><a href="' + data.resultShowDomainName
+                showHtml += '/Article/Details-' + data.gatheredArticleList[i].id
+                showHtml += '.html" title="' + data.gatheredArticleList[i].title
+                showHtml += '" target="_blank">' + data.gatheredArticleList[i].title
+                showHtml += '</a>'
+                showHtml += isRecent(data.gatheredArticleList[i].addTime, 3)
+                    ? '[<span class="text-error">' + data.gatheredArticleList[i].addTime + '</span>]'
+                    : '[<span>' + data.gatheredArticleList[i].addTime + '</span>]'
+                showHtml += '&nbsp; <a href="' + data.gatheredArticleList[i].gatherurl
+                showHtml += '" title="原文地址" target="_blank">原文地址</a>'
+                showHtml+= '</p>\n'
+            }
+        }
+        if (0 === o.html().length || "&nbsp;" === o.html()) {
+            showHtml = '<p>采集结果如下：</p>\n' + showHtml
+        }
+        o.append(showHtml)
+        o.scrollTop(o.prop('scrollHeight'))
+    }
+
+    function isRecent(strDate, differDays) {
+        var d1 = new Date(strDate);
+        if (!d1 || !differDays || 0 === differDays.length || isNaN(differDays)) {
+            return false;
+        }
+        var d2 = new Date();
+        var differMilliseconds = d2.getTime() - d1.getTime();
+        return differMilliseconds <= differDays * 24 * 3600 * 1000
+    }
+
     return {
+        menuData: _menuData,
         gatherMenuInit: _gatherMenuInit,
-        menuData: _menuData
+        showGatherResult: _showGatherResult
     }
 }())
-
 $(function () {
-    gatherMenu.gatherMenuInit()
+    siteGather.gatherMenuInit()
 
     $(".gatherbtn").click(function (e) {
         var obj = $(e.target);
@@ -81,7 +126,7 @@ $(function () {
         var paras = {
             "siteKey": siteKey,
             "pageStartNo": 1,
-            "pageEndNo": 30,
+            "pageEndNo": 2,
             "classId": classId
         };
         $.ajax({
@@ -95,9 +140,13 @@ $(function () {
             },
             success: function (result, status) {
                 if (result && "success" === status && 0 === result.status) {
-                    alert(result.msg);
-                    window.top.location.reload();
-                    window.top.tb_remove();
+                    //alert(result.msg);
+                    //window.top.location.reload();
+                    //window.top.tb_remove();
+                    siteGather.showGatherResult("gather-result", result.data)
+                }
+                else if (result && "error" === status && 1 === result.status && result.msg) {
+                    alert(result.msg)
                 }
                 $("#" + loadingId).hide();
                 obj.removeAttr("disabled");

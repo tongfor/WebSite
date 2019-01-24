@@ -228,3 +228,12 @@ h4 {
 #gather-list li{
     min-height:80px;
 }
+#gather-list li input{
+    width:160px;
+}
+
+.gather-result {
+    height: 300px;
+    border: 1px solid #999;
+    overflow-y:scroll;
+}

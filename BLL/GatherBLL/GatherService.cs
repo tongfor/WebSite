@@ -51,10 +51,10 @@ namespace BLL
 
         private readonly ILogger<GatherService> _logger;
 
-        public GatherService(IOptionsMonitor<SiteConfig> siteConfigOptions, IOptionsMonitor<GatherConfig> gatherConfigOptions, IArticleService articleService, ILogger<GatherService> logger)
+        public GatherService(IOptionsSnapshot<SiteConfig> siteConfigOptions, IOptionsSnapshot<GatherConfig> gatherConfigOptions, IArticleService articleService, ILogger<GatherService> logger)
         {
-            _siteConfig = siteConfigOptions.CurrentValue;
-            _gatherConfig = gatherConfigOptions.CurrentValue;
+            _siteConfig = siteConfigOptions.Value;
+            _gatherConfig = gatherConfigOptions.Value;
             _articleService = articleService;
             _logger = logger;
         }
@@ -72,19 +72,20 @@ namespace BLL
         {
             var gatherResult = new GatherResult
             {
-                SiteKey = siteKey
+                SiteKey = siteKey,
+                ResultShowDomainName = _siteConfig.DefaultDomainName
             };
             List<Article> preGatherUrlList = new List<Article>();
             List<Article> gatheredArticleList = new List<Article>();
-            var gatherWebsite = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
-            if (gatherWebsite == null)
+            var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
+            if (website == null)
             {
                 throw new Exception($"{siteKey}采集设置有误！");
             }
-            preGatherUrlList = await GetGatherArticleListAsync(gatherWebsite, pageStartNo, pageEndNo, classId, userName);
+            preGatherUrlList = await GetGatherArticleListAsync(website, pageStartNo, pageEndNo, classId, userName);
             foreach (var a in preGatherUrlList)
             {
-                var details = await GetArticleDetailsAsync(gatherWebsite, a.Gatherurl, a.ClassId, userName);
+                var details = await GetArticleDetailsAsync(website, a.Gatherurl, a.ClassId, userName);
                 int addResult = await AddArticle(details);
                 if (addResult > 0)
                 {
@@ -92,7 +93,8 @@ namespace BLL
                 }
             }
             gatherResult.PreGatherList = preGatherUrlList;
-            gatherResult.GatheredArticleLIst = gatheredArticleList;
+            gatherResult.GatheredArticleList = gatheredArticleList.OrderByDescending(o => o.AddTime).ToList();
+            gatherResult.SiteName = website.Name;
 
             return gatherResult;
         }
@@ -263,7 +265,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError("采集得到文章模型时报错" + ex.Message, ex.StackTrace.ToString());
+                _logger.LogError($"采集{url}文章详情时报错：" + ex.Message, ex.StackTrace.ToString());
                 return null;
             }
         }
@@ -306,21 +308,28 @@ namespace BLL
         /// <returns></returns>
         private AngleSharp.Dom.IElement GetElementByName(AngleSharp.Dom.Html.IHtmlDocument document, GatherWebsite gatherWebsite, string name, out int selectorIndex)
         {
-            var set = gatherWebsite.GetGatherDetailsByName(name);
-            var elementSelectors = gatherWebsite.DetailsList.FirstOrDefault(f => name.Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Selector?.Split(',');
-            if (document == null || gatherWebsite == null || elementSelectors == null || string.IsNullOrEmpty(name))
+            try
             {
-                selectorIndex = 0;
-                return null;
-            }
-            for (int i = 0; i < elementSelectors.Length; i++)
-            {
-                if (document.QuerySelectorAll(elementSelectors[i]) == null || document.QuerySelectorAll(elementSelectors[i])[set.ValueOrder] == null)
+                var set = gatherWebsite.GetGatherDetailsByName(name);
+                var elementSelectors = gatherWebsite.DetailsList.FirstOrDefault(f => name.Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Selector?.Split(',');
+                if (document == null || gatherWebsite == null || elementSelectors == null || string.IsNullOrEmpty(name))
                 {
-                    continue;
+                    selectorIndex = 0;
+                    return null;
                 }
-                selectorIndex = i;
-                return document.QuerySelectorAll(elementSelectors[i])[set.ValueOrder];
+                for (int i = 0; i < elementSelectors.Length; i++)
+                {
+                    if (null == document.QuerySelectorAll(elementSelectors[i]) || 0 == document.QuerySelectorAll(elementSelectors[i]).Length || null == document.QuerySelectorAll(elementSelectors[i])[set.ValueOrder])
+                    {
+                        continue;
+                    }
+                    selectorIndex = i;
+                    return document.QuerySelectorAll(elementSelectors[i])[set.ValueOrder];
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"采集{name}的内容时报错：" + ex.Message, ex.StackTrace.ToString());                
             }
             selectorIndex = 0;
             return null;
@@ -334,25 +343,38 @@ namespace BLL
         /// <param name="name"></param>
         private string GetDetailValueByName(AngleSharp.Dom.Html.IHtmlDocument document, GatherWebsite website, string name)
         {
-            var detailsSet = website.GetGatherDetailsByName(name);
-            if (string.IsNullOrEmpty(detailsSet.Selector))
+            var ss = document.QuerySelector("html").OuterHtml;
+            try
             {
+                var detailsSet = website.GetGatherDetailsByName(name);
+                if (string.IsNullOrEmpty(detailsSet.Selector))
+                {
+                    return string.Empty;
+                }
+                var element = GetElementByName(document, website, name, out int selectorIndex);
+                if (null == element)
+                {
+                    return null;
+                }
+                var valueAttributeNameArr = detailsSet.ValueAttributeName?.Split(',');
+                var result = string.IsNullOrEmpty(detailsSet.ValueAttributeName) || valueAttributeNameArr == null || string.IsNullOrEmpty(valueAttributeNameArr[selectorIndex])
+                    ? element?.TextContent.Trim()
+                    : element?.GetAttribute(valueAttributeNameArr[selectorIndex])?.Trim();
+                if (detailsSet.ValueForward != null && detailsSet.ValueForward != null && (detailsSet.ValueForward.Length >= 0 || detailsSet.ValueAfter.Length >= 0))
+                {
+                    //如果有前后特征则取前后特征之间的值
+                    result = string.IsNullOrEmpty(detailsSet.ValueAfter)
+                        ? result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length)
+                        : result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length, result.IndexOf(detailsSet.ValueAfter));
+                }
+                result = result?.ReplaceEvery(detailsSet.BeReplacedStr, detailsSet.Replacer, ',')?.Trim();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"采集{name}的内容时报错：" + ex.Message, ex.StackTrace.ToString());
                 return string.Empty;
             }
-            var element = GetElementByName(document, website, name, out int selectorIndex);
-            var valueAttributeNameArr = detailsSet.ValueAttributeName?.Split(',');
-            var result = string.IsNullOrEmpty(detailsSet.ValueAttributeName) || valueAttributeNameArr == null || string.IsNullOrEmpty(valueAttributeNameArr[selectorIndex])
-                ? element?.TextContent.Trim()
-                : element.GetAttribute(valueAttributeNameArr[selectorIndex])?.Trim();
-            if (detailsSet.ValueForward != null && detailsSet.ValueForward != null && (detailsSet.ValueForward.Length >= 0 || detailsSet.ValueAfter.Length >= 0))
-            {
-                //如果有前后特征则取前后特征之间的值
-                result = string.IsNullOrEmpty(detailsSet.ValueAfter)
-                    ? result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length)
-                    : result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length, result.IndexOf(detailsSet.ValueAfter));
-            }
-            result = result.ReplaceEvery(detailsSet.BeReplacedStr, detailsSet.Replacer, ',').Trim();
-            return result;
         }
 
         /// <summary>
