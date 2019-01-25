@@ -5,7 +5,7 @@
     //申报快讯过滤关键字
     "NotificationKeywords": "项目,资金,通知,补助,人才 and 征集,申报,拨付",
     //要排除的关键字
-    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证",
+    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设",
     //采集站点属性,
     "GatherWebsiteList": [
       {
@@ -563,19 +563,74 @@
         "DetailIsUseJavascript": "false"
       },
       {
-        "Key": "chqjkj",
-        "Name": "成华区经科局",
-        "SiteUrl": "http://www.chenghua.gov.cn/",
-        "UrlTemp": "http://www.chenghua.gov.cn/chqrmzfw/c144318hgf/jgml_list_{0}.shtml",
-        "FirstPageUrl": "http://www.chenghua.gov.cn/chqrmzfw/c144318hgf/jgml_list.shtml",
-        "ArticleListSelector": ".cont .tl",
+        "Key": "lqyq",
+        "Name": "龙泉驿区",
+        "SiteUrl": "http://www.longquanyi.gov.cn",
+        "UrlTemp": "http://www.longquanyi.gov.cn/es-search/search/c2b35b45e29c496e8441089d9c33dc37?_template=zhaofa/lq_gb_list&_isAgg=1&_pageSize=1&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": "ul li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".details_con .title", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".tit_box span", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "来源：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#detail_content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".tit_box span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "1",
+            "BeReplacedStr": "发布日期：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "true",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "qbjqkjj",
+        "Name": "青白江区科经局",
+        "SiteUrl": "http://www.qbj.gov.cn",
+        "UrlTemp": "http://www.qbj.gov.cn/qjxj/1182710/1181218/27234/index{0}.html",
+        "FirstPageUrl": "",
+        "ArticleListSelector": ".smod103_cont .list_title",
         "TitleSelectorInList": "a",
         "TitleAttributeNameInList": "title",
         "DetailsSelector": "html",
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": "ucaptitle", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": "#xilanzt h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -595,7 +650,7 @@
           },
           {
             "Name": "Content",
-            "Selector": "ucapcontent", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": ".conzt", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -605,16 +660,18 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "publishtime", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": "tr>.xlly", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
+            "ValueForward": "发布时间：", //取值前特征
+            "ValueAfter": "浏览次数：", //取值后特征
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",
             "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
           }
         ],
-        "IsGatherByDetail": "false",
+        "IsGatherByDetail": "true",
         "DetailIsUseJavascript": "false"
       }
     ]

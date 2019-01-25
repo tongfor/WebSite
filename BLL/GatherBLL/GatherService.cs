@@ -367,7 +367,7 @@ namespace BLL
                     //如果有前后特征则取前后特征之间的值
                     result = string.IsNullOrEmpty(detailsSet.ValueAfter)
                         ? result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length)
-                        : result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length, result.IndexOf(detailsSet.ValueAfter));
+                        : result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length, result.IndexOf(detailsSet.ValueAfter) - result.IndexOf(detailsSet.ValueForward) - detailsSet.ValueForward.Length);
                 }
                 result = result?.ReplaceEvery(detailsSet.BeReplacedStr, detailsSet.Replacer, ',')?.Trim();
                 return result;

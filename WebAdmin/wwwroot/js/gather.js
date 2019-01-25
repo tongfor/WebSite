@@ -4,27 +4,39 @@
         {
             "id": 1,
             "siteName": "市经委",
-            "siteKey": "cdgy"
+            "siteKey": "cdgy",
+            "startPageNo": 1,
+            "endPageNo":2
         }, {
             "id": 2,
             "siteName": "省经信厅",
-            "siteKey": "jxt"
+            "siteKey": "jxt",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 3,
             "siteName": "市科技局",
-            "siteKey": "cdst"
+            "siteKey": "cdst",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 4,
             "siteName": "省科技厅",
-            "siteKey": "kjt"
+            "siteKey": "kjt",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 5,
             "siteName": "高新区",
-            "siteKey": "cdht"
+            "siteKey": "cdht",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 6,
             "siteName": "天府新区",
-            "siteKey": "cdtf"
+            "siteKey": "cdtf",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 7,
             "siteName": "金牛区",
@@ -32,19 +44,39 @@
         }, {
             "id": 8,
             "siteName": "锦江区",
-            "siteKey": "jjq"
+            "siteKey": "jjq",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 9,
             "siteName": "武侯区经科局",
-            "siteKey": "whqjkj"
+            "siteKey": "whqjkj",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 10,
             "siteName": "青羊区科经局",
-            "siteKey": "qyqkjj"
+            "siteKey": "qyqkjj",
+            "startPageNo": 1,
+            "endPageNo": 2
         }, {
             "id": 11,
             "siteName": "成华区经科局",
-            "siteKey": "chqjkj"
+            "siteKey": "chqjkj",
+            "startPageNo": 1,
+            "endPageNo": 2
+        }, {
+            "id": 12,
+            "siteName": "龙泉驿区",
+            "siteKey": "lqyq",
+            "startPageNo": 1,
+            "endPageNo": 100
+        }, {
+            "id": 13,
+            "siteName": "青白江区科经局",
+            "siteKey": "qbjqkjj",
+            "startPageNo": 1,
+            "endPageNo": 2
         }
     ];
     var menuObjs = $("#gather-list")
@@ -58,6 +90,8 @@
             ul += '<input value="采集' + _menuData[i].siteName
             ul += '信息" id="g_' + _menuData[i].siteKey + '_classId_2" data-classId="2"'
             ul += 'data-siteKey="' + _menuData[i].siteKey
+            ul += '" data-startPageNo="' + _menuData[i].startPageNo
+            ul += '" data-endPageNo="' + _menuData[i].endPageNo
             ul += '" type = "button" class="gatherbtn" />\n'
             ul += '<br />\n'
             ul += '<span id="submitloading_' + _menuData[i].siteKey
@@ -125,8 +159,8 @@ $(function () {
         var loadingId = "submitloading_" + siteKey + "_" + "classId" + "_" + classId;
         var paras = {
             "siteKey": siteKey,
-            "pageStartNo": 1,
-            "pageEndNo": 2,
+            "pageStartNo": obj.attr("data-startPageNo"),
+            "pageEndNo": obj.attr("data-endPageNo"),
             "classId": classId
         };
         $.ajax({
