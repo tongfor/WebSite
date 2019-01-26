@@ -90,13 +90,6 @@ namespace BLL
         }		
 
 		#endregion 
-
-		public override void Dispose()
-        {
-            MyI<#=tableName#>DAL = null;
-            //MyDBContext.Dispose();
-            base.Dispose();
-        }
     }
 }
 

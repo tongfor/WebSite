@@ -35,12 +35,13 @@
 using Models;
 using IDAL;
 using RepositoryPattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace DALMySql
 {
 	public partial class <#=tableName#>DAL : BaseDAL<<#=tableName#>>, I<#=tableName#>DAL
     {
-		public <#=tableName#>DAL(CdyhcdDBContext db) : base(db)
+		public <#=tableName#>DAL(CdyhcdDBContext db, DbContextOptions dbContextOptions) : base(db, dbContextOptions)
         {
         }
     }

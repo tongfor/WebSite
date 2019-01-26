@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2019/1/24 22:57:12   N/A    初版
+* V0.01  2019/1/26 2:02:28   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -73,13 +73,6 @@ namespace BLL
         }		
 
 		#endregion 
-
-		public override void Dispose()
-        {
-            MyIAdminRoleAdminMenuButtonDAL = null;
-            //MyDBContext.Dispose();
-            base.Dispose();
-        }
     }
 }
 

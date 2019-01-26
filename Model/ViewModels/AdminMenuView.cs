@@ -93,6 +93,7 @@ namespace Models
         /// 子菜单
         /// </summary>
         [Display(Name = "子菜单")]
+        [NotMapped]
         public List<AdminUserMenuView> ChildMenus { get; set; }
     }
 

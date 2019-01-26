@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2019/1/24 23:24:07   N/A    初版
+* V0.01  2019/1/26 15:37:49   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -18,12 +18,13 @@
 using Models;
 using IDAL;
 using RepositoryPattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace DALMySql
 {
 	public partial class ArticleDAL : BaseDAL<Article>, IArticleDAL
     {
-		public ArticleDAL(CdyhcdDBContext db) : base(db)
+		public ArticleDAL(CdyhcdDBContext db, DbContextOptions dbContextOptions) : base(db, dbContextOptions)
         {
         }
     }

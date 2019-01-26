@@ -30,11 +30,15 @@ namespace DALMySql
     public class BaseDAL<T> : IBaseDAL<T> where T : class, new()
     {
         //EF上下文
-        protected readonly CdyhcdDBContext _db;        
+        protected readonly CdyhcdDBContext _db;
+        protected readonly DbContextOptions _dbContextOptions;
+        public Guid BaseDALGuid;
                 
-        public BaseDAL(CdyhcdDBContext db)
+        public BaseDAL(CdyhcdDBContext db, DbContextOptions dbContextOptions)
         {
             _db = db;
+            _dbContextOptions = dbContextOptions;
+            this.BaseDALGuid = Guid.NewGuid();
         }
 
         #region 根据主键获取模型
@@ -46,7 +50,21 @@ namespace DALMySql
         /// <returns></returns>
         public T GetModel(int id)
         {
-            return _db.Set<T>().Find(id);
+            try
+            {
+                return _db.Set<T>().Find(id);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        return newDB.Set<T>().Find(id);
+                    }
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -56,8 +74,23 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<T> GetModelAsync(int id)
         {
-            var model = await _db.Set<T>().FindAsync(id);
-            return model;
+            try
+            {
+                var model = await _db.Set<T>().FindAsync(id);
+                return model;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        var model = await newDB.Set<T>().FindAsync(id);
+                        return model;
+                    }
+                }
+                throw;
+            }
         }
 
         #endregion 根据主键获取模型
@@ -73,9 +106,26 @@ namespace DALMySql
         {
             int result;
 
-            _db.Set<T>().Add(model);
+            try
+            {
+                _db.Set<T>().Add(model);
 
-            result = _db.SaveChanges();
+                result = _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        newDB.Set<T>().Add(model);
+
+                        result = newDB.SaveChanges();
+                    }
+                }
+                throw;
+            }
+
             return result;
         }
 
@@ -86,11 +136,27 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<int> AddAsync(T model)
         {
-            int result;
+                int result;
 
-            _db.Set<T>().Add(model);
+            try
+            {
+                await _db.Set<T>().AddAsync(model);
 
-            result = await _db.SaveChangesAsync();
+                result = await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        await newDB.Set<T>().AddAsync(model);
+
+                        result = await newDB.SaveChangesAsync();
+                    }
+                }
+                throw;
+            }
             return result;
         }
 
@@ -105,12 +171,28 @@ namespace DALMySql
         /// <returns></returns>
         public int Del(T model)
         {
-            int result;
+                int result;
+            try
+            {
+                _db.Set<T>().Attach(model);
+                _db.Set<T>().Remove(model);
 
-            _db.Set<T>().Attach(model);
-            _db.Set<T>().Remove(model);
+                result = _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        newDB.Set<T>().Attach(model);
+                        newDB.Set<T>().Remove(model);
 
-            result = _db.SaveChanges();
+                        result = newDB.SaveChanges();
+                    }
+                }
+                throw;
+            }
             return result;
         }
 
@@ -121,12 +203,30 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<int> DelAsync(T model)
         {
-            int result;
+                int result;
 
-            _db.Set<T>().Attach(model);
-            _db.Set<T>().Remove(model);
+            try
+            {
+                _db.Set<T>().Attach(model);
+                _db.Set<T>().Remove(model);
 
-            result = await _db.SaveChangesAsync();
+                result = await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        newDB.Set<T>().Attach(model);
+                        newDB.Set<T>().Remove(model);
+
+                        result = await newDB.SaveChangesAsync();
+                    }
+                }
+                throw;
+            }
+
             return result;
         }
 
@@ -142,15 +242,35 @@ namespace DALMySql
         public int DelBy(Expression<Func<T, bool>> delWhere)
         {
             int result;
-
-            List<T> delList = _db.Set<T>().Where(delWhere).ToList();
-            delList.ForEach(d =>
+            try
             {
-                _db.Set<T>().Attach(d);
-                _db.Set<T>().Remove(d);
-            });
+                List<T> delList = _db.Set<T>().Where(delWhere).ToList();
+                delList.ForEach(d =>
+                {
+                    _db.Set<T>().Attach(d);
+                    _db.Set<T>().Remove(d);
+                });
 
-            result = _db.SaveChanges();
+                result = _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        List<T> delList = _db.Set<T>().Where(delWhere).ToList();
+                        delList.ForEach(d =>
+                        {
+                            newDB.Set<T>().Attach(d);
+                            newDB.Set<T>().Remove(d);
+                        });
+
+                        result = _db.SaveChanges();
+                    }
+                }
+                throw;
+            }
             return result;
         }
 
@@ -162,15 +282,35 @@ namespace DALMySql
         public async Task<int> DelByAsync(Expression<Func<T, bool>> delWhere)
         {
             int result;
-
-            List<T> delList = _db.Set<T>().Where(delWhere).ToList();
-            delList.ForEach(d =>
+            try
             {
-                _db.Set<T>().Attach(d);
-                _db.Set<T>().Remove(d);
-            });
+                List<T> delList = _db.Set<T>().Where(delWhere).ToList();
+                delList.ForEach(d =>
+                {
+                    _db.Set<T>().Attach(d);
+                    _db.Set<T>().Remove(d);
+                });
 
-            result = await _db.SaveChangesAsync();
+                result = await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        List<T> delList = newDB.Set<T>().Where(delWhere).ToList();
+                        delList.ForEach(d =>
+                        {
+                            newDB.Set<T>().Attach(d);
+                            newDB.Set<T>().Remove(d);
+                        });
+
+                        result = await newDB.SaveChangesAsync();
+                    }
+                }
+                throw;
+            }
             return result;
         }
 
@@ -186,23 +326,50 @@ namespace DALMySql
         /// <returns></returns>
         public int Modify(T model, params string[] proNames)
         {
-            int result;
-
-            EntityEntry entry = _db.Entry<T>(model);
-            if (proNames.Length > 0)
+                int result;
+            try
             {
-                //entry.State = EntityState.Unchanged;
-                foreach (string proName in proNames)
+                EntityEntry entry = _db.Entry<T>(model);
+                if (proNames.Length > 0)
                 {
-                    entry.Property(proName).IsModified = true;
+                    //entry.State = EntityState.Unchanged;
+                    foreach (string proName in proNames)
+                    {
+                        entry.Property(proName).IsModified = true;
+                    }
                 }
-            }
-            else//未指明则全部修改
-            {
-                entry.State = EntityState.Modified;
-            }
+                else//未指明则全部修改
+                {
+                    entry.State = EntityState.Modified;
+                }
 
-            result = _db.SaveChanges();
+                result = _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        EntityEntry entry = newDB.Entry<T>(model);
+                        if (proNames.Length > 0)
+                        {
+                            //entry.State = EntityState.Unchanged;
+                            foreach (string proName in proNames)
+                            {
+                                entry.Property(proName).IsModified = true;
+                            }
+                        }
+                        else//未指明则全部修改
+                        {
+                            entry.State = EntityState.Modified;
+                        }
+
+                        result = newDB.SaveChanges();
+                    }
+                }
+                throw;
+            }
             return result;
         }
 
@@ -216,21 +383,49 @@ namespace DALMySql
         {
             int result;
 
-            EntityEntry entry = _db.Entry<T>(model);
-            if (proNames.Length > 0)
+            try
             {
-                //entry.State = EntityState.Unchanged;
-                foreach (string proName in proNames)
+                EntityEntry entry = _db.Entry<T>(model);
+                if (proNames.Length > 0)
                 {
-                    entry.Property(proName).IsModified = true;
+                    //entry.State = EntityState.Unchanged;
+                    foreach (string proName in proNames)
+                    {
+                        entry.Property(proName).IsModified = true;
+                    }
                 }
-            }
-            else//未指明则全部修改
-            {
-                entry.State = EntityState.Modified;
-            }
+                else//未指明则全部修改
+                {
+                    entry.State = EntityState.Modified;
+                }
 
-            result = await _db.SaveChangesAsync();
+                result = await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        EntityEntry entry = newDB.Entry<T>(model);
+                        if (proNames.Length > 0)
+                        {
+                            //entry.State = EntityState.Unchanged;
+                            foreach (string proName in proNames)
+                            {
+                                entry.Property(proName).IsModified = true;
+                            }
+                        }
+                        else//未指明则全部修改
+                        {
+                            entry.State = EntityState.Modified;
+                        }
+
+                        result = await newDB.SaveChangesAsync();
+                    }
+                }
+                throw;
+            }
             return result;
         }
 
@@ -250,40 +445,59 @@ namespace DALMySql
         {
             int result;
 
-            List<T> modifyList = _db.Set<T>().Where(modifyWhere).ToList();
-            modifyList.ForEach(m =>
+            try
             {
-                Modify(model, proNames);
-            });
-            result= _db.SaveChanges();
+                List<T> modifyList = _db.Set<T>().Where(modifyWhere).ToList();
+                modifyList.ForEach(m =>
+                {
+                    Modify(model, proNames);
+                });
+                result = _db.SaveChanges();
 
-            #region 反射实现
-            //Type t = typeof(T);
-            //List<PropertyInfo> proInfos = t.GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
-            //Dictionary<string, PropertyInfo> dicPros = new Dictionary<string, PropertyInfo>();
+                #region 反射实现
+                //Type t = typeof(T);
+                //List<PropertyInfo> proInfos = t.GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
+                //Dictionary<string, PropertyInfo> dicPros = new Dictionary<string, PropertyInfo>();
 
-            //proInfos.ForEach(p =>
-            //{
-            //    if (proNames.Contains(p.Name))
-            //    {
-            //        dicPros.Add(p.Name, p);
-            //    }
-            //});
+                //proInfos.ForEach(p =>
+                //{
+                //    if (proNames.Contains(p.Name))
+                //    {
+                //        dicPros.Add(p.Name, p);
+                //    }
+                //});
 
-            //foreach (string proName in proNames)
-            //{
-            //    if (dicPros.Keys.Contains(proName))
-            //    {
-            //        PropertyInfo proInfo = dicPros[proName];
-            //        object newValue = dicPros[proName].GetValue(model, null);
-            //        foreach (T modify in modifyList)
-            //        {
-            //            proInfo.SetValue(modify, newValue, null);
-            //        }
-            //    }
-            //}
-            //return _db.SaveChanges();
-            #endregion 反射实现
+                //foreach (string proName in proNames)
+                //{
+                //    if (dicPros.Keys.Contains(proName))
+                //    {
+                //        PropertyInfo proInfo = dicPros[proName];
+                //        object newValue = dicPros[proName].GetValue(model, null);
+                //        foreach (T modify in modifyList)
+                //        {
+                //            proInfo.SetValue(modify, newValue, null);
+                //        }
+                //    }
+                //}
+                //return _db.SaveChanges();
+                #endregion 反射实现
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        List<T> modifyList = newDB.Set<T>().Where(modifyWhere).ToList();
+                        modifyList.ForEach(m =>
+                        {
+                            Modify(model, proNames);
+                        });
+                        result = newDB.SaveChanges();
+                    }
+                }
+                throw;
+            }
 
             return result;
         }
@@ -300,40 +514,59 @@ namespace DALMySql
         {
             int result;
 
-            List<T> modifyList = _db.Set<T>().Where(modifyWhere).ToList();
-            modifyList.ForEach(m =>
+            try
             {
-                Modify(model, proNames);
-            });
-            result = await _db.SaveChangesAsync();
+                List<T> modifyList = _db.Set<T>().Where(modifyWhere).ToList();
+                modifyList.ForEach(m =>
+                {
+                    Modify(model, proNames);
+                });
+                result = await _db.SaveChangesAsync();
 
-            #region 反射实现
-            //Type t = typeof(T);
-            //List<PropertyInfo> proInfos = t.GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
-            //Dictionary<string, PropertyInfo> dicPros = new Dictionary<string, PropertyInfo>();
+                #region 反射实现
+                //Type t = typeof(T);
+                //List<PropertyInfo> proInfos = t.GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
+                //Dictionary<string, PropertyInfo> dicPros = new Dictionary<string, PropertyInfo>();
 
-            //proInfos.ForEach(p =>
-            //{
-            //    if (proNames.Contains(p.Name))
-            //    {
-            //        dicPros.Add(p.Name, p);
-            //    }
-            //});
+                //proInfos.ForEach(p =>
+                //{
+                //    if (proNames.Contains(p.Name))
+                //    {
+                //        dicPros.Add(p.Name, p);
+                //    }
+                //});
 
-            //foreach (string proName in proNames)
-            //{
-            //    if (dicPros.Keys.Contains(proName))
-            //    {
-            //        PropertyInfo proInfo = dicPros[proName];
-            //        object newValue = dicPros[proName].GetValue(model, null);
-            //        foreach (T modify in modifyList)
-            //        {
-            //            proInfo.SetValue(modify, newValue, null);
-            //        }
-            //    }
-            //}
-            //return _db.SaveChanges();
-            #endregion 反射实现
+                //foreach (string proName in proNames)
+                //{
+                //    if (dicPros.Keys.Contains(proName))
+                //    {
+                //        PropertyInfo proInfo = dicPros[proName];
+                //        object newValue = dicPros[proName].GetValue(model, null);
+                //        foreach (T modify in modifyList)
+                //        {
+                //            proInfo.SetValue(modify, newValue, null);
+                //        }
+                //    }
+                //}
+                //return _db.SaveChanges();
+                #endregion 反射实现
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        List<T> modifyList = newDB.Set<T>().Where(modifyWhere).ToList();
+                        modifyList.ForEach(m =>
+                        {
+                            Modify(model, proNames);
+                        });
+                        result = await newDB.SaveChangesAsync();
+                    }
+                }
+                throw;
+            }
 
             return result;
         }
@@ -349,8 +582,23 @@ namespace DALMySql
         /// <returns></returns>
         public int GetTotal(Expression<Func<T,bool>> queryWhere)
         {
-            var result = _db.Set<T>().Count(queryWhere);
-            return result;
+            try
+            {
+                var result = _db.Set<T>().Count(queryWhere);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        var result = newDB.Set<T>().Count(queryWhere);
+                        return result;
+                    }
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -360,8 +608,23 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<int> GetTotalAsync(Expression<Func<T, bool>> queryWhere)
         {
-            var result = await _db.Set<T>().CountAsync(queryWhere);
-            return result;
+            try
+            {
+                var result = await _db.Set<T>().CountAsync(queryWhere);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        var result = await newDB.Set<T>().CountAsync(queryWhere);
+                        return result;
+                    }
+                }
+                throw;
+            }
         }
 
         #endregion 获取总数
@@ -375,8 +638,23 @@ namespace DALMySql
         /// <returns></returns>
         public List<T> GetListBy(Expression<Func<T, bool>> queryWhere)
         {
-            var results = _db.Set<T>().Where(queryWhere).ToList();
-            return results;
+            try
+            {
+                var results = _db.Set<T>().Where(queryWhere).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        var results = newDB.Set<T>().Where(queryWhere).ToList();
+                        return results;
+                    }
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -386,8 +664,23 @@ namespace DALMySql
         /// <returns></returns>
         public async Task<List<T>> GetListByAsync(Expression<Func<T, bool>> queryWhere)
         {
-            var results = await _db.Set<T>().Where(queryWhere).ToListAsync();
-            return results;
+            try
+            {
+                var results = await _db.Set<T>().Where(queryWhere).ToListAsync();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        var results = await newDB.Set<T>().Where(queryWhere).ToListAsync();
+                        return results;
+                    }
+                }
+                throw;
+            }
         }
 
         #endregion
@@ -405,15 +698,38 @@ namespace DALMySql
         /// 
         public List<T> GetOrderListBy<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            if (isDesc)
+            try
             {
-                var results = _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).ToList();
-                return results;
+                if (isDesc)
+                {
+                    var results = _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).ToList();
+                    return results;
+                }
+                else
+                {
+                    var results = _db.Set<T>().Where(queryWhere).OrderBy(orderBy).ToList();
+                    return results;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var results = _db.Set<T>().Where(queryWhere).OrderBy(orderBy).ToList();
-                return results;
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        if (isDesc)
+                        {
+                            var results = newDB.Set<T>().Where(queryWhere).OrderByDescending(orderBy).ToList();
+                            return results;
+                        }
+                        else
+                        {
+                            var results = newDB.Set<T>().Where(queryWhere).OrderBy(orderBy).ToList();
+                            return results;
+                        }
+                    }
+                }
+                throw;
             }
         }
 
@@ -428,15 +744,38 @@ namespace DALMySql
         /// 
         public async Task<List<T>> GetOrderListByAsync<TKey>(Expression<Func<T, bool>> queryWhere, Expression<Func<T, TKey>> orderBy, bool isDesc = false)
         {
-            if (isDesc)
+            try
             {
-                var results = await _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).ToListAsync();
-                return results;
+                if (isDesc)
+                {
+                    var results = await _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).ToListAsync();
+                    return results;
+                }
+                else
+                {
+                    var results = await _db.Set<T>().Where(queryWhere).OrderBy(orderBy).ToListAsync();
+                    return results;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var results = await _db.Set<T>().Where(queryWhere).OrderBy(orderBy).ToListAsync();
-                return results;
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        if (isDesc)
+                        {
+                            var results = await newDB.Set<T>().Where(queryWhere).OrderByDescending(orderBy).ToListAsync();
+                            return results;
+                        }
+                        else
+                        {
+                            var results = await newDB.Set<T>().Where(queryWhere).OrderBy(orderBy).ToListAsync();
+                            return results;
+                        }
+                    }
+                }
+                throw;
             }
         }
 
@@ -462,15 +801,38 @@ namespace DALMySql
                 pageIndex = 1;
             }
             int skipIndex = (pageIndex - 1)*pagesize;
-            if (isDesc)
+            try
             {
-                var results = _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).Skip(skipIndex).Take(pagesize).ToList();
-                return results;
+                if (isDesc)
+                {
+                    var results = _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).Skip(skipIndex).Take(pagesize).ToList();
+                    return results;
+                }
+                else
+                {
+                    var results = _db.Set<T>().Where(queryWhere).OrderBy(orderBy).Skip(skipIndex).Take(pagesize).ToList();
+                    return results;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var results = _db.Set<T>().Where(queryWhere).OrderBy(orderBy).Skip(skipIndex).Take(pagesize).ToList();
-                return results;
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        if (isDesc)
+                        {
+                            var results = newDB.Set<T>().Where(queryWhere).OrderByDescending(orderBy).Skip(skipIndex).Take(pagesize).ToList();
+                            return results;
+                        }
+                        else
+                        {
+                            var results = newDB.Set<T>().Where(queryWhere).OrderBy(orderBy).Skip(skipIndex).Take(pagesize).ToList();
+                            return results;
+                        }
+                    }
+                }
+                throw;
             }
         }
 
@@ -492,15 +854,38 @@ namespace DALMySql
                 pageIndex = 1;
             }
             int skipIndex = (pageIndex - 1) * pagesize;
-            if (isDesc)
+            try
             {
-                var results = await _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
-                return results;
+                if (isDesc)
+                {
+                    var results = await _db.Set<T>().Where(queryWhere).OrderByDescending(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
+                    return results;
+                }
+                else
+                {
+                    var results = await _db.Set<T>().Where(queryWhere).OrderBy(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
+                    return results;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var results = await _db.Set<T>().Where(queryWhere).OrderBy(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
-                return results;
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        if (isDesc)
+                        {
+                            var results = await newDB.Set<T>().Where(queryWhere).OrderByDescending(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
+                            return results;
+                        }
+                        else
+                        {
+                            var results = await newDB.Set<T>().Where(queryWhere).OrderBy(orderBy).Skip(skipIndex).Take(pagesize).ToListAsync();
+                            return results;
+                        }
+                    }
+                }
+                throw;
             }
         }
 
@@ -526,11 +911,29 @@ namespace DALMySql
                 pageIndex = 1;
             }
             int skipIndex = (pageIndex - 1) * pageSize;
-            var queryResult = _db.Set<T>().Where(queryWhere);
-            var orderResult = isDesc ? queryResult.OrderByDescending(orderBy) : queryResult.OrderBy(orderBy);
-            var results = orderResult.Skip(skipIndex).Take(pageSize).ToList();
-            totalCount = queryResult.Count();
-            return results;
+            try
+            {
+                var queryResult = _db.Set<T>().Where(queryWhere);
+                var orderResult = isDesc ? queryResult.OrderByDescending(orderBy) : queryResult.OrderBy(orderBy);
+                var results = orderResult.Skip(skipIndex).Take(pageSize).ToList();
+                totalCount = queryResult.Count();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        var queryResult = newDB.Set<T>().Where(queryWhere);
+                        var orderResult = isDesc ? queryResult.OrderByDescending(orderBy) : queryResult.OrderBy(orderBy);
+                        var results = orderResult.Skip(skipIndex).Take(pageSize).ToList();
+                        totalCount = queryResult.Count();
+                        return results;
+                    }
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -574,7 +977,23 @@ namespace DALMySql
                 pageIndex = 1;
             }
             int skipIndex = (pageIndex - 1)*pageSize;
-            var queryResult = _db.Set<T>().Where(queryWhere);
+
+            IQueryable<T> queryResult;
+            try
+            {
+                queryResult = _db.Set<T>().Where(queryWhere);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        queryResult = newDB.Set<T>().Where(queryWhere);
+                    }
+                }
+                throw;
+            }
             var orderResult = queryResult;
             Type type = typeof(T);
             string[] orderByArray = strOrderBy.Split(',');
@@ -630,7 +1049,23 @@ namespace DALMySql
                 pageIndex = 1;
             }
             int skipIndex = (pageIndex - 1) * pageSize;
-            var queryResult = _db.Set<T>().Where(queryWhere);
+
+            IQueryable<T> queryResult;
+            try
+            {
+                queryResult = _db.Set<T>().Where(queryWhere);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cannot access a disposed object"))
+                {
+                    using (var newDB = new CdyhcdDBContext(_dbContextOptions))
+                    {
+                        queryResult = newDB.Set<T>().Where(queryWhere);
+                    }
+                }
+                throw;
+            }
             var orderResult = queryResult;
             Type type = typeof(T);
             string[] orderByArray = strOrderBy.Split(',');

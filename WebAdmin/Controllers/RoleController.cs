@@ -371,7 +371,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-               await MyAdminBugService.AddAsync(Bug);
+                await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -395,10 +395,7 @@ namespace WebAdmin.Controllers
 
                 string newCheckedMenu = roleMenuViewModel.CheckedMenuIds;
 
-                if (!string.IsNullOrEmpty(newCheckedMenu))
-                {
-                    _adminRoleAdminMenuButtonService.ModifyUserRoleMenuButton(roleMenuViewModel.RoleId, newCheckedMenu);
-                }
+                _adminRoleAdminMenuButtonService.ModifyUserRoleMenuButtonAsync(roleMenuViewModel.RoleId, newCheckedMenu);
 
                 return PackagingAjaxMsg(AjaxStatus.IsSuccess, "角色菜单设置成功！");
             }

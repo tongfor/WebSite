@@ -6,7 +6,7 @@
 *
 * Ver    变更日期             负责人  变更内容
 * ───────────────────────────────────
-* V0.01  2019/1/24 19:04:08   N/A    初版
+* V0.01  2019/1/26 2:02:28   N/A    初版
 *
 *┌──────────────────────────────────┐
 *│　此技术信息为本公司机密信息，未经本公司书面同意禁止向第三方披露．　│
@@ -32,15 +32,16 @@ namespace BLL
 	public partial class AdminBugService : BaseService<AdminBug>, IAdminBugService 
     {
         //EF上下文
-        protected readonly CdyhcdDBContext MyDBContext;
+        //protected readonly CdyhcdDBContext MyDBContext;
         //操作DAL
         protected IAdminBugDAL MyIAdminBugDAL;
 
         #region 构造函数
 
-		public AdminBugService(CdyhcdDBContext db, IAdminBugDAL adminBugDAl) : base(adminBugDAl)
+		//public AdminBugService(CdyhcdDBContext db, IAdminBugDAL adminBugDAl) : base(adminBugDAl)
+		public AdminBugService(IAdminBugDAL adminBugDAl) : base(adminBugDAl)
 		{
-            MyDBContext = db;
+            //MyDBContext = db;
             MyIAdminBugDAL = adminBugDAl;
 		}
 
@@ -69,14 +70,7 @@ namespace BLL
             var modelList = await this.GetListByAsync(queryWhere);
             AdminBug result = modelList.FirstOrDefault();
             return result;
-        }
-
-		public override void Dispose()
-        {
-            MyIAdminBugDAL = null;
-            MyDBContext.Dispose();
-            base.Dispose();
-        }
+        }		
 
 		#endregion 
     }

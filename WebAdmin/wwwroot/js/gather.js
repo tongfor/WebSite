@@ -179,7 +179,7 @@ $(function () {
                     //window.top.tb_remove();
                     siteGather.showGatherResult("gather-result", result.data)
                 }
-                else if (result && "error" === status && 1 === result.status && result.msg) {
+                else if (result && 1 === result.status && result.msg) {
                     alert(result.msg)
                 }
                 $("#" + loadingId).hide();

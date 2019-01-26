@@ -7,8 +7,11 @@ namespace RepositoryPattern
 {
     public partial class CdyhcdDBContext : DbContext
     {
+        public Guid DBGuid;
         public CdyhcdDBContext(DbContextOptions options) : base(options)
-        { }
+        {
+            this.DBGuid = Guid.NewGuid();
+        }
 
         public virtual DbSet<AdminBug> AdminBug { get; set; }
         public virtual DbSet<AdminButton> AdminButton { get; set; }

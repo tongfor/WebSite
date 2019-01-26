@@ -616,63 +616,6 @@
         ],
         "IsGatherByDetail": "true",
         "DetailIsUseJavascript": "false"
-      },
-      {
-        "Key": "qbjqkjj",
-        "Name": "青白江区科经局",
-        "SiteUrl": "http://www.qbj.gov.cn",
-        "UrlTemp": "http://www.qbj.gov.cn/qjxj/1182710/1181218/27234/index{0}.html",
-        "FirstPageUrl": "",
-        "ArticleListSelector": ".smod103_cont .list_title",
-        "TitleSelectorInList": "a",
-        "TitleAttributeNameInList": "title",
-        "DetailsSelector": "html",
-        "DetailsList": [
-          {
-            "Name": "Title",
-            "Selector": "#xilanzt h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
-            "ValueAttributeName": "",
-            "ValueOrder": "0",
-            "BeReplacedStr": "",
-            "Replacer": "",
-            "RemoveSelector": "",
-            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
-          },
-          {
-            "Name": "Origin",
-            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
-            "ValueAttributeName": "",
-            "ValueOrder": "0",
-            "BeReplacedStr": "",
-            "Replacer": "",
-            "RemoveSelector": "",
-            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
-          },
-          {
-            "Name": "Content",
-            "Selector": ".conzt", //选择特征排在越前面的越先选择，前面的没有再选择后面的
-            "ValueAttributeName": "",
-            "ValueOrder": "0",
-            "BeReplacedStr": "",
-            "Replacer": "",
-            "RemoveSelector": "",
-            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
-          },
-          {
-            "Name": "AddTime",
-            "Selector": "tr>.xlly", //选择特征排在越前面的越先选择，前面的没有再选择后面的
-            "ValueAttributeName": "",
-            "ValueOrder": "0",
-            "ValueForward": "发布时间：", //取值前特征
-            "ValueAfter": "浏览次数：", //取值后特征
-            "BeReplacedStr": "",
-            "Replacer": "",
-            "RemoveSelector": "",
-            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
-          }
-        ],
-        "IsGatherByDetail": "true",
-        "DetailIsUseJavascript": "false"
       }
     ]
   }
