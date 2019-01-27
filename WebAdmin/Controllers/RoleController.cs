@@ -9,6 +9,7 @@ using Common.Config;
 using IBLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
 using WebAdmin.Models;
@@ -21,11 +22,12 @@ namespace WebAdmin.Controllers
         private IAdminUserService _adminUserService;
         private IAdminRoleAdminMenuButtonService _adminRoleAdminMenuButtonService;
 
-        public RoleController(IAdminRoleService adminRoleService, IAdminUserService adminUserService, IAdminRoleAdminMenuButtonService adminRoleAdminMenuButtonService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptionsSnapshot<SiteConfig> options, IOptionsSnapshot<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
+        public RoleController(IAdminRoleService adminRoleService, IAdminUserService adminUserService, IAdminRoleAdminMenuButtonService adminRoleAdminMenuButtonService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IOptionsSnapshot<SiteConfig> options, IOptionsSnapshot<GatherConfig> gatherOptions, ILogger<RoleController> logger) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
             _adminRoleService = adminRoleService;
             _adminUserService = adminUserService;
             _adminRoleAdminMenuButtonService = adminRoleAdminMenuButtonService;
+            _logger = logger;
         }
 
         // GET: Role
@@ -395,10 +397,7 @@ namespace WebAdmin.Controllers
 
                 string newCheckedMenu = roleMenuViewModel.CheckedMenuIds;
 
-                if (!string.IsNullOrEmpty(newCheckedMenu))
-                {
-                    _adminRoleAdminMenuButtonService.ModifyUserRoleMenuButton(roleMenuViewModel.RoleId, newCheckedMenu);
-                }
+                _adminRoleAdminMenuButtonService.ModifyUserRoleMenuButton(roleMenuViewModel.RoleId, newCheckedMenu);
 
                 return PackagingAjaxMsg(AjaxStatus.IsSuccess, "角色菜单设置成功！");
             }
@@ -417,7 +416,8 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-               await MyAdminBugService.AddAsync(Bug);
+                //await MyAdminBugService.AddAsync(Bug);
+                _logger.LogError(Bug.BugInfo, ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }

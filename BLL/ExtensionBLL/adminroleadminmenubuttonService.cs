@@ -33,6 +33,10 @@ namespace BLL
     {
         protected CdyhcdDBContext MyDBContext;
         protected IAdminMenuDAL MyIAdminMenuDAL;
+        /// <summary>
+        /// 函数是否在运行中
+        /// </summary>
+        public bool FuncIsRunning;
 
         #region 构造函数
 
@@ -41,6 +45,7 @@ namespace BLL
             MyDBContext = db;
             MyIAdminRoleAdminMenuButtonDAL = adminRoleAdminMenuButtonDAl;
             MyIAdminMenuDAL = adminMenuDAL;
+            FuncIsRunning = false;
         }
 
         #endregion
@@ -54,33 +59,54 @@ namespace BLL
         /// <param name="selectedMenuIds">选择的菜单ID清单</param>
         public void ModifyUserRoleMenuButton(int roleId, string selectedMenuIds)
         {
+            if (FuncIsRunning)
+            {
+                return;
+            }
+            FuncIsRunning = true;
             List<AdminRoleAdminMenuButton> oldSelectedList = MyIAdminRoleAdminMenuButtonDAL.GetListBy(f => f.RoleId == roleId);
-            List<int> newSelectedMenuIdList = selectedMenuIds.Split(',').Select(s => int.Parse(s)).ToList();
-            AdminRoleAdminMenuButton newModel = new AdminRoleAdminMenuButton();
-            newModel.RoleId = roleId;
-            foreach (int sMenuId in newSelectedMenuIdList)
-            {
-                AdminRoleAdminMenuButton oldSelected = oldSelectedList.FirstOrDefault(f => f.RoleId == roleId && f.MenuId == sMenuId);
-                
-                if (oldSelected == null)
+            List<int> newSelectedMenuIdList = new List<int>();
+            if (!string.IsNullOrEmpty(selectedMenuIds))
+            {                
+                newSelectedMenuIdList = selectedMenuIds.Split(',').Select(s => int.Parse(s)).ToList();
+                AdminRoleAdminMenuButton newModel = new AdminRoleAdminMenuButton
                 {
-                    newModel.MenuId = sMenuId;
-                    var menuModel = MyIAdminMenuDAL.GetModel(sMenuId);
-                    newModel.ButtonId = menuModel != null && menuModel.ParentId == 0 ? 0 : 1;
-                    int addint = MyIAdminRoleAdminMenuButtonDAL.Add(newModel);
-                }
-                else
+                    RoleId = roleId
+                };
+                foreach (int sMenuId in newSelectedMenuIdList)
                 {
-                    continue;
-                }
-            }
+                    AdminRoleAdminMenuButton oldSelected = oldSelectedList.FirstOrDefault(f => f.RoleId == roleId && f.MenuId == sMenuId);
 
-            //取出应删除的
-            List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList.Where(f => !newSelectedMenuIdList.Contains(f.MenuId.Value)).ToList();
-            foreach(var delModel in needDelSelectedList)
-            {
-                int delint = MyIAdminRoleAdminMenuButtonDAL.Del(delModel);
+                    if (oldSelected == null)
+                    {
+                        newModel.MenuId = sMenuId;
+                        var menuModel = MyIAdminMenuDAL.GetModel(sMenuId);
+                        newModel.ButtonId = menuModel != null && menuModel.ParentId == 0 ? 0 : 1;
+                        int addint = MyIAdminRoleAdminMenuButtonDAL.Add(newModel);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                //取出应删除的
+                List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList.Where(f => !newSelectedMenuIdList.Contains(f.MenuId.Value)).ToList();
+                foreach (var delModel in needDelSelectedList)
+                {
+                    int delint = MyIAdminRoleAdminMenuButtonDAL.Del(delModel);
+                }
             }
+            else
+            {
+                //取出应删除的
+                List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList;
+                foreach (var delModel in needDelSelectedList)
+                {
+                    int delint = MyIAdminRoleAdminMenuButtonDAL.Del(delModel);
+                }
+            }
+            FuncIsRunning = false;
         }
 
         /// <summary>
@@ -90,33 +116,52 @@ namespace BLL
         /// <param name="selectedMenuIds">选择的菜单ID清单</param>
         public async void ModifyUserRoleMenuButtonAsync(int roleId, string selectedMenuIds)
         {
+            if (FuncIsRunning)
+            {
+                return;
+            }
+            FuncIsRunning = true;
             List<AdminRoleAdminMenuButton> oldSelectedList = await MyIAdminRoleAdminMenuButtonDAL.GetListByAsync(f => f.RoleId == roleId);
-            List<int> newSelectedMenuIdList = selectedMenuIds.Split(',').Select(s => int.Parse(s)).ToList();
-            AdminRoleAdminMenuButton newModel = new AdminRoleAdminMenuButton();
-            newModel.RoleId = roleId;
-            foreach (int sMenuId in newSelectedMenuIdList)
+            List<int> newSelectedMenuIdList = new List<int>();
+            if (string.IsNullOrEmpty(selectedMenuIds))
             {
-                AdminRoleAdminMenuButton oldSelected = oldSelectedList.FirstOrDefault(f => f.RoleId == roleId && f.MenuId == sMenuId);
+                newSelectedMenuIdList = selectedMenuIds.Split(',').Select(s => int.Parse(s)).ToList();
+                AdminRoleAdminMenuButton newModel = new AdminRoleAdminMenuButton();
+                newModel.RoleId = roleId;
+                foreach (int sMenuId in newSelectedMenuIdList)
+                {
+                    AdminRoleAdminMenuButton oldSelected = oldSelectedList.FirstOrDefault(f => f.RoleId == roleId && f.MenuId == sMenuId);
 
-                if (oldSelected == null)
-                {
-                    newModel.MenuId = sMenuId;
-                    var menuModel = MyIAdminMenuDAL.GetModel(sMenuId);
-                    newModel.ButtonId = menuModel != null && menuModel.ParentId == 0 ? 0 : 1;
-                    int addint = await MyIAdminRoleAdminMenuButtonDAL.AddAsync(newModel);
+                    if (oldSelected == null)
+                    {
+                        newModel.MenuId = sMenuId;
+                        var menuModel = MyIAdminMenuDAL.GetModel(sMenuId);
+                        newModel.ButtonId = menuModel != null && menuModel.ParentId == 0 ? 0 : 1;
+                        int addint = await MyIAdminRoleAdminMenuButtonDAL.AddAsync(newModel);
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
-                else
+
+                //取出应删除的
+                List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList.Where(f => !newSelectedMenuIdList.Contains(f.MenuId.Value)).ToList();
+                foreach (var delModel in needDelSelectedList)
                 {
-                    continue;
+                    int delint = await MyIAdminRoleAdminMenuButtonDAL.DelAsync(delModel);
                 }
             }
-
-            //取出应删除的
-            List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList.Where(f => !newSelectedMenuIdList.Contains(f.MenuId.Value)).ToList();
-            foreach (var delModel in needDelSelectedList)
+            else
             {
-                int delint = await MyIAdminRoleAdminMenuButtonDAL.DelAsync(delModel);
+                //取出应删除的
+                List<AdminRoleAdminMenuButton> needDelSelectedList = oldSelectedList;
+                foreach (var delModel in needDelSelectedList)
+                {
+                    int delint = await MyIAdminRoleAdminMenuButtonDAL.DelAsync(delModel);
+                }
             }
+            FuncIsRunning = false;
         }
 
         #endregion

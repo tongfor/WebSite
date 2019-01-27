@@ -5,7 +5,7 @@
     //申报快讯过滤关键字
     "NotificationKeywords": "项目,资金,通知,补助,人才 and 征集,申报,拨付",
     //要排除的关键字
-    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设",
+    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设,维修资金,采购项目,住宅,集体资金,民生,城乡房屋租赁服务,专业技术职务,质量提升,移民,务工,专项整治",
     //采集站点属性,
     "GatherWebsiteList": [
       {
@@ -563,14 +563,69 @@
         "DetailIsUseJavascript": "false"
       },
       {
+        "Key": "chqjkj",
+        "Name": "成华区经科局",
+        "SiteUrl": "http://www.chenghua.gov.cn",
+        "UrlTemp": "http://www.chenghua.gov.cn/chqrmzfw/c144318hgf/jgml_list_{0}.shtml",
+        "FirstPageUrl": "http://www.chenghua.gov.cn/chqrmzfw/c144318hgf/jgml_list.shtml",
+        "ArticleListSelector": ".cont td",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "ucaptitle", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "ucapcontent", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "publishtime", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
         "Key": "lqyq",
         "Name": "龙泉驿区",
         "SiteUrl": "http://www.longquanyi.gov.cn",
-        "UrlTemp": "http://www.longquanyi.gov.cn/es-search/search/c2b35b45e29c496e8441089d9c33dc37?_template=zhaofa/lq_gb_list&_isAgg=1&_pageSize=1&page={0}",
+        "UrlTemp": "http://www.longquanyi.gov.cn/es-search/search/c2b35b45e29c496e8441089d9c33dc37?_template=zhaofa/lq_gb_list&_isAgg=1&_pageSize=15&page={0}",
         "FirstPageUrl": "",
         "ArticleListSelector": "ul li",
         "TitleSelectorInList": "a",
-        "TitleAttributeNameInList": "",
+        "TitleAttributeNameInList": "title",
         "DetailsSelector": "html",
         "DetailsList": [
           {
@@ -614,7 +669,7 @@
             "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
           }
         ],
-        "IsGatherByDetail": "true",
+        "IsGatherByDetail": "false",
         "DetailIsUseJavascript": "false"
       },
       {
@@ -672,6 +727,767 @@
           }
         ],
         "IsGatherByDetail": "true",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "xdq",
+        "Name": "新都区",
+        "SiteUrl": "http://www.xindu.gov.cn",
+        "UrlTemp": "http://www.xindu.gov.cn/qjxj/1182710/1181218/27234/index{0}.html",
+        "FirstPageUrl": "",
+        "ArticleListSelector": ".smod103_cont .list_title",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "#xilanzt h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".conzt", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "tr>.xlly", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布时间：", //取值前特征
+            "ValueAfter": "浏览次数：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "wjq",
+        "Name": "温江区",
+        "SiteUrl": "http://www.wenjiang.gov.cn",
+        "UrlTemp": "http://www.wenjiang.gov.cn/wjzzw/gsgg/common_gsgg_{0}.shtml",
+        "FirstPageUrl": "http://www.wenjiang.gov.cn/wjzzw/gsgg/common_gsgg.shtml",
+        "ArticleListSelector": ".list_con .tit",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".detail_tit", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".detail_laiyuan", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "来源：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".detail_content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".detail_date", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "发布时间：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "slq",
+        "Name": "双流区",
+        "SiteUrl": "http://www.shuangliu.gov.cn",
+        "UrlTemp": "http://www.shuangliu.gov.cn/es-search/search/56778ed98f7b4990959f4b0728327c81?_isAgg=0&_pageSize=40&_template=trs/slq_list&_channelName=%E5%85%AC%E5%91%8A%E5%85%AC%E7%A4%BA&_allNum=0&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": ".border7px th",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".detail .title1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".detail .date", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "来源：", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#myTable", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".detail .date", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "填报时间：", //取值前特征
+            "ValueAfter": "来源：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "true",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "pdq",
+        "Name": "郫都区",
+        "SiteUrl": "http://www.pidu.gov.cn",
+        "UrlTemp": "http://www.pidu.gov.cn/es-search/search/d668d727a9514ad7b0c766e506170170?_template=zhaofa/pd_list&_isAgg=1&_pageSize=15&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": "ul li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".detail .title h3", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".detail .title p", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "来源：", //取值前特征
+            "ValueAfter": "发布日期：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".detail .title p", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布日期：", //取值前特征
+            "ValueAfter": "浏览次数：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "jys",
+        "Name": "简阳市",
+        "SiteUrl": "http://www.scjy.gov.cn",
+        "UrlTemp": "http://www.scjy.gov.cn/es-search/search/d622afddb27b43809f0686e7bacb0847?_isAgg=0&_pageSize=20&_template=zhaofa/jian_list&_channelName=%E5%85%AC%E7%A4%BA%E5%85%AC%E5%91%8A&_allNum=0&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": ".gail .gail_content_list",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".title_hd", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".fleft span", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "2",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".main_bd", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "_clear",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".fleft span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "1",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "来源:",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "djys",
+        "Name": "都江堰",
+        "SiteUrl": "http://www.djy.gov.cn/",
+        "UrlTemp": "http://www.djy.gov.cn/djyszfmhwz/c130537/xwzx_list_{0}.shtml",
+        "FirstPageUrl": "http://www.djy.gov.cn/djyszfmhwz/c130537/xwzx_list.shtml",
+        "ArticleListSelector": ".d_list01 li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".head h2", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".head p span", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "来源：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#contentControl", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".head p span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "1",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "日期：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "pzs",
+        "Name": "彭州市",
+        "SiteUrl": "http://www.pengzhou.gov.cn",
+        "UrlTemp": "http://www.pengzhou.gov.cn/es-search/search/7bc7c637be544277a64d4f7e8282b8d3?_template=ucap/pzs_xwlist&_isAgg=1&_pageSize=20&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": "ul li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".Ctitle", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".Cinfos", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "信息来源：", //取值前特征
+            "ValueAfter": "发布日期：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".Cinfos", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布日期：", //取值前特征
+            "ValueAfter": "【打印】", //取值后特征
+            "BeReplacedStr": "日期：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "qls",
+        "Name": "邛崃市",
+        "SiteUrl": "http://www.qionglai.gov.cn",
+        "UrlTemp": "http://www.qionglai.gov.cn/qlsgzxxw/zxgg/zwgk_list_{0}.shtml",
+        "FirstPageUrl": "http://www.qionglai.gov.cn/qlsgzxxw/zxgg/zwgk_list.shtml",
+        "ArticleListSelector": ".date_list li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "ucapcontent", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".Cinfos", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "信息来源：", //取值前特征
+            "ValueAfter": "发布日期：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".Section0", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".Cinfos", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布日期：", //取值前特征
+            "ValueAfter": "【打印】", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "czsjxj",
+        "Name": "崇州市经信局",
+        "SiteUrl": "http://www.chongzhou.gov.cn",
+        "UrlTemp": "http://www.chongzhou.gov.cn/es-search/search/bded39b047f545c4bc6abb7a1915d103?_isAgg=0&_pageSize=20&_template=cdcz_list&_channelName=%E9%83%A8%E9%97%A8%E5%85%AC%E5%91%8A&_allNum=0&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": ".zjczList li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".detailBox h2", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".fb span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "1",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "发布时间：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "jtx",
+        "Name": "金堂县",
+        "SiteUrl": "http://www.jintang.gov.cn",
+        "UrlTemp": "http://www.jintang.gov.cn/jtxmhwz/c106419/zwgk_list_{0}.shtml",
+        "FirstPageUrl": "http://www.jintang.gov.cn/jtxmhwz/c106419/zwgk_list.shtml",
+        "ArticleListSelector": ".textlist td",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".pagebody_center_tit font", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".pagebody_center_tit", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "来源：", //取值前特征
+            "ValueAfter": "发布日期：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".pagebody_center_text", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".pagebody_center_tit", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布日期：", //取值前特征
+            "ValueAfter": "关注度：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "xjx",
+        "Name": "新津县",
+        "SiteUrl": "http://www.xinjin.gov.cn",
+        "UrlTemp": "http://www.xinjin.gov.cn/es-search/search/0a6fb8ccc9864eeb885b9edf6471e46f?_template=ucap/list_ejs&_pageSize=20&_isAgg=1&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": "ul li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".Ctitle", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".Cinfos", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "信息来源：", //取值前特征
+            "ValueAfter": "发布日期：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".pagebody_center_tit", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布日期：", //取值前特征
+            "ValueAfter": "浏览量：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "dyx",
+        "Name": "大邑县",
+        "SiteUrl": "http://www.day.gov.cn",
+        "UrlTemp": "http://www.day.gov.cn/es-search/search/af104ad04bc0442f8f0038bbeafbc6e6?_isAgg=0&_pageSize=20&_template=zhaofa/dayixian_list&_channelName=%E9%80%9A%E7%9F%A5%E5%85%AC%E5%91%8A&_allNum=0&page={0}",
+        "FirstPageUrl": "",
+        "ArticleListSelector": ".person-con-act li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".d-phone-con h2", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".d-phone-t span", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#detail", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".d-phone-t span", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "4",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "pjxjkxj",
+        "Name": "蒲江县经科信局",
+        "SiteUrl": "http://www.pujiang.gov.cn",
+        "UrlTemp": "http://www.pujiang.gov.cn/pjxzf/c113379/pj_jkxjlm_{0}.shtml",
+        "FirstPageUrl": "http://www.pujiang.gov.cn/pjxzf/c113379/pj_jkxjlm.shtml",
+        "ArticleListSelector": ".r_dot_list li",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "ucaptitle", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": ".content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "publishtime", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "", //取值前特征
+            "ValueAfter": "", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
         "DetailIsUseJavascript": "false"
       }
     ]

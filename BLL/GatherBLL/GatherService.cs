@@ -154,6 +154,7 @@ namespace BLL
                             }
                             else
                             {
+                            #if DEBUG
                                 List<AngleSharp.Dom.IElement> itemList = new List<AngleSharp.Dom.IElement>();
                                 foreach(var item in document.QuerySelectorAll(website.ArticleListSelector))
                                 {
@@ -166,6 +167,7 @@ namespace BLL
                                         itemList.Add(item);
                                     }
                                 }
+                                #endif
                                 preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
                                     ?.Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null 
                                     && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
@@ -236,8 +238,8 @@ namespace BLL
                         .QuerySelectorAll(website.DetailsSelector)
                         .Select(t => new Article()
                         {
-                            Title = GetDetailValueByName(document, website, "Title"),
-                            Origin = GetDetailValueByName(document, website, "Origin"),
+                            Title = GetDetailValueByName(document, website, "Title", url),
+                            Origin = GetDetailValueByName(document, website, "Origin", url),
                             EditTime = DateTime.Now,
                             GatherTime = DateTime.Now,
                             Author = "",
@@ -250,7 +252,7 @@ namespace BLL
                     
                     string pagePath = url.Substring(0, url.LastIndexOf('/') + 1);
 
-                    detailsInfo.Content = GetFormatUrlContent(document, website, pagePath);
+                    detailsInfo.Content = GetFormatUrlContent(document, website, pagePath, url);
                     
                     IGatherHandler<Article> specialHanlder = (IGatherHandler<Article>)GetGatherHandlerInstance(website.Key);
                     detailsInfo = specialHanlder == null
@@ -258,10 +260,10 @@ namespace BLL
                         : await specialHanlder.InvokeAsync(website.SiteUrl, document, detailsInfo);
 
                     DateTime addTime = DateTime.Now;
-                    string strAddTime = GetDetailValueByName(document, website, "AddTime");
+                    string strAddTime = GetDetailValueByName(document, website, "AddTime", url);
                     DateTime.TryParse(strAddTime, out addTime);
                     detailsInfo.AddTime = addTime;
-                    detailsInfo.Origin = website.Name + detailsInfo.Origin;
+                    detailsInfo.Origin = website.Name + detailsInfo.Origin.Replace(website.Name, "");
                     return detailsInfo;
                 }
             }
@@ -343,7 +345,7 @@ namespace BLL
         /// <param name="document"></param>
         /// <param name="website"></param>
         /// <param name="name"></param>
-        private string GetDetailValueByName(AngleSharp.Dom.Html.IHtmlDocument document, GatherWebsite website, string name)
+        private string GetDetailValueByName(AngleSharp.Dom.Html.IHtmlDocument document, GatherWebsite website, string name, string url)
         {
             var ss = document.QuerySelector("html").OuterHtml;
             try
@@ -370,6 +372,10 @@ namespace BLL
                         : result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length, result.IndexOf(detailsSet.ValueAfter) - result.IndexOf(detailsSet.ValueForward) - detailsSet.ValueForward.Length);
                 }
                 result = result?.ReplaceEvery(detailsSet.BeReplacedStr, detailsSet.Replacer, ',')?.Trim();
+                if (string.IsNullOrEmpty(result))
+                {
+                    _logger.LogWarning($"在{url}采集{name}的内容时采集失败");
+                }
                 return result;
             }
             catch (Exception ex)
@@ -386,7 +392,7 @@ namespace BLL
         /// <param name="gatherWebsite"></param>
         /// <param name="pagePath">文章在网站的除取自身的绝对路径</param>
         /// <returns></returns>
-        private string GetFormatUrlContent(AngleSharp.Dom.Html.IHtmlDocument document, GatherWebsite gatherWebsite, string pagePath)
+        private string GetFormatUrlContent(AngleSharp.Dom.Html.IHtmlDocument document, GatherWebsite gatherWebsite, string pagePath,string url)
         {
             var ContentSet = gatherWebsite.GetGatherDetailsByName("Content");
             var contentSelectorArr = ContentSet.Selector.Split(',');
@@ -397,7 +403,7 @@ namespace BLL
             }
             foreach (string contentSelector in contentSelectorArr)
             {
-                #region 去除要替换的标签
+#region 去除要替换的标签
                 if (RemoveSelectorArr != null && RemoveSelectorArr.Count() > 0)
                 {
                     foreach (string rs in RemoveSelectorArr)
@@ -416,9 +422,9 @@ namespace BLL
                         }
                     }
                 }
-                #endregion
+#endregion
 
-                #region 处理正文中的链接、图片地址
+#region 处理正文中的链接、图片地址
                 foreach (var item in document.QuerySelectorAll(contentSelector + " [src]").ToList())
                 {
                     if (item.HasAttribute("src"))
@@ -435,7 +441,7 @@ namespace BLL
                         item.SetAttribute("href", href.StartsWith("http") ? href : href.StartsWith('/') ? gatherWebsite.SiteUrl.TrimEnd('/') + href : pagePath + href.TrimStart('/'));
                     }
                 }
-                #endregion
+#endregion
 
                 string newStrStyle, strStyle;
                 foreach (var item in document.QuerySelectorAll(contentSelector + " p," + contentSelector + " span").ToList())
@@ -474,6 +480,7 @@ namespace BLL
                 var result = document.QuerySelector(contentSelector)?.InnerHtml;
                 if (string.IsNullOrEmpty(result))
                 {
+                    _logger.LogWarning($"在{url}采集文章正文的内容时采集失败");
                     continue;
                 }
                 return result;
@@ -550,6 +557,6 @@ namespace BLL
             }
             return $"{site.TrimEnd('/')}/{url.TrimStart('/')}";
         } 
-        #endregion
+#endregion
     }    
 }

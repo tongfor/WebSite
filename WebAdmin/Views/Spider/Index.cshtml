@@ -4,86 +4,90 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>互联网信息采集</h2>
-<div id="gather-list" class="text-center">
-    <ul>
-        <li class="floatleft">
-            <input value="采集市经委信息" id="g_cdgy_classId_2" data-classId="2" data-siteKey="cdgy" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_cdgy_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft">
-            <input value="采集省经委信息" id="g_jxt_classId_2" data-classId="2" data-siteKey="jxt" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jxt_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft">
-            <input value="采集市科技局信息" id="g_cdst_classId_2" data-classId="2" data-siteKey="cdst" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_cdst_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft">
-            <input value="采集省科技厅信息" id="g_kjt_classId_2" data-classId="2" data-siteKey="kjt" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_kjt_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft">
-            <input value="采集高新区信息" id="g_cdht_classId_2" data-classId="2" data-siteKey="cdht" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_cdht_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft">
-            <input value="采集天府新区信息" id="g_cdtf_classId_2" data-classId="2" data-siteKey="cdtf" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_cdtf_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft" style="height:80px;">
-            <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft" style="height:80px;">
-            <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft">
-            <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft" style="height:80px;">
-            <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft" style="height:80px;">
-            <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft" style="height:80px;">
-            <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-        <li class="floatleft">
-            <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
-            <br />
-            <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
-        </li>
-    </ul>
-</div>
-<div class="clearfix"></div>
-<div class="gather-result"></div>
-@section PageSpecificJavascriptIncludes{    
-    <environment include="Development">
-        <script src="~/js/gather.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/js/gather.min.js" asp-append-version="true"></script>
-    </environment>    
-}
+<h3>互联网信息采集</h3>
+<div class="row-fluid">
+    <div class="span3">
+        <div id="gather-list" class="text-center">
+            <ul>
+                <li class="floatleft">
+                    <input value="采集市经委信息" id="g_cdgy_classId_2" data-classId="2" data-siteKey="cdgy" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_cdgy_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft">
+                    <input value="采集省经委信息" id="g_jxt_classId_2" data-classId="2" data-siteKey="jxt" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jxt_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft">
+                    <input value="采集市科技局信息" id="g_cdst_classId_2" data-classId="2" data-siteKey="cdst" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_cdst_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft">
+                    <input value="采集省科技厅信息" id="g_kjt_classId_2" data-classId="2" data-siteKey="kjt" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_kjt_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft">
+                    <input value="采集高新区信息" id="g_cdht_classId_2" data-classId="2" data-siteKey="cdht" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_cdht_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft">
+                    <input value="采集天府新区信息" id="g_cdtf_classId_2" data-classId="2" data-siteKey="cdtf" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_cdtf_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft" style="height:80px;">
+                    <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft" style="height:80px;">
+                    <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft">
+                    <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft" style="height:80px;">
+                    <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft" style="height:80px;">
+                    <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft" style="height:80px;">
+                    <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+                <li class="floatleft">
+                    <input value="采集金牛区信息" id="g_jnq_classId_2" data-classId="2" data-siteKey="jnq" type="button" class="gatherbtn" />
+                    <br />
+                    <span id="submitloading_jnq_classId_2" style="display:none;text-align:center;">采集开始<br /><img src="~/images/loading.gif" /></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="span9 gather-result">
+    </div>
+</div>        
+        @section PageSpecificJavascriptIncludes{
+            <environment include="Development">
+                <script src="~/js/gather.js"></script>
+            </environment>
+            <environment exclude="Development">
+                <script src="~/js/gather.min.js" asp-append-version="true"></script>
+            </environment>
+        }
 
 
 

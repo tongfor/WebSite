@@ -23,6 +23,7 @@
     });
 
     function marinFromSubmit() {
+        var aa = 1;
         //$("#mainForm").submit(function () {
             $.ajax({
                 url: $("#mainForm").attr("action"),
