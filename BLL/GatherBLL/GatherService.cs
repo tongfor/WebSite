@@ -122,7 +122,7 @@ namespace BLL
 
                 pageStartNo = pageStartNo == null || pageStartNo <= 0 ? 1 : pageStartNo;
                 pageEndNo = pageEndNo == null || pageEndNo <= 0 ? 1 : pageEndNo;
-                
+
                 for (int i = pageStartNo.Value; i <= pageEndNo.Value; i++)
                 {
                     string websiteGatherUrl = string.Format(website.UrlTemp, i);
@@ -136,7 +136,7 @@ namespace BLL
                                 websiteGatherUrl = website.FirstPageUrl;
                             }
                             var htmlString = await http.GetStringAsync(websiteGatherUrl);
-                           
+
                             HtmlParser htmlParser = new HtmlParser();
                             var document = await htmlParser.ParseAsync(htmlString);
                             if (website.IsGatherByDetail)
@@ -154,9 +154,9 @@ namespace BLL
                             }
                             else
                             {
-                            #if DEBUG
+#if DEBUG
                                 List<AngleSharp.Dom.IElement> itemList = new List<AngleSharp.Dom.IElement>();
-                                foreach(var item in document.QuerySelectorAll(website.ArticleListSelector))
+                                foreach (var item in document.QuerySelectorAll(website.ArticleListSelector))
                                 {
                                     if (item.QuerySelector(website.TitleSelectorInList) != null
                                         && item.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
@@ -167,9 +167,9 @@ namespace BLL
                                         itemList.Add(item);
                                     }
                                 }
-                                #endif
+#endif
                                 preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
-                                    ?.Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null 
+                                    ?.Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
                                     && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
                                     && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.NotificationKeywords.Split("and")[0].Trim())
                                     && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.NotificationKeywords.Split("and")[1].Trim())
@@ -181,8 +181,8 @@ namespace BLL
                                         UserName = userName
                                     }).ToList());
                                 preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
-                                    .Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null 
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null 
+                                    .Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
+                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
                                     && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.PolicyKeywords.Trim())
                                     && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
                                     .Select(t => new Article()
@@ -196,7 +196,10 @@ namespace BLL
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError("采集文章URL清单时报错" + ex.Message + ex.Message, ex.StackTrace.ToString());
+                        if (!ex.Message.Contains("404"))
+                        {
+                            _logger.LogError(ex, "采集文章URL清单时报错" + ex.Message);
+                        }
                         //保障出错后继续运行
                         continue;
                     }
@@ -269,7 +272,10 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError($"采集{url}文章详情时报错：" + ex.Message, ex.StackTrace.ToString());
+                if (!ex.Message.Contains("404"))
+                {
+                    _logger.LogError(ex, $"采集{url}文章详情时报错：" + ex.Message);
+                }               
                 return null;
             }
         }
@@ -333,7 +339,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError($"获取{name}的html元素时报错：" + ex.Message, ex.StackTrace.ToString());
+                _logger.LogError(ex, $"获取{name}的html元素时报错：" + ex.Message);
             }
             selectorIndex = 0;
             return null;
@@ -380,7 +386,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError($"采集{name}的内容时报错：" + ex.Message, ex.StackTrace.ToString());
+                _logger.LogError(ex, $"采集{name}的内容时报错：" + ex.Message);
                 return string.Empty;
             }
         }
@@ -417,7 +423,7 @@ namespace BLL
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError("采集文章去除要替换的标签报错！", ex);
+                            _logger.LogError(ex, "采集文章去除要替换的标签报错！");
                             continue;
                         }
                     }
@@ -480,11 +486,11 @@ namespace BLL
                 var result = document.QuerySelector(contentSelector)?.InnerHtml;
                 if (string.IsNullOrEmpty(result))
                 {
-                    _logger.LogWarning($"在{url}采集文章正文的内容时采集失败");
                     continue;
                 }
                 return result;
             }
+            _logger.LogWarning($"在{url}采集文章正文的内容时采集失败");
             return null;
         }
 
@@ -512,7 +518,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError("将采集的文章持久化时报错" + ex.Message, ex.StackTrace.ToString());
+                _logger.LogError(ex, "将采集的文章持久化时报错" + ex.Message);
                 return 0;
             }
         }

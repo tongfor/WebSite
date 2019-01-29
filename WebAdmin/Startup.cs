@@ -45,8 +45,9 @@ namespace WebAdmin
             services.UseAdminSetting(Configuration);
 
             services.AddSession();
+            //services.AddMvc(options=>options.Filters.Add<Filter.HttpGlobalExceptionFilter>())
             services.AddMvc()
-                .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; }); 
+              .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +74,7 @@ namespace WebAdmin
             {
                 var feature = context.Features.Get<IExceptionHandlerFeature>();
                 var error = feature?.Error;
-                logger.Error(error.Message, error.StackTrace);
+                logger.Error(error, error.Message, error.StackTrace);
                 context.Response.StatusCode = 500;
 
                 if (context.Request.Headers["X-Requested-With"] != "XMLHttpRequest")

@@ -15,8 +15,6 @@ namespace WebAdmin
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
-                logger.Debug("init main");
-
                 BuildWebHost(args).Run();
             }
             catch (Exception exception)
