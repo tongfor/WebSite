@@ -47,11 +47,18 @@ namespace WebAdmin.Controllers
         /// <param name="classId"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> GatherWebsite(string sitekey, int? pageStartNo, int? pageEndNo, int classId)
+        public async Task<IActionResult> GatherWebsite(string siteKey, int? pageStartNo, int? pageEndNo, int classId)
         {
             try
             {
-                var gatherResult = await _gatherService.GatherWebsiteAsync(sitekey, pageStartNo, pageEndNo, classId, User?.Identity?.Name);
+                GatherResult gatherResult = new GatherResult();
+                var is404 = await _gatherService.IsReturn404(siteKey);
+                if (is404)
+                {
+                    gatherResult.GatherMessage = "采集页面不存在！";
+                    return PackagingAjaxMsg(AjaxStatus.IsSuccess, $"采集失败！", gatherResult);
+                }
+                gatherResult = await _gatherService.GatherWebsiteAsync(siteKey, pageStartNo, pageEndNo, classId, User?.Identity?.Name);
                 int gatherCount = gatherResult.GatheredArticleList.Count;
                 return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResult != null && gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", gatherResult);
             }
@@ -59,9 +66,9 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                _logger.LogError($"采集{sitekey}列表", ex);
+                _logger.LogError($"采集{siteKey}列表", ex);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
-        }
+        }       
     }
 }

@@ -42,5 +42,10 @@ namespace Models
         /// 采集成功的文章清单
         /// </summary>
         public List<Article> GatheredArticleList { get; set; }
+
+        /// <summary>
+        /// 结果说明
+        /// </summary>
+        public string GatherMessage { get; set; }
     }
 }

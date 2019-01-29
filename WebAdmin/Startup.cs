@@ -47,7 +47,7 @@ namespace WebAdmin
             services.AddSession();
             //services.AddMvc(options=>options.Filters.Add<Filter.HttpGlobalExceptionFilter>())
             services.AddMvc()
-              .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; });
+              .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

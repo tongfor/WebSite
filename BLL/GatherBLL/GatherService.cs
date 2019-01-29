@@ -99,6 +99,37 @@ namespace BLL
             return gatherResult;
         }
 
+        /// <summary>
+        /// 站点是否返回404
+        /// </summary>
+        /// <param name="siteKey"></param>
+        /// <returns></returns>
+        public async Task<bool> IsReturn404(string siteKey)
+        {
+            bool bResult = false;
+            using (HttpClient http = new HttpClient())
+            {
+                try
+                {
+                    var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
+                    string websiteFirstUrl = string.Format(website.UrlTemp, 1);
+                    if (!string.IsNullOrEmpty(website.FirstPageUrl))
+                    {
+                        websiteFirstUrl = website.FirstPageUrl;
+                    }
+                    var htmlString = await http.GetStringAsync(websiteFirstUrl);
+                    bResult = true;
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message.Contains("404"))
+                    {
+                        bResult = true;
+                    }
+                }
+            }
+            return bResult;
+        }
         #region private
 
         /// <summary>

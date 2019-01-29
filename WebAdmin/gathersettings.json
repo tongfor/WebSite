@@ -5,7 +5,7 @@
     //申报快讯过滤关键字
     "NotificationKeywords": "项目,资金,通知,补助,人才 and 征集,申报,拨付",
     //要排除的关键字
-    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设,维修资金,采购项目,住宅,集体资金,民生,城乡房屋租赁服务,专业技术职务,质量提升,移民,务工,专项整治",
+    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设,维修资金,采购项目,住宅,集体资金,民生,城乡房屋租赁服务,专业技术职务,质量提升,移民,务工,专项整治,信用信息",
     //采集站点属性,
     "GatherWebsiteList": [
       {
@@ -232,9 +232,9 @@
         "Key": "cdht",
         "Name": "高新区",
         "SiteUrl": "http://www.cdht.gov.cn",
-        "UrlTemp": "http://www.cdht.gov.cn/zwgktzgg/index_{0}.jhtml#",
-        "FirstPageUrl": null,
-        "ArticleListSelector": "div.news-list-list td",
+        "UrlTemp": "http://www.cdht.gov.cn/es-search/search/7e27cfeb6c3746ef80a3396c0aa7ab9d?_template=ucap/gxqzwgklsit&_pageSize=15&_isAgg=1&page={0}",
+        "FirstPageUrl": "http://www.cdht.gov.cn/e1111",
+        "ArticleListSelector": "body",
         "TitleSelectorInList": "a",
         "TitleAttributeNameInList": "title",
         "DetailsSelector": "html",

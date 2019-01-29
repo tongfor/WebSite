@@ -18,6 +18,13 @@ namespace IBLL
         /// <param name="userName">采集员账号</param>
         /// <returns></returns>
         Task<GatherResult> GatherWebsiteAsync(string siteKey, int? pageStartNo, int? pageEndNo, int classId, string userName);
+
+        /// <summary>
+        /// 站点是否返回404
+        /// </summary>
+        /// <param name="siteKey"></param>
+        /// <returns></returns>
+        Task<bool> IsReturn404(string siteKey);
         ///// <summary>
         ///// 获取要采集的文章列表
         ///// </summary>

@@ -190,27 +190,32 @@
         }
         var o = $("." + tagClassName)
         var showHtml = ""
-        if (data && data.gatheredArticleList) {
-            showHtml += '<p>在' + data.gatherTime
-            showHtml += '从' + data.siteName + '采集了' + data.gatheredArticleList.length + '条信息:</p>\n'
-            for (var i in data.gatheredArticleList) {
-                showHtml += '<p><a href="' + data.resultShowDomainName
-                showHtml += '/Article/Details-' + data.gatheredArticleList[i].id
-                showHtml += '.html" title="' + data.gatheredArticleList[i].title
-                showHtml += '" target="_blank">' + data.gatheredArticleList[i].title
-                showHtml += '</a>'
-                showHtml += isRecent(data.gatheredArticleList[i].addTime, 3)
-                    ? '[<span class="text-error">' + data.gatheredArticleList[i].addTime + '</span>]'
-                    : '[<span>' + data.gatheredArticleList[i].addTime + '</span>]'
-                showHtml += '&nbsp; <a href="' + data.gatheredArticleList[i].gatherurl
-                showHtml += '" title="原文地址" target="_blank">原文地址</a>'
-                showHtml += '&nbsp;<a class="thickbox" title="编辑文章内容" href="/Article/Edit/'
-                showHtml += data.gatheredArticleList[i].id
-                showHtml += '?TB_iframe=true&amp;height=600&amp;width=950">编辑</a>'
-                showHtml += '&nbsp;<a title="删除此篇文章" '
-                showHtml += 'href="javascript:if(confirm(\'确实要删除该内容吗 ? \'))delArticle('
-                showHtml += data.gatheredArticleList[i].id + ')"">删除</a>'
-                showHtml+= '</p>\n'
+        if (data) {            
+            if (data.gatherMessage && data.gatherMessage != undefined && data.gatherMessage.length > 0) {
+                showHtml += '采集' + data.siteName + '提示：<span style="color:red">' + data.gatherMessage + '</span></p>\n'
+            }
+            else if (data.gatheredArticleList) {
+                showHtml += '<p>在' + data.gatherTime
+                showHtml += '从' + data.siteName + '采集了' + data.gatheredArticleList.length + '条信息:</p>\n'
+                for (var i in data.gatheredArticleList) {
+                    showHtml += '<p><a href="' + data.resultShowDomainName
+                    showHtml += '/Article/Details-' + data.gatheredArticleList[i].id
+                    showHtml += '.html" title="' + data.gatheredArticleList[i].title
+                    showHtml += '" target="_blank">' + data.gatheredArticleList[i].title
+                    showHtml += '</a>'
+                    showHtml += isRecent(data.gatheredArticleList[i].addTime, 3)
+                        ? '[<span class="text-error">' + data.gatheredArticleList[i].addTime + '</span>]'
+                        : '[<span>' + data.gatheredArticleList[i].addTime + '</span>]'
+                    showHtml += '&nbsp; <a href="' + data.gatheredArticleList[i].gatherurl
+                    showHtml += '" title="原文地址" target="_blank">原文地址</a>'
+                    showHtml += '&nbsp;<a class="thickbox" title="编辑文章内容" href="/Article/Edit/'
+                    showHtml += data.gatheredArticleList[i].id
+                    showHtml += '?TB_iframe=true&amp;height=600&amp;width=950">编辑</a>'
+                    showHtml += '&nbsp;<a title="删除此篇文章" '
+                    showHtml += 'href="javascript:if(confirm(\'确实要删除该内容吗 ? \'))delArticle('
+                    showHtml += data.gatheredArticleList[i].id + ')"">删除</a>'
+                    showHtml += '</p>\n'
+                }
             }
         }
         if (0 === o.html().length || "&nbsp;" === o.html()) {
