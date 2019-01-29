@@ -103,8 +103,9 @@ namespace BLL
         /// 站点是否返回404
         /// </summary>
         /// <param name="siteKey"></param>
+        /// <param name="errorKey">如404，502</param>
         /// <returns></returns>
-        public async Task<bool> IsReturn404(string siteKey)
+        public async Task<bool> IsReturnError(string siteKey, string errorKey)
         {
             bool bResult = false;
             using (HttpClient http = new HttpClient())
@@ -122,7 +123,7 @@ namespace BLL
                 }
                 catch (Exception ex)
                 {
-                    if (ex.Message.Contains("404"))
+                    if (ex.Message.Contains(errorKey))
                     {
                         bResult = true;
                     }
@@ -130,6 +131,7 @@ namespace BLL
             }
             return bResult;
         }
+        
         #region private
 
         /// <summary>

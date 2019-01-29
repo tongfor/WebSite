@@ -24,7 +24,7 @@ namespace IBLL
         /// </summary>
         /// <param name="siteKey"></param>
         /// <returns></returns>
-        Task<bool> IsReturn404(string siteKey);
+        Task<bool> IsReturnError(string siteKey, string errorKey);
         ///// <summary>
         ///// 获取要采集的文章列表
         ///// </summary>

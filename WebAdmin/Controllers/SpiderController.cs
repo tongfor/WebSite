@@ -52,10 +52,16 @@ namespace WebAdmin.Controllers
             try
             {
                 GatherResult gatherResult = new GatherResult();
-                var is404 = await _gatherService.IsReturn404(siteKey);
+                var is404 = await _gatherService.IsReturnError(siteKey, "404");
                 if (is404)
                 {
                     gatherResult.GatherMessage = "采集页面不存在！";
+                    return PackagingAjaxMsg(AjaxStatus.IsSuccess, $"采集失败！", gatherResult);
+                }
+                var is502 = await _gatherService.IsReturnError(siteKey, "502");
+                if (is502)
+                {
+                    gatherResult.GatherMessage = "采集网站宕机！";
                     return PackagingAjaxMsg(AjaxStatus.IsSuccess, $"采集失败！", gatherResult);
                 }
                 gatherResult = await _gatherService.GatherWebsiteAsync(siteKey, pageStartNo, pageEndNo, classId, User?.Identity?.Name);
