@@ -70,11 +70,11 @@ namespace BLL
         /// <returns></returns>
         public async Task<GatherResult> GatherWebsiteAsync(string siteKey, int? pageStartNo, int? pageEndNo, int classId, string userName)
         {
-            var gatherResult = new GatherResult
+            var gatherResult = await UrlCheck(siteKey);
+            if (gatherResult.ErrorStatus!=GatherErrorCode.None)
             {
-                SiteKey = siteKey,
-                ResultShowDomainName = _siteConfig.DefaultDomainName
-            };
+                return gatherResult;
+            }
             List<Article> preGatherUrlList = new List<Article>();
             List<Article> gatheredArticleList = new List<Article>();
             var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
@@ -100,36 +100,49 @@ namespace BLL
         }
 
         /// <summary>
-        /// 站点是否返回404
+        /// 检查站点访问结果
         /// </summary>
         /// <param name="siteKey"></param>
-        /// <param name="errorKey">如404，502</param>
         /// <returns></returns>
-        public async Task<bool> IsReturnError(string siteKey, string errorKey)
+        private async Task<GatherResult> UrlCheck(string siteKey)
         {
-            bool bResult = false;
+            GatherResult gatherResult = new GatherResult
+            {
+                SiteKey = siteKey                
+            };
             using (HttpClient http = new HttpClient())
             {
                 try
                 {
                     var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
+                    gatherResult.SiteName = website?.Name;
                     string websiteFirstUrl = string.Format(website.UrlTemp, 1);
                     if (!string.IsNullOrEmpty(website.FirstPageUrl))
                     {
                         websiteFirstUrl = website.FirstPageUrl;
                     }
                     var htmlString = await http.GetStringAsync(websiteFirstUrl);
-                    bResult = true;
+                    gatherResult.ErrorStatus = GatherErrorCode.None;
                 }
                 catch (Exception ex)
                 {
-                    if (ex.Message.Contains(errorKey))
+                    if (ex.Message.Contains("404"))
                     {
-                        bResult = true;
+                        gatherResult.ErrorStatus = GatherErrorCode.Is404;
+                        gatherResult.GatherMessage = "采集页面不存在！";
+                    }
+                    else if (ex.Message.Contains("502"))
+                    {
+                        gatherResult.ErrorStatus = GatherErrorCode.Is502;
+                        gatherResult.GatherMessage = "采集网站宕机！";
+                    }
+                    else
+                    {
+                        gatherResult.ErrorStatus = GatherErrorCode.Other;
                     }
                 }
             }
-            return bResult;
+            return gatherResult;
         }
         
         #region private

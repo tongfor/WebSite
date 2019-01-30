@@ -47,5 +47,22 @@ namespace Models
         /// 结果说明
         /// </summary>
         public string GatherMessage { get; set; }
+
+        /// <summary>
+        /// 采集报错码
+        /// </summary>
+        public GatherErrorCode ErrorStatus { get; set; }
+    }
+
+    /// <summary>
+    /// 操作结果类型定义枚举
+    /// </summary>
+    public enum GatherErrorCode
+    {
+        None = 0,
+        Is404 = 1,
+        Is502 = 2,
+        Is500 = 3,
+        Other = 4
     }
 }

@@ -302,6 +302,60 @@ $(function () {
         });
         return false;
     });
+
+    $("#btnGatherAll").click(function (e) {
+        var obj = $(e.target);
+        var classId = obj.attr("data-classId");
+        var loadingId = "submitloading_all_" + "classId" + "_" + classId;
+        var paras = {
+            "pageStartNo": 1,
+            "pageEndNo": 3,
+            "classId": classId
+        };
+        $.ajax({
+            url: "/Spider/GatherAllWebsites",
+            type: "POST",
+            data: paras,
+            timeout: 3000000, //超时时间设置，单位毫秒
+            beforeSend: function () {
+                obj.attr("disabled", "true");//防止连击
+                $("#" + loadingId).show();
+            },
+            success: function (result, status) {
+                if (result && "success" === status && 0 === result.status && result.data) {
+                    //alert(result.msg);
+                    //window.top.location.reload();
+                    //window.top.tb_remove();
+                    for (var i in result.data) {
+                        siteGather.showGatherResult("gather-result", result.data[i])
+                    }                    
+                }
+                else if (result && "error" === status && 1 === result.status && result.msg) {
+                    alert(result.msg)
+                }
+                else if (!result.data) {
+                    alert("未获得采集结果！")
+                }
+                $("#" + loadingId).hide();
+                obj.removeAttr("disabled");
+            },
+            error: function (xhr, status, error) {
+                $("#" + loadingId).hide();
+                obj.removeAttr("disabled");
+                document.write(xhr.responseText);
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            },
+            complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                if ('timeout' === status) {//超时,status还有success,error等值的情况
+                    ajaxTimeoutTest.abort();
+                    console.log("超时");
+                }
+            }
+        });
+        return false;
+    });
 });
 
 var gatherDb = function () {

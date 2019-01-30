@@ -233,7 +233,7 @@
         "Name": "高新区",
         "SiteUrl": "http://www.cdht.gov.cn",
         "UrlTemp": "http://www.cdht.gov.cn/es-search/search/7e27cfeb6c3746ef80a3396c0aa7ab9d?_template=ucap/gxqzwgklsit&_pageSize=15&_isAgg=1&page={0}",
-        "FirstPageUrl": "http://www.cdht.gov.cn/e1111",
+        "FirstPageUrl": "",
         "ArticleListSelector": "body",
         "TitleSelectorInList": "a",
         "TitleAttributeNameInList": "title",
