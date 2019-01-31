@@ -8,155 +8,167 @@
             "startPageNo": 1,
             "endPageNo":5
         }, {
-            "id": 2,
+            "id": 5,
             "siteName": "省经信厅",
             "siteKey": "jxt",
             "startPageNo": 1,
-            "endPageNo": 30
+            "endPageNo": 5
         }, {
-            "id": 3,
+            "id": 10,
             "siteName": "市科技局",
             "siteKey": "cdst",
             "startPageNo": 1,
-            "endPageNo": 30
+            "endPageNo": 5
         }, {
-            "id": 4,
+            "id": 15,
             "siteName": "省科技厅",
             "siteKey": "kjt",
             "startPageNo": 1,
-            "endPageNo": 30
+            "endPageNo": 5
         }, {
-            "id": 5,
+            "id": 16,
+            "siteName": "省人才工作网",
+            "siteKey": "srcgzw",
+            "startPageNo": 1,
+            "endPageNo": 5
+        }, {
+            "id": 17,
+            "siteName": "蓉城先锋",
+            "siteKey": "rcxf",
+            "startPageNo": 1,
+            "endPageNo": 5
+        }, {
+            "id": 20,
             "siteName": "高新区",
             "siteKey": "cdht",
             "startPageNo": 1,
-            "endPageNo": 30
+            "endPageNo": 5
         }, {
-            "id": 6,
+            "id": 25,
             "siteName": "天府新区",
             "siteKey": "cdtf",
             "startPageNo": 1,
-            "endPageNo": 30
+            "endPageNo": 5
         }, {
-            "id": 7,
+            "id": 30,
             "siteName": "金牛区",
             "siteKey": "jnq",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 8,
+            "id": 35,
             "siteName": "锦江区",
             "siteKey": "jjq",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 9,
+            "id": 40,
             "siteName": "武侯区经科局",
             "siteKey": "whqjkj",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 10,
+            "id": 45,
             "siteName": "青羊区科经局",
             "siteKey": "qyqkjj",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 11,
+            "id": 50,
             "siteName": "成华区经科局",
             "siteKey": "chqjkj",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 12,
+            "id": 55,
             "siteName": "龙泉驿区",
             "siteKey": "lqyq",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 13,
+            "id": 65,
             "siteName": "青白江区科经局",
             "siteKey": "qbjqkjj",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 14,
+            "id": 70,
             "siteName": "新都区",
             "siteKey": "xdq",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 15,
+            "id": 75,
             "siteName": "温江区",
             "siteKey": "wjq",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 16,
+            "id": 80,
             "siteName": "双流区",
             "siteKey": "slq",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 17,
+            "id": 85,
             "siteName": "郫都区",
             "siteKey": "pdq",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 18,
+            "id": 90,
             "siteName": "简阳市",
             "siteKey": "jys",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 19,
+            "id": 95,
             "siteName": "都江堰市",
             "siteKey": "djys",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 20,
+            "id": 100,
             "siteName": "彭州市",
             "siteKey": "pzs",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 21,
+            "id": 105,
             "siteName": "邛崃市",
             "siteKey": "qls",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 22,
+            "id": 110,
             "siteName": "崇州市经信局",
             "siteKey": "czsjxj",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 23,
+            "id": 115,
             "siteName": "金堂县",
             "siteKey": "jtx",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 24,
+            "id": 120,
             "siteName": "新津县",
             "siteKey": "xjx",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 25,
+            "id": 125,
             "siteName": "大邑县",
             "siteKey": "dyx",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }, {
-            "id": 26,
+            "id": 130,
             "siteName": "蒲江县经科信局",
             "siteKey": "pjxjkxj",
             "startPageNo": 1,
-            "endPageNo": 10
+            "endPageNo": 5
         }
     ];
     var menuObjs = $("#gather-list")
@@ -212,8 +224,8 @@
                     showHtml += data.gatheredArticleList[i].id
                     showHtml += '?TB_iframe=true&amp;height=600&amp;width=950">编辑</a>'
                     showHtml += '&nbsp;<a title="删除此篇文章" '
-                    showHtml += 'href="javascript:if(confirm(\'确实要删除该内容吗 ? \'))delArticle('
-                    showHtml += data.gatheredArticleList[i].id + ')"">删除</a>'
+                    showHtml += 'href="#" onclick="javascript:if(confirm(\'确实要删除该内容吗 ? \'))delArticle('
+                    showHtml += data.gatheredArticleList[i].id + ', this)">删除</a>'
                     showHtml += '</p>\n'
                 }
             }
@@ -357,6 +369,46 @@ $(function () {
         return false;
     });
 });
+
+function delArticle(articleId, e) {
+    var obj = $(e);
+    var paras = {
+        "id": articleId
+    };
+    $.ajax({
+        url: "/Article/DeleteAjax",
+        type: "POST",
+        data: paras,
+        timeout: 3000000, //超时时间设置，单位毫秒
+        beforeSend: function () {
+            obj.attr("disabled", "true");//防止连击
+        },
+        success: function (result, status) {
+            if (result && result.msg && result.msg != undefined) {
+                if ("success" === status && 0 === result.status) {
+                    //移除已删除的
+                    obj.parent().remove();
+                    gatherCache.set(siteGather.cacheName, $(".gather-result").html(), 120)
+                }
+                alert(result.msg)
+            }
+            obj.removeAttr("disabled");
+        },
+        error: function (xhr, status, error) {          
+            obj.removeAttr("disabled");
+            document.write(xhr.responseText);
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
+        },
+        complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+            if ('timeout' === status) {//超时,status还有success,error等值的情况
+                ajaxTimeoutTest.abort();
+                console.log("超时");
+            }            
+        }
+    });
+}
 
 var gatherDb = function () {
     var store = window.localStorage, doc = document.documentElement;

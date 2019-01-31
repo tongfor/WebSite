@@ -309,7 +309,7 @@ namespace RepositoryPattern
 
                 entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasMaxLength(100);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.TitleColor).HasMaxLength(10);
 

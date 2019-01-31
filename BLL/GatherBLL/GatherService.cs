@@ -23,7 +23,6 @@ using IBLL;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -70,15 +69,15 @@ namespace BLL
         /// <returns></returns>
         public async Task<GatherResult> GatherWebsiteAsync(string siteKey, int? pageStartNo, int? pageEndNo, int classId, string userName)
         {
-            var gatherResult = await UrlCheck(siteKey);
+            var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
+            var gatherResult = await UrlCheck(website);
             if (gatherResult.ErrorStatus!=GatherErrorCode.None)
             {
                 return gatherResult;
             }
             List<Article> preGatherUrlList = new List<Article>();
-            List<Article> gatheredArticleList = new List<Article>();
-            var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
-            if (website == null)
+            List<Article> gatheredArticleList = new List<Article>();            
+            if (website == null || website.DetailsList == null || string.IsNullOrEmpty(website.Name) || string.IsNullOrEmpty(website.SiteUrl) || string.IsNullOrEmpty(website.UrlTemp))
             {
                 throw new Exception($"{siteKey}采集设置有误！");
             }
@@ -104,18 +103,17 @@ namespace BLL
         /// </summary>
         /// <param name="siteKey"></param>
         /// <returns></returns>
-        private async Task<GatherResult> UrlCheck(string siteKey)
+        private async Task<GatherResult> UrlCheck(GatherWebsite website)
         {
             GatherResult gatherResult = new GatherResult
             {
-                SiteKey = siteKey                
-            };
+                SiteKey = website?.Key,
+                SiteName = website?.Name
+        };
             using (HttpClient http = new HttpClient())
             {
                 try
                 {
-                    var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
-                    gatherResult.SiteName = website?.Name;
                     string websiteFirstUrl = string.Format(website.UrlTemp, 1);
                     if (!string.IsNullOrEmpty(website.FirstPageUrl))
                     {
@@ -195,7 +193,8 @@ namespace BLL
                                     ?.Select(t => new Article()
                                     {
                                         Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
-                                        UserName = userName
+                                        UserName = userName,
+                                        Title = t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent
                                     }).ToList());
                             }
                             else
@@ -214,29 +213,111 @@ namespace BLL
                                     }
                                 }
 #endif
-                                preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
-                                    ?.Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.NotificationKeywords.Split("and")[0].Trim())
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.NotificationKeywords.Split("and")[1].Trim())
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
-                                    .Select(t => new Article()
+                                if (_gatherConfig.GatherClassList != null)
+                                {
+                                    foreach(var c in _gatherConfig.GatherClassList.OrderBy(o=>o.Order))
                                     {
-                                        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
-                                        ClassId = _siteConfig.NotificationClassId,
-                                        UserName = userName
-                                    }).ToList());
-                                preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
-                                    .Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.PolicyKeywords.Trim())
-                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
-                                    .Select(t => new Article()
-                                    {
-                                        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
-                                        ClassId = _siteConfig.PolicyClassId,
-                                        UserName = userName
-                                    }).ToList());
+                                        if (string.IsNullOrEmpty(website.TitleAttributeNameInList))
+                                        {
+                                            #region 未传递采集属性则取标签的text来过滤URL
+                                            if (c.Keywords.Contains(" and "))
+                                            {
+                                                preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
+                                                    ?.Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(c.Keywords.Split("and")[0].Trim())
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(c.Keywords.Split("and")[1].Trim())
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
+                                                    .Select(t => new Article()
+                                                    {
+                                                        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
+                                                        ClassId = c.ClassId,
+                                                        UserName = userName,
+                                                        Title = t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent
+                                                    }).ToList());
+                                            }
+                                            else
+                                            {
+                                                preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
+                                                    .Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(c.Keywords.Trim())
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
+                                                    .Select(t => new Article()
+                                                    {
+                                                        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
+                                                        ClassId = c.ClassId,
+                                                        UserName = userName,
+                                                        Title = t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent
+                                                    }).ToList());
+                                            }
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            #region 传递采集属性则取采集属性的值来过滤URL
+                                            if (c.Keywords.Contains(" and "))
+                                            {
+                                                preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
+                                                    ?.Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().GetAttribute(website.TitleAttributeNameInList) != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().GetAttribute(website.TitleAttributeNameInList).ContainsAny(c.Keywords.Split("and")[0].Trim())
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().GetAttribute(website.TitleAttributeNameInList).ContainsAny(c.Keywords.Split("and")[1].Trim())
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().GetAttribute(website.TitleAttributeNameInList).ExcludeAll(_gatherConfig.ExcludeKeywords))
+                                                    .Select(t => new Article()
+                                                    {
+                                                        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
+                                                        ClassId = c.ClassId,
+                                                        UserName = userName,
+                                                        Title = t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent
+                                                    }).ToList());
+                                            }
+                                            else
+                                            {
+                                                preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
+                                                    .Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().GetAttribute(website.TitleAttributeNameInList) != null
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().GetAttribute(website.TitleAttributeNameInList).ContainsAny(c.Keywords.Trim())
+                                                    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().GetAttribute(website.TitleAttributeNameInList).ExcludeAll(_gatherConfig.ExcludeKeywords))
+                                                    .Select(t => new Article()
+                                                    {
+                                                        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
+                                                        ClassId = c.ClassId,
+                                                        UserName = userName,
+                                                        Title = t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent
+                                                    }).ToList());
+                                            }
+                                            #endregion
+                                        }
+                                    }
+                                }
+                                #region annotation
+                                //preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
+                                //    ?.Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
+                                //    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
+                                //    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.NotificationKeywords.Split("and")[0].Trim())
+                                //    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.NotificationKeywords.Split("and")[1].Trim())
+                                //    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
+                                //    .Select(t => new Article()
+                                //    {
+                                //        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
+                                //        ClassId = _siteConfig.NotificationClassId,
+                                //        UserName = userName
+                                //    }).ToList());
+                                //preGatherUrlList.AddRange(document.QuerySelectorAll(website.ArticleListSelector)
+                                //    .Where(t => t.QuerySelectorAll(website.TitleSelectorInList) != null
+                                //    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault() != null
+                                //    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ContainsAny(_gatherConfig.PolicyKeywords.Trim())
+                                //    && t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().TextContent.ExcludeAll(_gatherConfig.ExcludeKeywords))
+                                //    .Select(t => new Article()
+                                //    {
+                                //        Gatherurl = GetAbsoluteUrl(website.SiteUrl, t.QuerySelectorAll(website.TitleSelectorInList).FirstOrDefault().Attributes.FirstOrDefault(f => "href".Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))?.Value),
+                                //        ClassId = _siteConfig.PolicyClassId,
+                                //        UserName = userName
+                                //    }).ToList());
+                                #endregion
                             }
                         }
                     }
@@ -244,7 +325,7 @@ namespace BLL
                     {
                         if (!ex.Message.Contains("404"))
                         {
-                            _logger.LogError(ex, "采集文章URL清单时报错" + ex.Message);
+                            _logger.LogInnerError(ex, "采集文章URL清单时报错" + ex.Message);
                         }
                         //保障出错后继续运行
                         continue;
@@ -313,6 +394,7 @@ namespace BLL
                     DateTime.TryParse(strAddTime, out addTime);
                     detailsInfo.AddTime = addTime;
                     detailsInfo.Origin = website.Name + detailsInfo.Origin.Replace(website.Name, "");
+                    detailsInfo.Title = detailsInfo.Title.Length > 500 ? detailsInfo.Title.Substring(0, 500) : detailsInfo.Title;
                     return detailsInfo;
                 }
             }
@@ -320,7 +402,7 @@ namespace BLL
             {
                 if (!ex.Message.Contains("404"))
                 {
-                    _logger.LogError(ex, $"采集{url}文章详情时报错：" + ex.Message);
+                    _logger.LogInnerError(ex, $"采集{url}文章详情时报错：" + ex.Message);
                 }               
                 return null;
             }
@@ -373,19 +455,20 @@ namespace BLL
                     selectorIndex = 0;
                     return null;
                 }
+                var valueOrderList = set.ValueOrder.Split(',');
                 for (int i = 0; i < elementSelectors.Length; i++)
                 {
-                    if (null == document.QuerySelectorAll(elementSelectors[i]) || 0 == document.QuerySelectorAll(elementSelectors[i]).Length || null == document.QuerySelectorAll(elementSelectors[i])[set.ValueOrder])
+                    if (null == document.QuerySelectorAll(elementSelectors[i]) || 0 == document.QuerySelectorAll(elementSelectors[i]).Length || null == document.QuerySelectorAll(elementSelectors[i])[int.Parse(valueOrderList[i])])
                     {
                         continue;
                     }
                     selectorIndex = i;
-                    return document.QuerySelectorAll(elementSelectors[i])[set.ValueOrder];
+                    return document.QuerySelectorAll(elementSelectors[i])[int.Parse(valueOrderList[i])];
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"获取{name}的html元素时报错：" + ex.Message);
+                _logger.LogInnerError(ex, $"获取{name}的html元素时报错：" + ex.Message);
             }
             selectorIndex = 0;
             return null;
@@ -416,12 +499,17 @@ namespace BLL
                 var result = string.IsNullOrEmpty(detailsSet.ValueAttributeName) || valueAttributeNameArr == null || string.IsNullOrEmpty(valueAttributeNameArr[selectorIndex])
                     ? element?.TextContent.Trim()
                     : element?.GetAttribute(valueAttributeNameArr[selectorIndex])?.Trim();
+                
                 if (detailsSet.ValueForward != null && detailsSet.ValueForward != null && (detailsSet.ValueForward.Length >= 0 || detailsSet.ValueAfter.Length >= 0))
                 {
                     //如果有前后特征则取前后特征之间的值
-                    result = string.IsNullOrEmpty(detailsSet.ValueAfter)
-                        ? result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length)
-                        : result.Substring(result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length, result.IndexOf(detailsSet.ValueAfter) - result.IndexOf(detailsSet.ValueForward) - detailsSet.ValueForward.Length);
+                    int startIndex = result.IndexOf(detailsSet.ValueForward) == -1 || string.IsNullOrEmpty(detailsSet.ValueForward)
+                        ? 0 
+                        : result.IndexOf(detailsSet.ValueForward) + detailsSet.ValueForward.Length;
+                    int endIndex = result.IndexOf(detailsSet.ValueAfter) == -1 || string.IsNullOrEmpty(detailsSet.ValueAfter)
+                        ? result.Length 
+                        : result.IndexOf(detailsSet.ValueAfter) - startIndex;
+                    result = result.Substring(startIndex, endIndex);
                 }
                 result = result?.ReplaceEvery(detailsSet.BeReplacedStr, detailsSet.Replacer, ',')?.Trim();
                 if (string.IsNullOrEmpty(result))
@@ -432,7 +520,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"采集{name}的内容时报错：" + ex.Message);
+                _logger.LogInnerError(ex, $"采集{name}的内容时报错：" + ex.Message);
                 return string.Empty;
             }
         }
@@ -469,7 +557,7 @@ namespace BLL
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError(ex, "采集文章去除要替换的标签报错！");
+                            _logger.LogInnerError(ex, "采集文章去除要替换的标签报错！");
                             continue;
                         }
                     }
@@ -564,7 +652,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "将采集的文章持久化时报错" + ex.Message);
+                _logger.LogInnerError(ex, "将采集的文章持久化时报错" + ex.Message);
                 return 0;
             }
         }

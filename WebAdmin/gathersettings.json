@@ -1,11 +1,31 @@
 ﻿{
   "GatherConfig": {
+    //采集栏目分类
+    "GatherClassList": [
+      {
+        //栏目ID，与ArticleClass表ID对应
+        "ClassId": "2",
+        //栏目过滤关键字
+        "Keywords": "暂行办法,管理办法,实施细则,申报指南,扶持政策,认定工作,若干政策,专项政策,实施方案",
+        "Order": "100"
+      },
+      {
+        "ClassId": "3",
+        "Keywords": "项目,资金,通知,补助,人才 and 征集,申报,拨付",
+        "Order": "50"
+      },
+      {
+        "ClassId": "4",
+        "Keywords": "项目,拟立项 and 公示,清单",
+        "Order": "150"
+      }
+    ],
     //政策信息过滤关键字
     "PolicyKeywords": "暂行办法,管理办法,实施细则,申报指南,扶持政策,认定工作,若干政策,专项政策,实施方案",
     //申报快讯过滤关键字
     "NotificationKeywords": "项目,资金,通知,补助,人才 and 征集,申报,拨付",
     //要排除的关键字
-    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设,维修资金,采购项目,住宅,集体资金,民生,城乡房屋租赁服务,专业技术职务,质量提升,移民,务工,专项整治,信用信息",
+    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设,维修资金,采购项目,住宅,集体资金,民生,城乡房屋租赁服务,专业技术职务,质量提升,移民,务工,专项整治,信用信息,企业技术需求,培训项目,申报人选参加答辩,科技扶贫万里行活动",
     //采集站点属性,
     "GatherWebsiteList": [
       {
@@ -177,7 +197,7 @@
         "Key": "kjt",
         "Name": "省科技厅",
         "SiteUrl": "http://kjt.sc.gov.cn",
-        "UrlTemp": "http://www.scst.gov.cn/tz/index_{0}.jhtml",
+        "UrlTemp": "http://kjt.sc.gov.cn/tz/index_{0}.jhtml",
         "FirstPageUrl": null,
         "ArticleListSelector": "div.news_right h2",
         "TitleSelectorInList": "a",
@@ -196,11 +216,13 @@
           },
           {
             "Name": "Origin",
-            "Selector": ".msgbar", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": ".msgbar,.abstract li", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
-            "ValueOrder": "0",
-            "BeReplacedStr": "来源：,取消收藏,收藏",
-            "Replacer": ",,",
+            "ValueOrder": "0,2",
+            "ValueForward": "来源：", //取值前特征
+            "ValueAfter": "取消收藏", //取值后特征
+            "BeReplacedStr": "来源：,取消收藏,收藏,发布机构：",
+            "Replacer": ",,,",
             "RemoveSelector": "",
             "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
           },
@@ -216,10 +238,128 @@
           },
           {
             "Name": "AddTime",
-            "Selector": ".msgbar", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": ".msgbar,.abstract li", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0,3",
+            "ValueForward": "发布时间： ", //取值前特征
+            "ValueAfter": "来源：", //取值后特征
+            "BeReplacedStr": "发布日期：",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "srcgzw",
+        "Name": "省人才工作网",
+        "SiteUrl": "http://www.scrcgz.com",
+        "UrlTemp": "http://www.scrcgz.com/news/new_list.aspx?types=8&page={0}",
+        "FirstPageUrl": null,
+        "ArticleListSelector": ".list_div_content",
+        "TitleSelectorInList": "a",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": ".info_titles", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
-            "BeReplacedStr": "发布时间： ",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "div[style='width:735px;height:auto;font-size:14px;text-align:left;line-height:22px;color:Black;font-family:微软雅黑;margin-left:10px;word-spacing:8px; letter-spacing: 1px;']", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": "div[style='width:100%;height:30px;color:#0082FF;margin-bottom:30px;font-size:14px;text-align:center;word-spacing:8px; letter-spacing: 1px;']", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布日期：", //取值前特征
+            "ValueAfter": "浏览量:", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          }
+        ],
+        "IsGatherByDetail": "false",
+        "DetailIsUseJavascript": "false"
+      },
+      {
+        "Key": "rcxf",
+        "Name": "蓉城先锋",
+        "SiteUrl": "http://www.cd12371.com",
+        "UrlTemp": "http://www.cd12371.com/Website/channels/41_{0}.html",
+        "FirstPageUrl": "http://www.cd12371.com/Website/channels/41.html",
+        "ArticleListSelector": ".lb_right_z li",
+        "TitleSelectorInList": "a[target='_blank']",
+        "TitleAttributeNameInList": "title",
+        "DetailsSelector": "html",
+        "DetailsList": [
+          {
+            "Name": "Title",
+            "Selector": "#artibodyTitle", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Origin",
+            "Selector": ".nr2", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "来源：", //取值前特征
+            "ValueAfter": "打印：", //取值后特征
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "Content",
+            "Selector": "#artibody", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "BeReplacedStr": "",
+            "Replacer": "",
+            "RemoveSelector": "",
+            "ValueType": "2" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
+          },
+          {
+            "Name": "AddTime",
+            "Selector": ".nr2", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "ValueAttributeName": "",
+            "ValueOrder": "0",
+            "ValueForward": "发布时间：", //取值前特征
+            "ValueAfter": "来源：", //取值后特征
+            "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",
             "ValueType": "1" //取值类型，1为取Text,2为取innerHtml,3为取outerHtml,默认为1
@@ -733,16 +873,16 @@
         "Key": "xdq",
         "Name": "新都区",
         "SiteUrl": "http://www.xindu.gov.cn",
-        "UrlTemp": "http://www.xindu.gov.cn/qjxj/1182710/1181218/27234/index{0}.html",
+        "UrlTemp": "http://www.xindu.gov.cn/es-search/search/56c83bf76f47473a8749f391e20153dc?_template=zhaofa/xd_list&_isAgg=1&_pageSize=20&page={0}",
         "FirstPageUrl": "",
-        "ArticleListSelector": ".smod103_cont .list_title",
+        "ArticleListSelector": "ul li",
         "TitleSelectorInList": "a",
         "TitleAttributeNameInList": "title",
         "DetailsSelector": "html",
         "DetailsList": [
           {
             "Name": "Title",
-            "Selector": "#xilanzt h1", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": "ucapcontent", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -752,9 +892,11 @@
           },
           {
             "Name": "Origin",
-            "Selector": "", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
+            "Selector": ".set", //选择特征排在越前面的越先选择，前面的没有再选择后面的,选择器为空时不选择
             "ValueAttributeName": "",
             "ValueOrder": "0",
+            "ValueForward": "信息来源：", //取值前特征
+            "ValueAfter": "【字体：", //取值后特征
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",
@@ -762,7 +904,7 @@
           },
           {
             "Name": "Content",
-            "Selector": ".conzt", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": "ucapsource", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",
@@ -772,11 +914,9 @@
           },
           {
             "Name": "AddTime",
-            "Selector": "tr>.xlly", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": "publishtime", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
-            "ValueForward": "发布时间：", //取值前特征
-            "ValueAfter": "浏览次数：", //取值后特征
             "BeReplacedStr": "",
             "Replacer": "",
             "RemoveSelector": "",

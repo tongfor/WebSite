@@ -262,7 +262,7 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-               await MyAdminBugService.AddAsync(Bug);
+                await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -299,7 +299,44 @@ namespace WebAdmin.Controllers
                     AddTime = DateTime.Now,
                     EditTime = DateTime.Now
                 };
-               await MyAdminBugService.AddAsync(Bug);
+                await MyAdminBugService.AddAsync(Bug);
+                return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
+            }
+        }
+
+        // GET: Article/Delete/5
+        public async Task<IActionResult> DeleteAjax(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    ViewBag.ErrMsg = "请传递正确参数!";
+                    OperateLog.OperateInfo = "删除文章功能异常";
+                    OperateLog.IsSuccess = 0;
+                    OperateLog.Description = "未传递文章ID";
+                    MyOperateLogService.Add(OperateLog);
+                    return PackagingAjaxMsg(AjaxStatus.Err, "请传递正确参数！", null);
+                }
+                var result = await _articleService.DelByAsync(f => f.Id == id.Value);
+                return PackagingAjaxMsg(result > 0 ? AjaxStatus.IsSuccess : AjaxStatus.Err, result > 0 ? "删除成功！" : "删除失败！", null);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
+
+                Bug = new AdminBug
+                {
+                    UserIp = HttpContext.GetUserIp(),
+                    IsShow = 1,
+                    IsSolve = 0,
+                    BugInfo = "删除文章功能异常" + ex.Message,
+                    BugMessage = JsonUtil.StringFilter(ex.StackTrace.ToString()),
+                    UserName = User != null && User.Identity != null ? User.Identity.Name : "",
+                    AddTime = DateTime.Now,
+                    EditTime = DateTime.Now
+                };
+                await MyAdminBugService.AddAsync(Bug);
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }

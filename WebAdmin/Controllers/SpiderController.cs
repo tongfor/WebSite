@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using AngleSharp;
-using AngleSharp.Parser.Html;
-using Common;
-using Common.AspNetCore.Extensions;
+﻿using Common;
 using Common.Config;
 using IBLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebAdmin.Controllers
 {
@@ -60,7 +53,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                _logger.LogError($"采集{siteKey}列表", ex);
+                _logger.LogInnerError(ex, $"采集{siteKey}列表");
                 return PackagingAjaxMsg(AjaxStatus.Err, Bug.BugInfo);
             }
         }
@@ -97,7 +90,7 @@ namespace WebAdmin.Controllers
                         }
                         catch(Exception ex)
                         {
-                            _logger.LogError(ex, $"一键采集中采集{site.Name}数据时报错！");
+                            _logger.LogInnerError(ex, $"一键采集中采集{site.Name}数据时报错！");
                             continue;
                         }
                     }
@@ -109,7 +102,7 @@ namespace WebAdmin.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
 
-                _logger.LogError($"一键采集报错！", ex);
+                _logger.LogInnerError(ex, $"一键采集报错！");
                 return PackagingAjaxMsg(AjaxStatus.Err, $"一键采集报错！");
             }
         }

@@ -13,6 +13,10 @@ namespace Common.Config
         #region 属性
 
         /// <summary>
+        /// 采集栏目分类清单
+        /// </summary>
+        public List<GatherClass> GatherClassList { get; set; }
+        /// <summary>
         /// 政策信息过滤关键字
         /// </summary>
         public string PolicyKeywords { get; set; } = "暂行办法,管理办法,实施细则,申报指南";
@@ -30,6 +34,25 @@ namespace Common.Config
         public List<GatherWebsite> GatherWebsiteList { get; set; }
 
         #endregion
+    }
+
+    /// <summary>
+    /// 采集栏目分类
+    /// </summary>
+    public class GatherClass
+    {
+        /// <summary>
+        /// 栏目ID，与ArticleClass表ID对应
+        /// </summary>
+        public int ClassId { get; set; }
+        /// <summary>
+        /// 栏目过滤关键字
+        /// </summary>
+        public string Keywords { get; set; }
+        /// <summary>
+        /// 排序，信息采集后如果属于多栏目将会只进入靠前的栏目
+        /// </summary>
+        public int Order { get; set; }
     }
 
     /// <summary>
@@ -120,9 +143,9 @@ namespace Common.Config
         /// </summary>
         public string ValueAttributeName { get; set; }
         /// <summary>
-        /// 根据特征选择的结果如果是多个，则从第几个结果中获取结果,0为选择第一个
+        /// 根据特征选择的结果如果是多个，则从第几个结果中获取结果,0为选择第一个,可以是多个值，多个值则每个值与每个Selector对应
         /// </summary>
-        public int ValueOrder { get; set; }
+        public string ValueOrder { get; set; }
         /// <summary>
         /// 取值前特征
         /// </summary>
