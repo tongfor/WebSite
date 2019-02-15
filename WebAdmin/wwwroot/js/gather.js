@@ -172,7 +172,8 @@
         }
     ];
     var menuObjs = $("#gather-list")
-    var _cacheName ="gatherCache"
+    var _cacheName = "gatherCache"
+    var _gatherAllCache = {}
 
     //菜单初始化
     var _gatherMenuInit = function () {
@@ -204,7 +205,8 @@
         var showHtml = ""
         if (data) {            
             if (data.gatherMessage && data.gatherMessage != undefined && data.gatherMessage.length > 0) {
-                showHtml += '采集' + data.siteName + '提示：<span style="color:red">' + data.gatherMessage + '</span></p>\n'
+                showHtml += '采集' + data.siteName + '提示：<span style="color:red">' + data.gatherMessage + '</span>'
+                showHtml += '&nbsp;<a href="' + data.siteUrl + '" target="_blank">查看要采集的网站</a></p >\n'
             }
             else if (data.gatheredArticleList) {
                 showHtml += '<p>在' + data.gatherTime
@@ -252,13 +254,14 @@
         menuData: _menuData,
         gatherMenuInit: _gatherMenuInit,
         showGatherResult: _showGatherResult,
-        cacheName: _cacheName
+        cacheName: _cacheName,
+        gatherAllCache: _gatherAllCache
     }
 }())
 $(function () {
     siteGather.gatherMenuInit()
     var resultEle = $(".gather-result")
-    resultEle.html()
+    resultEle.html("")
     var cacheResult = gatherCache.get(siteGather.cacheName)
     if (cacheResult && cacheResult != undefined) {
         resultEle.append(cacheResult)
@@ -286,9 +289,6 @@ $(function () {
             },
             success: function (result, status) {
                 if (result && "success" === status && 0 === result.status) {
-                    //alert(result.msg);
-                    //window.top.location.reload();
-                    //window.top.tb_remove();
                     siteGather.showGatherResult("gather-result", result.data)
                 }
                 else if (result && "error" === status && 1 === result.status && result.msg) {
@@ -324,6 +324,8 @@ $(function () {
             "pageEndNo": 3,
             "classId": classId
         };
+        var heartbeatConnVal
+        //var heartbeatConnCount = 0
         $.ajax({
             url: "/Spider/GatherAllWebsites",
             type: "POST",
@@ -332,12 +334,14 @@ $(function () {
             beforeSend: function () {
                 obj.attr("disabled", "true");//防止连击
                 $("#" + loadingId).show();
+                //启动心跳连接
+                //heartbeatConnVal = setInterval(function () { heartbeatConnCount = heartbeatConn(heartbeatConnCount); console.log(heartbeatConnCount) }, 10000);
+                heartbeatConnVal = setInterval(function () { heartbeatConn() }, 3000)
             },
             success: function (result, status) {
+                clearInterval(heartbeatConnVal)
                 if (result && "success" === status && 0 === result.status && result.data) {
-                    //alert(result.msg);
-                    //window.top.location.reload();
-                    //window.top.tb_remove();
+                    $(".gather-result").html("")
                     for (var i in result.data) {
                         siteGather.showGatherResult("gather-result", result.data[i])
                     }                    
@@ -409,6 +413,36 @@ function delArticle(articleId, e) {
         }
     });
 }
+
+//一键采集的心跳连接
+function heartbeatConn(count) {
+    $.ajax({
+        url: "/Spider/GetGatherAllResult",
+        type: "POST",
+        timeout: 3000000, //超时时间设置，单位毫秒
+        success: function (result, status) {
+            if (result && "success" === status && 0 === result.status && result.data) {
+                siteGather.gatherAllCache = result.data;
+                $(".gather-result").html("")
+                for (var i in result.data) {
+                    siteGather.showGatherResult("gather-result", result.data[i])
+                }      
+            }
+        },
+        error: function (xhr, status, error) {
+            document.write(xhr.responseText);
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
+        },
+        complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+            if ('timeout' === status) {//超时,status还有success,error等值的情况
+                ajaxTimeoutTest.abort();
+                console.log("超时");
+            }
+        }
+    });
+};
 
 var gatherDb = function () {
     var store = window.localStorage, doc = document.documentElement;

@@ -71,7 +71,7 @@ namespace BLL
         {
             var website = _gatherConfig?.GatherWebsiteList?.FirstOrDefault(f => siteKey.Equals(f.Key, StringComparison.CurrentCultureIgnoreCase));
             var gatherResult = await UrlCheck(website);
-            if (gatherResult.ErrorStatus!=GatherErrorCode.None)
+            if (gatherResult.ErrorStatus != GatherErrorCode.None)
             {
                 return gatherResult;
             }
@@ -108,8 +108,9 @@ namespace BLL
             GatherResult gatherResult = new GatherResult
             {
                 SiteKey = website?.Key,
-                SiteName = website?.Name
-        };
+                SiteName = website?.Name,
+                SiteUrl = website?.SiteUrl
+            };
             using (HttpClient http = new HttpClient())
             {
                 try
@@ -129,14 +130,20 @@ namespace BLL
                         gatherResult.ErrorStatus = GatherErrorCode.Is404;
                         gatherResult.GatherMessage = "采集页面不存在！";
                     }
-                    else if (ex.Message.Contains("502"))
+                    else if (ex.Message.Contains("502") || ex.Message.Contains("504"))
                     {
                         gatherResult.ErrorStatus = GatherErrorCode.Is502;
                         gatherResult.GatherMessage = "采集网站宕机！";
                     }
+                    if (ex.Message.Contains("500"))
+                    {
+                        gatherResult.ErrorStatus = GatherErrorCode.Is500;
+                        gatherResult.GatherMessage = "采集网站内部错误！";
+                    }
                     else
                     {
                         gatherResult.ErrorStatus = GatherErrorCode.Other;
+                        gatherResult.GatherMessage = ex.Message;
                     }
                 }
             }

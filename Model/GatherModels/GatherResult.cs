@@ -22,6 +22,11 @@ namespace Models
         public string SiteName { get; set; }
 
         /// <summary>
+        /// 站点域名
+        /// </summary>
+        public string SiteUrl { get; set; }
+
+        /// <summary>
         /// 展示采集结果的网站域
         /// </summary>
         public string ResultShowDomainName { get; set; }

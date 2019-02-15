@@ -16,7 +16,7 @@ namespace WebAdmin.Controllers
         private readonly IArticleService _articleService;
         private readonly IArticleClassService _articleClassService;
         private readonly IGatherService _gatherService;
-        private List<GatherResult> _gatherResultList = new List<GatherResult>();
+        private static List<GatherResult> _gatherResultList;
 
         public SpiderController(IArticleService articleService, IArticleClassService articleClassService, IAdminOperateLogService operateLogService, IAdminBugService adminBugService, IAdminMenuService adminMenuService, IGatherService gatherService, ILogger<ArticleController> logger, IOptionsSnapshot<SiteConfig> options, IOptionsSnapshot<GatherConfig> gatherOptions) : base(operateLogService, adminBugService, adminMenuService, options, gatherOptions)
         {
@@ -46,7 +46,8 @@ namespace WebAdmin.Controllers
             try
             {
                 GatherResult gatherResult = await _gatherService.GatherWebsiteAsync(siteKey, pageStartNo, pageEndNo, classId, User?.Identity?.Name);
-                int gatherCount = gatherResult.GatheredArticleList.Count;
+                int gatherCount = gatherResult == null || gatherResult.GatheredArticleList == null
+                    ? 0 : gatherResult.GatheredArticleList.Count;
                 return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResult != null && gatherCount > 0 ? $"采集成功！采集数据{gatherCount}条！" : "暂无新增数据!", gatherResult);
             }
             catch (Exception ex)
@@ -70,7 +71,7 @@ namespace WebAdmin.Controllers
         {
             try
             {
-                var resultList = new List<GatherResult>();
+                _gatherResultList = new List<GatherResult>();
                 //默认采集前3页数据
                 pageStartNo = pageStartNo == null || pageStartNo == 0 ? 1 : pageStartNo;
                 pageEndNo = pageEndNo == null || pageEndNo == 0 ? 3 : pageEndNo;
@@ -91,12 +92,15 @@ namespace WebAdmin.Controllers
                         catch(Exception ex)
                         {
                             _logger.LogInnerError(ex, $"一键采集中采集{site.Name}数据时报错！");
+                            gatherResult.ErrorStatus = GatherErrorCode.Other;
+                            gatherResult.GatherTime = DateTime.Now;
+                            gatherResult.GatherMessage = ex.Message;
                             continue;
                         }
                     }
                 }
 
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, resultList.Count > 0 ? $"采集成功！采集了{resultList.Count}网站的数据！" : "暂无新增数据!", resultList);
+                return PackagingAjaxMsg(AjaxStatus.IsSuccess, _gatherResultList.Count > 0 ? $"采集成功！采集了{_gatherResultList.Count}个网站的数据！" : "暂无新增数据!", _gatherResultList);
             }
             catch (Exception ex)
             {
@@ -112,9 +116,9 @@ namespace WebAdmin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public List<GatherResult> GetGatherAllResult()
+        public IActionResult GetGatherAllResult()
         {
-                return _gatherResultList;
+            return PackagingAjaxMsg(AjaxStatus.IsSuccess, $"获取成功", _gatherResultList);
         }
     }
 }
