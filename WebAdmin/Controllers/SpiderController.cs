@@ -69,46 +69,48 @@ namespace WebAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> GatherAllWebsites(int? pageStartNo, int? pageEndNo, int classId)
         {
-            try
-            {
-                _gatherResultList = new List<GatherResult>();
-                //默认采集前3页数据
-                pageStartNo = pageStartNo == null || pageStartNo == 0 ? 1 : pageStartNo;
-                pageEndNo = pageEndNo == null || pageEndNo == 0 ? 3 : pageEndNo;
-                if (GatherSettings!=null &&GatherSettings.GatherWebsiteList!=null)
-                {
-                    GatherResult gatherResult = new GatherResult();
-                    foreach (var site in GatherSettings.GatherWebsiteList)
-                    {
-                        if (string.IsNullOrEmpty(site.Key) || string.IsNullOrEmpty(site.Name) || string.IsNullOrEmpty(site.SiteUrl) || string.IsNullOrEmpty(site.UrlTemp))
-                        {
-                            continue;
-                        }
-                        try
-                        {
-                            gatherResult = await _gatherService.GatherWebsiteAsync(site.Key, pageStartNo, pageEndNo, classId, User?.Identity?.Name);
-                            _gatherResultList.Add(gatherResult);
-                        }
-                        catch(Exception ex)
-                        {
-                            _logger.LogInnerError(ex, $"一键采集中采集{site.Name}数据时报错！");
-                            gatherResult.ErrorStatus = GatherErrorCode.Other;
-                            gatherResult.GatherTime = DateTime.Now;
-                            gatherResult.GatherMessage = ex.Message;
-                            continue;
-                        }
-                    }
-                }
+            //try
+            //{
+            //    _gatherResultList = new List<GatherResult>();
+            //    //默认采集前3页数据
+            //    pageStartNo = pageStartNo == null || pageStartNo == 0 ? 1 : pageStartNo;
+            //    pageEndNo = pageEndNo == null || pageEndNo == 0 ? 3 : pageEndNo;
+            //    if (GatherSettings!=null &&GatherSettings.GatherWebsiteList!=null)
+            //    {
+            //        GatherResult gatherResult = new GatherResult();
+            //        foreach (var site in GatherSettings.GatherWebsiteList)
+            //        {
+            //            if (string.IsNullOrEmpty(site.Key) || string.IsNullOrEmpty(site.Name) || string.IsNullOrEmpty(site.SiteUrl) || string.IsNullOrEmpty(site.UrlTemp))
+            //            {
+            //                continue;
+            //            }
+            //            try
+            //            {
+            //                gatherResult = await _gatherService.GatherWebsiteAsync(site.Key, pageStartNo, pageEndNo, classId, User?.Identity?.Name);
+            //                _gatherResultList.Add(gatherResult);
+            //            }
+            //            catch(Exception ex)
+            //            {
+            //                _logger.LogInnerError(ex, $"一键采集中采集{site.Name}数据时报错！");
+            //                gatherResult.ErrorStatus = GatherErrorCode.Other;
+            //                gatherResult.GatherTime = DateTime.Now;
+            //                gatherResult.GatherMessage = ex.Message;
+            //                continue;
+            //            }
+            //        }
+            //    }
 
-                return PackagingAjaxMsg(AjaxStatus.IsSuccess, _gatherResultList.Count > 0 ? $"采集成功！采集了{_gatherResultList.Count}个网站的数据！" : "暂无新增数据!", _gatherResultList);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.ErrMsg = ex.Message;
+            //    return PackagingAjaxMsg(AjaxStatus.IsSuccess, _gatherResultList.Count > 0 ? $"采集成功！采集了{_gatherResultList.Count}个网站的数据！" : "暂无新增数据!", _gatherResultList);
+            //}
+            //catch (Exception ex)
+            //{
+            //    ViewBag.ErrMsg = ex.Message;
 
-                _logger.LogInnerError(ex, $"一键采集报错！");
-                return PackagingAjaxMsg(AjaxStatus.Err, $"一键采集报错！");
-            }
+            //    _logger.LogInnerError(ex, $"一键采集报错！");
+            //    return PackagingAjaxMsg(AjaxStatus.Err, $"一键采集报错！");
+            //}
+            var gatherResultList = await _gatherService.GatherAllWebsites(pageStartNo, pageEndNo, classId, User?.Identity?.Name);
+            return PackagingAjaxMsg(AjaxStatus.IsSuccess, gatherResultList.Count > 0 ? $"采集成功！采集了{gatherResultList.Count}个网站的数据！" : "暂无新增数据!", gatherResultList);
         }
 
         /// <summary>
@@ -118,7 +120,7 @@ namespace WebAdmin.Controllers
         [HttpPost]
         public IActionResult GetGatherAllResult()
         {
-            return PackagingAjaxMsg(AjaxStatus.IsSuccess, $"获取成功", _gatherResultList);
+            return PackagingAjaxMsg(AjaxStatus.IsSuccess, $"获取成功", _gatherService.GetGatherAllResult());
         }
     }
 }

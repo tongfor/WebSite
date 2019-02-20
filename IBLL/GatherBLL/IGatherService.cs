@@ -18,7 +18,7 @@ namespace IBLL
         /// <param name="userName">采集员账号</param>
         /// <returns></returns>
         Task<GatherResult> GatherWebsiteAsync(string siteKey, int? pageStartNo, int? pageEndNo, int classId, string userName);
-        
+
         ///// <summary>
         ///// 获取要采集的文章列表
         ///// </summary>
@@ -40,5 +40,17 @@ namespace IBLL
         ///// <param name="userName">采集员账号</param>
         ///// <returns></returns>
         //Task<Article> GetArticleDetailsAsync(GatherWebsite gatherWebsite, string url, int? classId, string userName, Func<AngleSharp.Dom.Html.IHtmlDocument, Article, Article> callback);
+
+        /// <summary>
+        /// 采集所有已配网站数据
+        /// </summary>
+        /// <returns></returns>
+        Task<List<GatherResult>> GatherAllWebsites(int? pageStartNo, int? pageEndNo, int classId, string username);
+
+        /// <summary>
+        /// 得到一键采集的采集结果，也用于保持心跳线连接
+        /// </summary>
+        /// <returns></returns>
+        List<GatherResult> GetGatherAllResult();
     }
 }

@@ -84,7 +84,7 @@ namespace IBLL
         /// <summary>
         /// 查询所有文章类别树
         /// </summary>
-        List<ArticleClassTreeView> GetAllArticleClassTree(int classid);
+        List<ArticleClassTreeView> GetAllArticleClassTree(int? classid);
 
         /// <summary>
         /// 异步查询所有文章类别树

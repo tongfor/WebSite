@@ -50,6 +50,8 @@ namespace BLL
 
         private readonly ILogger<GatherService> _logger;
 
+        private static List<GatherResult> _gatherResultList;
+
         public GatherService(IOptionsSnapshot<SiteConfig> siteConfigOptions, IOptionsSnapshot<GatherConfig> gatherConfigOptions, IArticleService articleService, ILogger<GatherService> logger)
         {
             _siteConfig = siteConfigOptions.Value;
@@ -99,11 +101,66 @@ namespace BLL
         }
 
         /// <summary>
-        /// 检查站点访问结果
+        /// 采集所有已配网站数据
         /// </summary>
-        /// <param name="siteKey"></param>
         /// <returns></returns>
-        private async Task<GatherResult> UrlCheck(GatherWebsite website)
+        public async Task<List<GatherResult>> GatherAllWebsites(int? pageStartNo, int? pageEndNo, int classId, string username)
+        {
+            try
+            {
+                _gatherResultList = new List<GatherResult>();
+                //默认采集前3页数据
+                pageStartNo = pageStartNo == null || pageStartNo == 0 ? 1 : pageStartNo;
+                pageEndNo = pageEndNo == null || pageEndNo == 0 ? 3 : pageEndNo;
+                if (_gatherConfig != null && _gatherConfig.GatherWebsiteList != null)
+                {
+                    GatherResult gatherResult = new GatherResult();
+                    foreach (var site in _gatherConfig.GatherWebsiteList)
+                    {
+                        if (string.IsNullOrEmpty(site.Key) || string.IsNullOrEmpty(site.Name) || string.IsNullOrEmpty(site.SiteUrl) || string.IsNullOrEmpty(site.UrlTemp))
+                        {
+                            continue;
+                        }
+                        try
+                        {
+                            gatherResult = await GatherWebsiteAsync(site.Key, pageStartNo, pageEndNo, classId, username);
+                            _gatherResultList.Add(gatherResult);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogInnerError(ex, $"一键采集中采集{site.Name}数据时报错！");
+                            gatherResult.ErrorStatus = GatherErrorCode.Other;
+                            gatherResult.GatherTime = DateTime.Now;
+                            gatherResult.GatherMessage = ex.Message;
+                            continue;
+                        }
+                    }
+                }
+
+                return _gatherResultList;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInnerError(ex, $"一键采集报错！");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 得到一键采集的采集结果，也用于保持心跳线连接
+        /// </summary>
+        /// <returns></returns>
+        public List<GatherResult> GetGatherAllResult()
+        {
+            return _gatherResultList;
+        }
+
+    /// <summary>
+    /// 检查站点访问结果
+    /// </summary>
+    /// <param name="siteKey"></param>
+    /// <returns></returns>
+    private async Task<GatherResult> UrlCheck(GatherWebsite website)
         {
             GatherResult gatherResult = new GatherResult
             {
@@ -519,7 +576,7 @@ namespace BLL
                     result = result.Substring(startIndex, endIndex);
                 }
                 result = result?.ReplaceEvery(detailsSet.BeReplacedStr, detailsSet.Replacer, ',')?.Trim();
-                if (string.IsNullOrEmpty(result))
+                if (null == result)
                 {
                     _logger.LogWarning($"在{url}采集{name}的内容时采集失败");
                 }

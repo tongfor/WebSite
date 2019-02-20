@@ -173,7 +173,7 @@ namespace BLL
         /// <summary>
         /// 查询所有文章类别树
         /// </summary>
-        public List<ArticleClassTreeView> GetAllArticleClassTree(int classid)
+        public List<ArticleClassTreeView> GetAllArticleClassTree(int? classid)
         {
             List<ArticleClassTreeView> resultList = new List<ArticleClassTreeView>();
             List<ArticleClass> modelList = classid == null ? MyIArticleClassDAL.GetListBy(f => 0 == f.IsDel) : MyIArticleClassDAL.GetListBy(f => classid == f.ParentId && 0 == f.IsDel);

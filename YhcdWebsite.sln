@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GatherHandlers", "GatherHan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatherSpecialHandler", "GatherSpecialHandle\GatherSpecialHandler.csproj", "{2FC02400-0AF0-4C10-9AA5-3F681E41664E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.TimedJob", "Pomelo.AspNetCore.TimedJob\Pomelo.AspNetCore.TimedJob.csproj", "{E844E64A-7643-48A6-8ED1-FEB22221C0E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{2FC02400-0AF0-4C10-9AA5-3F681E41664E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FC02400-0AF0-4C10-9AA5-3F681E41664E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FC02400-0AF0-4C10-9AA5-3F681E41664E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E844E64A-7643-48A6-8ED1-FEB22221C0E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E844E64A-7643-48A6-8ED1-FEB22221C0E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E844E64A-7643-48A6-8ED1-FEB22221C0E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E844E64A-7643-48A6-8ED1-FEB22221C0E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{5F405C9D-8AD9-4960-B8DC-744097EBC728} = {B86AA02D-8D6C-42B6-88CA-411566FCE015}
 		{F6D944A8-5B72-4908-A718-AE500728E5CB} = {B86AA02D-8D6C-42B6-88CA-411566FCE015}
 		{2FC02400-0AF0-4C10-9AA5-3F681E41664E} = {33E8F0CA-B877-4AFE-B78C-ADCA43AA165D}
+		{E844E64A-7643-48A6-8ED1-FEB22221C0E8} = {5A0A33F7-C560-46C4-BBA1-6C071B63DDF4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DF546A8-598F-4303-9900-71AFD2F5B9D4}

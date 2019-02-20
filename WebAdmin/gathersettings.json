@@ -25,7 +25,31 @@
     //申报快讯过滤关键字
     "NotificationKeywords": "项目,资金,通知,补助,人才 and 征集,申报,拨付",
     //要排除的关键字
-    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设,维修资金,采购项目,住宅,集体资金,民生,城乡房屋租赁服务,专业技术职务,质量提升,移民,务工,专项整治,信用信息,企业技术需求,培训项目,申报人选参加答辩,科技扶贫万里行活动,建设项目",
+    "ExcludeKeywords": "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证,项目建设,维修资金,采购项目,住宅,集体资金,民生,城乡房屋租赁服务,专业技术职务,质量提升,移民,务工,专项整治,信用信息,企业技术需求,培训项目,申报人选参加答辩,科技扶贫万里行活动,建设项目,建筑,造价,关于办公、商业",
+    //每周定时执行计划
+    "TimingExecutionTasksOfWeek": [
+      {
+        "ExecutionDay": "1",
+        "ExecutionTime": "16:30:00"
+      },
+      {
+        "ExecutionDay": "2",
+        "ExecutionTime": "01:00:00"
+      },
+      {
+        "ExecutionDay": "3",
+        "ExecutionTime": "01:00:00"
+      },
+      {
+        "ExecutionDay": "4",
+        "ExecutionTime": "01:00:00"
+      },
+      {
+        "ExecutionDay": "5",
+        "ExecutionTime": "01:00:00"
+      }
+    ],
+    "TimingExecutionTimeOfDay": [],
     //采集站点属性,
     "GatherWebsiteList": [
       {
@@ -1311,7 +1335,7 @@
           },
           {
             "Name": "Content",
-            "Selector": ".Section0", //选择特征排在越前面的越先选择，前面的没有再选择后面的
+            "Selector": ".Ccontent .content", //选择特征排在越前面的越先选择，前面的没有再选择后面的
             "ValueAttributeName": "",
             "ValueOrder": "0",
             "BeReplacedStr": "",

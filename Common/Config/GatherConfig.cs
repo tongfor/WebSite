@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace Common.Config
 {
@@ -28,6 +28,14 @@ namespace Common.Config
         /// 要排除的关键字
         /// </summary>
         public string ExcludeKeywords { get; set; } = "投标,比选,办理情况,公开表,诊所,审批,告知书,搬迁,房屋征收,通告,门诊部,公示表,许可证";
+        /// <summary>
+        /// 每周定时执行计划，周几执行，0为Sunday
+        /// </summary>
+        public List<WeekPlan> TimingExecutionTasksOfWeek { get; set; }
+        /// <summary>
+        /// 每天定时执行计划，哪几个时间段执行，每天计划将覆盖每周计划
+        /// </summary>
+        public List<DateTime> TimingExecutionTimeOfDay { get; set; }
         /// <summary>
         /// 采集站点属性
         /// </summary>
@@ -171,7 +179,24 @@ namespace Common.Config
         /// </summary>
         public string RemoveSelector { get; set; }
     }
-    
+
+    /// <summary>
+    /// 采集每周计划
+    /// </summary>
+    public class WeekPlan
+    {
+        /// <summary>
+        /// 周几执行，0为Sunday
+        /// </summary>
+        public int ExecutionDay { get; set; }
+
+        /// <summary>
+        /// 执行时间段
+        /// </summary>
+        [DisplayFormat(DataFormatString = "{HH:mm:ss}")]
+        public DateTime ExecutionTime { get; set; }
+    }
+
     /// <summary>
     /// 取值类型，1为取text,2为取innerHtml,3为取outerHtml,默认为1
     /// </summary>
