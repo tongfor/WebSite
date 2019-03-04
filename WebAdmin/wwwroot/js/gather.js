@@ -236,6 +236,7 @@
             showHtml = '<p>采集结果如下：</p>\n' + showHtml
         }
         o.append(showHtml)
+        tb_init('a.thickbox', 'tr.thickbox', 'td.thickbox');//解决动态生成无效的问题
         gatherCache.set(_cacheName, o.html(), 120)
         o.scrollTop(o.prop('scrollHeight'))
     }

@@ -46,6 +46,11 @@ namespace WebAdmin
                 })
                 //.UseNLog()
                 .UseStartup<Startup>()
+                .UseKestrel(option =>
+                {
+                    option.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(20);
+                    option.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(20);
+                })
                 .Build();
     }
 }
